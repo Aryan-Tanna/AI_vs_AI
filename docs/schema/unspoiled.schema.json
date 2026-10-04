@@ -1,0 +1,998 @@
+{
+ "$defs": {
+  "Acknowledgment": {
+   "additionalProperties": false,
+   "properties": {
+    "date": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "title": "Date"
+    },
+    "kind": {
+     "enum": [
+      "BALANCE_SHEET",
+      "LETTER",
+      "OTS",
+      "PART_PAYMENT",
+      "OTHER"
+     ],
+     "title": "Kind",
+     "type": "string"
+    },
+    "ref": {
+     "anyOf": [
+      {
+       "pattern": "^E\\d+$",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Ref"
+    },
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "minItems": 1,
+     "title": "Src",
+     "type": "array"
+    }
+   },
+   "required": [
+    "date",
+    "kind",
+    "src"
+   ],
+   "title": "Acknowledgment",
+   "type": "object"
+  },
+  "AppealScope": {
+   "additionalProperties": false,
+   "properties": {
+    "restricted_grounds": {
+     "anyOf": [
+      {
+       "enum": [
+        "SEC61_3",
+        "SEC61_4"
+       ],
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Restricted Grounds"
+    },
+    "record_closed_after_turn": {
+     "default": 3,
+     "title": "Record Closed After Turn",
+     "type": "integer"
+    }
+   },
+   "title": "AppealScope",
+   "type": "object"
+  },
+  "Event": {
+   "additionalProperties": false,
+   "properties": {
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "minItems": 1,
+     "title": "Src",
+     "type": "array"
+    },
+    "id": {
+     "pattern": "^E\\d+$",
+     "title": "Id",
+     "type": "string"
+    },
+    "date": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Date"
+    },
+    "date_to": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Date To"
+    },
+    "date_precision": {
+     "default": "DAY",
+     "enum": [
+      "DAY",
+      "MONTH",
+      "FY",
+      "RANGE"
+     ],
+     "title": "Date Precision",
+     "type": "string"
+    },
+    "event": {
+     "title": "Event",
+     "type": "string"
+    },
+    "actor": {
+     "anyOf": [
+      {
+       "pattern": "^\\[[A-Z][A-Z0-9_]*\\]$",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Actor"
+    },
+    "conflict_ref": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "typed_facts key holding conflicting values for this date",
+     "title": "Conflict Ref"
+    }
+   },
+   "required": [
+    "src",
+    "id",
+    "event"
+   ],
+   "title": "Event",
+   "type": "object"
+  },
+  "Ground": {
+   "additionalProperties": false,
+   "properties": {
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "minItems": 1,
+     "title": "Src",
+     "type": "array"
+    },
+    "id": {
+     "pattern": "^[GR]\\d+$",
+     "title": "Id",
+     "type": "string"
+    },
+    "issue": {
+     "pattern": "^I\\d+$",
+     "title": "Issue",
+     "type": "string"
+    },
+    "heading": {
+     "description": "One line; the full submission is sealed",
+     "maxLength": 240,
+     "title": "Heading",
+     "type": "string"
+    }
+   },
+   "required": [
+    "src",
+    "id",
+    "issue",
+    "heading"
+   ],
+   "title": "Ground",
+   "type": "object"
+  },
+  "ImpugnedOrder": {
+   "additionalProperties": false,
+   "properties": {
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "minItems": 1,
+     "title": "Src",
+     "type": "array"
+    },
+    "forum": {
+     "default": "NCLT",
+     "enum": [
+      "NCLT",
+      "IBBI",
+      "OTHER"
+     ],
+     "title": "Forum",
+     "type": "string"
+    },
+    "bench_city": {
+     "pattern": "^[A-Z_]+$",
+     "title": "Bench City",
+     "type": "string"
+    },
+    "date": {
+     "format": "date",
+     "title": "Date",
+     "type": "string"
+    },
+    "application_type": {
+     "description": "What was decided below, e.g. SEC7, SEC9, IA_REJECTION_OF_CLAIM",
+     "title": "Application Type",
+     "type": "string"
+    },
+    "outcome_below": {
+     "description": "e.g. ADMITTED, REJECTED, PLAN_APPROVED, APPLICATIONS_REJECTED",
+     "title": "Outcome Below",
+     "type": "string"
+    },
+    "reasoning_summary": {
+     "description": "Neutral summary of the NCLT's reasons",
+     "title": "Reasoning Summary",
+     "type": "string"
+    },
+    "operative_part": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Operative Part"
+    }
+   },
+   "required": [
+    "src",
+    "bench_city",
+    "date",
+    "application_type",
+    "outcome_below",
+    "reasoning_summary"
+   ],
+   "title": "ImpugnedOrder",
+   "type": "object"
+  },
+  "Issue": {
+   "additionalProperties": false,
+   "properties": {
+    "id": {
+     "pattern": "^I\\d+$",
+     "title": "Id",
+     "type": "string"
+    },
+    "text": {
+     "description": "Neutral wording (CLAUDE.md §6.2)",
+     "title": "Text",
+     "type": "string"
+    },
+    "provisions": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Provisions",
+     "type": "array"
+    }
+   },
+   "required": [
+    "id",
+    "text"
+   ],
+   "title": "Issue",
+   "type": "object"
+  },
+  "Party": {
+   "additionalProperties": false,
+   "properties": {
+    "token": {
+     "pattern": "^\\[[A-Z][A-Z0-9_]*\\]$",
+     "title": "Token",
+     "type": "string"
+    },
+    "kind": {
+     "enum": [
+      "COMPANY",
+      "LLP",
+      "BANK",
+      "NBFC",
+      "ARC",
+      "INDIVIDUAL",
+      "GOVERNMENT",
+      "STATUTORY_BODY",
+      "RESOLUTION_PROFESSIONAL",
+      "LIQUIDATOR",
+      "COC",
+      "OTHER"
+     ],
+     "title": "Kind",
+     "type": "string"
+    },
+    "side": {
+     "enum": [
+      "APPELLANT",
+      "RESPONDENT",
+      "NON_PARTY"
+     ],
+     "title": "Side",
+     "type": "string"
+    },
+    "role": {
+     "anyOf": [
+      {
+       "enum": [
+        "FINANCIAL_CREDITOR",
+        "OPERATIONAL_CREDITOR",
+        "SUSPENDED_DIRECTOR_PROMOTER",
+        "SHAREHOLDER",
+        "CORPORATE_DEBTOR",
+        "RESOLUTION_PROFESSIONAL",
+        "LIQUIDATOR",
+        "RESOLUTION_APPLICANT",
+        "COC",
+        "STATUTORY_AUTHORITY",
+        "WORKMEN_EMPLOYEES",
+        "HOMEBUYERS",
+        "PERSONAL_GUARANTOR",
+        "IBBI",
+        "OTHER"
+       ],
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Role"
+    },
+    "description": {
+     "description": "Neutral, non-identifying description",
+     "maxLength": 200,
+     "title": "Description",
+     "type": "string"
+    }
+   },
+   "required": [
+    "token",
+    "kind",
+    "side",
+    "description"
+   ],
+   "title": "Party",
+   "type": "object"
+  },
+  "Placeholder": {
+   "additionalProperties": false,
+   "description": "Tokens for applications, proceedings or documents whose numbers are removed (e.g. [ATTACHMENT_APPLICATION]).",
+   "properties": {
+    "token": {
+     "pattern": "^\\[[A-Z][A-Z0-9_]*\\]$",
+     "title": "Token",
+     "type": "string"
+    },
+    "kind": {
+     "enum": [
+      "APPLICATION",
+      "PROCEEDING",
+      "DOCUMENT",
+      "PROPERTY",
+      "OTHER"
+     ],
+     "title": "Kind",
+     "type": "string"
+    },
+    "description": {
+     "maxLength": 200,
+     "title": "Description",
+     "type": "string"
+    }
+   },
+   "required": [
+    "token",
+    "kind",
+    "description"
+   ],
+   "title": "Placeholder",
+   "type": "object"
+  },
+  "RecordConflict": {
+   "additionalProperties": false,
+   "properties": {
+    "field": {
+     "title": "Field",
+     "type": "string"
+    },
+    "note": {
+     "title": "Note",
+     "type": "string"
+    }
+   },
+   "required": [
+    "field",
+    "note"
+   ],
+   "title": "RecordConflict",
+   "type": "object"
+  },
+  "RecordDocument": {
+   "additionalProperties": false,
+   "properties": {
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "minItems": 1,
+     "title": "Src",
+     "type": "array"
+    },
+    "id": {
+     "pattern": "^D\\d+$",
+     "title": "Id",
+     "type": "string"
+    },
+    "kind": {
+     "enum": [
+      "LOAN_AGREEMENT",
+      "SANCTION_LETTER",
+      "DEMAND_NOTICE",
+      "INVOICE",
+      "NOTICE_OF_DISPUTE",
+      "BALANCE_SHEET",
+      "OTS_PROPOSAL",
+      "ACKNOWLEDGMENT_LETTER",
+      "APPLICATION",
+      "REPLY",
+      "ORDER",
+      "REPORT",
+      "COMPILATION",
+      "RESOLUTION_PLAN",
+      "COC_MINUTES",
+      "CLAIM_FORM",
+      "CORRESPONDENCE",
+      "OTHER"
+     ],
+     "title": "Kind",
+     "type": "string"
+    },
+    "date": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Date"
+    },
+    "gist": {
+     "description": "What the document shows, neutrally",
+     "maxLength": 400,
+     "title": "Gist",
+     "type": "string"
+    }
+   },
+   "required": [
+    "src",
+    "id",
+    "kind",
+    "gist"
+   ],
+   "title": "RecordDocument",
+   "type": "object"
+  },
+  "Src": {
+   "additionalProperties": false,
+   "description": "Where a value comes from in the source PDF. Every fact carries at least one.",
+   "properties": {
+    "doc": {
+     "default": "JUDGMENT",
+     "enum": [
+      "JUDGMENT",
+      "IMPUGNED"
+     ],
+     "title": "Doc",
+     "type": "string"
+    },
+    "page": {
+     "minimum": 1,
+     "title": "Page",
+     "type": "integer"
+    },
+    "para": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Para"
+    }
+   },
+   "required": [
+    "page"
+   ],
+   "title": "Src",
+   "type": "object"
+  },
+  "TypedFact": {
+   "additionalProperties": false,
+   "description": "A single value, or several conflicting values found in the record (never resolved by the pipeline).",
+   "properties": {
+    "value": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "integer"
+      },
+      {
+       "type": "number"
+      },
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Value"
+    },
+    "values": {
+     "anyOf": [
+      {
+       "items": {
+        "anyOf": [
+         {
+          "format": "date",
+          "type": "string"
+         },
+         {
+          "type": "integer"
+         },
+         {
+          "type": "number"
+         },
+         {
+          "type": "string"
+         }
+        ]
+       },
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Values"
+    },
+    "conflict": {
+     "default": false,
+     "title": "Conflict",
+     "type": "boolean"
+    },
+    "ref": {
+     "anyOf": [
+      {
+       "pattern": "^E\\d+$",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "chronology event id",
+     "title": "Ref"
+    },
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "title": "Src",
+     "type": "array"
+    },
+    "verified": {
+     "default": false,
+     "title": "Verified",
+     "type": "boolean"
+    }
+   },
+   "title": "TypedFact",
+   "type": "object"
+  },
+  "TypedFacts": {
+   "additionalProperties": false,
+   "description": "CLAUDE.md §6.2. Absent = unknown; null value = looked for and not on record.",
+   "properties": {
+    "date_of_default": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "date_of_npa": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "demand_notice_delivery": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "notice_of_dispute_date": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "nclt_filing_date": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "impugned_order_date": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "appeal_filing_date": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "certified_copy_applied": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "amount_in_default_inr": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "claim_amount_inr": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "cirp_commencement_date": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "liquidation_order_date": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TypedFact"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "acknowledgments": {
+     "items": {
+      "$ref": "#/$defs/Acknowledgment"
+     },
+     "title": "Acknowledgments",
+     "type": "array"
+    },
+    "other": {
+     "additionalProperties": {
+      "$ref": "#/$defs/TypedFact"
+     },
+     "description": "case-specific facts, snake_case keys",
+     "title": "Other",
+     "type": "object"
+    }
+   },
+   "title": "TypedFacts",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "properties": {
+  "schema_version": {
+   "const": "1.0",
+   "default": "1.0",
+   "title": "Schema Version",
+   "type": "string"
+  },
+  "case_uid": {
+   "pattern": "^PC-[A-Z0-9-]+$",
+   "title": "Case Uid",
+   "type": "string"
+  },
+  "title_anon": {
+   "title": "Title Anon",
+   "type": "string"
+  },
+  "forum": {
+   "const": "NCLAT",
+   "default": "NCLAT",
+   "title": "Forum",
+   "type": "string"
+  },
+  "bench_city": {
+   "pattern": "^[A-Z_]+$",
+   "title": "Bench City",
+   "type": "string"
+  },
+  "law_as_of": {
+   "description": "decision date minus one day",
+   "format": "date",
+   "title": "Law As Of",
+   "type": "string"
+  },
+  "proceeding_type": {
+   "enum": [
+    "SEC7_ADMISSION",
+    "SEC9_ADMISSION",
+    "SEC10_ADMISSION",
+    "SEC12A_WITHDRAWAL",
+    "MORATORIUM_SEC14",
+    "CLAIMS_VERIFICATION",
+    "COC_CONSTITUTION",
+    "RESOLUTION_PLAN_APPROVAL",
+    "SEC29A_ELIGIBILITY",
+    "LIQUIDATION",
+    "AVOIDANCE_43_66",
+    "SEC60_5_JURISDICTION",
+    "APPEAL_LIMITATION_CONDONATION",
+    "PERSONAL_GUARANTOR_95_100",
+    "IP_DISCIPLINARY",
+    "RECALL_REVIEW",
+    "COMPANIES_ACT_241_242",
+    "COMPANIES_ACT_STRIKE_OFF",
+    "OTHER"
+   ],
+   "title": "Proceeding Type",
+   "type": "string"
+  },
+  "appellant_role": {
+   "enum": [
+    "FINANCIAL_CREDITOR",
+    "OPERATIONAL_CREDITOR",
+    "SUSPENDED_DIRECTOR_PROMOTER",
+    "SHAREHOLDER",
+    "CORPORATE_DEBTOR",
+    "RESOLUTION_PROFESSIONAL",
+    "LIQUIDATOR",
+    "RESOLUTION_APPLICANT",
+    "COC",
+    "STATUTORY_AUTHORITY",
+    "WORKMEN_EMPLOYEES",
+    "HOMEBUYERS",
+    "PERSONAL_GUARANTOR",
+    "IBBI",
+    "OTHER"
+   ],
+   "title": "Appellant Role",
+   "type": "string"
+  },
+  "respondent_roles": {
+   "items": {
+    "enum": [
+     "FINANCIAL_CREDITOR",
+     "OPERATIONAL_CREDITOR",
+     "SUSPENDED_DIRECTOR_PROMOTER",
+     "SHAREHOLDER",
+     "CORPORATE_DEBTOR",
+     "RESOLUTION_PROFESSIONAL",
+     "LIQUIDATOR",
+     "RESOLUTION_APPLICANT",
+     "COC",
+     "STATUTORY_AUTHORITY",
+     "WORKMEN_EMPLOYEES",
+     "HOMEBUYERS",
+     "PERSONAL_GUARANTOR",
+     "IBBI",
+     "OTHER"
+    ],
+    "type": "string"
+   },
+   "minItems": 1,
+   "title": "Respondent Roles",
+   "type": "array"
+  },
+  "parties": {
+   "items": {
+    "$ref": "#/$defs/Party"
+   },
+   "minItems": 2,
+   "title": "Parties",
+   "type": "array"
+  },
+  "placeholders": {
+   "items": {
+    "$ref": "#/$defs/Placeholder"
+   },
+   "title": "Placeholders",
+   "type": "array"
+  },
+  "impugned_order": {
+   "$ref": "#/$defs/ImpugnedOrder"
+  },
+  "chronology": {
+   "items": {
+    "$ref": "#/$defs/Event"
+   },
+   "minItems": 1,
+   "title": "Chronology",
+   "type": "array"
+  },
+  "typed_facts": {
+   "$ref": "#/$defs/TypedFacts"
+  },
+  "record_documents": {
+   "items": {
+    "$ref": "#/$defs/RecordDocument"
+   },
+   "title": "Record Documents",
+   "type": "array"
+  },
+  "issues": {
+   "items": {
+    "$ref": "#/$defs/Issue"
+   },
+   "minItems": 1,
+   "title": "Issues",
+   "type": "array"
+  },
+  "appellant_grounds": {
+   "items": {
+    "$ref": "#/$defs/Ground"
+   },
+   "minItems": 1,
+   "title": "Appellant Grounds",
+   "type": "array"
+  },
+  "respondent_contentions": {
+   "items": {
+    "$ref": "#/$defs/Ground"
+   },
+   "title": "Respondent Contentions",
+   "type": "array"
+  },
+  "statutes_in_play": {
+   "description": "from the parties' submissions only",
+   "items": {
+    "type": "string"
+   },
+   "title": "Statutes In Play",
+   "type": "array"
+  },
+  "appeal_scope": {
+   "$ref": "#/$defs/AppealScope"
+  },
+  "record_conflicts": {
+   "items": {
+    "$ref": "#/$defs/RecordConflict"
+   },
+   "title": "Record Conflicts",
+   "type": "array"
+  }
+ },
+ "required": [
+  "case_uid",
+  "title_anon",
+  "bench_city",
+  "law_as_of",
+  "proceeding_type",
+  "appellant_role",
+  "respondent_roles",
+  "parties",
+  "impugned_order",
+  "chronology",
+  "issues",
+  "appellant_grounds"
+ ],
+ "title": "PublicUnspoiled",
+ "type": "object"
+}

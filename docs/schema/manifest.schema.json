@@ -1,0 +1,421 @@
+{
+ "$defs": {
+  "Build": {
+   "additionalProperties": false,
+   "properties": {
+    "method": {
+     "enum": [
+      "LLM_DRAFT+HUMAN_REVIEW",
+      "MANUAL",
+      "SYNTHETIC_TEMPLATE"
+     ],
+     "title": "Method",
+     "type": "string"
+    },
+    "drafted_by": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Drafted By"
+    },
+    "reviewed_by": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Reviewed By"
+    },
+    "reviewed_at": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Reviewed At"
+    },
+    "lawyer_checked": {
+     "default": false,
+     "title": "Lawyer Checked",
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "method"
+   ],
+   "title": "Build",
+   "type": "object"
+  },
+  "Overlap": {
+   "additionalProperties": false,
+   "properties": {
+    "reference_case_uids": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Reference Case Uids",
+     "type": "array"
+    },
+    "raw_precedent_ids": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Raw Precedent Ids",
+     "type": "array"
+    }
+   },
+   "title": "Overlap",
+   "type": "object"
+  },
+  "ProbeResult": {
+   "additionalProperties": false,
+   "properties": {
+    "outcome_correct": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Outcome Correct"
+    },
+    "identified_case": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Identified Case"
+    },
+    "probed_at": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Probed At"
+    }
+   },
+   "title": "ProbeResult",
+   "type": "object"
+  },
+  "QA": {
+   "additionalProperties": false,
+   "properties": {
+    "facts_verified": {
+     "default": false,
+     "title": "Facts Verified",
+     "type": "boolean"
+    },
+    "issues_neutral": {
+     "default": false,
+     "title": "Issues Neutral",
+     "type": "boolean"
+    },
+    "issues_original": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Issues Original",
+     "type": "array"
+    },
+    "leakage_scan_passed": {
+     "default": false,
+     "title": "Leakage Scan Passed",
+     "type": "boolean"
+    },
+    "anonymisation_checked": {
+     "default": false,
+     "title": "Anonymisation Checked",
+     "type": "boolean"
+    },
+    "notes": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Notes"
+    }
+   },
+   "title": "QA",
+   "type": "object"
+  },
+  "Real": {
+   "additionalProperties": false,
+   "properties": {
+    "title": {
+     "title": "Title",
+     "type": "string"
+    },
+    "appeal_numbers": {
+     "description": "one per connected appeal decided by this judgment",
+     "items": {
+      "type": "string"
+     },
+     "minItems": 1,
+     "title": "Appeal Numbers",
+     "type": "array"
+    },
+    "parties": {
+     "items": {
+      "$ref": "#/$defs/RealParty"
+     },
+     "title": "Parties",
+     "type": "array"
+    },
+    "bench_members": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Bench Members",
+     "type": "array"
+    },
+    "other_identifiers": {
+     "description": "CP/MA/IA numbers etc. removed from unspoiled",
+     "items": {
+      "type": "string"
+     },
+     "title": "Other Identifiers",
+     "type": "array"
+    }
+   },
+   "required": [
+    "title",
+    "appeal_numbers"
+   ],
+   "title": "Real",
+   "type": "object"
+  },
+  "RealParty": {
+   "additionalProperties": false,
+   "properties": {
+    "token": {
+     "pattern": "^\\[[A-Z][A-Z0-9_]*\\]$",
+     "title": "Token",
+     "type": "string"
+    },
+    "name": {
+     "title": "Name",
+     "type": "string"
+    }
+   },
+   "required": [
+    "token",
+    "name"
+   ],
+   "title": "RealParty",
+   "type": "object"
+  },
+  "SourceDoc": {
+   "additionalProperties": false,
+   "properties": {
+    "doc": {
+     "enum": [
+      "JUDGMENT",
+      "IMPUGNED"
+     ],
+     "title": "Doc",
+     "type": "string"
+    },
+    "url": {
+     "title": "Url",
+     "type": "string"
+    },
+    "sha256": {
+     "pattern": "^[0-9a-f]{64}$",
+     "title": "Sha256",
+     "type": "string"
+    },
+    "pages": {
+     "minimum": 1,
+     "title": "Pages",
+     "type": "integer"
+    },
+    "retrieved_at": {
+     "anyOf": [
+      {
+       "format": "date",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Retrieved At"
+    }
+   },
+   "required": [
+    "doc",
+    "url",
+    "sha256",
+    "pages"
+   ],
+   "title": "SourceDoc",
+   "type": "object"
+  },
+  "Strata": {
+   "additionalProperties": false,
+   "properties": {
+    "proceeding_type": {
+     "enum": [
+      "SEC7_ADMISSION",
+      "SEC9_ADMISSION",
+      "SEC10_ADMISSION",
+      "SEC12A_WITHDRAWAL",
+      "MORATORIUM_SEC14",
+      "CLAIMS_VERIFICATION",
+      "COC_CONSTITUTION",
+      "RESOLUTION_PLAN_APPROVAL",
+      "SEC29A_ELIGIBILITY",
+      "LIQUIDATION",
+      "AVOIDANCE_43_66",
+      "SEC60_5_JURISDICTION",
+      "APPEAL_LIMITATION_CONDONATION",
+      "PERSONAL_GUARANTOR_95_100",
+      "IP_DISCIPLINARY",
+      "RECALL_REVIEW",
+      "COMPANIES_ACT_241_242",
+      "COMPANIES_ACT_STRIKE_OFF",
+      "OTHER"
+     ],
+     "title": "Proceeding Type",
+     "type": "string"
+    },
+    "appellant_role": {
+     "enum": [
+      "FINANCIAL_CREDITOR",
+      "OPERATIONAL_CREDITOR",
+      "SUSPENDED_DIRECTOR_PROMOTER",
+      "SHAREHOLDER",
+      "CORPORATE_DEBTOR",
+      "RESOLUTION_PROFESSIONAL",
+      "LIQUIDATOR",
+      "RESOLUTION_APPLICANT",
+      "COC",
+      "STATUTORY_AUTHORITY",
+      "WORKMEN_EMPLOYEES",
+      "HOMEBUYERS",
+      "PERSONAL_GUARANTOR",
+      "IBBI",
+      "OTHER"
+     ],
+     "title": "Appellant Role",
+     "type": "string"
+    },
+    "year": {
+     "title": "Year",
+     "type": "integer"
+    }
+   },
+   "required": [
+    "proceeding_type",
+    "appellant_role",
+    "year"
+   ],
+   "title": "Strata",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "properties": {
+  "schema_version": {
+   "const": "1.0",
+   "default": "1.0",
+   "title": "Schema Version",
+   "type": "string"
+  },
+  "case_uid": {
+   "pattern": "^PC-[A-Z0-9-]+$",
+   "title": "Case Uid",
+   "type": "string"
+  },
+  "real": {
+   "$ref": "#/$defs/Real"
+  },
+  "sources": {
+   "items": {
+    "$ref": "#/$defs/SourceDoc"
+   },
+   "minItems": 1,
+   "title": "Sources",
+   "type": "array"
+  },
+  "overlap_with_reference_db": {
+   "$ref": "#/$defs/Overlap"
+  },
+  "in_scope": {
+   "description": "Phase 1: IBC appeals only",
+   "title": "In Scope",
+   "type": "boolean"
+  },
+  "split": {
+   "enum": [
+    "train",
+    "dev",
+    "test"
+   ],
+   "title": "Split",
+   "type": "string"
+  },
+  "strata": {
+   "$ref": "#/$defs/Strata"
+  },
+  "build": {
+   "$ref": "#/$defs/Build"
+  },
+  "qa": {
+   "$ref": "#/$defs/QA"
+  },
+  "contamination_probe": {
+   "additionalProperties": {
+    "$ref": "#/$defs/ProbeResult"
+   },
+   "title": "Contamination Probe",
+   "type": "object"
+  }
+ },
+ "required": [
+  "case_uid",
+  "real",
+  "sources",
+  "in_scope",
+  "split",
+  "strata",
+  "build"
+ ],
+ "title": "PublicManifest",
+ "type": "object"
+}

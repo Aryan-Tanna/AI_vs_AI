@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "case_uid": "PC-TEMPLATE",
+  "title_anon": "[SUSPENDED_DIRECTOR_1] v. [FINANCIAL_CREDITOR_1] and another",
+  "forum": "NCLAT",
+  "bench_city": "NEW_DELHI",
+  "law_as_of": "2021-03-14",
+  "proceeding_type": "SEC7_ADMISSION",
+  "appellant_role": "SUSPENDED_DIRECTOR_PROMOTER",
+  "respondent_roles": ["FINANCIAL_CREDITOR", "RESOLUTION_PROFESSIONAL"],
+  "parties": [
+    {"token": "[SUSPENDED_DIRECTOR_1]", "kind": "INDIVIDUAL", "side": "APPELLANT", "role": "SUSPENDED_DIRECTOR_PROMOTER",
+     "description": "SYNTHETIC TEMPLATE - suspended director of the corporate debtor"},
+    {"token": "[FINANCIAL_CREDITOR_1]", "kind": "BANK", "side": "RESPONDENT", "role": "FINANCIAL_CREDITOR",
+     "description": "SYNTHETIC TEMPLATE - lender under a term loan"},
+    {"token": "[IRP_1]", "kind": "RESOLUTION_PROFESSIONAL", "side": "RESPONDENT", "role": "RESOLUTION_PROFESSIONAL",
+     "description": "SYNTHETIC TEMPLATE - interim resolution professional"},
+    {"token": "[CORPORATE_DEBTOR]", "kind": "COMPANY", "side": "NON_PARTY", "role": "CORPORATE_DEBTOR",
+     "description": "SYNTHETIC TEMPLATE - textile manufacturer"}
+  ],
+  "placeholders": [
+    {"token": "[SEC7_APPLICATION]", "kind": "APPLICATION", "description": "the Section 7 application before the NCLT"}
+  ],
+  "impugned_order": {
+    "forum": "NCLT",
+    "bench_city": "AHMEDABAD",
+    "date": "2020-11-20",
+    "application_type": "SEC7",
+    "outcome_below": "ADMITTED",
+    "reasoning_summary": "The NCLT found a financial debt and a default above the threshold, treated the balance sheet for FY 2017-18 as an acknowledgment of the debt, held the [SEC7_APPLICATION] to be within limitation, and admitted it.",
+    "operative_part": "[SEC7_APPLICATION] admitted; moratorium declared; [IRP_1] appointed.",
+    "src": [{"doc": "JUDGMENT", "page": 2, "para": "2"}]
+  },
+  "chronology": [
+    {"id": "E1", "date": "2012-06-15", "event": "Term loan sanctioned by [FINANCIAL_CREDITOR_1] to [CORPORATE_DEBTOR]", "actor": "[FINANCIAL_CREDITOR_1]",
+     "src": [{"page": 2, "para": "3.1"}]},
+    {"id": "E2", "date": "2015-12-31", "event": "Default in repayment of the term loan", "actor": "[CORPORATE_DEBTOR]",
+     "src": [{"page": 2, "para": "3.2"}]},
+    {"id": "E3", "date": "2016-03-31", "event": "Loan account classified NPA", "actor": "[FINANCIAL_CREDITOR_1]",
+     "src": [{"page": 2, "para": "3.2"}]},
+    {"id": "E4", "date": "2018-09-05", "event": "Board of [CORPORATE_DEBTOR] signs balance sheet for FY 2017-18 showing the term loan under borrowings", "actor": "[CORPORATE_DEBTOR]",
+     "src": [{"page": 3, "para": "3.4"}]},
+    {"id": "E5", "date": "2020-01-10", "event": "[SEC7_APPLICATION] filed by [FINANCIAL_CREDITOR_1]", "actor": "[FINANCIAL_CREDITOR_1]",
+     "src": [{"page": 3, "para": "3.5"}]},
+    {"id": "E6", "date": "2020-11-20", "event": "Impugned order admitting [SEC7_APPLICATION]",
+     "src": [{"page": 2, "para": "2"}]},
+    {"id": "E7", "date": "2018-04-01", "date_to": "2019-03-31", "date_precision": "FY",
+     "event": "One-time settlement proposal by [CORPORATE_DEBTOR] (exact date not on record)", "actor": "[CORPORATE_DEBTOR]",
+     "src": [{"page": 3, "para": "3.6"}]}
+  ],
+  "typed_facts": {
+    "date_of_default": {"value": "2015-12-31", "ref": "E2", "verified": true},
+    "date_of_npa": {"value": "2016-03-31", "ref": "E3", "verified": true},
+    "nclt_filing_date": {"value": "2020-01-10", "ref": "E5", "verified": true},
+    "impugned_order_date": {"value": "2020-11-20", "ref": "E6", "verified": true},
+    "appeal_filing_date": {"value": null},
+    "amount_in_default_inr": {"value": 482000000, "src": [{"page": 2, "para": "3.2"}], "verified": true},
+    "acknowledgments": [
+      {"date": "2018-09-05", "kind": "BALANCE_SHEET", "ref": "E4", "src": [{"page": 3, "para": "3.4"}]},
+      {"date": null, "kind": "OTS", "ref": "E7", "src": [{"page": 3, "para": "3.6"}]}
+    ]
+  },
+  "record_documents": [
+    {"id": "D1", "kind": "SANCTION_LETTER", "date": "2012-06-15", "gist": "Term loan sanction terms and repayment schedule", "src": [{"page": 2, "para": "3.1"}]},
+    {"id": "D2", "kind": "BALANCE_SHEET", "date": "2018-09-05", "gist": "FY 2017-18 balance sheet; term loan from [FINANCIAL_CREDITOR_1] shown under long-term borrowings", "src": [{"page": 3, "para": "3.4"}]}
+  ],
+  "issues": [
+    {"id": "I1", "text": "Whether the [SEC7_APPLICATION] was within limitation.",
+     "provisions": ["LIMITATION_ACT_1963_ART_137", "LIMITATION_ACT_1963_SEC_18"]},
+    {"id": "I2", "text": "Whether an entry in the balance sheet of the corporate debtor can operate as an acknowledgment of liability.",
+     "provisions": ["LIMITATION_ACT_1963_SEC_18"]}
+  ],
+  "appellant_grounds": [
+    {"id": "G1", "issue": "I1", "heading": "Limitation ran from the default on 31.12.2015 and expired before the application was filed", "src": [{"page": 3, "para": "4"}]},
+    {"id": "G2", "issue": "I2", "heading": "A balance sheet entry made under statutory compulsion is not an acknowledgment", "src": [{"page": 3, "para": "4"}]}
+  ],
+  "respondent_contentions": [
+    {"id": "R1", "issue": "I2", "heading": "The signed balance sheet of 05.09.2018 acknowledged the debt before limitation expired", "src": [{"page": 4, "para": "5"}]},
+    {"id": "R2", "issue": "I1", "heading": "A fresh period ran from the acknowledgment, so the application was within time", "src": [{"page": 4, "para": "5"}]}
+  ],
+  "statutes_in_play": ["IBC_2016_SEC_7", "IBC_2016_SEC_238A", "LIMITATION_ACT_1963_ART_137", "LIMITATION_ACT_1963_SEC_18"],
+  "appeal_scope": {"restricted_grounds": null, "record_closed_after_turn": 3},
+  "record_conflicts": []
+}

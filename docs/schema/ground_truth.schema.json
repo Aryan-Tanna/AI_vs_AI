@@ -1,0 +1,401 @@
+{
+ "$defs": {
+  "AuthorityRef": {
+   "additionalProperties": false,
+   "properties": {
+    "title": {
+     "title": "Title",
+     "type": "string"
+    },
+    "citation": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "only as printed in the judgment; never invented",
+     "title": "Citation"
+    },
+    "authority_uid": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Authority Uid"
+    }
+   },
+   "required": [
+    "title"
+   ],
+   "title": "AuthorityRef",
+   "type": "object"
+  },
+  "BenchFraming": {
+   "additionalProperties": false,
+   "properties": {
+    "issue_grouping": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Issue Grouping"
+    },
+    "interpretive_aids": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Interpretive Aids",
+     "type": "array"
+    }
+   },
+   "title": "BenchFraming",
+   "type": "object"
+  },
+  "CitedAuthority": {
+   "additionalProperties": false,
+   "properties": {
+    "title": {
+     "title": "Title",
+     "type": "string"
+    },
+    "citation": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "only as printed in the judgment; never invented",
+     "title": "Citation"
+    },
+    "authority_uid": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Authority Uid"
+    },
+    "by": {
+     "enum": [
+      "APPELLANT",
+      "RESPONDENT"
+     ],
+     "title": "By",
+     "type": "string"
+    }
+   },
+   "required": [
+    "title",
+    "by"
+   ],
+   "title": "CitedAuthority",
+   "type": "object"
+  },
+  "IssueFinding": {
+   "additionalProperties": false,
+   "properties": {
+    "src": {
+     "items": {
+      "$ref": "#/$defs/Src"
+     },
+     "minItems": 1,
+     "title": "Src",
+     "type": "array"
+    },
+    "issue": {
+     "pattern": "^I\\d+$",
+     "title": "Issue",
+     "type": "string"
+    },
+    "finding": {
+     "description": "short code, e.g. WITHIN_LIMITATION",
+     "pattern": "^[A-Z0-9_]+$",
+     "title": "Finding",
+     "type": "string"
+    },
+    "holding": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Holding"
+    },
+    "provisions": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Provisions",
+     "type": "array"
+    },
+    "authorities_relied": {
+     "items": {
+      "$ref": "#/$defs/AuthorityRef"
+     },
+     "title": "Authorities Relied",
+     "type": "array"
+    }
+   },
+   "required": [
+    "src",
+    "issue",
+    "finding"
+   ],
+   "title": "IssueFinding",
+   "type": "object"
+  },
+  "Src": {
+   "additionalProperties": false,
+   "description": "Where a value comes from in the source PDF. Every fact carries at least one.",
+   "properties": {
+    "doc": {
+     "default": "JUDGMENT",
+     "enum": [
+      "JUDGMENT",
+      "IMPUGNED"
+     ],
+     "title": "Doc",
+     "type": "string"
+    },
+    "page": {
+     "minimum": 1,
+     "title": "Page",
+     "type": "integer"
+    },
+    "para": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Para"
+    }
+   },
+   "required": [
+    "page"
+   ],
+   "title": "Src",
+   "type": "object"
+  },
+  "Submissions": {
+   "additionalProperties": false,
+   "properties": {
+    "appellant": {
+     "title": "Appellant",
+     "type": "string"
+    },
+    "respondent": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Respondent"
+    }
+   },
+   "required": [
+    "appellant"
+   ],
+   "title": "Submissions",
+   "type": "object"
+  },
+  "SubsequentHistory": {
+   "additionalProperties": false,
+   "properties": {
+    "court": {
+     "enum": [
+      "SC",
+      "NCLAT_LARGER_BENCH",
+      "OTHER"
+     ],
+     "title": "Court",
+     "type": "string"
+    },
+    "date": {
+     "format": "date",
+     "title": "Date",
+     "type": "string"
+    },
+    "result": {
+     "title": "Result",
+     "type": "string"
+    },
+    "source": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Source"
+    }
+   },
+   "required": [
+    "court",
+    "date",
+    "result"
+   ],
+   "title": "SubsequentHistory",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "properties": {
+  "schema_version": {
+   "const": "1.0",
+   "default": "1.0",
+   "title": "Schema Version",
+   "type": "string"
+  },
+  "case_uid": {
+   "pattern": "^PC-[A-Z0-9-]+$",
+   "title": "Case Uid",
+   "type": "string"
+  },
+  "decision_date": {
+   "format": "date",
+   "title": "Decision Date",
+   "type": "string"
+  },
+  "label": {
+   "enum": [
+    "ALLOWED",
+    "DISMISSED",
+    "PARTLY_ALLOWED",
+    "ALLOWED_REMANDED",
+    "WITHDRAWN",
+    "DISPOSED"
+   ],
+   "title": "Label",
+   "type": "string"
+  },
+  "appellant_won": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "null = excluded from the binary metric (e.g. WITHDRAWN)",
+   "title": "Appellant Won"
+  },
+  "outcome_detail": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Outcome Detail"
+  },
+  "issue_findings": {
+   "items": {
+    "$ref": "#/$defs/IssueFinding"
+   },
+   "minItems": 1,
+   "title": "Issue Findings",
+   "type": "array"
+  },
+  "ratio_decidendi": {
+   "title": "Ratio Decidendi",
+   "type": "string"
+  },
+  "operative_order_verbatim": {
+   "title": "Operative Order Verbatim",
+   "type": "string"
+  },
+  "directions": {
+   "items": {
+    "type": "string"
+   },
+   "title": "Directions",
+   "type": "array"
+  },
+  "dissent": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Dissent"
+  },
+  "submissions_full": {
+   "$ref": "#/$defs/Submissions"
+  },
+  "authorities_cited_by_parties": {
+   "items": {
+    "$ref": "#/$defs/CitedAuthority"
+   },
+   "title": "Authorities Cited By Parties",
+   "type": "array"
+  },
+  "bench_framing": {
+   "$ref": "#/$defs/BenchFraming"
+  },
+  "subsequent_history": {
+   "items": {
+    "$ref": "#/$defs/SubsequentHistory"
+   },
+   "title": "Subsequent History",
+   "type": "array"
+  }
+ },
+ "required": [
+  "case_uid",
+  "decision_date",
+  "label",
+  "appellant_won",
+  "issue_findings",
+  "ratio_decidendi",
+  "operative_order_verbatim",
+  "submissions_full"
+ ],
+ "title": "PublicGroundTruth",
+ "type": "object"
+}

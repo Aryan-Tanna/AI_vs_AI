@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+# runtime state (job queue, usage ledger, agent cache, empty agent sandbox) and run outputs
+data/state/
+data/cache/
+data/sandbox/
+runs/

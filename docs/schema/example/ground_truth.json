@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "case_uid": "PC-TEMPLATE",
+  "decision_date": "2021-03-15",
+  "label": "DISMISSED",
+  "appellant_won": false,
+  "outcome_detail": "SYNTHETIC TEMPLATE - admission order upheld",
+  "issue_findings": [
+    {"issue": "I2", "finding": "BALANCE_SHEET_IS_ACKNOWLEDGMENT",
+     "holding": "SYNTHETIC TEMPLATE - the signed FY 2017-18 balance sheet showing the loan is an acknowledgment of liability on these facts.",
+     "provisions": ["LIMITATION_ACT_1963_SEC_18"],
+     "authorities_relied": [{"title": "Asset Reconstruction Co. v. Bishal Jaiswal"}],
+     "src": [{"page": 6, "para": "12"}]},
+    {"issue": "I1", "finding": "WITHIN_LIMITATION",
+     "holding": "SYNTHETIC TEMPLATE - the acknowledgment on 05.09.2018 was made before the period expired on 31.12.2018; a fresh period ran from it, and the application of 10.01.2020 was within time.",
+     "provisions": ["LIMITATION_ACT_1963_ART_137", "LIMITATION_ACT_1963_SEC_18"],
+     "authorities_relied": [{"title": "B.K. Educational Services v. Parag Gupta"}],
+     "src": [{"page": 7, "para": "14"}]}
+  ],
+  "ratio_decidendi": "SYNTHETIC TEMPLATE - a signed balance sheet entry made before limitation expires can extend limitation for a Section 7 application under Section 18 of the Limitation Act.",
+  "operative_order_verbatim": "SYNTHETIC TEMPLATE - The appeal is dismissed. No costs.",
+  "directions": ["No costs"],
+  "dissent": null,
+  "submissions_full": {"appellant": "SYNTHETIC TEMPLATE - full appellant submissions", "respondent": "SYNTHETIC TEMPLATE - full respondent submissions"},
+  "authorities_cited_by_parties": [
+    {"title": "B.K. Educational Services v. Parag Gupta", "by": "APPELLANT"},
+    {"title": "Asset Reconstruction Co. v. Bishal Jaiswal", "by": "RESPONDENT"}
+  ],
+  "bench_framing": {"issue_grouping": "I2 decided before I1", "interpretive_aids": []},
+  "subsequent_history": []
+}

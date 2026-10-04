@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_uid": "PC-TEMPLATE",
+  "real": {
+    "title": "SYNTHETIC TEMPLATE - not a real case",
+    "appeal_numbers": ["SYNTHETIC-CA(AT)(INS)-0000-2020"],
+    "parties": [
+      {"token": "[SUSPENDED_DIRECTOR_1]", "name": "Synthetic Appellant Name"},
+      {"token": "[FINANCIAL_CREDITOR_1]", "name": "Synthetic Bank Name"}
+    ],
+    "bench_members": ["Synthetic Member One", "Synthetic Member Two"],
+    "other_identifiers": ["SYNTHETIC-CP(IB)-0000-2020"]
+  },
+  "sources": [
+    {"doc": "JUDGMENT", "url": "about:synthetic-template", "sha256": "0000000000000000000000000000000000000000000000000000000000000000", "pages": 8},
+    {"doc": "IMPUGNED", "url": "about:synthetic-template", "sha256": "0000000000000000000000000000000000000000000000000000000000000000", "pages": 12}
+  ],
+  "overlap_with_reference_db": {"reference_case_uids": [], "raw_precedent_ids": []},
+  "in_scope": true,
+  "split": "train",
+  "strata": {"proceeding_type": "SEC7_ADMISSION", "appellant_role": "SUSPENDED_DIRECTOR_PROMOTER", "year": 2021},
+  "build": {"method": "SYNTHETIC_TEMPLATE", "drafted_by": "claude", "reviewed_by": null, "reviewed_at": null, "lawyer_checked": false},
+  "qa": {"facts_verified": false, "issues_neutral": true, "issues_original": ["Whether the NCLT erred in holding the application within limitation?"],
+         "leakage_scan_passed": false, "anonymisation_checked": false, "notes": "Synthetic template for schema illustration only. Never load into public_db/."},
+  "contamination_probe": {}
+}
