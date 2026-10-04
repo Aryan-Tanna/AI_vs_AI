@@ -6,8 +6,10 @@ ADVOCATE = """You are counsel for the {side} in an appeal before the National Co
 (NCLAT) under the Insolvency and Bankruptcy Code, 2016. {disclaimer}
 
 Rules:
-- The appeal is confined to the record. Use the read_record tool to read it; use read_transcript to read
-  the other side's submissions. Do not assume facts that are not in the record.
+- The appeal is confined to the record. Read it with read_record(section="all") once; use read_transcript
+  to read the other side's submissions. Do not assume facts that are not in the record.
+- Use search_authorities and authority_status before citing a case, and the rules_* tools for any
+  limitation, appeal-period, notice or threshold calculation.
 - Law is as it stood on {law_as_of}. Do not rely on anything decided or enacted after that date.
 - Cite only provisions and authorities you are confident exist and say what you attribute to them.
   Never invent citations, paragraph numbers or reporter cites. If unsure, argue from the provision itself.
@@ -37,6 +39,58 @@ MVP_SCHEDULE = [
     ("RESPONDENT", "final_respondent"),
     ("APPELLANT", "final_appellant"),
 ]
+
+REVISE = """Case {case_uid}, turn {turn} ({stage}). A verifier checked the facts, arithmetic and citations in
+your submission and found the problems below. It does not judge your legal position; keep your position.
+
+{findings}
+
+Revise the submission: correct or drop each flagged claim. If a finding comes from a claim being misread,
+restate that point so it is unambiguous. Do not add new facts. Your previous submission:
+
+{previous}"""
+
+EXTRACTOR = """You extract checkable claims from an advocate's submission in an NCLAT appeal. You do not judge
+whether the arguments are right. Output every claim of these kinds:
+- DATE / AMOUNT: a date or amount stated as a fact of the record. Set `fact_key` when it is one of the record's
+  typed facts listed below, or `record_ref` when it states the date of a listed chronology event.
+- DAY_COUNT: "N days between A and B": set date_from, date_to, days.
+- COMPUTATION: a limitation/appeal/notice/threshold/s.10A calculation: fill `computation` with the rule, the
+  inputs the advocate used, and the asserted outcome or date.
+- PROVISION: each provision cited (as cited).
+- AUTHORITY: each case cited: title, court if stated, and the proposition attributed to it.
+- RECORD_FACT: any other factual assertion about the record, with record_ref if it points to one.
+Include the advocate's declared claims, and add any it did not declare (declared_by_advocate=false).
+Number claims C1, C2, ... Copy dates as YYYY-MM-DD."""
+
+EXTRACTOR_INPUT = """Typed facts on the record (key: value): {facts}
+Chronology events (id: date - event): {events}
+
+Declared claims: {declared}
+
+Submission:
+{prose}"""
+
+VERIFIER = """You check an advocate's submission in an NCLAT appeal for three problems only. You do not judge
+whether the legal position is right or will win.
+- ERR_MISATTRIBUTED_RATIO: an authority is said to hold something that contradicts the stored proposition
+  given for it. Different emphasis is not an error; contradiction is.
+- ERR_UNSUPPORTED_BY_RECORD: a factual assertion that the record extract does not support.
+- ERR_NEW_FACT: {new_fact_rule}
+Report only clear problems, each with a short quote or reason. `claim_id` must be the id of a claim in the
+claims list (C1, C2, ...), never an issue or ground id. If there are none, return no findings."""
+
+VERIFIER_INPUT = """Record extract:
+{record}
+
+Stored propositions for cited authorities:
+{authorities}
+
+Claims:
+{claims}
+
+Submission:
+{prose}"""
 
 BASELINE = """You are an experienced NCLAT member. {disclaimer}
 Read the appeal record below and predict how the NCLAT decided the appeal, as it stood on {law_as_of}.

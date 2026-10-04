@@ -80,13 +80,14 @@ Research simulation, not legal advice.
 | Unspoiled reader (`public_db.py`) | Code | — | Built (validates against the schema) |
 | Public case DB schema, validator, JSON Schemas, example | Code | — | Built (`schemas/public_case.py`, `scripts/validate_public_db.py`, [schema/](schema/)) |
 | Debate handler: 5-turn MVP, hash-chained transcript | Code | — | Built (THEMIS/bench not wired) |
-| Appellant / Respondent advocates | Agents | Sonnet | Built with record tools only |
+| Appellant / Respondent advocates | Agents | Sonnet | Built: record + research tools, 5-turn MVP |
 | Single-LLM baseline | LLM call | Sonnet | Built |
 | Case Builder (PDF → public case) | Agent | Sonnet / Opus | Planned |
-| Law DB, authority table, proposition index | Code + human | — | Planned |
-| Retrieval / law / rules / memory tools | Code | — | Planned |
+| Reference DB ingest (load, normalise, dedup, statute IDs) | Code | — | Built: 2,696 cases (`python -m lexarena.ingest.build_reference`) |
+| Law DB lookup / authority registry / proposition index | Code | — | Built as stand-ins: law DB summaries (no bare text yet), SC seed (unverified, year only), BM25 index; dense pending bge-m3 weights |
+| Retrieval / law / rules tools | Code | — | Built (`tools/research.py`); memory tools planned |
 | THEMIS-LOCAL gate order (extract → A ≤ 3 → B once) | Code | — | Built (`themis/local.py`, 5 tests) |
-| THEMIS-LOCAL checks: extractor, Stage A, Stage B | LLM call + code + Z3 + LLM call | Haiku | Planned |
+| THEMIS-LOCAL checks: extractor, Stage A, Stage B | LLM call + code + LLM call | Haiku | Built, wired into the debate handler |
 | Rule engine + Z3 | Code | — | Built (`lexarena/rules/`; real-case fixtures pending the public DB) |
 | THEMIS-GLOBAL (before bench) | Code + LLM calls | Haiku / Sonnet | Planned |
 | 3 judges | Agents | Opus (Sonnet if the weekly Opus cap binds) | Planned |

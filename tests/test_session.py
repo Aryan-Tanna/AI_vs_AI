@@ -29,8 +29,9 @@ class FakeBackend:
         if self.calls in self.limit_on:
             raise UsageLimitReached(self.resets_at, "five_hour")
         self.ledger.rate_limit("allowed", self.resets_at, "five_hour", self.utilization)
-        out = ({"prose": f"submission {self.calls}", "claims": []} if spec.role == "advocate"
-               else {"label": "DISMISSED", "appellant_won": False, "reasons": "r"})
+        out = {"advocate": {"prose": f"submission {self.calls}", "claims": []},
+               "extractor": {"claims": []},
+               "verifier": {"findings": []}}.get(spec.role, {"label": "DISMISSED", "appellant_won": False, "reasons": "r"})
         return AgentResult(out, "", 1, {}, None, [], "s", "fake")
 
 
@@ -49,7 +50,8 @@ def env(tmp_path):
 def test_debate_resumes_after_limit_without_repeating_turns(env):
     s, ledger, q = env
     q.enqueue("debate", "debate:t:PC-1", {"case_uid": "PC-1", "run_id": "t"})
-    fake = FakeBackend(ledger, limit_on={3}, resets_at=10_000)
+    # Per turn: advocate draft + THEMIS extraction + Stage B = 3 calls. Call 7 is turn 3's draft.
+    fake = FakeBackend(ledger, limit_on={7}, resets_at=10_000)
     rep = asyncio.run(run_session(q, fake, ledger, HANDLERS, s, clock=lambda: 5_000))
     assert rep.stop is Stop.USAGE_LIMIT and rep.resume_at == 10_000
     assert q.counts()["debate"] == {"pending": 1}
@@ -57,10 +59,11 @@ def test_debate_resumes_after_limit_without_repeating_turns(env):
     # Next window (clock past the reset): turns 1–2 come from the checkpoint, only 3–5 are called.
     rep = asyncio.run(run_session(q, fake, ledger, HANDLERS, s, clock=lambda: 20_000))
     assert rep.stop is Stop.QUEUE_EMPTY and rep.done == 1
-    assert fake.calls == 6            # 2 ok + 1 limited + 3 resumed
+    assert fake.calls == 16           # 6 ok + 1 limited + 9 resumed
     sealed = json.loads((s.runs_dir / "t" / "PC-1" / "transcript.json").read_text(encoding="utf-8"))
     assert [t["turn"] for t in sealed["turns"]] == [1, 2, 3, 4, 5]
     assert sealed["seal"] == sealed["turns"][-1]["hash"]
+    assert all(t["themis"]["status"] == "PASSED" for t in sealed["turns"])
 
 
 def test_blocked_window_starts_no_job(env):

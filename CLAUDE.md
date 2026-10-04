@@ -93,7 +93,9 @@ Code so far: `scripts/audit_raw.py` (audit; its loader is the basis for `ingest/
 `lexarena/` session runtime (§7.4): config, Claude-subscription agent backend, cache, usage ledger, job
 queue, session runner, record tools, smoke/baseline/debate handlers, CLI; the public case DB schema +
 validator (§6.6, `scripts/validate_public_db.py`, `scripts/export_schemas.py`); THEMIS-LOCAL gate control
-flow (§8.3); the rule engine + Z3 (`lexarena/rules/`, build Phase 1). 70 tests in `tests/`.
+flow (§8.3); the rule engine + Z3 (`lexarena/rules/`, build Phase 1); reference DB ingest (`ingest/`),
+retrieval (`retrieval/`), law/authority lookups (`law/`), research tools (`tools/research.py`), THEMIS-LOCAL
+Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3). 87 tests in `tests/`.
 Architecture in text + image: `docs/ARCHITECTURE.md`, `docs/architecture.png`. Git: the raw data and
 docs are in the initial commit. Two raw filenames contain a space / `&` (`company act.json`,
 `ncalt&nclt.json`); do not rename raw files — map them to clean IDs in config. Platform is Windows 11,
@@ -983,17 +985,20 @@ F–I and K apply to the public DB first (that is what is simulated); run them o
 where retrieval needs the field.
 
 #### Phase 0a — Reference DBs
-- [ ] **A. Raw loader** (`ingest/load_raw.py`, §7.1). Recover the 5 lost records if possible; log the rest.
-      *Accept*: 3,000+ records loaded; parse-error report written to `data/reports/data_audit.md`.
-- [ ] **B. Clean & normalise**: strip `[cite]`; normalise `final_order` → label enum (`PARTLY_ALLOWED`
-      and `REMANDED` do not exist in raw `final_order` — parse them from `operative_order`); bench → city +
-      members; `forum`; dates ISO.
-- [ ] **C. Dedup + `case_uid`**: cluster by normalised title + decision date (tiebreak: appeal number +
-      bench); merge sources; mint `case_uid`. *Accept*: 2,736 ± small unique cases; zero `case_uid`
-      collisions; report of the 157 old-ID collisions.
-- [ ] **D. Statute alias map** (`ingest/statute_alias.py`): one canonical ID scheme; map both raw schemes;
-      collapse sub-clauses to section for lookup while keeping the sub-clause. *Accept*: IBC citation
-      resolution ≥ 89 % now, ≥ 98 % after step E.
+- [x] **A. Raw loader** (`ingest/load_raw.py`, §7.1). 3,000 parsed; the second pass (jump to the next
+      `{"precedent_id"`) recovers none of the 5 lost records, which sit inside broken segments; the 14 parse
+      errors are logged in `data/reports/reference_build.md` for manual re-sourcing.
+- [x] **B. Clean & normalise** (`ingest/normalise.py`): `[cite]` stripped everywhere; label from
+      `final_order`, refined from `operative_order` (ALLOWED_REMANDED 232, PARTLY_ALLOWED 117); bench city;
+      issues split into a list; ratio split into numbered propositions. Bench members not yet parsed.
+- [x] **C. Dedup + `case_uid`** (`ingest/build_reference.py`): union-find over (title key, date) and
+      (appeal number qualified by bench + appeal type, date). **2,696 unique cases** (audit key alone: 2,736;
+      40 more connected-appeal duplicates merged), zero `case_uid` collisions, 1 label conflict.
+      Output: `data/canonical/reference_cases.jsonl` (`python -m lexarena.ingest.build_reference`).
+- [x] **D. Statute alias map** (`ingest/statute_alias.py`): canonical `ACT_YEAR_UNIT_N[_SUB]` (e.g.
+      `IBC_2016_SEC_61_2`, `COMPANIES_ACT_2013_SEC_241`, `LIMITATION_ACT_1963_ART_137`); both raw schemes
+      mapped; `from_text()` parses plain language ("Section 61(2) of the IBC"). Resolution against law DB
+      unchanged until step E.
 - [ ] **E. Law DB v2**: add missing provisions (§3.3), verbatim bare text, version history for amended
       sections (at minimum s.4, 5(8), 7, 10A, 12, 12A, 29A, 30, 32A, 61, 238A, 240A), fix s.4 threshold
       logic, dedupe PMLA s.8, strip `[cite]`. Source: India Code / Gazette; record `source_url`.
@@ -1018,9 +1023,10 @@ where retrieval needs the field.
       proceeding type. *Accept*: ≥ 95 % precision on non-null dates; null when absent.
 - [ ] **H. Issue neutrality pass** (§6.2).
 - [ ] **I. Anonymisation** of unspoiled text (keep original in a non-runtime field).
-- [ ] **J. Authority table v1** (§6.4): seed SC landmarks (§5) + all NCLAT cases; extract authorities
-      relied on from each ratio; rebuild `is_overruled` via treatment. Must include: Essar NCLAT 2019 →
-      REVERSED by SC 15.11.2019. Every SC entry verified by a human against the judgment.
+- [~] **J. Authority table v1** (§6.4). Stand-in built: `law/authorities.py` over the reference DB (exact
+      dates) + `data/seed/sc_landmarks.json` (27 SC landmarks from §5, **year only, unverified**), court-aware
+      matching (same parties at NCLAT and SC). Remaining: exact SC dates, treatment table (REVERSED/OVERRULED
+      with dates, e.g. Essar NCLAT 2019 → SC 15.11.2019), human verification of every SC entry.
 - [ ] **K. Splits** (§9.1, public DB only) + **contamination probe** baseline per candidate model (= PB6).
 - [ ] **L. Data audit report** regenerated by `ingest/build_all.py` (one command, reproducible).
 
@@ -1046,22 +1052,29 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
 10 % rounding for class creditors; pending applications on 28.12.2019 (Manish Kumar).
 
 ### Phase 2 — Retrieval
-- [ ] **P. Index** propositions/issues/facts; BM25 + dense + reranker.
-- [ ] **Q. Filters**: leave-one-out cluster, temporal cutoff, status-as-of. Leakage unit tests.
-- [ ] **R. Calibrate** τ on train pairs; report precision/recall.
+- [~] **P. Index** (`retrieval/`): 17,935 units (propositions, issues, facts); BM25 with section-aware
+      tokens built in memory (~2 s); RRF fusion with dense when built; provision boost; one hit per case.
+      Dense (bge-m3) code ready but **the local bge-m3 cache has no weights** (43 MB, config/tokenizer only);
+      download, then `python -m lexarena.retrieval.build_index --dense`. Brute-force numpy instead of Qdrant
+      (enough at this size; same interface). No cross-encoder reranker yet.
+- [x] **Q. Filters**: exclusion set + temporal cutoff applied before ranking; overruled flag surfaced as a
+      treatment note (status-as-of needs step J). Leakage tests pass.
+- [ ] **R. Calibrate** τ on train pairs; report precision/recall (needs labelled pairs).
 
 ### Phase 3 — Agents and THEMIS-LOCAL
-- [~] **S. Agent backend + session runtime** (§7.4). Done: subscription backend with isolation, cache,
-      usage ledger, checkpointed job queue, window-aware runner, tool allowlist, CLI, 9 tests, live smoke
-      test passed. Remaining: retrieval/law/rules tools (§8.1a); *Accept*: a test proves a runtime agent
-      cannot reach ground truth or a post-cutoff authority through any registered tool.
+- [x] **S. Agent backend + session runtime** (§7.4) + research tools (`tools/research.py`):
+      search_authorities, get_provision, authority_status, rules_limitation / appeal_timeline / sec9_notice /
+      sec10a / threshold, each built per case with cutoff, law date and exclusions fixed inside. Tests prove
+      excluded and post-cutoff authorities never come back and post-cutoff SC authorities are marked unusable.
 - [ ] **S2. Measure usage**: 3 dev debates; record calls/tokens/window utilization per case in §7.4.
-- [ ] **T. Advocate agents**: role-aware prompts by `appellant_role`/`proceeding_type`; turn schema
-      (§8.4); structured output (claims list + prose).
-- [~] **U. THEMIS-LOCAL** (§8.3). Done: gate control flow (`themis/local.py`, 5 tests with fake checkers). Remaining: Haiku extractor, Stage A checks (needs rules/, law DB, authority table), Stage B
-      LLM checks, wiring into the debate handler.
+- [~] **T. Advocate agents**: structured turns (prose + claims), record + research tools, MVP 5-turn
+      schedule. Remaining: prompts conditioned on `appellant_role` / `proceeding_type`; s.61(3) scope.
+- [x] **U. THEMIS-LOCAL** (§8.3): `themis/claims.py` (ClaimSet), `themis/stage_a.py` (fact/event
+      mismatch, day counts, computations redone by the rule engine, provision not in force, unverified /
+      anachronistic authority; notes for record conflicts and coverage gaps), Haiku extractor and Stage B
+      (`themis/checkers.py`), revision by the same advocate; wired into the debate handler per turn.
 - [ ] **U2. THEMIS-GLOBAL** (§8.3a) before the bench; report format side-symmetric, findings only.
-- [ ] **V. Orchestrator** state machine (LangGraph or plain Python — plain Python is fine and easier to test).
+- [x] **V. Orchestrator**: plain Python job handlers + checkpointed steps (`orchestrator/handlers.py`).
 - [ ] **W. Smoke run** on 10 dev cases; lawyer reads every transcript; fix prompts.
 
 ### Phase 4 — Bench, global audit, metrics

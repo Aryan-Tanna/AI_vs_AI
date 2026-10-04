@@ -114,7 +114,7 @@ The last row is the kind of point the as-of law DB exists for. The pipeline must
     {"id": "R3", "issue": "I1", "heading": "s.223(5) only takes SFIO reports out of the s.223 authentication procedure"},
     {"id": "R4", "issue": "I3", "heading": "The attachment application is interim, pleadings are sufficient, and the report was served on the appellants in 2019"}
   ],
-  "statutes_in_play": ["CA2013_SEC212_14A", "CA2013_SEC212_15", "CA2013_SEC214", "CA2013_SEC223_4", "CA2013_SEC223_5", "CRPC1973_SEC173"],
+  "statutes_in_play": ["COMPANIES_ACT_2013_SEC_212_14A", "COMPANIES_ACT_2013_SEC_212_15", "COMPANIES_ACT_2013_SEC_214", "COMPANIES_ACT_2013_SEC_223_4", "COMPANIES_ACT_2013_SEC_223_5", "CRPC_1973_SEC_173"],
   "record_conflicts": [
     {"field": "first_interim_report_date", "note": "para 2.1 vs para 9"},
     {"field": "compilation_date", "note": "issue (ii) vs issue (iii)"},

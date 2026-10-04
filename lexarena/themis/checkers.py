@@ -1,0 +1,71 @@
+"""Builds the THEMIS-LOCAL Checkers for one case and one turn: Haiku extraction, Stage A (code), Stage B
+(Haiku), and revision by the same advocate (CLAUDE.md §8.3)."""
+import datetime as dt
+import json
+
+from lexarena.agents import prompts
+from lexarena.llm.agent import AgentSpec, Backend
+from lexarena.public_db import UnspoiledCase
+from lexarena.schemas.runtime import Turn
+from lexarena.services import Services
+from lexarena.themis.claims import ClaimSet, StageBOutput
+from lexarena.themis.local import Checkers, Finding
+from lexarena.themis.stage_a import StageA
+
+
+def _record_extract(case: UnspoiledCase) -> str:
+    s = case.sections()
+    keep = {k: s[k] for k in ("impugned_order", "chronology", "typed_facts", "record_documents", "record_conflicts") if k in s}
+    return json.dumps(keep, ensure_ascii=False, default=str)
+
+
+def build_checkers(case: UnspoiledCase, services: Services, backend: Backend, *, turn: int, stage: str,
+                   advocate_spec: AgentSpec, salt: str, notes_sink: list) -> Checkers:
+    stage_a = StageA(case, services.law, services.authorities)
+    cutoff = case.law_as_of + dt.timedelta(days=1)
+    facts = {k: (f.values if f.conflict else f.value) for k, f in case.typed_facts.all_facts().items()}
+    events = [f"{e.id}: {e.date or 'undated'} - {e.event}" for e in case.chronology]
+    closed_after = case.appeal_scope.record_closed_after_turn
+    declared = {"n": 0}
+
+    async def extract(t: dict) -> dict:
+        declared["n"] = len(t.get("claims", []))
+        spec = AgentSpec(role="extractor", system_prompt=prompts.EXTRACTOR, output_model=ClaimSet, cache_salt=salt)
+        msg = prompts.EXTRACTOR_INPUT.format(facts=json.dumps(facts, default=str), events="; ".join(events),
+                                             declared=json.dumps(t.get("claims", []), ensure_ascii=False), prose=t["prose"])
+        return (await backend.run(spec, msg)).output
+
+    def run_stage_a(claims: dict) -> list[Finding]:
+        res = stage_a.run(claims)
+        notes_sink[:] = res.notes                      # notes from the latest Stage A run go on the transcript
+        if not claims.get("claims") and declared["n"]:
+            notes_sink.insert(0, {"note": f"EXTRACTION_EMPTY: the advocate declared {declared['n']} claims but none were "
+                                          "extracted; Stage A checked nothing for this turn"})
+        return res.findings
+
+    async def stage_b(t: dict, claims: dict) -> list[Finding]:
+        cs = ClaimSet.model_validate(claims)
+        props = {}
+        for c in cs.claims:
+            if c.authority_title:
+                st = services.authorities.status(c.authority_title, cutoff, c.authority_court)
+                props[c.authority_title] = st.proposition if st.found else "(not found)"
+        rule = (f"facts introduced after the record closed (this is turn {turn}; the record closed after turn {closed_after})"
+                if turn > closed_after else "not applicable at this stage; report none")
+        spec = AgentSpec(role="verifier", system_prompt=prompts.VERIFIER.format(new_fact_rule=rule),
+                         output_model=StageBOutput, cache_salt=salt)
+        msg = prompts.VERIFIER_INPUT.format(record=_record_extract(case), authorities=json.dumps(props, ensure_ascii=False),
+                                            claims=cs.model_dump_json(exclude_none=True), prose=t["prose"])
+        out = StageBOutput.model_validate((await backend.run(spec, msg)).output)
+        by_id = {c.id: c.text for c in cs.claims}
+        return [Finding(f.code, by_id.get(f.claim_id, f.claim_id), f.evidence, "B") for f in out.findings]
+
+    async def revise(t: dict, findings: list[Finding], n: int) -> dict:
+        listed = "\n".join(f"- {f.code}: \"{f.claim}\" ({f.evidence})" for f in findings)
+        msg = prompts.REVISE.format(case_uid=case.case_uid, turn=turn, stage=stage, findings=listed,
+                                    previous=json.dumps(t, ensure_ascii=False))
+        spec = AgentSpec(role="advocate", system_prompt=advocate_spec.system_prompt, tools=advocate_spec.tools,
+                         output_model=Turn, cache_salt=f"{advocate_spec.cache_salt}|revise{n}")
+        return (await backend.run(spec, msg)).output
+
+    return Checkers(extract=extract, stage_a=run_stage_a, stage_b=stage_b, revise=revise)

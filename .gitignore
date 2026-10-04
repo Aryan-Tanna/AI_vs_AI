@@ -7,3 +7,8 @@ data/state/
 data/cache/
 data/sandbox/
 runs/
+
+# derived data (rebuild: python -m lexarena.ingest.build_reference; python -m lexarena.retrieval.build_index --dense)
+data/canonical/
+data/index/
+data/reports/dense_build.log

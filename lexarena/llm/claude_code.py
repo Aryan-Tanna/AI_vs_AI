@@ -9,8 +9,11 @@ Isolation (CLAUDE.md §8.0): no built-in tools, no filesystem settings / CLAUDE.
 servers except ours, and an empty working directory. An agent can only reach data through the
 tools in its AgentSpec.
 """
+import json
 import os
 from typing import Any
+
+from pydantic import ValidationError
 
 from claude_agent_sdk import (
     AssistantMessage,
@@ -35,6 +38,26 @@ TRACE_RESULT_CHARS = 4000
 
 def tool_id(name: str) -> str:
     return f"mcp__{SERVER}__{name}"
+
+
+def coerce_structured(raw: Any, model) -> Any:
+    """Smaller models sometimes wrap the structured output, e.g. {"parameter": "<JSON string>"}, or return the
+    JSON as a string. Unwrap one level when the top-level keys are not the model's fields."""
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw)
+        except json.JSONDecodeError:
+            return raw
+    if isinstance(raw, dict) and len(raw) == 1 and not (set(raw) & set(model.model_fields)):
+        inner = next(iter(raw.values()))
+        if isinstance(inner, str):
+            try:
+                inner = json.loads(inner)
+            except json.JSONDecodeError:
+                return raw
+        if isinstance(inner, dict):
+            return inner
+    return raw
 
 
 class ClaudeCodeBackend:
@@ -110,7 +133,11 @@ class ClaudeCodeBackend:
         if spec.output_model is not None:
             if result.structured_output is None:
                 raise AgentError(f"{spec.role}: no structured output (subtype={result.subtype})")
-            output = spec.output_model.model_validate(result.structured_output).model_dump(mode="json")
+            try:
+                output = spec.output_model.model_validate(
+                    coerce_structured(result.structured_output, spec.output_model)).model_dump(mode="json")
+            except ValidationError as e:
+                raise AgentError(f"{spec.role}: structured output does not match {spec.output_model.__name__}: {e}") from e
 
         return AgentResult(
             output=output,

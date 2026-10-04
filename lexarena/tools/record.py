@@ -13,10 +13,13 @@ def _text(s: str) -> dict:
 def make_record_tools(case: UnspoiledCase, transcript: list[dict]) -> dict:
     sections = case.sections()
 
-    @tool("read_record", "Read one section of the appeal record. Use section='index' to list sections.",
-          {"section": Annotated[str, "Section name, or 'index'"]})
+    @tool("read_record", "Read the appeal record. section='all' returns the whole record in one call (preferred); "
+          "'index' lists the sections; or name one section.",
+          {"section": Annotated[str, "'all', 'index', or a section name"]})
     async def read_record(args):
-        name = args.get("section", "index")
+        name = args.get("section", "all")
+        if name == "all":
+            return _text(to_json(sections))
         if name == "index":
             return _text(to_json(sorted(sections)))
         if name not in sections:

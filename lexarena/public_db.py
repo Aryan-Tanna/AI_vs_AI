@@ -44,5 +44,20 @@ class UnspoiledStore:
         return [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
 
 
+def retrieval_exclusions(public_db_dir: Path, case_uid: str) -> set[str]:
+    """Reference-DB case_uids that are copies of this case (manifest.overlap_with_reference_db). Read by the
+    orchestrator only; the manifest itself never reaches an agent. Belt and braces: the retrieval cutoff
+    (strictly before the decision date) already excludes the case's own decision."""
+    path = public_db_dir / "manifest.jsonl"
+    if not path.exists():
+        return set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            rec = json.loads(line)
+            if rec.get("case_uid") == case_uid:
+                return set(rec.get("overlap_with_reference_db", {}).get("reference_case_uids", []))
+    return set()
+
+
 def to_json(obj) -> str:
     return json.dumps(obj, ensure_ascii=False, indent=1)

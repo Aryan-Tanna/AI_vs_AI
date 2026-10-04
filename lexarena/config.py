@@ -21,6 +21,7 @@ def _default_roles() -> dict[str, RoleModel]:
         "advocate": RoleModel(model="sonnet", max_turns=12),
         "judge": RoleModel(model="opus", max_turns=12),
         "extractor": RoleModel(model="haiku", max_turns=2),
+        "verifier": RoleModel(model="haiku", max_turns=2),
         "reflector": RoleModel(model="sonnet", max_turns=10),
     }
 
@@ -41,6 +42,14 @@ class Settings(BaseSettings):
     max_job_attempts: int = 3           # non-limit failures before a job is marked failed
 
     allow_api_key: bool = False         # refuse to run if ANTHROPIC_API_KEY would bill the API instead
+
+    @property
+    def reference_path(self) -> Path:
+        return self.data_dir / "canonical" / "reference_cases.jsonl"
+
+    @property
+    def index_dir(self) -> Path:
+        return self.data_dir / "index"
 
     @property
     def state_dir(self) -> Path:
