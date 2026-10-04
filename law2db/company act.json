@@ -1,0 +1,829 @@
+[
+  {
+    "_id": "CA2013_SEC230",
+    "statute_id": "CA2013_SEC230",
+    "act_name": "Companies Act, 2013",
+    "section_number": "230",
+    "section_title": "Power to compromise or make arrangements with creditors and members",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Tribunal, on application by a company, creditor, member, or liquidator, to order a meeting of creditors or members to consider a proposed compromise or arrangement; if approved by a 3/4th majority in value and sanctioned by the Tribunal, the scheme binds the company, all creditors/members, and (in winding up) the liquidator and contributories.",
+    "core_judicial_inquiry": "Whether the proposed compromise or arrangement is fair, reasonable, and made after full and honest disclosure of material facts, with adequate notice to and protection of the interests of creditors, members, and other affected stakeholders, and in compliance with prescribed procedural and accounting requirements.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC48",
+      "CA2013_SEC66",
+      "CA2013_SEC68",
+      "CA2013_SEC133",
+      "CA2013_SEC232",
+      "CA2013_SEC233",
+      "CA2013_SEC234",
+      "IBC2016_GENERAL",
+      "COMPETITION_ACT2002_SEC7"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The company itself",
+        "Any creditor or class of creditors of the company",
+        "Any member or class of members of the company",
+        "The liquidator, where the company is being wound up (appointed under the Companies Act or the Insolvency and Bankruptcy Code, 2016)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application to the Tribunal for an order to call, hold, and conduct a meeting of creditors/members",
+        "Affidavit disclosing all material facts including latest financial position and auditor's report",
+        "Disclosure of any share capital reduction included in the scheme",
+        "Corporate debt restructuring scheme (if any) consented to by not less than 75% of secured creditors in value, with creditor's responsibility statement, safeguards, auditor's liquidity report, and valuation report",
+        "Notice of meeting sent individually to all creditors/members/debenture-holders with statement of the scheme, valuation report, and effect on stakeholders",
+        "Notice and documents placed on company website; for listed companies, sent to SEBI and stock exchanges and published in newspapers",
+        "Notice sent to Central Government, income-tax authorities, RBI, SEBI, Registrar, stock exchanges, Official Liquidator, Competition Commission of India, and other relevant sectoral regulators",
+        "Auditor's certificate confirming the accounting treatment in the scheme conforms to prescribed accounting standards, filed with the Tribunal before sanction"
+      ],
+      "statutory_bars": [
+        "Objections to the compromise or arrangement may only be raised by persons holding not less than 10% of shareholding, or holding outstanding debt of not less than 5% of the total outstanding debt as per the latest audited financial statements",
+        "No compromise or arrangement involving buy-back of securities can be sanctioned unless the buy-back complies with section 68"
+      ],
+      "saving_exceptions": [
+        "Tribunal may dispense with calling a meeting of creditors/class of creditors if creditors holding at least 90% in value agree and confirm the scheme by affidavit",
+        "Preference shareholders affected by conversion into equity shares must be given the option of arrears of dividend in cash or equivalent equity shares"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "SEC230_NOTICE_NOT_SENT_TO_ALL_STAKEHOLDERS",
+      "SEC230_AUDITOR_CERTIFICATE_MISSING",
+      "SEC230_MAJORITY_THRESHOLD_NOT_MET",
+      "SEC230_OBJECTOR_BELOW_STANDING_THRESHOLD",
+      "SEC230_ORDER_NOT_FILED_WITH_REGISTRAR_TIMELY",
+      "SEC230_REGULATOR_NOTICE_OMITTED"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC231",
+    "statute_id": "CA2013_SEC231",
+    "act_name": "Companies Act, 2013",
+    "section_number": "231",
+    "section_title": "Power of Tribunal to enforce compromise or arrangement",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Gives the Tribunal continuing supervisory power over a compromise or arrangement it has sanctioned under section 230, including power to issue directions or modify the scheme for proper implementation; if the scheme cannot be satisfactorily implemented and the company is unable to pay its debts, the Tribunal may order winding up, deemed to be an order under section 273. The section also applies to schemes sanctioned before commencement of this Act.",
+    "core_judicial_inquiry": "Whether the sanctioned compromise or arrangement is being properly implemented, and if not, whether it can be salvaged through directions or modifications, or whether the company's inability to pay its debts under the scheme warrants an order for winding up.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC230",
+      "CA2013_SEC273"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Not explicitly restricted in this section; exercised by the Tribunal on its own supervisory jurisdiction over a scheme it has sanctioned under section 230"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "A subsisting order under section 230 sanctioning a compromise or arrangement",
+        "Tribunal's satisfaction that the scheme cannot be implemented satisfactorily, with or without modifications, and that the company is unable to pay its debts as per the scheme, before a winding up order can be made"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Provisions of this section extend to companies with a compromise or arrangement sanctioned before the commencement of this Act"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC231_IMPLEMENTATION_NOT_SUPERVISED",
+      "SEC231_MODIFICATION_WITHOUT_TRIBUNAL_ORDER",
+      "SEC231_WINDING_UP_WITHOUT_INSOLVENCY_FINDING",
+      "SEC231_SEC273_LINKAGE_MISCLASSIFIED"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC232",
+    "statute_id": "CA2013_SEC232",
+    "act_name": "Companies Act, 2013",
+    "section_number": "232",
+    "section_title": "Merger and amalgamation of companies",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Applies where an application under section 230 shows that a compromise or arrangement is proposed for reconstruction of companies via merger or amalgamation, involving transfer of undertaking, property, or liabilities from a transferor company to a transferee company (or division among two or more companies). The Tribunal, after ensuring compliance with prescribed procedure and disclosures, may sanction the scheme and make orders on transfer of assets/liabilities, allotment of shares, dissolution without winding-up of the transferor, dissenting shareholder protection, employee transfer, listed-to-unlisted transitions, and other incidental matters necessary to fully and effectively carry out the merger or amalgamation.",
+    "core_judicial_inquiry": "Whether the procedure under sections 230(3)-(6) and 232(2) has been duly complied with, whether the scheme adequately protects the interests of shareholders (including dissenting and non-resident shareholders), creditors, employees, and key managerial personnel, whether the share exchange ratio and valuation are fair, and whether the accounting treatment conforms to prescribed standards, such that the merger or amalgamation can be sanctioned and fully and effectively carried out.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC230",
+      "CA2013_SEC133",
+      "CA2013_SEC273",
+      "CA2013_SEC231",
+      "FEMA_FDI_NORMS",
+      "SEBI_REGULATIONS"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Same applicants as under section 230: the company, any creditor or class of creditors, any member or class of members, or the liquidator (where the company is being wound up)",
+        "Merging companies (transferor and transferee) or companies in respect of which a division is proposed"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application to Tribunal under section 230 showing the compromise/arrangement is proposed for reconstruction involving merger or amalgamation",
+        "Compliance with notice, disclosure, and meeting procedures under sections 230(3) to 230(6), applied mutatis mutandis",
+        "Draft of proposed terms of scheme drawn up and adopted by directors of the merging company, circulated for the meeting",
+        "Confirmation that a copy of the draft scheme has been filed with the Registrar",
+        "Directors' report explaining effect of the compromise on each class of shareholders, KMP, promoters, and non-promoter shareholders, including share exchange ratio and valuation difficulties",
+        "Expert valuation report, if any",
+        "Supplementary accounting statement if last annual accounts relate to a financial year ending more than six months before the first meeting called to approve the scheme",
+        "Auditor's certificate confirming accounting treatment conforms to standards prescribed under section 133, filed with the Tribunal before sanction",
+        "Filing of certified copy of the Tribunal's order with the Registrar within thirty days of receipt",
+        "Scheme must clearly indicate an appointed date from which it is effective",
+        "Annual filing with the Registrar, until completion of the scheme, of a statement certified by a chartered accountant, cost accountant, or company secretary in practice on compliance with the scheme"
+      ],
+      "statutory_bars": [
+        "A transferee company shall not, as a result of the compromise or arrangement, hold any shares in its own name or in the name of any trust on its behalf or on behalf of its subsidiary/associate companies; such shares must be cancelled or extinguished",
+        "Where the transferor company is listed and the transferee is unlisted, the transferee shall remain unlisted until it becomes a listed company",
+        "Payment or valuation for shareholders opting out of an unlisted transferee company shall not be less than what is specified by SEBI under its regulations",
+        "No compromise or arrangement shall be sanctioned unless the auditor's certificate on accounting treatment conformity has been filed with the Tribunal"
+      ],
+      "saving_exceptions": [
+        "Scheme deemed effective from the appointed date indicated in the scheme, not from a later date",
+        "Fee paid by a dissolved transferor company on its authorised capital may be set off against fees payable by the transferee company on its authorised capital post-amalgamation",
+        "Tribunal may direct incidental, consequential, and supplemental matters necessary to secure that the merger or amalgamation is fully and effectively carried out",
+        "Tribunal may, for reasons recorded in writing, determine a transfer date other than one agreed by the parties"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "SEC232_AUDITOR_CERTIFICATE_MISSING",
+      "SEC232_DRAFT_SCHEME_NOT_FILED_WITH_REGISTRAR",
+      "SEC232_ORDER_NOT_FILED_WITHIN_30_DAYS",
+      "SEC232_APPOINTED_DATE_NONCOMPLIANT",
+      "SEC232_ANNUAL_COMPLIANCE_STATEMENT_MISSING",
+      "SEC232_TRANSFEREE_SELF_SHAREHOLDING_VIOLATION",
+      "SEC232_MINORITY_EXIT_VALUATION_BELOW_SEBI_FLOOR",
+      "SEC232_SEC5_PENALTY_TRIGGERED"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC241",
+    "statute_id": "CA2013_SEC241",
+    "act_name": "Companies Act, 2013",
+    "section_number": "241",
+    "section_title": "Application to Tribunal for relief in cases of oppression, etc.",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Allows a member of a company with the right to apply under section 244 to approach the Tribunal for relief where the company's affairs are or have been conducted prejudicially to public interest, oppressively or prejudicially to members, or prejudicially to the company's interests, or where a material change in management/control (other than one brought about by or in the interests of creditors) is likely to result in prejudicial conduct of the company's affairs. The Central Government may itself apply for such an order if it considers the company's affairs prejudicial to public interest, and separately may refer a case to the Tribunal against a person concerned in the conduct and management of a company for fraud, misfeasance, unsound business practices, serious injury to trade/industry, or fraudulent/unlawful conduct, to determine whether that person is fit and proper to hold office as director or other management position.",
+    "core_judicial_inquiry": "Whether the affairs of the company have been or are being conducted in a manner prejudicial to public interest, oppressive or prejudicial to the member(s), or prejudicial to the company's interests; or whether a material change in management or control (not attributable to or in the interests of creditors) makes it likely that the company's affairs will be conducted prejudicially; and, in a Central Government reference under sub-section (3), whether the person concerned in management is a fit and proper person to hold office as director or other management position, having regard to allegations of fraud, misfeasance, unsound business practice, serious injury to trade/industry, or fraudulent/unlawful conduct.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC242",
+      "CA2013_SEC244",
+      "CPC1908"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any member of the company who has the right to apply under section 244",
+        "The Central Government, where it is of the opinion that the company's affairs are being conducted in a manner prejudicial to public interest",
+        "For sub-section (3) references: initiated by the Central Government, not by a member, against a person concerned in the conduct and management of a company"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Member-applicant must satisfy the right-to-apply requirements under section 244",
+        "Central Government applications under sub-section (2), for prescribed companies/classes of companies, must be made before the Principal Bench of the Tribunal",
+        "Application under sub-section (3) must contain a concise statement of the circumstances and materials the Central Government considers necessary for the inquiry",
+        "Application under sub-section (3) must be signed and verified in the manner laid down in the Code of Civil Procedure, 1908, for signature and verification of a plaint",
+        "The person against whom a case is referred under sub-section (3) must be joined as a respondent to the application"
+      ],
+      "statutory_bars": [
+        "A member cannot apply under this section unless they have the right to apply under section 244",
+        "A material change in management/control does not qualify as a ground for relief if it is a change brought about by, or in the interests of, creditors (including debenture holders) or any class of shareholders"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC241_MEMBER_LACKS_SEC244_STANDING",
+      "SEC241_CENTRAL_GOVT_APPLICATION_WRONG_BENCH",
+      "SEC241_SEC3_APPLICATION_UNVERIFIED",
+      "SEC241_RESPONDENT_NOT_JOINED",
+      "SEC241_CREDITOR_INTEREST_CHANGE_MISCLASSIFIED_AS_OPPRESSION"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC242",
+    "statute_id": "CA2013_SEC242",
+    "act_name": "Companies Act, 2013",
+    "section_number": "242",
+    "section_title": "Powers of Tribunal",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "On an application under section 241, if the Tribunal finds the company's affairs have been or are being conducted prejudicially or oppressively to members or prejudicial to public interest/company interests, and that winding up would unfairly prejudice such members although a just-and-equitable winding-up order would otherwise be justified, the Tribunal may make any order it thinks fit to end the matters complained of. This includes regulating future conduct, ordering purchase/reduction of shares, restricting share transfers, terminating or modifying agreements with directors/managers or third parties, setting aside fraudulent-preference-like transactions, removing managing directors/managers/directors, recovering undue gains, appointing Tribunal-reporting directors, imposing costs, and any other just and equitable provision. Orders altering the memorandum/articles bind the company, and non-compliance attracts penalties.",
+    "core_judicial_inquiry": "Whether the company's affairs have been or are being conducted in a manner prejudicial or oppressive to member(s) or prejudicial to public interest or the company's interests, whether winding up would unfairly prejudice such member(s) even though the facts would otherwise justify a just-and-equitable winding-up order, and, in a section 241(3) reference, whether the respondent is a fit and proper person to hold the office of director or other office connected with the conduct and management of any company.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC241",
+      "CA2013_SEC244",
+      "CA2013_SEC273",
+      "IEPF_PROVISIONS"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any applicant who has made an application under section 241 (member with section 244 standing, or Central Government)",
+        "Any party to the proceeding, for the purpose of seeking an interim order under sub-section (4)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "A pending or decided application under section 241",
+        "Tribunal's finding that the company's affairs have been/are being conducted prejudicially or oppressively, or prejudicial to public interest/company interests",
+        "Tribunal's finding that winding up would unfairly prejudice the member(s) though otherwise justified on just-and-equitable grounds",
+        "Filing of a certified copy of the Tribunal's order under sub-section (1) with the Registrar within thirty days of the order",
+        "Due notice to and consent of the party concerned before terminating, setting aside, or modifying any agreement under clause (f) with persons other than the managing director/other director/manager",
+        "Filing of a certified copy of any order altering, or giving leave to alter, the memorandum or articles with the Registrar within thirty days of the order",
+        "At the conclusion of a section 241(3) hearing, the Tribunal must record its decision on whether the respondent is a fit and proper person to hold office as director or other management position"
+      ],
+      "statutory_bars": [
+        "Company shall not, without leave of the Tribunal, make any alteration to its memorandum or articles inconsistent with a Tribunal order altering them, except to the extent permitted in the order",
+        "An agreement with a person other than the managing director/other director/manager (clause (f)) cannot be terminated, set aside, or modified without due notice and consent of the party concerned"
+      ],
+      "saving_exceptions": [
+        "Alterations made by Tribunal order to the memorandum or articles have the same effect as if duly made by the company under the Act, and the Act's provisions apply accordingly to the altered memorandum/articles"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "SEC242_ORDER_NOT_FILED_WITHIN_30_DAYS",
+      "SEC242_ALTERATION_WITHOUT_TRIBUNAL_LEAVE",
+      "SEC242_AGREEMENT_MODIFIED_WITHOUT_NOTICE_CONSENT",
+      "SEC242_FIT_PROPER_DECISION_NOT_RECORDED",
+      "SEC242_PENALTY_SEC8_NONCOMPLIANCE",
+      "SEC242_INTERIM_ORDER_EXCEEDS_SCOPE"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC244",
+    "statute_id": "CA2013_SEC244",
+    "act_name": "Companies Act, 2013",
+    "section_number": "244",
+    "section_title": "Right to apply under section 241",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Defines which members have standing to apply under section 241: for a company with share capital, not less than 100 members or one-tenth of the total number of members (whichever is less), or member(s) holding not less than one-tenth of the issued share capital, provided all calls and other sums due on their shares have been paid; for a company without share capital, not less than one-fifth of the total number of members. The Tribunal may waive all or any of these requirements on application. Jointly held shares count as one member for this purpose, and where multiple members are entitled to apply, one or more may apply on behalf of all with the written consent of the rest.",
+    "core_judicial_inquiry": "Whether the applicant member(s) meet the numerical or shareholding threshold prescribed under sub-section (1) (or have obtained a Tribunal waiver of that threshold), and, where the application is made on behalf of multiple entitled members, whether the written consent of the remaining members has been obtained.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC241",
+      "CA2013_SEC242"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Company with share capital: not less than 100 members, or not less than one-tenth of the total number of members, whichever is less",
+        "Company with share capital, alternative route: any member or members holding not less than one-tenth of the issued share capital of the company",
+        "Company without share capital: not less than one-fifth of the total number of members",
+        "Jointly held shares by two or more persons are counted as one member for this purpose",
+        "One or more entitled members may apply on behalf of and for the benefit of all, having obtained the written consent of the rest"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Applicant(s) relying on the shareholding route must have paid all calls and other sums due on their shares",
+        "Where application is made on behalf of multiple entitled members, written consent of the remaining members must be obtained"
+      ],
+      "statutory_bars": [
+        "A member who has not paid all calls and other sums due on their shares cannot rely on the one-tenth issued share capital route to establish standing",
+        "Members not meeting the numerical, proportional, or shareholding thresholds (and without a Tribunal waiver) lack standing to apply under section 241"
+      ],
+      "saving_exceptions": [
+        "Tribunal may, on application, waive all or any of the requirements specified in clause (a) or clause (b) to enable members to apply under section 241"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC244_STANDING_THRESHOLD_NOT_MET",
+      "SEC244_UNPAID_CALLS_ON_SHARES",
+      "SEC244_WAIVER_NOT_OBTAINED",
+      "SEC244_JOINT_SHAREHOLDER_MISCOUNTED",
+      "SEC244_MISSING_WRITTEN_CONSENT_OF_COMEMBERS"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC245",
+    "statute_id": "CA2013_SEC245",
+    "act_name": "Companies Act, 2013",
+    "section_number": "245",
+    "section_title": "Class action",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Permits a requisite number of members or depositors (or a class of them), who believe the company's affairs are being conducted prejudicially to the company or its members/depositors, to file a class action before the Tribunal seeking orders such as restraining ultra vires acts or breaches of the memorandum/articles, voiding resolutions obtained by suppression or misstatement, restraining acts contrary to law or member resolutions, and claiming damages/compensation from the company, its directors, auditors (including audit firms and involved partners), or experts/advisors/consultants for fraudulent, unlawful, wrongful, or misleading conduct. The Tribunal considers good faith, availability of an individual remedy, disinterested members' views, and likelihood of authorisation/ratification before admitting the application, and on admission must ensure public notice, consolidation of similar applications with a lead applicant, a bar on duplicate applications, and allocation of costs to the company or responsible party. Orders bind the company and all associated persons; non-compliance and frivolous/vexatious applications carry specified penalties. The section does not apply to banking companies.",
+    "core_judicial_inquiry": "Whether the applicant member(s)/depositor(s) meet the requisite numerical/shareholding/deposit thresholds, are acting in good faith, could not adequately pursue the cause of action in their own individual right, reflect the disinterested views of other members/depositors, and whether the impugned act or omission is one that would be authorised or ratified by the company — determining whether the class action should be admitted and what relief, if any, should be granted.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC241",
+      "CA2013_SEC244",
+      "CA2013_SEC147",
+      "BANKING_REGULATION_ACT1949"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Company with share capital: not less than 100 members, or not less than such prescribed percentage of total members, whichever is less, or member(s) holding not less than such prescribed percentage of issued share capital, subject to having paid all calls and other sums due on their shares",
+        "Company without share capital: not less than one-fifth of the total number of members",
+        "Depositors: not less than 100 depositors, or not less than such prescribed percentage of total depositors, whichever is less, or depositor(s) to whom the company owes such prescribed percentage of total deposits",
+        "Any person, group of persons, or association of persons representing the persons affected by the act or omission may file or take action under this section, subject to compliance with the section",
+        "Does not apply to a banking company"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Applicant(s) relying on the shareholding route must have paid all calls and other sums due on their shares",
+        "On admission, public notice must be served on all members or depositors of the class in the prescribed manner",
+        "Similar applications across jurisdictions must be consolidated into a single application, with a lead applicant chosen by consensus or appointed by the Tribunal",
+        "Application must state the requisite class action grounds under sub-section (1) and demonstrate compliance with sub-section (3) numerical/percentage thresholds"
+      ],
+      "statutory_bars": [
+        "Two class action applications for the same cause of action shall not be allowed",
+        "Section does not apply to a banking company",
+        "A frivolous or vexatious application shall be rejected by the Tribunal, for reasons recorded in writing, with costs up to one lakh rupees payable by the applicant to the opposite party"
+      ],
+      "saving_exceptions": [
+        "Cost or expenses connected with the class action application are to be defrayed by the company or any other person responsible for the oppressive act",
+        "Tribunal may consider whether an act or omission not yet occurred could be authorised before it occurs, or whether an act or omission already occurred could be ratified, as a factor rather than an absolute bar"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC245_REQUISITE_NUMBER_NOT_MET",
+      "SEC245_UNPAID_CALLS_ON_SHARES",
+      "SEC245_DUPLICATE_CLASS_ACTION",
+      "SEC245_PUBLIC_NOTICE_NOT_SERVED",
+      "SEC245_LEAD_APPLICANT_NOT_DESIGNATED",
+      "SEC245_BANKING_COMPANY_INAPPLICABLE",
+      "SEC245_FRIVOLOUS_VEXATIOUS_COST_IMPOSED",
+      "SEC245_NONCOMPLIANCE_PENALTY_SEC7",
+      "SEC245_AUDIT_FIRM_PARTNER_LIABILITY_MISAPPLIED"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC271",
+    "statute_id": "CA2013_SEC271",
+    "act_name": "Companies Act, 2013",
+    "section_number": "271",
+    "section_title": "Circumstances in which company may be wound up by Tribunal",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Sets out the exhaustive grounds on which a company may be wound up by the Tribunal on a petition under section 272: a special resolution of the company resolving on Tribunal winding up; acts against the sovereignty and integrity of India, security of the State, friendly relations with foreign States, public order, decency or morality; fraudulent conduct of affairs, formation for a fraudulent/unlawful purpose, or fraud/misfeasance/misconduct by persons in formation or management (on application by the Registrar or a person authorised by the Central Government); default in filing financial statements or annual returns with the Registrar for the immediately preceding five consecutive financial years; or the Tribunal's opinion that it is just and equitable that the company be wound up.",
+    "core_judicial_inquiry": "Whether the facts of the case fall within one or more of the specified statutory grounds — special resolution, conduct against sovereignty/security/public order/morality, fraudulent conduct or formation or fraud/misfeasance/misconduct by persons in management, five-year continuous default in statutory filings, or that it is otherwise just and equitable — such that winding up by the Tribunal is warranted.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC272",
+      "CA2013_SEC242",
+      "CA2013_SEC273"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The company itself, where it has resolved by special resolution that it be wound up by the Tribunal",
+        "The Registrar, or any other person authorised by the Central Government by notification under this Act, for an application on grounds of fraudulent conduct, fraudulent/unlawful formation, or fraud/misfeasance/misconduct in management",
+        "Any petitioner entitled to petition under section 272 generally, for the remaining grounds (sovereign/security/public order grounds; five-year filing default; just and equitable ground)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "A petition filed under section 272",
+        "For the fraud/misfeasance ground: an application made specifically by the Registrar or a person authorised by the Central Government by notification, and a Tribunal opinion that the affairs were conducted fraudulently or the company formed for fraudulent/unlawful purposes, or that persons in formation/management were guilty of fraud, misfeasance or misconduct",
+        "For the special resolution ground: a special resolution passed by the company resolving that it be wound up by the Tribunal",
+        "For the default ground: default in filing financial statements or annual returns with the Registrar for the immediately preceding five consecutive financial years"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC271_GROUND_NOT_WITHIN_ENUMERATED_LIST",
+      "SEC271_FRAUD_APPLICATION_WRONG_APPLICANT",
+      "SEC271_FILING_DEFAULT_PERIOD_UNVERIFIED",
+      "SEC271_SPECIAL_RESOLUTION_NOT_PASSED",
+      "SEC271_PETITION_NOT_UNDER_SEC272"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC272",
+    "statute_id": "CA2013_SEC272",
+    "act_name": "Companies Act, 2013",
+    "section_number": "272",
+    "section_title": "Petition for winding up",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Specifies who may present a petition to the Tribunal for winding up of a company: the company itself, any contributory or contributories, any combination of the company and contributories, the Registrar, any person authorised by the Central Government, or (for petitions falling under section 271(b)) the Central Government or a State Government. A contributory may petition regardless of holding fully paid-up shares or the company having no assets/surplus, provided the relevant shares were allotted to or registered in the contributory's name for at least six months during the eighteen months before commencement of winding up, or devolved through the death of a former holder. The Registrar may petition under section 271 except on the special-resolution ground, and only with prior Central Government sanction, which itself cannot be granted without giving the company a reasonable opportunity to make representations. A company's own petition is admitted only if accompanied by a prescribed statement of affairs, and a copy of every petition must be filed with the Registrar, who must submit views to the Tribunal within sixty days of receipt.",
+    "core_judicial_inquiry": "Whether the petitioner falls within the class of persons entitled to present a winding-up petition under sub-section (1), whether a contributory-petitioner satisfies the six-months-within-eighteen-months shareholding (or devolution) requirement under sub-section (2), whether a Registrar's petition has obtained the requisite prior Central Government sanction (preceded by a reasonable opportunity for the company to make representations), and whether a company's own petition is accompanied by the prescribed statement of affairs.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC271",
+      "CA2013_SEC273"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The company itself",
+        "Any contributory or contributories",
+        "All or any of the company and contributories jointly",
+        "The Registrar (subject to prior Central Government sanction, and excluding the special-resolution ground under section 271(a))",
+        "Any person authorised by the Central Government in that behalf",
+        "For petitions falling under section 271(b): the Central Government or a State Government",
+        "Contributory eligibility: entitled to petition even if holding fully paid-up shares or if the company has no assets or no surplus assets after satisfying liabilities, provided the relevant shares were originally allotted to or registered in the contributory's name for at least six months during the eighteen months immediately before commencement of winding up, or devolved through the death of a former holder"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Registrar's petition requires prior sanction of the Central Government",
+        "Central Government sanction requires that the company first be given a reasonable opportunity of making representations",
+        "Company's own petition must be accompanied by a prescribed statement of affairs to be admitted",
+        "A copy of the petition must be filed with the Registrar",
+        "Registrar must submit views to the Tribunal within sixty days of receipt of the petition copy"
+      ],
+      "statutory_bars": [
+        "Registrar cannot present a petition for winding up on the special-resolution ground specified in section 271(a)",
+        "A contributory-petitioner must meet the six-months-within-eighteen-months shareholding requirement (or devolution through death of a former holder) to be entitled to petition",
+        "A company petition lacking the prescribed statement of affairs shall not be admitted"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 60
+    },
+    "audit_error_codes": [
+      "SEC272_PETITIONER_NOT_ELIGIBLE_CLASS",
+      "SEC272_CONTRIBUTORY_HOLDING_PERIOD_UNMET",
+      "SEC272_REGISTRAR_SANCTION_MISSING",
+      "SEC272_COMPANY_NOT_GIVEN_OPPORTUNITY_TO_REPRESENT",
+      "SEC272_STATEMENT_OF_AFFAIRS_MISSING",
+      "SEC272_REGISTRAR_VIEWS_NOT_SUBMITTED_WITHIN_60_DAYS",
+      "SEC272_REGISTRAR_PETITION_ON_BARRED_GROUND"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC408",
+    "statute_id": "CA2013_SEC408",
+    "act_name": "Companies Act, 2013",
+    "section_number": "408",
+    "section_title": "Constitution of National Company Law Tribunal",
+    "jurisdiction_type": "FORUM_CONSTITUTING_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Central Government to constitute, by notification with effect from a specified date, the National Company Law Tribunal, consisting of a President and such number of Judicial and Technical members as the Central Government considers necessary, to be appointed by notification, for exercising the powers and discharging the functions conferred on it under this Act or any other law for the time being in force.",
+    "core_judicial_inquiry": "Not applicable — this is an administrative/constitutional provision establishing the Tribunal rather than a provision invoking a judicial test or inquiry.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC409",
+      "CA2013_SEC410",
+      "CA2013_SEC411",
+      "CA2013_SEC420"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Constitution of the Tribunal by the Central Government through notification, specifying the effective date",
+        "Appointment of the President and Judicial and Technical members by the Central Government through notification"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC408_TRIBUNAL_NOT_NOTIFIED",
+      "SEC408_MEMBER_APPOINTMENT_WITHOUT_NOTIFICATION",
+      "SEC408_ULTRA_VIRES_POWER_EXERCISE"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC420",
+    "statute_id": "CA2013_SEC420",
+    "act_name": "Companies Act, 2013",
+    "section_number": "420",
+    "section_title": "Orders of Tribunal",
+    "jurisdiction_type": "PROCEDURAL_POWER",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Tribunal to pass such orders as it thinks fit in any proceeding before it, after giving the parties a reasonable opportunity of being heard. The Tribunal may, within two years from the date of the order, amend the order to rectify any mistake apparent from the record, and must make such amendment if the mistake is brought to its notice by the parties, except where an appeal against the order has already been preferred under the Act. A copy of every order passed under this section must be sent to all parties concerned.",
+    "core_judicial_inquiry": "Whether the parties were given a reasonable opportunity of being heard before the order was passed, and, on an application for amendment, whether the alleged mistake is one 'apparent from the record' (as opposed to requiring fresh argument or re-appreciation of evidence) and whether an appeal against the order has already been preferred, which would bar rectification.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC408",
+      "CA2013_SEC421"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Parties to the proceeding before the Tribunal, for the right to be heard before an order is passed",
+        "Parties to the proceeding, for bringing a mistake apparent from the record to the Tribunal's notice for rectification"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Reasonable opportunity of being heard given to the parties before the Tribunal passes an order",
+        "Application for rectification (or suo motu action) must be within two years from the date of the order",
+        "Mistake sought to be rectified must be apparent from the record",
+        "Copy of every order passed under this section must be sent to all parties concerned"
+      ],
+      "statutory_bars": [
+        "No amendment/rectification shall be made in respect of any order against which an appeal has been preferred under this Act"
+      ],
+      "saving_exceptions": [
+        "Tribunal shall make the amendment if the mistake apparent from the record is brought to its notice by the parties (mandatory, not merely discretionary, once the mistake is shown)"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 730
+    },
+    "audit_error_codes": [
+      "SEC420_HEARING_OPPORTUNITY_DENIED",
+      "SEC420_RECTIFICATION_BEYOND_2YR_WINDOW",
+      "SEC420_RECTIFICATION_DESPITE_PENDING_APPEAL",
+      "SEC420_MISTAKE_NOT_APPARENT_ON_RECORD",
+      "SEC420_ORDER_COPY_NOT_SENT_TO_PARTIES"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC421",
+    "statute_id": "CA2013_SEC421",
+    "act_name": "Companies Act, 2013",
+    "section_number": "421",
+    "section_title": "Appeal from orders of Tribunal",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Grants any person aggrieved by an order of the Tribunal a right to appeal to the Appellate Tribunal, except where the Tribunal's order was made with the consent of parties, in which case no appeal lies. The appeal must be filed within forty-five days from the date the order copy is made available to the aggrieved person, in the prescribed form and accompanied by prescribed fees; the Appellate Tribunal may condone delay and entertain the appeal within a further period not exceeding forty-five days if satisfied there was sufficient cause preventing timely filing. On receipt of the appeal, the Appellate Tribunal, after giving the parties a reasonable opportunity of being heard, may pass such orders as it thinks fit, confirming, modifying, or setting aside the order appealed against, and must send a copy of its order to the Tribunal and the parties.",
+    "core_judicial_inquiry": "Whether the appellant is a 'person aggrieved' by the Tribunal's order, whether the order was made with the consent of parties (which would bar the appeal), whether the appeal was filed within the forty-five day limitation period (or, if delayed, whether sufficient cause is shown to justify condonation within the further forty-five day window), and, on merits, whether the order appealed against should be confirmed, modified, or set aside.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC420",
+      "CA2013_SEC408",
+      "CA2013_SEC423"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any person aggrieved by an order of the Tribunal"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Appeal must be filed in the prescribed form and accompanied by the prescribed fees",
+        "Appeal must be filed within forty-five days from the date a copy of the Tribunal's order is made available to the aggrieved person",
+        "Where filed beyond forty-five days, appellant must satisfy the Appellate Tribunal of sufficient cause preventing timely filing, and the delay must not exceed a further forty-five days",
+        "Parties to the appeal must be given a reasonable opportunity of being heard before the Appellate Tribunal passes its order",
+        "Appellate Tribunal must send a copy of every order made by it to the Tribunal and the parties to the appeal"
+      ],
+      "statutory_bars": [
+        "No appeal shall lie to the Appellate Tribunal from an order made by the Tribunal with the consent of parties",
+        "No appeal shall be entertained beyond ninety days in total from the date the order copy is made available (forty-five days plus a further condonable forty-five days), absent sufficient cause even within that outer limit"
+      ],
+      "saving_exceptions": [
+        "Appellate Tribunal may entertain an appeal after expiry of the initial forty-five day period, within a further period not exceeding forty-five days, if satisfied the appellant was prevented by sufficient cause from filing within that period"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 45
+    },
+    "audit_error_codes": [
+      "SEC421_APPEAL_FILED_BEYOND_45_PLUS_45_DAYS",
+      "SEC421_CONSENT_ORDER_APPEALED",
+      "SEC421_SUFFICIENT_CAUSE_NOT_SHOWN",
+      "SEC421_PRESCRIBED_FEE_FORM_NONCOMPLIANT",
+      "SEC421_HEARING_OPPORTUNITY_DENIED",
+      "SEC421_ORDER_COPY_NOT_SENT_TO_TRIBUNAL_PARTIES"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC424",
+    "statute_id": "CA2013_SEC424",
+    "act_name": "Companies Act, 2013",
+    "section_number": "424",
+    "section_title": "Procedure before Tribunal and Appellate Tribunal",
+    "jurisdiction_type": "PROCEDURAL_POWER",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Frees the Tribunal and Appellate Tribunal from the procedure prescribed under the Code of Civil Procedure, 1908, directing them instead to be guided by principles of natural justice and to regulate their own procedure, subject to the Companies Act, the Insolvency and Bankruptcy Code, 2016, and rules made thereunder. For discharging their functions, both bodies have the same powers as a civil court trying a suit under the CPC, including summoning and examining persons on oath, requiring discovery/production of documents, receiving affidavit evidence, requisitioning public records (subject to sections 123-124 of the Indian Evidence Act, 1872), issuing commissions for examination of witnesses/documents, dismissing or deciding representations ex parte, and setting aside such dismissal/ex parte orders. Their orders are enforceable as a civil court decree, with execution sent to the court having local jurisdiction over the company's registered office or the concerned person's residence/business/employment. All proceedings before them are deemed judicial proceedings for specified IPC purposes, and both bodies are deemed civil courts for specified CrPC purposes.",
+    "core_judicial_inquiry": "Whether the Tribunal or Appellate Tribunal, in exercising its self-regulated procedure and CPC-equivalent civil court powers, has complied with the principles of natural justice in disposing of the proceeding or appeal, and whether any exercise of a specific enumerated power (summons, discovery, affidavit evidence, requisition of records, commissions, ex parte dismissal or its setting aside) was properly exercised within the bounds of this section, the Act, the Insolvency and Bankruptcy Code, 2016, and applicable rules.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC420",
+      "CA2013_SEC421",
+      "CA2013_SEC408",
+      "IBC2016_GENERAL",
+      "CPC1908",
+      "INDIAN_EVIDENCE_ACT1872_SEC123_124",
+      "IPC1860_SEC193_196_228",
+      "CRPC1973_SEC195_CH26"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a proceeding before the Tribunal or an appeal before the Appellate Tribunal, for invoking the civil-court-equivalent powers under sub-section (2)",
+        "A party against whom a representation was dismissed for default or decided ex parte, for seeking to set aside such dismissal or ex parte order under clause (g)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Procedure followed must be guided by the principles of natural justice, even though not bound by the Code of Civil Procedure, 1908",
+        "Requisition of public records or documents from any office is subject to the restrictions in sections 123 and 124 of the Indian Evidence Act, 1872",
+        "Execution of orders must be directed to the court within the local limits of whose jurisdiction the company's registered office is situated, or where the concerned person resides, carries on business, or personally works for gain"
+      ],
+      "statutory_bars": [
+        "Tribunal and Appellate Tribunal are not bound by the procedure laid down in the Code of Civil Procedure, 1908"
+      ],
+      "saving_exceptions": [
+        "Tribunal or Appellate Tribunal may set aside any order of dismissal of a representation for default, or any order passed by it ex parte"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC424_NATURAL_JUSTICE_VIOLATED",
+      "SEC424_CPC_POWER_EXCEEDED",
+      "SEC424_EVIDENCE_ACT_SEC123_124_BREACH",
+      "SEC424_EXECUTION_COURT_JURISDICTION_MISMATCHED",
+      "SEC424_EXPARTE_ORDER_SETASIDE_DENIED",
+      "SEC424_JUDICIAL_PROCEEDING_STATUS_MISAPPLIED"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC425",
+    "statute_id": "CA2013_SEC425",
+    "act_name": "Companies Act, 2013",
+    "section_number": "425",
+    "section_title": "Power to punish for contempt",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Vests the Tribunal and the Appellate Tribunal with the same jurisdiction, powers, and authority in respect of contempt of themselves as a High Court possesses, exercisable under the Contempt of Courts Act, 1971, subject to two modifications: references to a High Court in that Act are construed as including the Tribunal and Appellate Tribunal, and the reference to Advocate-General in section 15 of that Act is construed as a reference to such Law Officers as the Central Government may specify.",
+    "core_judicial_inquiry": "Whether the conduct complained of constitutes contempt of the Tribunal or Appellate Tribunal, applying the same standards a High Court would apply under the Contempt of Courts Act, 1971, as modified by this section (including whether the initiating reference by the specified Law Officer, in place of the Advocate-General, was properly made where relevant).",
+    "intersecting_statute_ids": [
+      "CA2013_SEC408",
+      "CA2013_SEC424",
+      "CONTEMPT_OF_COURTS_ACT1971"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Persons entitled to initiate or bring contempt proceedings under the Contempt of Courts Act, 1971, as applicable before a High Court, with the Advocate-General role performed instead by such Law Officers as the Central Government may specify"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Contempt proceedings must be conducted under the provisions of the Contempt of Courts Act, 1971, as modified for the Tribunal and Appellate Tribunal",
+        "Where section 15 of the Contempt of Courts Act, 1971 requires action through the Advocate-General, the equivalent action must be taken through the Law Officer(s) specified by the Central Government for this purpose"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC425_CONTEMPT_ACT_PROCEDURE_NOT_FOLLOWED",
+      "SEC425_ADVOCATE_GENERAL_ROLE_MISAPPLIED",
+      "SEC425_HIGH_COURT_REFERENCE_MISCONSTRUED",
+      "SEC425_LAW_OFFICER_NOT_CENTRAL_GOVT_SPECIFIED"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC434",
+    "statute_id": "CA2013_SEC434",
+    "act_name": "Companies Act, 2013",
+    "section_number": "434",
+    "section_title": "Transfer of certain pending proceedings",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Provides that, from a date notified by the Central Government, all matters pending before the erstwhile Company Law Board stand transferred to the Tribunal for disposal under this Act; persons aggrieved by a pre-transfer Company Law Board decision may appeal to the High Court within sixty days (extendable by a further sixty days on sufficient cause) on a question of law; and all Companies Act, 1956 proceedings (including arbitration, compromise, arrangement, reconstruction, and winding up) pending before any District Court or High Court stand transferred to the Tribunal, which continues them from the pre-transfer stage. Winding-up proceedings transfer only to the extent/stage prescribed by the Central Government, though parties may apply for transfer of pending winding-up proceedings so they are treated as applications for corporate insolvency resolution process under the IBC. Proceedings (other than winding-up) reserved for orders by the High Court, winding-up proceedings not transferred, and certain voluntary winding-up proceedings with pre-1 April 2017 advertised resolutions continue to be governed by the Companies Act, 1956 and the Companies (Court) Rules, 1959. The Central Government may make rules to ensure timely transfer.",
+    "core_judicial_inquiry": "Whether a matter, proceeding, or case fell within the class pending before the Company Law Board or a District/High Court as of the notified transfer date such that it stands transferred to the Tribunal, at what stage it should be taken up by the Tribunal, whether it falls within any of the carve-outs continuing under the Companies Act, 1956 and the Companies (Court) Rules, 1959 (proceedings reserved for orders, non-transferred winding-up proceedings, or specified pre-1 April 2017 voluntary winding-up proceedings), and, for appeals from Company Law Board decisions, whether the sixty-day (or condoned further sixty-day) limitation period has been complied with on a question of law.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC408",
+      "CA1956_SEC10E",
+      "CA1956_SEC485",
+      "IBC2016_GENERAL",
+      "COMPANIES_COURT_RULES1959"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any person aggrieved by a decision or order of the Company Law Board made before the notified transfer date, for filing an appeal to the High Court",
+        "Any party or parties to winding-up proceedings pending before any Court immediately before commencement of the Insolvency and Bankruptcy Code (Amendment) Ordinance, 2018, for applying to transfer such proceedings to the Tribunal"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Appeal to the High Court from a Company Law Board decision must be filed within sixty days from the date of communication of the decision/order, and must raise a question of law",
+        "Winding-up proceedings transferred to the Tribunal must be at a stage prescribed by the Central Government",
+        "Transfer of pending winding-up proceedings on party application requires an order of the Court before which such proceedings are pending",
+        "Proceedings transferred pursuant to the second proviso are to be dealt with by the Tribunal as an application for initiation of corporate insolvency resolution process under the Insolvency and Bankruptcy Code, 2016"
+      ],
+      "statutory_bars": [
+        "Proceedings (other than winding-up) reserved for orders by the High Courts shall not be transferred to the Tribunal and shall continue under the Companies Act, 1956 and the Companies (Court) Rules, 1959",
+        "Winding-up proceedings not transferred from the High Courts shall continue to be dealt with under the Companies Act, 1956 and the Companies (Court) Rules, 1959",
+        "Voluntary winding-up proceedings where notice of the resolution by advertisement was given under section 485(1) of the Companies Act, 1956 but the company was not dissolved before 1 April 2017 shall continue under the Companies Act, 1956 and the Companies (Court) Rules, 1959"
+      ],
+      "saving_exceptions": [
+        "High Court may allow an appeal from a Company Law Board decision to be filed beyond the sixty-day period, within a further period not exceeding sixty days, if satisfied the appellant was prevented by sufficient cause",
+        "Central Government empowered to make rules consistent with the Act to ensure timely transfer of pending matters to the Tribunal"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 60
+    },
+    "audit_error_codes": [
+      "SEC434_APPEAL_BEYOND_60_PLUS_60_DAYS",
+      "SEC434_WINDING_UP_STAGE_NOT_PRESCRIBED",
+      "SEC434_PROCEEDING_WRONGLY_TRANSFERRED_DESPITE_RESERVED_ORDER",
+      "SEC434_PRE_2017_VOLUNTARY_WINDING_UP_MISTRANSFERRED",
+      "SEC434_CIRP_RECHARACTERIZATION_IMPROPER",
+      "SEC434_QUESTION_OF_LAW_ABSENT"
+    ]
+  },
+  {
+    "_id": "CA2013_SEC447",
+    "statute_id": "CA2013_SEC447",
+    "act_name": "Companies Act, 2013",
+    "section_number": "447",
+    "section_title": "Punishment for fraud",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "SPECIAL_COURT",
+    "statutory_summary": "Without prejudice to any other civil liability (including debt repayment) under this Act or any other law, prescribes criminal punishment for any person found guilty of fraud involving an amount of at least ten lakh rupees or one per cent of the company's turnover (whichever is lower): imprisonment of not less than six months, extendable to ten years, plus a mandatory fine of not less than the amount involved in the fraud and up to three times that amount; where the fraud involves public interest, the minimum imprisonment term rises to three years. For fraud below that threshold and not involving public interest, punishment is imprisonment extendable to five years, or fine extendable to fifty lakh rupees, or both. Defines 'fraud' broadly to include any act, omission, concealment, or abuse of position by a person (or with another's connivance) intended to deceive, gain undue advantage from, or injure the company, its shareholders, creditors, or any other person, irrespective of actual wrongful gain or wrongful loss, and separately defines 'wrongful gain' and 'wrongful loss'.",
+    "core_judicial_inquiry": "Whether the accused committed 'fraud' as defined in the Explanation (an act, omission, concealment of fact, or abuse of position, with intent to deceive, gain undue advantage, or injure the company/shareholders/creditors/others, regardless of actual wrongful gain or loss), the monetary amount involved in the fraud relative to the ten lakh rupee / one per cent turnover threshold (which determines the applicable punishment band), and whether the fraud involves public interest (which elevates the minimum term of imprisonment to three years).",
+    "intersecting_statute_ids": [
+      "CA2013_SEC212",
+      "CA2013_SEC241",
+      "CA2013_SEC242",
+      "CA2013_SEC271",
+      "IPC1860_FRAUD_PROVISIONS"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Prosecuting authority under the Act (e.g., Registrar, Serious Fraud Investigation Office, or other authority empowered to initiate proceedings for offences under the Act) — this section itself does not specify a private right to prosecute"
+      ],
+      "financial_threshold": {
+        "minimum_amount": 1000000,
+        "currency": "INR"
+      },
+      "mandatory_prerequisites": [
+        "Finding that the person is guilty of fraud as defined in the Explanation to this section",
+        "Determination of the amount involved in the fraud, to establish which punishment band (higher band at/above ten lakh rupees or one per cent of turnover, whichever is lower; lower band below that threshold) applies",
+        "Determination of whether the fraud involves public interest, to establish whether the enhanced three-year minimum imprisonment applies"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Where the fraud involves an amount less than ten lakh rupees or one per cent of the company's turnover (whichever is lower), and does not involve public interest, the accused is subject to the lesser punishment of imprisonment up to five years, or fine up to fifty lakh rupees, or both, rather than the higher band"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "SEC447_FRAUD_DEFINITION_ELEMENT_UNMET",
+      "SEC447_AMOUNT_THRESHOLD_MISCALCULATED",
+      "SEC447_PUBLIC_INTEREST_FINDING_OMITTED",
+      "SEC447_WRONGFUL_GAIN_LOSS_MISAPPLIED",
+      "SEC447_PUNISHMENT_BAND_MISMATCHED",
+      "SEC447_CIVIL_LIABILITY_WRONGLY_DISPLACED"
+    ]
+  }
+]

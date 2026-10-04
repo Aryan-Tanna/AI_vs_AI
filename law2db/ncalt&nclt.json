@@ -1,0 +1,870 @@
+[
+  {
+    "_id": "NCLAT_RULES2016_R11",
+    "statute_id": "NCLAT_RULES2016_R11",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "11",
+    "section_title": "Inherent powers",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Preserves the Appellate Tribunal's inherent powers, unaffected by anything in the NCLAT Rules, 2016, to make orders or give directions necessary for meeting the ends of justice or to prevent abuse of its own process. This power exists independent of and is not limited by the specific procedural rules elsewhere in the Rules.",
+    "core_judicial_inquiry": "Whether the order or direction sought is genuinely necessary either to meet the ends of justice or to prevent abuse of the Appellate Tribunal's process, and whether invoking inherent power is warranted in the absence of (or notwithstanding) a specific rule covering the situation.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC420",
+      "CA2013_SEC421",
+      "CA2013_SEC424",
+      "NCLAT_RULES2016_R14",
+      "NCLAT_RULES2016_R15",
+      "NCLAT_RULES2016_R104"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a proceeding or appeal before the Appellate Tribunal seeking an order or direction under this inherent power",
+        "The Appellate Tribunal may also act suo motu to prevent abuse of its process"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Nothing in the NCLAT Rules, 2016 shall be deemed to limit or otherwise affect the Appellate Tribunal's inherent powers to make orders or give directions necessary for meeting the ends of justice or preventing abuse of its process"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR11_INHERENT_POWER_MISINVOKED",
+      "NCLATR11_ABUSE_OF_PROCESS_UNADDRESSED",
+      "NCLATR11_SPECIFIC_RULE_WRONGLY_TREATED_AS_EXHAUSTIVE"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R14",
+    "statute_id": "NCLAT_RULES2016_R14",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "14",
+    "section_title": "Power to exempt",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Empowers the Appellate Tribunal, on sufficient cause being shown, to exempt parties from compliance with any requirement of the NCLAT Rules, 2016, and to give such directions on matters of practice and procedure as it considers just and expedient, on an application moved for that purpose, in order to render substantial justice.",
+    "core_judicial_inquiry": "Whether sufficient cause has been shown by the applicant to justify exempting them from a specific procedural requirement of the Rules, and whether granting such exemption or issuing directions on practice and procedure would be just and expedient to render substantial justice in the circumstances of the case.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R11",
+      "NCLAT_RULES2016_R15",
+      "NCLAT_RULES2016_R104",
+      "CA2013_SEC420",
+      "CA2013_SEC424"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a proceeding or appeal before the Appellate Tribunal seeking exemption from compliance with a procedural requirement of the Rules"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "An application moved before the Appellate Tribunal specifically seeking exemption from compliance with a requirement of the Rules",
+        "Sufficient cause shown by the applicant justifying the exemption"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Appellate Tribunal may exempt parties from compliance with any requirement of the Rules, and give directions on practice and procedure as it considers just and expedient, to render substantial justice"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR14_SUFFICIENT_CAUSE_NOT_SHOWN",
+      "NCLATR14_EXEMPTION_GRANTED_WITHOUT_APPLICATION",
+      "NCLATR14_SUBSTANTIAL_JUSTICE_TEST_UNADDRESSED",
+      "NCLATR14_MANDATORY_REQUIREMENT_WRONGLY_EXEMPTED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R15",
+    "statute_id": "NCLAT_RULES2016_R15",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "15",
+    "section_title": "Power to extend time",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Empowers the Appellate Tribunal to extend the time appointed by the Rules or fixed by any order for doing any act or taking any proceeding, upon such terms as the justice of the case may require. The enlargement of time may be granted even if the application for extension is made only after the originally appointed or allowed time has already expired.",
+    "core_judicial_inquiry": "Whether the justice of the case requires extension of the time appointed by the Rules or fixed by an order for doing an act or taking a proceeding, and on what terms (if any) such extension should be granted — including where the application for extension is itself made after the original time period has already lapsed.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC421",
+      "CA2013_SEC420",
+      "NCLAT_RULES2016_R11",
+      "NCLAT_RULES2016_R14",
+      "NCLAT_RULES2016_R31"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a proceeding or appeal before the Appellate Tribunal seeking extension of a time period fixed by the Rules or by an order"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Extension of time may be ordered even though the application for such extension is not made until after expiration of the time originally appointed or allowed",
+        "Enlargement may be granted upon such terms as the justice of the case may require"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR15_EXTENSION_DENIED_SOLELY_FOR_LATE_APPLICATION",
+      "NCLATR15_JUSTICE_OF_CASE_TEST_UNADDRESSED",
+      "NCLATR15_TERMS_OF_EXTENSION_UNSPECIFIED",
+      "NCLATR15_TIME_LIMIT_WRONGLY_TREATED_AS_ABSOLUTE"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R22",
+    "statute_id": "NCLAT_RULES2016_R22",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "22",
+    "section_title": "Presentation of appeal",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Requires every appeal to be presented in Form NCLAT-1, in triplicate, by the appellant/petitioner/applicant/respondent (in person or through a duly authorised representative), with the stipulated fee, at the filing counter; non-compliance may constitute valid ground to refuse to entertain the appeal. Every appeal must be accompanied by a certified copy of the impugned order, and all filed documents must be accompanied by a triplicate index detailing them and the fee paid. Sufficient copies must be filed for service on the opposite party. In pending matters, other applications must be presented only after advance service of copies on the opposite side or their counsel/representative. The prescribed processing fee, required envelopes, and notice forms must be filed along with the memorandum of appeal.",
+    "core_judicial_inquiry": "Whether the appeal was presented in the prescribed Form NCLAT-1, in triplicate, with the stipulated fee, by a proper party or their duly authorised representative, accompanied by a certified copy of the impugned order and the requisite index, sufficient service copies, processing fee, envelopes, and notice forms — and, where any of these is missing, whether the deficiency is serious enough to constitute valid ground for the Tribunal to refuse to entertain the appeal.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC421",
+      "CA2013_SEC432",
+      "NCLAT_RULES2016_R14",
+      "NCLAT_RULES2016_R15",
+      "NCLAT_RULES2016_R26",
+      "NCLAT_RULES2016_R55"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The appellant, petitioner, applicant, or respondent, as the case may be, presenting the appeal in person or through a duly authorised representative appointed in that behalf"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Appeal presented in Form NCLAT-1, in triplicate, at the filing counter",
+        "Stipulated fee paid at the time of presentation",
+        "Certified copy of the impugned order accompanying the appeal",
+        "Triplicate index accompanying all documents filed, detailing the documents and fee paid thereon",
+        "Sufficient number of copies filed for service on the opposite party",
+        "Other applications in pending matters presented only after advance service of copies on the opposite side or their advocate/authorised representative",
+        "Prescribed processing fee, required number of envelopes of sufficient size, and notice forms filed along with the memorandum of appeal"
+      ],
+      "statutory_bars": [
+        "Non-compliance with the requirement to present the appeal in the prescribed form, in triplicate, in person or by duly authorised representative, with the stipulated fee, may constitute a valid ground to refuse to entertain the appeal"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR22_WRONG_FORM_USED",
+      "NCLATR22_TRIPLICATE_NOT_FILED",
+      "NCLATR22_FEE_NOT_PAID",
+      "NCLATR22_CERTIFIED_COPY_MISSING",
+      "NCLATR22_INDEX_NOT_FILED",
+      "NCLATR22_INSUFFICIENT_SERVICE_COPIES",
+      "NCLATR22_ADVANCE_SERVICE_NOT_EFFECTED",
+      "NCLATR22_ENVELOPES_NOTICE_FORMS_MISSING",
+      "NCLATR22_ENTERTAINMENT_WRONGLY_REFUSED_DESPITE_COMPLIANCE"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R26",
+    "statute_id": "NCLAT_RULES2016_R26",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "26",
+    "section_title": "Endorsement and scrutiny of petition or appeal or document",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Requires the filing-counter officer, on receipt of an appeal or document, to immediately affix date and stamp on it and additional index copies, return an acknowledgement, initial the stamped first page of the copies, enter particulars in the register, assign a diary number, and send it for scrutiny. If scrutiny finds the appeal or document defective, it is returned to the party for compliance after notice; failure to comply within seven days from the date of return results in the matter being placed before the Registrar for appropriate orders. The Registrar may, for sufficient cause, return the document for rectification or amendment, allowing reasonable time or extending the compliance period. Where the party fails to take steps to remove the defect within the fixed time, the Registrar may, for reasons recorded in writing, decline to register the appeal, pleading, or document.",
+    "core_judicial_inquiry": "Whether the appeal or document was properly endorsed (dated, stamped, diarised) on filing, whether any defect found on scrutiny was duly notified to the party, whether the party complied within the seven-day window (or any reasonable extension granted by the Registrar for sufficient cause), and, where non-compliance persists, whether the Registrar recorded adequate reasons in writing before declining to register the appeal, pleading, or document.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R22",
+      "NCLAT_RULES2016_R14",
+      "NCLAT_RULES2016_R15",
+      "NCLAT_RULES2016_R27",
+      "CA2013_SEC421"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The party who has filed the appeal, petition, or document found defective on scrutiny"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing-counter officer to affix date and stamp on the appeal/document and additional index copies, initial the stamped first page, enter particulars in the register, and assign a diary number on receipt",
+        "Notice to the party before a defective document is returned for compliance",
+        "Compliance by the party within seven days from the date of return of the defective document",
+        "Reasons to be recorded in writing by the Registrar before declining to register an appeal, pleading, or document for non-compliance"
+      ],
+      "statutory_bars": [
+        "Failure to comply with a notified defect within seven days from the date of return results in the matter being placed before the Registrar, who may decline to register the appeal, pleading, or document if the defect is not removed within the time fixed"
+      ],
+      "saving_exceptions": [
+        "Registrar may, for sufficient cause, return the document for rectification or amendment and allow the party such reasonable time as considered necessary, or extend the time for compliance beyond the initial seven-day period"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "NCLATR26_ENDORSEMENT_STEPS_OMITTED",
+      "NCLATR26_DEFECT_NOTICE_NOT_GIVEN",
+      "NCLATR26_RECTIFICATION_BEYOND_7_DAYS_UNEXTENDED",
+      "NCLATR26_REGISTRATION_DECLINED_WITHOUT_WRITTEN_REASONS",
+      "NCLATR26_SUFFICIENT_CAUSE_EXTENSION_UNCONSIDERED",
+      "NCLATR26_DIARY_NUMBER_NOT_ASSIGNED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R31",
+    "statute_id": "NCLAT_RULES2016_R31",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "31",
+    "section_title": "Interlocutory applications",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Requires every interlocutory application in a pending matter — whether for stay, direction, condonation of delay, exemption from production of a copy of the order appealed against, or extension of time — to be made in Form NCLAT-2, complying with all requirements prescribed for such applications, and to be accompanied by a supporting affidavit filed by the applicant.",
+    "core_judicial_inquiry": "Whether the interlocutory application (for stay, direction, condonation of delay, exemption from production of the impugned order's copy, or extension of time) was filed in the prescribed Form NCLAT-2, complied with the other prescribed requirements, and was supported by an affidavit — and, on merits, whether the specific relief sought (stay, condonation, exemption, or extension) is warranted in the pending matter.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R14",
+      "NCLAT_RULES2016_R15",
+      "NCLAT_RULES2016_R22",
+      "CA2013_SEC421"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a pending matter before the Appellate Tribunal seeking stay, direction, condonation of delay, exemption from production of a copy of the order appealed against, or extension of time"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application made in Form NCLAT-2",
+        "Compliance with all other requirements prescribed in that behalf",
+        "Supporting affidavit filed by the applicant along with the application"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR31_WRONG_FORM_USED",
+      "NCLATR31_SUPPORTING_AFFIDAVIT_MISSING",
+      "NCLATR31_PRESCRIBED_REQUIREMENTS_NONCOMPLIANT",
+      "NCLATR31_IA_FILED_OUTSIDE_PENDING_MATTER"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R48",
+    "statute_id": "NCLAT_RULES2016_R48",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "48",
+    "section_title": "Issue of notice",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Where the Appellate Tribunal issues notice of an appeal, petition, or interlocutory application, copies of the notice, the supporting affidavit, and (if so ordered) copies of other documents filed with it must be served on the other side along with the notice. The served documents must show the date of presentation of the appeal/application, the name and full address for service of the authorised representative (if any), and any interim order made thereon. The Tribunal may, in appropriate cases, permit service of notice on the other side by Dasti (i.e., delivery by the party itself rather than through the Registry), in which case the party effecting such service must file an affidavit of service with proof.",
+    "core_judicial_inquiry": "Whether notice, together with the supporting affidavit and any other ordered documents, was duly served on the opposite party showing the date of presentation, the authorised representative's details, and any interim order made; and, where service was permitted by Dasti, whether the serving party filed an affidavit of service with proof establishing that effective service was in fact completed.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R49",
+      "NCLAT_RULES2016_R50",
+      "NCLAT_RULES2016_R51",
+      "NCLAT_RULES2016_R52",
+      "NCLAT_RULES2016_R53",
+      "CA2013_SEC424"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Appellant, petitioner, or applicant on whose appeal, petition, or interlocutory application notice is issued by the Appellate Tribunal",
+        "A party permitted by the Appellate Tribunal to effect service of notice on the other side by Dasti"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Copies of the notice, the supporting affidavit, and (if ordered) other documents filed therewith to be served on the other side along with the notice",
+        "Served copies to show the date of presentation of the appeal/interlocutory application, the authorised representative's name and full address for service, and any interim order made",
+        "Where service is by Dasti, the serving party must file an affidavit of service with proof"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Appellate Tribunal may, in appropriate cases, permit the party concerned to serve notice on the other side by Dasti instead of through the ordinary Registry process"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR48_SUPPORTING_AFFIDAVIT_NOT_SERVED",
+      "NCLATR48_ORDERED_DOCUMENTS_NOT_SERVED",
+      "NCLATR48_SERVICE_COPY_MISSING_REQUIRED_DETAILS",
+      "NCLATR48_DASTI_SERVICE_AFFIDAVIT_MISSING",
+      "NCLATR48_INTERIM_ORDER_NOT_REFLECTED_IN_NOTICE"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R49",
+    "statute_id": "NCLAT_RULES2016_R49",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "49",
+    "section_title": "Summons",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Where summons or notice is ordered to be served by private service, the appellant, applicant, or petitioner (as the case may be) must, unless the other side has already been served in advance, arrange to serve copies of all appeals, petitions, or applications by registered post or courier service, and file an affidavit of service with its proof of acknowledgement before the date fixed for hearing.",
+    "core_judicial_inquiry": "Whether the party responsible for private service arranged service of the appeal/petition/application copies by registered post or courier as ordered, and whether an affidavit of service with proof of acknowledgement was filed before the date fixed for hearing, such that service can be treated as duly effected.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R48",
+      "NCLAT_RULES2016_R50",
+      "NCLAT_RULES2016_R51",
+      "NCLAT_RULES2016_R52",
+      "NCLAT_RULES2016_R53",
+      "CA2013_SEC424"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The appellant, applicant, or petitioner, as the case may be, on whom the obligation of private service is placed by order of the Appellate Tribunal"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Service of copies of all appeals, petitions, or applications by registered post or courier service, unless the other side has already been served in advance",
+        "Filing of an affidavit of service, with proof of acknowledgement, before the date fixed for hearing"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Obligation to arrange service does not arise where the other side has already been served in advance"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR49_SERVICE_NOT_BY_REGISTERED_POST_OR_COURIER",
+      "NCLATR49_AFFIDAVIT_OF_SERVICE_NOT_FILED_BEFORE_HEARING",
+      "NCLATR49_PROOF_OF_ACKNOWLEDGEMENT_MISSING",
+      "NCLATR49_PRIVATE_SERVICE_OBLIGATION_WRONGLY_DISCHARGED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R50",
+    "statute_id": "NCLAT_RULES2016_R50",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "50",
+    "section_title": "Steps for issue of fresh notice",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "If a notice issued under rule 48 is returned unserved, that fact and the reason for non-service must be notified immediately on the notice board of the Registry. The applicant, petitioner, or their authorised representative must then take steps to serve the notice afresh within seven days from the date of that notification.",
+    "core_judicial_inquiry": "Whether the return of the notice unserved, along with the reason for non-service, was duly and immediately notified on the Registry's notice board, and whether the applicant/petitioner (or their authorised representative) took steps to effect fresh service within seven days from that notification.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R48",
+      "NCLAT_RULES2016_R49",
+      "NCLAT_RULES2016_R51",
+      "NCLAT_RULES2016_R52",
+      "NCLAT_RULES2016_R53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "The applicant or petitioner, or their authorised representative, responsible for taking steps to serve notice afresh after a return of unserved notice"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Immediate notification of the fact of non-service and its reason on the notice board of the Registry",
+        "Steps taken by the applicant, petitioner, or their authorised representative to serve the notice afresh within seven days from the date of such notification"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "NCLATR50_UNSERVED_NOTICE_NOT_NOTIFIED_ON_BOARD",
+      "NCLATR50_FRESH_SERVICE_STEPS_BEYOND_7_DAYS",
+      "NCLATR50_REASON_FOR_NONSERVICE_NOT_RECORDED",
+      "NCLATR50_FRESH_NOTICE_NOT_ISSUED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R51",
+    "statute_id": "NCLAT_RULES2016_R51",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "51",
+    "section_title": "Consequence of failure to take steps for issue of fresh notice",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Where summons has been issued to the other side and returned unserved, and the applicant, petitioner, or appellant fails to take the necessary steps to effect fresh service within the period ordered by the Appellate Tribunal from the date of return of the notice on the respondent(s), the Registrar shall post the case before the Appellate Tribunal for further directions or for dismissal for non-prosecution.",
+    "core_judicial_inquiry": "Whether the applicant, petitioner, or appellant failed to take the necessary steps for fresh service within the period ordered by the Appellate Tribunal following return of the unserved summons, such that the case must be posted before the Tribunal for further directions or dismissal for non-prosecution.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R48",
+      "NCLAT_RULES2016_R49",
+      "NCLAT_RULES2016_R50",
+      "NCLAT_RULES2016_R52",
+      "NCLAT_RULES2016_R53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Not applicant-initiated — this rule operates on the Registrar's own action once default in effecting fresh service is established"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Summons previously issued to the other side and returned unserved",
+        "Failure by the applicant, petitioner, or appellant to take necessary steps for fresh service within the period ordered by the Appellate Tribunal from the date of return of the notice"
+      ],
+      "statutory_bars": [
+        "Failure to take necessary steps for fresh service within the Tribunal-ordered period results in the case being posted before the Appellate Tribunal for further directions or dismissal for non-prosecution"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR51_FRESH_SERVICE_STEPS_NOT_TAKEN",
+      "NCLATR51_CASE_NOT_POSTED_FOR_DIRECTIONS",
+      "NCLATR51_DISMISSAL_FOR_NONPROSECUTION_WITHOUT_TRIBUNAL_ORDERED_PERIOD",
+      "NCLATR51_TRIBUNAL_ORDERED_PERIOD_UNVERIFIED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R52",
+    "statute_id": "NCLAT_RULES2016_R52",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "52",
+    "section_title": "Entries regarding service of notice or process",
+    "jurisdiction_type": "PROCEDURAL_POWER",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Requires the Judicial Section of the Registry to record, in the 'Notes of the Registry' column of the order sheet, details regarding completion of service of notice on the respondents — including the date of issue of notice, date of service, date of return of notice (if unserved), steps taken for issuing fresh notice, and the date of completion of service.",
+    "core_judicial_inquiry": "Whether the Registry's order sheet accurately and completely records the service history of the notice — issue date, service date, date of return if unserved, steps taken for fresh notice, and date of completion of service — such that the record can be relied upon to determine whether valid service was effected and, if so, when.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R48",
+      "NCLAT_RULES2016_R49",
+      "NCLAT_RULES2016_R50",
+      "NCLAT_RULES2016_R51",
+      "NCLAT_RULES2016_R53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Judicial Section of the Registry to record in the order sheet's 'Notes of the Registry' column: date of issue of notice, date of service, date of return of notice (if unserved), steps taken for issuing fresh notice, and date of completion of service"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR52_SERVICE_ENTRIES_INCOMPLETE",
+      "NCLATR52_ORDER_SHEET_NOTES_MISSING",
+      "NCLATR52_SERVICE_DATE_UNRECORDED",
+      "NCLATR52_FRESH_NOTICE_STEPS_UNRECORDED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R53",
+    "statute_id": "NCLAT_RULES2016_R53",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "53",
+    "section_title": "Non-appearance of respondent and consequences",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Where the respondent, despite effective service of summons or notice on him, does not appear before the date fixed for hearing, the Appellate Tribunal may proceed to hear the appeal ex parte and pass a final order on merits. However, it remains open to the Appellate Tribunal to seek the assistance of any authorised representative it deems fit where the matter involves intricate and substantial questions of law having wide ramifications.",
+    "core_judicial_inquiry": "Whether service of summons or notice on the respondent was effective, and whether the respondent nonetheless failed to appear by the date fixed for hearing, such that the Appellate Tribunal may proceed ex parte and decide the appeal on merits; and, where the matter involves intricate and substantial questions of law with wide ramifications, whether the Tribunal should exercise its discretion to seek assistance of an authorised representative despite the respondent's non-appearance.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R48",
+      "NCLAT_RULES2016_R49",
+      "NCLAT_RULES2016_R50",
+      "NCLAT_RULES2016_R51",
+      "NCLAT_RULES2016_R52",
+      "CA2013_SEC424"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Appellant/petitioner seeking an ex parte hearing and final order on merits following the respondent's non-appearance despite effective service"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Effective service of summons or notice on the respondent must be established before the Tribunal proceeds ex parte",
+        "Respondent's non-appearance before the date fixed for hearing, despite such effective service"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Appellate Tribunal has the option, in matters involving intricate and substantial questions of law with wide ramifications, to seek the assistance of any authorised representative it deems fit, notwithstanding the respondent's non-appearance"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR53_EXPARTE_ORDER_WITHOUT_PROOF_OF_EFFECTIVE_SERVICE",
+      "NCLATR53_EXPARTE_HEARING_BEFORE_HEARING_DATE",
+      "NCLATR53_INTRICATE_QOL_ASSISTANCE_OPTION_UNCONSIDERED",
+      "NCLATR53_MERITS_DETERMINATION_ABSENT"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R55",
+    "statute_id": "NCLAT_RULES2016_R55",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "55",
+    "section_title": "Fee",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Prescribes that the fee for filing an appeal or interlocutory application, and the process fee, shall be as set out in the Schedule of Fee to these Rules. The fee and process fee must be deposited by separate demand draft or Indian Postal Order in favour of the Pay and Accounts Officer, Ministry of Corporate Affairs, payable at New Delhi. The Appellate Tribunal may, to advance the cause of justice and in suitable cases, waive payment of such fee or any portion of it, having regard to the economic condition or indigent circumstances of the petitioner, appellant, or applicant, or such other reason as the case may be.",
+    "core_judicial_inquiry": "Whether the prescribed fee and process fee (per the Schedule of Fee) were deposited in the correct form (separate demand draft or Indian Postal Order, payable to the Pay and Accounts Officer, Ministry of Corporate Affairs, New Delhi), and, where waiver is sought, whether the petitioner's, appellant's, or applicant's economic condition or indigent circumstances (or other sufficient reason) justify waiving the fee or a portion of it to advance the cause of justice.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R22",
+      "NCLAT_RULES2016_R31",
+      "NCLAT_RULES2016_R56",
+      "NCLAT_RULES2016_R60",
+      "CA2013_SEC421"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Appellant, petitioner, or applicant filing an appeal or interlocutory application, liable to pay the prescribed fee and process fee",
+        "Petitioner, appellant, or applicant seeking waiver of fee on grounds of economic condition, indigent circumstances, or other sufficient reason"
+      ],
+      "financial_threshold": {
+        "minimum_amount": 5000,
+        "currency": "INR"
+      },
+      "mandatory_prerequisites": [
+        "Fee and process fee deposited by separate demand draft or Indian Postal Order",
+        "Payment made in favour of the Pay and Accounts Officer, Ministry of Corporate Affairs, payable at New Delhi"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Appellate Tribunal may, to advance the cause of justice and in suitable cases, waive payment of the fee or any portion of it, having regard to the economic condition or indigent circumstances of the petitioner, appellant, or applicant, or such other reason as the case may be"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR55_FEE_NOT_AS_PER_SCHEDULE",
+      "NCLATR55_WRONG_PAYMENT_INSTRUMENT",
+      "NCLATR55_PAYEE_INCORRECT",
+      "NCLATR55_WAIVER_GROUNDS_UNCONSIDERED",
+      "NCLATR55_FEE_UNPAID_AT_FILING"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R56",
+    "statute_id": "NCLAT_RULES2016_R56",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "56",
+    "section_title": "Award of costs in the proceedings",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Empowers the Appellate Tribunal, whenever it deems fit, to award costs for meeting the legal expenses of the respondent or a defaulting party. In suitable cases, the Tribunal may direct the appellant or respondent to bear the cost of litigation of the other side, and, in case of abuse of the process of court, may impose exemplary costs on the defaulting party.",
+    "core_judicial_inquiry": "Whether it is fit to award costs to meet the legal expenses of the respondent or a defaulting party, whether the appellant or respondent should be directed to bear the other side's litigation costs in the circumstances of the case, and whether the conduct of a party amounts to abuse of the process of court warranting the imposition of exemplary costs.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R11",
+      "NCLAT_RULES2016_R51",
+      "NCLAT_RULES2016_R53",
+      "NCLAT_RULES2016_R55",
+      "CA2013_SEC421"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Respondent or non-defaulting party seeking costs for legal expenses incurred due to the conduct of the appellant, respondent, or defaulting party"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Appellate Tribunal retains discretion, whenever it deems fit, to award costs for the legal expenses of the respondent or defaulting party",
+        "Tribunal may direct the appellant or respondent to bear the litigation cost of the other side in suitable cases",
+        "Tribunal may impose exemplary costs on a defaulting party specifically in case of abuse of the process of court"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR56_COSTS_AWARDED_WITHOUT_DEFAULT_FINDING",
+      "NCLATR56_EXEMPLARY_COSTS_WITHOUT_ABUSE_OF_PROCESS_FINDING",
+      "NCLATR56_COST_DIRECTION_UNREASONED",
+      "NCLATR56_LITIGATION_EXPENSE_BASIS_UNSPECIFIED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R65",
+    "statute_id": "NCLAT_RULES2016_R65",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "65",
+    "section_title": "Restriction on party's right to be heard",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Provides that a party who has engaged an authorised representative to appear on their behalf before the Appellate Tribunal shall not be entitled to be heard in person, unless the Appellate Tribunal permits it.",
+    "core_judicial_inquiry": "Whether the party seeking to be heard in person has already engaged an authorised representative to appear on their behalf, and, if so, whether the Appellate Tribunal has granted permission for the party to be heard personally notwithstanding that engagement.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC432",
+      "NCLAT_RULES2016_R63",
+      "NCLAT_RULES2016_R64",
+      "NCLAT_RULES2016_R66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "A party to proceedings before the Appellate Tribunal who has engaged an authorised representative and seeks to additionally or instead be heard in person"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Permission of the Appellate Tribunal must be obtained before a represented party can be heard in person"
+      ],
+      "statutory_bars": [
+        "A party who has engaged an authorised representative to appear before the Appellate Tribunal is not entitled to be heard in person unless the Appellate Tribunal permits it"
+      ],
+      "saving_exceptions": [
+        "Appellate Tribunal may permit the represented party to be heard in person notwithstanding the general restriction"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR65_PARTY_HEARD_WITHOUT_TRIBUNAL_PERMISSION",
+      "NCLATR65_REPRESENTED_PARTY_DENIED_HEARING_DESPITE_PERMISSION",
+      "NCLATR65_REPRESENTATION_STATUS_UNVERIFIED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R91",
+    "statute_id": "NCLAT_RULES2016_R91",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "91",
+    "section_title": "Pronouncement of order",
+    "jurisdiction_type": "PROCEDURAL_POWER",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Requires the Appellate Tribunal, as far as possible, to pronounce its order immediately after the hearing is concluded. Where orders are reserved, the date for pronouncement must be notified in the cause list, which is deemed valid notice of intimation of pronouncement. Reading of the operative portion of the order in open court is deemed to constitute pronouncement of the order.",
+    "core_judicial_inquiry": "Whether the order was pronounced immediately after conclusion of the hearing (as far as possible), or, where reserved, whether the date of pronouncement was duly notified in the cause list (constituting valid notice), and whether the operative portion of the order was read in open court so as to be deemed a valid pronouncement — a determination relevant to fixing the date from which limitation for appeal or rectification begins to run.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC420",
+      "CA2013_SEC421",
+      "NCLAT_RULES2016_R89",
+      "NCLAT_RULES2016_R92",
+      "NCLAT_RULES2016_R93",
+      "NCLAT_RULES2016_R94",
+      "NCLAT_RULES2016_R95"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Order to be pronounced immediately after conclusion of hearing, as far as possible",
+        "Where orders are reserved, the date for pronouncement to be notified in the cause list",
+        "Reading of the operative portion of the order in open court, which is deemed to constitute pronouncement"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Notification of the pronouncement date in the cause list is deemed a valid notice of intimation of pronouncement, even absent individual notice to parties"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR91_PRONOUNCEMENT_DATE_NOT_NOTIFIED_IN_CAUSE_LIST",
+      "NCLATR91_OPERATIVE_PORTION_NOT_READ_IN_OPEN_COURT",
+      "NCLATR91_UNDUE_DELAY_IN_PRONOUNCEMENT",
+      "NCLATR91_PRONOUNCEMENT_DATE_MISCOMPUTED_FOR_LIMITATION"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R92",
+    "statute_id": "NCLAT_RULES2016_R92",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "92",
+    "section_title": "Pronouncement of order by any one member of the Bench",
+    "jurisdiction_type": "PROCEDURAL_POWER",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Permits any one Member of the Appellate Tribunal to pronounce an order for and on behalf of the Bench. When an order is pronounced under this rule, the Court Master must make a note in the order sheet recording that the order of the Bench (consisting of the Chairperson and Members) was pronounced in open court on behalf of the Bench.",
+    "core_judicial_inquiry": "Whether the order pronounced by a single Member was validly made for and on behalf of the full Bench, and whether the Court Master duly recorded in the order sheet that the pronouncement was made in open court on behalf of the Bench, such that the pronouncement is deemed the Bench's own act.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R91",
+      "NCLAT_RULES2016_R93",
+      "NCLAT_RULES2016_R94",
+      "NCLAT_RULES2016_R95",
+      "CA2013_SEC419",
+      "CA2013_SEC420"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Court Master to make a note in the order sheet that the order of the Bench (comprising the Chairperson and Members) was pronounced in open court on behalf of the Bench"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Any one Member of the Appellate Tribunal may pronounce the order for and on behalf of the Bench, without requiring the presence of all Members constituting the Bench at pronouncement"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR92_ORDER_SHEET_NOTE_OMITTED",
+      "NCLATR92_PRONOUNCEMENT_NOT_ON_BEHALF_OF_FULL_BENCH",
+      "NCLATR92_UNAUTHORISED_MEMBER_PRONOUNCEMENT",
+      "NCLATR92_PRONOUNCEMENT_VALIDITY_DISPUTED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R93",
+    "statute_id": "NCLAT_RULES2016_R93",
+    "act_name": "National Company Law Appellate Tribunal Rules, 2016",
+    "section_number": "93",
+    "section_title": "Authorizing any Member to pronounce order",
+    "jurisdiction_type": "PROCEDURAL_POWER",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Where the Members of the Bench who heard the case are not readily available or have ceased to be Members of the Appellate Tribunal, the Chairperson may authorise any other Member to pronounce the order on his behalf, after being satisfied that the order has been duly prepared and signed by all the Members who heard the case; an order pronounced by the Member so authorised is deemed duly pronounced. The authorised Member must affix his signature in the order sheet stating that he has pronounced the order as provided in this rule. If the order cannot be signed, due to death, retirement, resignation, or any other reason, by any one of the Members of the Appellate Tribunal who heard the case, it shall be deemed to have been released from part-heard status and listed afresh for hearing.",
+    "core_judicial_inquiry": "Whether the Members who originally heard the case were not readily available or had ceased to be Members, whether the Chairperson was satisfied that the order was duly prepared and signed by all Members who heard the case before authorising another Member to pronounce it, whether the authorised Member duly signed the order sheet recording the pronouncement, and, where a hearing Member could not sign the order due to death, retirement, resignation, or other cause, whether the matter was correctly treated as released from part-heard status and relisted afresh.",
+    "intersecting_statute_ids": [
+      "NCLAT_RULES2016_R91",
+      "NCLAT_RULES2016_R92",
+      "NCLAT_RULES2016_R94",
+      "NCLAT_RULES2016_R95",
+      "CA2013_SEC419",
+      "CA2013_SEC420"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Members who heard the case must be either not readily available or to have ceased to be Members of the Appellate Tribunal, before the Chairperson may authorise a substitute pronouncement",
+        "Chairperson must be satisfied that the order has been duly prepared and signed by all the Members who heard the case, before authorising another Member to pronounce it",
+        "Member authorised to pronounce the order must affix his signature in the order sheet of the case stating that he has pronounced the order as provided in this rule"
+      ],
+      "statutory_bars": [
+        "If the order cannot be signed by any one of the Members who heard the case (by reason of death, retirement, resignation, or any other cause), it shall be deemed released from part-heard and must be listed afresh for hearing, rather than pronounced under this rule"
+      ],
+      "saving_exceptions": [
+        "Order pronounced by the Member authorised under this rule is deemed duly pronounced, notwithstanding that the original hearing Members are unavailable to pronounce it themselves"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR93_UNAVAILABILITY_CONDITION_UNVERIFIED",
+      "NCLATR93_ORDER_NOT_SIGNED_BY_ALL_HEARING_MEMBERS",
+      "NCLATR93_CHAIRPERSON_AUTHORISATION_MISSING",
+      "NCLATR93_ORDER_SHEET_PRONOUNCEMENT_NOTE_OMITTED",
+      "NCLATR93_UNSIGNED_ORDER_WRONGLY_PRONOUNCED_INSTEAD_OF_RELISTED"
+    ]
+  },
+  {
+    "_id": "NCLAT_RULES2016_R63_AMD2017",
+    "statute_id": "NCLAT_RULES2016_R63_AMD2017",
+    "act_name": "National Company Law Appellate Tribunal (Amendment) Rules, 2017",
+    "section_number": "63",
+    "section_title": "Appearance of authorised representative",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Substitutes Rule 63 of the NCLAT Rules, 2016 with effect from 24 August 2017. Subject to section 432 of the Companies Act, 2013, a party to any proceedings or appeal before the Appellate Tribunal may appear in person or authorise one or more chartered accountants, company secretaries, cost accountants, legal practitioners, or any other person to present the case before the Appellate Tribunal. Additionally (new in this amendment), the Central Government, the Regional Director, the Registrar of Companies, or the Official Liquidator may authorise an officer or an Advocate to represent them in proceedings before the Appellate Tribunal; any officer so authorised by these authorities must not be below the rank of Junior Time Scale or company prosecutor.",
+    "core_judicial_inquiry": "Whether the person appearing before the Appellate Tribunal on behalf of a party is either the party in person or a validly authorised representative falling within the permitted categories (chartered accountant, company secretary, cost accountant, legal practitioner, or other authorised person), and, where the Central Government, Regional Director, Registrar of Companies, or Official Liquidator is a party, whether the officer or Advocate authorised to represent them meets the minimum rank requirement of Junior Time Scale or company prosecutor.",
+    "intersecting_statute_ids": [
+      "CA2013_SEC432",
+      "NCLAT_RULES2016_R64",
+      "NCLAT_RULES2016_R65",
+      "NCLAT_RULES2016_R66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a proceeding or appeal before the Appellate Tribunal, entitled to appear in person or through an authorised representative",
+        "The Central Government, the Regional Director, the Registrar of Companies, or the Official Liquidator, entitled to authorise an officer or an Advocate to represent them in proceedings before the Appellate Tribunal"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Authorisation must be subject to the provisions of section 432 of the Companies Act, 2013",
+        "Officer authorised by the Central Government, Regional Director, Registrar of Companies, or Official Liquidator must not be below the rank of Junior Time Scale or company prosecutor"
+      ],
+      "statutory_bars": [
+        "An officer authorised by the Central Government, Regional Director, Registrar of Companies, or Official Liquidator below the rank of Junior Time Scale or company prosecutor cannot represent them in proceedings before the Appellate Tribunal"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "NCLATR63AMD_REPRESENTATIVE_CATEGORY_INVALID",
+      "NCLATR63AMD_OFFICER_BELOW_MINIMUM_RANK",
+      "NCLATR63AMD_SEC432_NONCOMPLIANCE",
+      "NCLATR63AMD_UNAUTHORISED_GOVT_REPRESENTATION",
+      "NCLATR63AMD_PRE_2017_RULE_WRONGLY_APPLIED"
+    ]
+  }
+]
