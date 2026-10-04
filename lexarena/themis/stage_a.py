@@ -6,6 +6,7 @@ ERR_ANACHRONISTIC_AUTHORITY. Notes (not failures) are returned separately: recor
 facts, authority treatment warnings, provisions missing from the law DB.
 """
 import datetime as dt
+import re
 from dataclasses import dataclass, field
 
 from lexarena.law.authorities import AuthorityRegistry
@@ -25,6 +26,12 @@ class StageAResult:
 
 
 def _same(a, b) -> bool:
+    """Numbers compare by value (482000000 == 482000000.0); dates and strings by their ISO/str form."""
+    if isinstance(a, (int, float)) and not isinstance(a, bool):
+        try:
+            return abs(float(a) - float(b)) < 0.5
+        except (TypeError, ValueError):
+            return False
     return str(a) == str(b)
 
 
@@ -69,6 +76,9 @@ class StageA:
     def _day_count(self, c: Claim, out: StageAResult) -> None:
         if c.kind != "DAY_COUNT" or None in (c.date_from, c.date_to, c.days):
             return
+        if not re.search(rf"(?<![\d,]){c.days:,}(?![\d,])|(?<!\d){c.days}(?!\d)", c.text):
+            out.notes.append({"claim": c.id, "note": "day count not stated in the claim text (e.g. a period in years); not checked"})
+            return
         actual = (c.date_to - c.date_from).days
         if c.days != actual:
             out.findings.append(Finding("ERR_ARITHMETIC", c.text,
@@ -80,6 +90,9 @@ class StageA:
         if c.kind != "COMPUTATION" or k is None:
             return
         res, accepted_dates, outcome_map = None, set(), {}
+        filled = self._fill_from_record(k)
+        if filled:
+            out.notes.append({"claim": c.id, "note": f"inputs taken from the record: {', '.join(filled)}"})
         try:
             if k.rule == "ART137_LIMITATION" and k.default_date:
                 acks = [Acknowledgment(d) for d in k.acknowledgment_dates]
@@ -116,6 +129,31 @@ class StageA:
                                         f"rule engine computes {sorted(d.isoformat() for d in accepted_dates)}", "A"))
         if res.for_bench:
             out.notes.append({"claim": c.id, "for_bench": res.for_bench})
+
+    def _fill_from_record(self, k) -> list[str]:
+        """Inputs the extractor left out are taken from the record's typed facts (single values only)."""
+        def val(key):
+            f = self.facts.get(key)
+            if f is None or f.conflict or f.value is None:
+                return None
+            if isinstance(f.value, dt.date):
+                return f.value
+            try:
+                return dt.date.fromisoformat(str(f.value))       # typed facts keep ISO dates as strings
+            except ValueError:
+                return None
+        filled = []
+        for attr, key in (("default_date", "date_of_default"), ("filing_date", "nclt_filing_date"),
+                          ("order_date", "impugned_order_date"), ("delivery_date", "demand_notice_delivery")):
+            if getattr(k, attr) is None and val(key) is not None:
+                setattr(k, attr, val(key))
+                filled.append(attr)
+        if k.rule == "ART137_LIMITATION" and not k.acknowledgment_dates and self.case.typed_facts.acknowledgments:
+            ack = [a.date for a in self.case.typed_facts.acknowledgments if a.date]
+            if ack and "default_date" in filled:
+                k.acknowledgment_dates = ack
+                filled.append("acknowledgment_dates")
+        return filled
 
     # -- provisions and authorities ---------------------------------------------------------------------------
     def _provision(self, c: Claim, out: StageAResult) -> None:

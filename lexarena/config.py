@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 class RoleModel(BaseModel):
     model: str                      # Claude Code model alias or full ID ("haiku", "sonnet", "opus", ...)
     max_turns: int = 12             # agent-loop turns (tool round trips) per call
+    thinking: bool = True           # extended thinking; off for mechanical roles (extraction, Stage B) to save usage
 
 
 def _default_roles() -> dict[str, RoleModel]:
@@ -17,11 +18,11 @@ def _default_roles() -> dict[str, RoleModel]:
     # is approximated with a different Claude model. Opus drains the 5-hour window fastest.
     return {
         "smoke": RoleModel(model="haiku", max_turns=4),
-        "baseline": RoleModel(model="sonnet", max_turns=2),
+        "baseline": RoleModel(model="sonnet", max_turns=4),
         "advocate": RoleModel(model="sonnet", max_turns=12),
         "judge": RoleModel(model="opus", max_turns=12),
-        "extractor": RoleModel(model="haiku", max_turns=2),
-        "verifier": RoleModel(model="haiku", max_turns=2),
+        "extractor": RoleModel(model="haiku", max_turns=4, thinking=False),   # structured output may need a retry turn
+        "verifier": RoleModel(model="haiku", max_turns=4, thinking=False),
         "reflector": RoleModel(model="sonnet", max_turns=10),
     }
 

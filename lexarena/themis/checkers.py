@@ -4,7 +4,7 @@ import datetime as dt
 import json
 
 from lexarena.agents import prompts
-from lexarena.llm.agent import AgentSpec, Backend
+from lexarena.llm.agent import AgentError, AgentSpec, Backend
 from lexarena.public_db import UnspoiledCase
 from lexarena.schemas.runtime import Turn
 from lexarena.services import Services
@@ -27,18 +27,26 @@ def build_checkers(case: UnspoiledCase, services: Services, backend: Backend, *,
     events = [f"{e.id}: {e.date or 'undated'} - {e.event}" for e in case.chronology]
     closed_after = case.appeal_scope.record_closed_after_turn
     declared = {"n": 0}
+    failures: list[dict] = []       # extraction / Stage B failures: noted on the turn instead of failing the job
 
     async def extract(t: dict) -> dict:
         declared["n"] = len(t.get("claims", []))
         spec = AgentSpec(role="extractor", system_prompt=prompts.EXTRACTOR, output_model=ClaimSet, cache_salt=salt)
         msg = prompts.EXTRACTOR_INPUT.format(facts=json.dumps(facts, default=str), events="; ".join(events),
                                              declared=json.dumps(t.get("claims", []), ensure_ascii=False), prose=t["prose"])
-        return (await backend.run(spec, msg)).output
+        try:
+            return (await backend.run(spec, msg)).output
+        except AgentError as e:
+            return {"claims": [], "_extraction_error": str(e)[:300]}
 
     def run_stage_a(claims: dict) -> list[Finding]:
+        error = claims.pop("_extraction_error", None) if isinstance(claims, dict) else None
         res = stage_a.run(claims)
         notes_sink[:] = res.notes                      # notes from the latest Stage A run go on the transcript
-        if not claims.get("claims") and declared["n"]:
+        notes_sink[:0] = failures
+        if error:
+            notes_sink.insert(0, {"note": f"EXTRACTION_FAILED: {error}; Stage A checked nothing for this attempt"})
+        elif not claims.get("claims") and declared["n"]:
             notes_sink.insert(0, {"note": f"EXTRACTION_EMPTY: the advocate declared {declared['n']} claims but none were "
                                           "extracted; Stage A checked nothing for this turn"})
         return res.findings
@@ -56,7 +64,12 @@ def build_checkers(case: UnspoiledCase, services: Services, backend: Backend, *,
                          output_model=StageBOutput, cache_salt=salt)
         msg = prompts.VERIFIER_INPUT.format(record=_record_extract(case), authorities=json.dumps(props, ensure_ascii=False),
                                             claims=cs.model_dump_json(exclude_none=True), prose=t["prose"])
-        out = StageBOutput.model_validate((await backend.run(spec, msg)).output)
+        try:
+            out = StageBOutput.model_validate((await backend.run(spec, msg)).output)
+        except AgentError as e:
+            failures.append({"note": f"STAGE_B_FAILED: {str(e)[:300]}"})
+            notes_sink.append(failures[-1])
+            return []
         by_id = {c.id: c.text for c in cs.claims}
         return [Finding(f.code, by_id.get(f.claim_id, f.claim_id), f.evidence, "B") for f in out.findings]
 

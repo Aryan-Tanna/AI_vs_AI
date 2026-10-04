@@ -1,8 +1,18 @@
 """The ClaimSet: what Haiku extracts from a turn, and what Stage A checks (CLAUDE.md §8.3)."""
 import datetime as dt
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field
+
+
+def _to_date(v):
+    """Accept '2018-12-31T00:00:00' or '2018-12-31 00:00' from the extractor; keep the date part."""
+    if isinstance(v, str) and len(v) > 10 and v[10] in "T ":
+        return v[:10]
+    return v
+
+
+Date = Annotated[dt.date, BeforeValidator(_to_date)]
 
 
 class _Out(BaseModel):
@@ -14,14 +24,14 @@ ComputationRule = Literal["ART137_LIMITATION", "SEC61_APPEAL", "SEC62_APPEAL", "
 class Computation(_Out):
     """A calculation the advocate asserts, with the inputs it used, so Stage A can redo it."""
     rule: ComputationRule
-    default_date: dt.date | None = None
-    acknowledgment_dates: list[dt.date] = Field(default_factory=list)
-    filing_date: dt.date | None = None
-    order_date: dt.date | None = None
-    delivery_date: dt.date | None = None
+    default_date: Date | None = None
+    acknowledgment_dates: list[Date] = Field(default_factory=list)
+    filing_date: Date | None = None
+    order_date: Date | None = None
+    delivery_date: Date | None = None
     amount_inr: float | None = None
     asserted_outcome: Literal["WITHIN", "BARRED", "MET", "NOT_MET", "PREMATURE", "IN_TIME", "CONDONABLE", "BEYOND_LIMIT"] | None = None
-    asserted_date: dt.date | None = Field(None, description="e.g. the expiry date the advocate states")
+    asserted_date: Date | None = Field(None, description="e.g. the expiry date the advocate states")
 
 
 class Claim(_Out):
@@ -30,10 +40,10 @@ class Claim(_Out):
     text: str = Field(description="The claim as asserted in the turn")
     fact_key: str | None = Field(None, description="typed_facts key this claim states, e.g. date_of_default")
     record_ref: str | None = Field(None, description="chronology event (E3) or record document (D2) relied on")
-    date: dt.date | None = None
+    date: Date | None = None
     amount_inr: float | None = None
-    date_from: dt.date | None = None
-    date_to: dt.date | None = None
+    date_from: Date | None = None
+    date_to: Date | None = None
     days: int | None = None
     computation: Computation | None = None
     provision: str | None = Field(None, description="as cited, e.g. 'Section 18 of the Limitation Act'")

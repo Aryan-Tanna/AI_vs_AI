@@ -25,6 +25,23 @@ def norm_title(t: str) -> str:
     return re.sub(r"\s+", " ", NOISE.sub(" ", t)).strip()
 
 
+def _acronym(side: str) -> str:
+    words = [w for w in side.split() if w]
+    return "".join(w[0] for w in words) if len(words) >= 2 else side
+
+
+def title_keys(title: str) -> list[str]:
+    full = norm_title(title)
+    keys = [full]
+    brackets = [b.lower() for b in re.findall(r"\(([A-Za-z]{2,10})\)", title or "")]
+    sides = full.split(" v ", 1)
+    if len(sides) == 2:
+        a, b = sides
+        keys += [f"{a} v {_acronym(b)}", f"{_acronym(a)} v {b}"]
+        keys += [f"{a} v {br}" for br in brackets]
+    return list(dict.fromkeys(k for k in keys if k))
+
+
 @dataclass
 class AuthorityStatus:
     query: str
@@ -52,11 +69,17 @@ class AuthorityRegistry:
             self.entries.append({"source": "REFERENCE", "uid": c["case_uid"], "title": c["title"],
                                  "date": c["decision_date"], "year": int(c["decision_date"][:4]),
                                  "overruled": c.get("is_overruled_raw", False),
-                                 "proposition": (c.get("propositions") or [None])[0]})
+                                 "proposition": " | ".join((c.get("propositions") or [])[:8]) or None})
         for s in seed:
             self.entries.append({"source": "SC_SEED", "uid": s["uid"], "title": s["title"], "date": None,
                                  "year": s["year"], "overruled": False, "proposition": s.get("proposition")})
-        self.keys = [norm_title(e["title"]) for e in self.entries]
+        # Each entry gets several match keys: the full title, plus forms with one side reduced to its acronym or to
+        # an abbreviation given in brackets ("Stressed Assets Stabilisation Fund (SASF)" -> "sasf").
+        self.keys, self.key_entry = [], []
+        for i, e in enumerate(self.entries):
+            for k in title_keys(e["title"]):
+                self.keys.append(k)
+                self.key_entry.append(i)
 
     @classmethod
     def load(cls, reference_path: Path, seed_path: Path) -> "AuthorityRegistry":
@@ -66,9 +89,9 @@ class AuthorityRegistry:
         return cls(cases, seed)
 
     def _best(self, q: str, source: str | None) -> tuple[dict, float] | None:
-        idx = [i for i, e in enumerate(self.entries) if source is None or e["source"] == source]
-        hit = process.extractOne(q, [self.keys[i] for i in idx], scorer=fuzz.token_sort_ratio, score_cutoff=MATCH_THRESHOLD)
-        return (self.entries[idx[hit[2]]], hit[1]) if hit else None
+        idx = [j for j, i in enumerate(self.key_entry) if source is None or self.entries[i]["source"] == source]
+        hit = process.extractOne(q, [self.keys[j] for j in idx], scorer=fuzz.token_sort_ratio, score_cutoff=MATCH_THRESHOLD)
+        return (self.entries[self.key_entry[idx[hit[2]]]], hit[1]) if hit else None
 
     def status(self, title: str, cutoff: dt.date, court: str | None = None) -> AuthorityStatus:
         """`court`: SC or NCLAT when the citation says so. The same parties often appear in an NCLAT decision and

@@ -87,6 +87,7 @@ class ClaudeCodeBackend:
             cwd=str(self.settings.sandbox_dir),
             output_format=({"type": "json_schema", "schema": spec.output_model.model_json_schema()}
                            if spec.output_model else None),
+            thinking=None if role.thinking else {"type": "disabled"},
         )
 
     async def run(self, spec: AgentSpec, prompt: str) -> AgentResult:

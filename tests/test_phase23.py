@@ -202,3 +202,34 @@ def test_wrapped_structured_output_is_unwrapped_and_empty_is_rejected():
     assert len(ClaimSet.model_validate(coerce_structured(wrapped, ClaimSet)).claims) == 1
     with pytest.raises(ValidationError):                 # the old silent failure: wrapper validated as "no claims"
         ClaimSet.model_validate(wrapped)
+
+
+def test_claim_dates_accept_time_suffix():
+    from lexarena.themis.claims import Claim
+    c = Claim.model_validate({"id": "C1", "kind": "DAY_COUNT", "text": "x", "date_from": "2018-12-31T00:00:00",
+                              "date_to": "2020-01-10 00:00", "days": 375})
+    assert c.date_from == D(2018, 12, 31) and c.date_to == D(2020, 1, 10)
+
+
+def test_amounts_compare_by_value(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "AMOUNT", "text": "Rs 482,000,000", "fact_key": "amount_in_default_inr", "amount_inr": 482000000.0})
+    assert codes(r) == []
+
+
+def test_year_period_not_checked_as_day_count(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "DAY_COUNT", "text": "Three years from 31.12.2015 ended on 31.12.2018",
+                      "date_from": "2015-12-31", "date_to": "2018-12-31", "days": 1095})
+    assert codes(r) == [] and any("not stated" in n["note"] for n in r.notes)
+
+
+def test_missing_computation_inputs_taken_from_record(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "COMPUTATION", "text": "The application is barred",
+                      "computation": {"rule": "ART137_LIMITATION", "asserted_outcome": "BARRED"}})
+    assert codes(r) == ["ERR_ARITHMETIC"]                      # record: default 31.12.2015, ack 05.09.2018, filed 10.01.2020
+    assert any("inputs taken from the record" in n.get("note", "") for n in r.notes)
+
+
+def test_authority_matched_by_bracketed_abbreviation():
+    reg = AuthorityRegistry([ref_case("REF-P", "V. Padmakumar vs. Stressed Assets Stabilisation Fund (SASF) & Anr.", "2020-03-12", "p")], [])
+    assert reg.status("V. Padmakumar v. SASF", D(2021, 1, 1)).found
+    assert not reg.status("V. Padmanabhan v. SBI", D(2021, 1, 1)).found

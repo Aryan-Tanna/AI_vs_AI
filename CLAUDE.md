@@ -95,7 +95,7 @@ queue, session runner, record tools, smoke/baseline/debate handlers, CLI; the pu
 validator (§6.6, `scripts/validate_public_db.py`, `scripts/export_schemas.py`); THEMIS-LOCAL gate control
 flow (§8.3); the rule engine + Z3 (`lexarena/rules/`, build Phase 1); reference DB ingest (`ingest/`),
 retrieval (`retrieval/`), law/authority lookups (`law/`), research tools (`tools/research.py`), THEMIS-LOCAL
-Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3). 87 tests in `tests/`.
+Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3). 94 tests in `tests/`.
 Architecture in text + image: `docs/ARCHITECTURE.md`, `docs/architecture.png`. Git: the raw data and
 docs are in the initial commit. Two raw filenames contain a space / `&` (`company act.json`,
 `ncalt&nclt.json`); do not rename raw files — map them to clean IDs in config. Platform is Windows 11,
@@ -695,9 +695,19 @@ All model calls run on the project owner's **Claude Pro/Max subscription**, not 
 - **Isolation (verified by the live smoke test, 2026-10-04):** agents get no built-in tools, no
   settings/CLAUDE.md/skills, only our in-process MCP tools, `permission_mode="dontAsk"`, and an empty
   `data/sandbox/` working directory. The smoke agent called its tool and could not read files.
-- **Throughput is unknown until measured.** Before any batch run, run 3 debate jobs on dev and record
-  calls, tokens and window utilization per case here; then size batches (expect a 500-case
-  simulation plus bench to take many windows and run into the weekly cap; plan per week, not per day).
+- **Measured (2026-10-04, synthetic template case, 5-turn MVP debate with THEMIS-LOCAL):** 21 uncached
+  calls (advocate 8 incl. 3 revisions, extractor 8, Stage B 5), ~$2.3 API-equivalent; Haiku extraction was
+  the largest consumer (~170k output tokens) before extended thinking was turned off for the extractor and
+  Stage B. Two debates plus smoke tests did not trigger a five-hour-window warning on this account. Re-measure
+  on real dev cases (S2), including the bench, before sizing batches; plan per week, not per day.
+- **Lessons from the first live runs (all fixed, with regression tests):** Haiku sometimes wraps structured
+  output as `{"parameter": "<json>"}` — the backend unwraps it and agent output models are strict
+  (`extra="forbid"`, answer fields required) so a malformed reply fails instead of validating as empty;
+  strict schemas make the CLI retry, so Haiku roles need `max_turns` ≥ 4; extracted dates may carry a time
+  suffix; a failed extraction or Stage B call is noted on the turn instead of failing the job; Stage A
+  compares amounts by value, checks a day count only if the number appears in the claim text, fills missing
+  computation inputs from the record's typed facts; authority matching handles bracketed abbreviations and
+  acronyms; Stage B sees all stored propositions of a cited case.
 - Model choice per role is in `config.py` (`haiku` for smoke/extraction, `sonnet` for advocates/baseline/
   reflection, `opus` for judges). Opus drains windows fastest; switch judges to `sonnet` if the weekly
   Opus cap binds.
@@ -1066,7 +1076,7 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
       search_authorities, get_provision, authority_status, rules_limitation / appeal_timeline / sec9_notice /
       sec10a / threshold, each built per case with cutoff, law date and exclusions fixed inside. Tests prove
       excluded and post-cutoff authorities never come back and post-cutoff SC authorities are marked unusable.
-- [ ] **S2. Measure usage**: 3 dev debates; record calls/tokens/window utilization per case in §7.4.
+- [~] **S2. Measure usage**: first measurement on the synthetic case recorded in §7.4; repeat on 3 real dev cases.
 - [~] **T. Advocate agents**: structured turns (prose + claims), record + research tools, MVP 5-turn
       schedule. Remaining: prompts conditioned on `appellant_role` / `proceeding_type`; s.61(3) scope.
 - [x] **U. THEMIS-LOCAL** (§8.3): `themis/claims.py` (ClaimSet), `themis/stage_a.py` (fact/event
@@ -1075,7 +1085,8 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
       (`themis/checkers.py`), revision by the same advocate; wired into the debate handler per turn.
 - [ ] **U2. THEMIS-GLOBAL** (§8.3a) before the bench; report format side-symmetric, findings only.
 - [x] **V. Orchestrator**: plain Python job handlers + checkpointed steps (`orchestrator/handlers.py`).
-- [ ] **W. Smoke run** on 10 dev cases; lawyer reads every transcript; fix prompts.
+- [~] **W. Smoke run**: two live end-to-end debates on the synthetic case (tools used correctly; THEMIS caught
+      and fixed real errors; false positives found and fixed). Remaining: 10 real dev cases, lawyer reads every transcript.
 
 ### Phase 4 — Bench, global audit, metrics
 - [ ] **X. Bench** personas (§8.5), aggregator, issue-wise order.

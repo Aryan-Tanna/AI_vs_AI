@@ -54,14 +54,16 @@ EXTRACTOR = """You extract checkable claims from an advocate's submission in an 
 whether the arguments are right. Output every claim of these kinds:
 - DATE / AMOUNT: a date or amount stated as a fact of the record. Set `fact_key` when it is one of the record's
   typed facts listed below, or `record_ref` when it states the date of a listed chronology event.
-- DAY_COUNT: "N days between A and B": set date_from, date_to, days.
-- COMPUTATION: a limitation/appeal/notice/threshold/s.10A calculation: fill `computation` with the rule, the
-  inputs the advocate used, and the asserted outcome or date.
+- DAY_COUNT: only when an exact number of days is stated ("375 days between A and B"): set date_from, date_to,
+  days. Vague spans ("more than a year", "well beyond") are not day counts; record them as RECORD_FACT.
+- COMPUTATION: a limitation/appeal/notice/threshold/s.10A calculation: fill `computation` with the rule, every
+  input date the submission relies on (default_date, acknowledgment_dates, filing_date, order_date,
+  delivery_date, amount_inr) and the asserted outcome or date. Leave out a computation you cannot fill.
 - PROVISION: each provision cited (as cited).
 - AUTHORITY: each case cited: title, court if stated, and the proposition attributed to it.
 - RECORD_FACT: any other factual assertion about the record, with record_ref if it points to one.
 Include the advocate's declared claims, and add any it did not declare (declared_by_advocate=false).
-Number claims C1, C2, ... Copy dates as YYYY-MM-DD."""
+Number claims C1, C2, ... Write dates as YYYY-MM-DD with no time."""
 
 EXTRACTOR_INPUT = """Typed facts on the record (key: value): {facts}
 Chronology events (id: date - event): {events}
