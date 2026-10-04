@@ -10,7 +10,11 @@ from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
 
-RECORD_START = re.compile(r'\{\s*"precedent_id"')
+
+def record_start(id_field: str) -> re.Pattern:
+    return re.compile(r'\{\s*"' + re.escape(id_field) + r'"')
+
+
 SKIP = " \t\r\n,[]"
 
 
@@ -26,12 +30,13 @@ class LoadReport:
         return self.precedent_id_occurrences - self.parsed
 
 
-def iter_raw_records(path: Path, report: LoadReport | None = None) -> Iterator[dict]:
+def iter_raw_records(path: Path, report: LoadReport | None = None, id_field: str = "precedent_id") -> Iterator[dict]:
     txt = path.read_text(encoding="utf-8")
     dec, i, n = json.JSONDecoder(), 0, len(txt)
     if report is not None:
         report.files += 1
-        report.precedent_id_occurrences += txt.count('"precedent_id"')
+        report.precedent_id_occurrences += txt.count(f'"{id_field}"')
+    start = record_start(id_field)
     while i < n:
         while i < n and txt[i] in SKIP:
             i += 1
@@ -40,7 +45,7 @@ def iter_raw_records(path: Path, report: LoadReport | None = None) -> Iterator[d
         try:
             obj, i = dec.raw_decode(txt, i)
         except json.JSONDecodeError as e:
-            nxt = RECORD_START.search(txt, i + 1)
+            nxt = start.search(txt, i + 1)
             if report is not None:
                 report.errors.append({"file": str(path), "offset": i, "error": str(e),
                                       "skipped_to": nxt.start() if nxt else None})
@@ -54,7 +59,7 @@ def iter_raw_records(path: Path, report: LoadReport | None = None) -> Iterator[d
                 yield rec
 
 
-def load_all(root: Path, pattern: str = "nclat_precedents*/*.jsonl") -> tuple[list[dict], LoadReport]:
+def load_all(root: Path, pattern: str = "nclat_precedents*/*.jsonl", id_field: str = "precedent_id") -> tuple[list[dict], LoadReport]:
     report = LoadReport()
-    recs = [r for f in sorted(root.glob(pattern)) for r in iter_raw_records(f, report)]
+    recs = [r for f in sorted(root.glob(pattern)) for r in iter_raw_records(f, report, id_field)]
     return recs, report

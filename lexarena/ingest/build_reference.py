@@ -40,8 +40,39 @@ class _UF:
         self.p[self.find(a)] = self.find(b)
 
 
-def build(root: Path = ROOT) -> tuple[list[dict], dict]:
-    raw, report = load_all(root)
+CANONICAL_FIELDS = ["precedent_id", "case_title", "appeal_number", "decision_date", "bench", "forum", "final_order",
+                    "operative_order", "statutes_cited", "material_facts", "legal_issues", "ratio_decidendi", "summary",
+                    "is_overruled"]
+
+
+def apply_mapping(rec: dict, mapping: dict, id_field: str) -> dict:
+    """Rename raw fields to the canonical names (mapping: canonical -> raw). Unmapped fields keep their name."""
+    out = {c: rec.get(mapping.get(c, c)) for c in CANONICAL_FIELDS if rec.get(mapping.get(c, c)) is not None}
+    out["precedent_id"] = rec.get(mapping.get("precedent_id", id_field), out.get("precedent_id", ""))
+    out["_file"] = rec.get("_file", "")
+    return out
+
+
+def ingest_specs(settings: Settings) -> list[dict]:
+    import yaml
+    cfg = yaml.safe_load(settings.sources_file.read_text(encoding="utf-8")) if settings.sources_file.exists() else {}
+    return (cfg or {}).get("reference_ingest") or [{"name": "nclat_precedents", "glob": "nclat_precedents*/*.jsonl",
+                                                     "id_field": "precedent_id", "mapping": {}}]
+
+
+def build(root: Path = ROOT, specs: list[dict] | None = None) -> tuple[list[dict], dict]:
+    specs = specs or ingest_specs(Settings())
+    raw, report = [], None
+    for spec in specs:
+        part, rep = load_all(root, spec["glob"], spec.get("id_field", "precedent_id"))
+        raw += [apply_mapping(r, spec.get("mapping") or {}, spec.get("id_field", "precedent_id")) for r in part]
+        if report is None:
+            report = rep
+        else:
+            report.files += rep.files
+            report.precedent_id_occurrences += rep.precedent_id_occurrences
+            report.parsed += rep.parsed
+            report.errors += rep.errors
     recs = [normalise(r) for r in raw]
     uf = _UF(len(recs))
     by_key: dict = {}

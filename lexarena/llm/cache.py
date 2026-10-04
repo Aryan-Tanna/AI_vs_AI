@@ -16,6 +16,7 @@ def cache_key(spec: AgentSpec, model: str, prompt: str) -> str:
     payload = {
         "role": spec.role, "model": model, "system": spec.system_prompt, "prompt": prompt,
         "tools": sorted(t.name for t in spec.tools), "salt": spec.cache_salt,
+        "builtin": sorted(spec.builtin_tools), "rules": sorted(spec.allow_rules), "mcp": sorted(spec.external_mcp),
         "schema": spec.output_model.model_json_schema() if spec.output_model else None,
     }
     return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()

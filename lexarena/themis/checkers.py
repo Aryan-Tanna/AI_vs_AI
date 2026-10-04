@@ -7,7 +7,7 @@ from lexarena.agents import prompts
 from lexarena.llm.agent import AgentError, AgentSpec, Backend
 from lexarena.public_db import UnspoiledCase
 from lexarena.schemas.runtime import Turn
-from lexarena.services import Services
+from lexarena.sources.registry import SourceRegistry
 from lexarena.themis.claims import ClaimSet, StageBOutput
 from lexarena.themis.local import Checkers, Finding
 from lexarena.themis.stage_a import StageA
@@ -19,14 +19,14 @@ def _record_extract(case: UnspoiledCase) -> str:
     return json.dumps(keep, ensure_ascii=False, default=str)
 
 
-def build_checkers(case: UnspoiledCase, services: Services, backend: Backend, *, turn: int, stage: str,
-                   advocate_spec: AgentSpec, salt: str, notes_sink: list) -> Checkers:
-    stage_a = StageA(case, services.law, services.authorities)
+def build_checkers(case: UnspoiledCase, services: SourceRegistry, backend: Backend, *, turn: int, stage: str,
+                   advocate_spec: AgentSpec, salt: str, notes_sink: list, declared_n: int = 0) -> Checkers:
+    stage_a = StageA(case, services.law, services.authorities, services.mode)
     cutoff = case.law_as_of + dt.timedelta(days=1)
     facts = {k: (f.values if f.conflict else f.value) for k, f in case.typed_facts.all_facts().items()}
     events = [f"{e.id}: {e.date or 'undated'} - {e.event}" for e in case.chronology]
     closed_after = case.appeal_scope.record_closed_after_turn
-    declared = {"n": 0}
+    declared = {"n": declared_n}       # set from the draft so the note also works when extraction is resumed from a checkpoint
     failures: list[dict] = []       # extraction / Stage B failures: noted on the turn instead of failing the job
 
     async def extract(t: dict) -> dict:
@@ -78,7 +78,9 @@ def build_checkers(case: UnspoiledCase, services: Services, backend: Backend, *,
         msg = prompts.REVISE.format(case_uid=case.case_uid, turn=turn, stage=stage, findings=listed,
                                     previous=json.dumps(t, ensure_ascii=False))
         spec = AgentSpec(role="advocate", system_prompt=advocate_spec.system_prompt, tools=advocate_spec.tools,
-                         output_model=Turn, cache_salt=f"{advocate_spec.cache_salt}|revise{n}")
+                         output_model=Turn, cache_salt=f"{advocate_spec.cache_salt}|revise{n}",
+                         builtin_tools=advocate_spec.builtin_tools, allow_rules=advocate_spec.allow_rules,
+                         external_mcp=advocate_spec.external_mcp)
         return (await backend.run(spec, msg)).output
 
     return Checkers(extract=extract, stage_a=run_stage_a, stage_b=stage_b, revise=revise)

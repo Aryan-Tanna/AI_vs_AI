@@ -95,8 +95,9 @@ queue, session runner, record tools, smoke/baseline/debate handlers, CLI; the pu
 validator (§6.6, `scripts/validate_public_db.py`, `scripts/export_schemas.py`); THEMIS-LOCAL gate control
 flow (§8.3); the rule engine + Z3 (`lexarena/rules/`, build Phase 1); reference DB ingest (`ingest/`),
 retrieval (`retrieval/`), law/authority lookups (`law/`), research tools (`tools/research.py`), THEMIS-LOCAL
-Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3). 94 tests in `tests/`.
-Architecture in text + image: `docs/ARCHITECTURE.md`, `docs/architecture.png`. Git: the raw data and
+Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3); config-driven sources and
+run modes (`lexarena/sources/`, `config/sources.yaml`). 107 tests in `tests/`.
+Architecture in text + image: `docs/ARCHITECTURE.md`, `docs/architecture.png`. Status and next steps: `docs/ROADMAP.md`. Git: the raw data and
 docs are in the initial commit. Two raw filenames contain a space / `&` (`company act.json`,
 `ncalt&nclt.json`); do not rename raw files — map them to clean IDs in config. Platform is Windows 11,
 Python 3.13.5 (Anaconda; code targets ≥ 3.12). Use `pathlib`, UTF-8 everywhere (`encoding="utf-8"` on every open), no shell-specific paths.
@@ -231,6 +232,30 @@ allowed (framed before decision) but must pass the neutrality check in §6.2. Pa
 contentions are allowed only where the judgment records them separately from the bench's analysis.
 
 ---
+
+### 4.0 Dynamic sources and run modes (decided 2026-10-05)
+Nothing in the code is tied to a particular database. All research sources are declared in
+`config/sources.yaml` and built by `lexarena/sources/` (`SourceRegistry`); tools and THEMIS fan out to every
+enabled source. Built-in types: `reference_jsonl`, `seed_json`, `generic_jsonl` (any JSON/JSONL precedent file
+via a field mapping, no ingest), `law_db_json`; new storage kinds via `register_source_type`. Raw precedent
+dumps are ingested through `reference_ingest` entries with a field mapping.
+- **`eval` mode** (default; any run with an answer key): only sources that respect the cutoff; web limited to
+  fetching statutory material from the configured official domains (permission rules on the exact hosts);
+  no case-law web search; no external MCP servers unless they enforce the cutoff. Unknown authorities fail
+  Stage A (`ERR_UNVERIFIED_AUTHORITY`).
+- **`live` mode** (`LEX_MODE=live`; new matters, no answer key): every source, open web search, configured MCP
+  servers. Unknown authorities become an "unverified" note.
+- Case-law web search is never allowed in `eval`: it would find the real outcome or later authorities.
+- Measured 2026-10-05: the domain allowlist is enforced (example.com denied); indiacode.nic.in answers HTTP 403
+  to automated fetches, so Law DB v2 (local verbatim text) remains the primary statutory source.
+
+### 4.1 No evidence beyond the record (decided 2026-10-04)
+Exhibits are not public. The record is what the judgments state: chronology, record documents (each with
+the gist the judgment gives), typed facts. Advocates and judges may rely only on that record and must cite
+record ids; arguing absence of evidence is allowed, inventing documents is not (prompt rule + Stage A
+`ERR_UNKNOWN_RECORD_REF` + Stage B `ERR_UNSUPPORTED_BY_RECORD` + THEMIS-GLOBAL before the bench). Cases whose
+outcome turned on a document's content that the judgment does not describe are excluded from the public DB.
+Unsupported-fact rate is reported per turn, for advocates and judges.
 
 ## 5. Legal rules the system must encode correctly
 
@@ -534,6 +559,14 @@ is reported separately; it never replaces the label.
 }
 ```
 
+#### 6.6.4a Silver and gold tiers (decided 2026-10-05)
+- **Silver**: reference-DB cases converted automatically into this format (`manifest.build.method` marks
+  them). Used for train (reflection memory) and dev (prompt tuning, debugging) only; never for reported
+  results, because the source summaries were written with knowledge of the outcome.
+- **Gold**: built by the Case Builder from the NCLAT judgment text (+ NCLT order where available; otherwise
+  the judgment's own summary of it, recorded in the manifest) and human-checked. Test split and lawyer study.
+- Cases whose outcome turned on a document's content that the judgment does not describe are excluded (§4.1).
+
 #### 6.6.5 Selection of the ~500
 - Temporal split (§9.1): train 250 (≤ 2023) · dev 100 (2024) · test 150 (2025–26, after every model's cutoff).
 - Target mix within IBC appeals (same in each split): s.7 admission 30 % · s.9 admission 20 % · resolution
@@ -708,6 +741,12 @@ All model calls run on the project owner's **Claude Pro/Max subscription**, not 
   compares amounts by value, checks a day count only if the number appears in the claim text, fills missing
   computation inputs from the record's typed facts; authority matching handles bracketed abbreviations and
   acronyms; Stage B sees all stored propositions of a cited case.
+- **Third live run (2026-10-05, after the fixes):** completed 5 turns, 27 calls, ~$1.5 API-equivalent; extractor
+  output fell from ~170k to ~52k tokens with thinking off. Remaining false positives came from extraction
+  attaching derived dates or inputs to claims; fixed: acknowledgments are never filled into a hypothetical
+  computation, a claim that states the record date itself is not compared on its derived date, combined
+  references ("E4, D2") are split, and the extractor prompt separates fact dates from derived dates and
+  conditional computations. Expect some extraction noise to remain: a lawyer's transcript review (W) is the check.
 - Model choice per role is in `config.py` (`haiku` for smoke/extraction, `sonnet` for advocates/baseline/
   reflection, `opus` for judges). Opus drains windows fastest; switch judges to `sonnet` if the weekly
   Opus cap binds.
@@ -790,6 +829,7 @@ PER CASE (orchestrator = code)
 | `read_ground_truth()` | | | ✓ | |
 | `propose_lesson(...)` | | | ✓ | |
 | `pdf_search / pdf_read_page` | | | | ✓ |
+| Web (Claude Code built-ins, per mode): eval = `WebFetch` on official statute hosts only; live = `WebSearch` + `WebFetch` | ✓ | ✓ | | ✓ |
 | `validate_draft()` — §6.6.6 checks | | | | ✓ |
 | `submit_turn` / `submit_judgment` / `submit_draft` | ✓ | ✓ | | ✓ |
 
@@ -809,8 +849,8 @@ Advocates *may* call `rules.*` to get their arithmetic right; THEMIS still recom
 
 ### 8.2 Retrieval
 - Index units: authority **propositions** (ratio split per issue) + issues + facts, not facts alone.
-- Hybrid: BM25 (legal terms, section numbers matter) + dense (bge-m3 or bge-base; pick one, record it)
-  + statute-ID filter + cross-encoder reranker.
+- Hybrid: BM25 (legal terms, section numbers matter) + dense **bge-small-en-v1.5 (384 dims; chosen 2026-10-04,
+  ~130 MB, query instruction prefix)** fused by reciprocal rank + statute-ID boost. Cross-encoder reranker: not yet.
 - Hard filters: `uid ∉ dedup_cluster(case)`, `date < cutoff(case)`, `status_as_of(cutoff) == GOOD_LAW`
   (or include with an explicit "reversed on …" tag, never silently).
 - Threshold: calibrated on a labelled set of (case, relevant authority) pairs drawn from the train split
@@ -846,6 +886,7 @@ parallelism is one Haiku call per turn. Running B once on the final version is t
    evidence, so if Haiku mis-extracted, the advocate can restate the point clearly and the re-extraction
    picks it up.
 2. **Stage A, deterministic (code + rule engine + Z3), pass/fail with error codes. Up to 3 attempts.**
+   - Claim cites a record id (E#/D#) that does not exist → `ERR_UNKNOWN_RECORD_REF` (invented exhibit/event).
    - Asserted date/amount ≠ record typed fact → `ERR_FACT_MISMATCH` (lookup).
    - Arithmetic wrong (day counts, limitation expiry, s.61(2) 30+15, s.9 ten days) → `ERR_ARITHMETIC` (`rules/`).
    - The claims contradict each other or the record's dates (e.g. acknowledgment after expiry presented as
@@ -1064,9 +1105,9 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
 ### Phase 2 — Retrieval
 - [~] **P. Index** (`retrieval/`): 17,935 units (propositions, issues, facts); BM25 with section-aware
       tokens built in memory (~2 s); RRF fusion with dense when built; provision boost; one hit per case.
-      Dense (bge-m3) code ready but **the local bge-m3 cache has no weights** (43 MB, config/tokenizer only);
-      download, then `python -m lexarena.retrieval.build_index --dense`. Brute-force numpy instead of Qdrant
-      (enough at this size; same interface). No cross-encoder reranker yet.
+      Dense: bge-small-en-v1.5 (384 dims), built with `python -m lexarena.retrieval.build_index --dense`
+      (~40 min on this CPU), cached in `data/index/`. Brute-force numpy instead of Qdrant (enough at this
+      size; same interface). No cross-encoder reranker yet.
 - [x] **Q. Filters**: exclusion set + temporal cutoff applied before ranking; overruled flag surfaced as a
       treatment note (status-as-of needs step J). Leakage tests pass.
 - [ ] **R. Calibrate** τ on train pairs; report precision/recall (needs labelled pairs).
@@ -1077,8 +1118,9 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
       sec10a / threshold, each built per case with cutoff, law date and exclusions fixed inside. Tests prove
       excluded and post-cutoff authorities never come back and post-cutoff SC authorities are marked unusable.
 - [~] **S2. Measure usage**: first measurement on the synthetic case recorded in §7.4; repeat on 3 real dev cases.
-- [~] **T. Advocate agents**: structured turns (prose + claims), record + research tools, MVP 5-turn
-      schedule. Remaining: prompts conditioned on `appellant_role` / `proceeding_type`; s.61(3) scope.
+- [x] **T. Advocate agents**: structured turns (prose + claims), record + research tools, MVP 5-turn
+      schedule, proceeding-specific framework identical for both sides + side description
+      (`agents/framework.py`), s.61(3)/(4) scope for plan-approval and liquidation appeals.
 - [x] **U. THEMIS-LOCAL** (§8.3): `themis/claims.py` (ClaimSet), `themis/stage_a.py` (fact/event
       mismatch, day counts, computations redone by the rule engine, provision not in force, unverified /
       anachronistic authority; notes for record conflicts and coverage gaps), Haiku extractor and Stage B
@@ -1138,6 +1180,9 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
 | 2026-10-04 | Advocates, judges, case builder, reflection = tool-using agents; orchestrator, THEMIS checks, rules, aggregator, metrics = code | Agents where lookup decisions matter; code where reproducibility matters (§8.0) |
 | 2026-10-04 | Leakage filters enforced inside tools, not prompts | Agents can't bypass filters; full traces for replay |
 | 2026-10-04 | All model calls on the owner's Claude subscription via the Agent SDK (no API key, no gateway); work paced to 5-hour windows with a checkpointed job queue | Project owner's decision (budget) |
+| 2026-10-05 | Two data tiers: silver (auto from reference DB; train/dev) and gold (from judgments, human-checked; test) | Train/dev can start without PDFs; reported results stay clean |
+| 2026-10-05 | Sources are config-driven (`config/sources.yaml`); eval vs live mode; web = official statute sites in eval, open search in live only | Works on any DB; case-law web search would leak outcomes in evaluation |
+| 2026-10-04 | Dense retrieval model = bge-small-en-v1.5 (384 dims), not bge-m3 | Light (~130 MB), CPU-friendly; matches the original design; BM25 carries exact section matches |
 | 2026-10-04 | Judges = different Claude model, not a different family | Only Claude is available; limitation reported, side-swap test measures bias |
 | 2026-10-04 | THEMIS-LOCAL: Haiku extraction → Stage A code+Z3 (≤ 3 attempts, re-extract each time) → Stage B LLM once on the final version, even if A never passed; B flags only, never loops back | Project owner's decision. Sequential over parallel: a Stage A revision changes the text, so parallel B would be stale or repeated |
 | 2026-10-04 | Public case segmentation per paragraph (§6.6.7): grounds as one-line headings in unspoiled, full submissions and party-cited authorities sealed; record date conflicts stored, not resolved | Prevents replaying the real arguments and leaking the authority list; keeps record defects visible |

@@ -12,3 +12,4 @@ runs/
 data/canonical/
 data/index/
 data/reports/dense_build.log
+*.egg-info/

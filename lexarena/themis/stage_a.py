@@ -9,8 +9,7 @@ import datetime as dt
 import re
 from dataclasses import dataclass, field
 
-from lexarena.law.authorities import AuthorityRegistry
-from lexarena.law.provisions import LawStore, resolve
+from lexarena.law.provisions import resolve
 from lexarena.rules import (Acknowledgment, limitation, minimum_default, sec9_filing_window, sec10a_bar,
                             sec61_appeal, sec62_appeal)
 from lexarena.rules.constants import COVID_EXCLUDED_START
@@ -25,6 +24,21 @@ class StageAResult:
     notes: list[dict] = field(default_factory=list)
 
 
+def _mentions(text: str, d) -> bool:
+    """Does the claim text state this date (dd.mm.yyyy, dd/mm/yyyy, dd-mm-yyyy or ISO)?"""
+    if not isinstance(d, dt.date):
+        try:
+            d = dt.date.fromisoformat(str(d))
+        except ValueError:
+            return False
+    forms = {d.isoformat(), d.strftime("%d.%m.%Y"), d.strftime("%d/%m/%Y"), d.strftime("%d-%m-%Y")}
+    return any(f in text for f in forms)
+
+
+def _show(v):
+    return [_show(x) for x in v] if isinstance(v, list) else (v.isoformat() if isinstance(v, dt.date) else v)
+
+
 def _same(a, b) -> bool:
     """Numbers compare by value (482000000 == 482000000.0); dates and strings by their ISO/str form."""
     if isinstance(a, (int, float)) and not isinstance(a, bool):
@@ -36,19 +50,37 @@ def _same(a, b) -> bool:
 
 
 class StageA:
-    def __init__(self, case: PublicUnspoiled, law: LawStore, authorities: AuthorityRegistry):
-        self.case, self.law, self.authorities = case, law, authorities
+    def __init__(self, case: PublicUnspoiled, law, authorities, mode: str = "eval"):
+        """`law` has get(provision, as_of); `authorities` has status(title, cutoff, court): a SourceRegistry's
+        .law/.authorities, or LawStore/AuthorityRegistry directly. In live mode an authority missing from every
+        local source may come from the web, so it is noted as unverified instead of failing."""
+        self.case, self.law, self.authorities, self.mode = case, law, authorities, mode
         self.facts = case.typed_facts.all_facts()
         self.events = {e.id: e for e in case.chronology}
+        self.documents = {d.id: d for d in case.record_documents}
         self.cutoff = case.law_as_of + dt.timedelta(days=1)      # authorities must be decided before the decision date
 
     def run(self, claims: ClaimSet | dict) -> StageAResult:
         cs = claims if isinstance(claims, ClaimSet) else ClaimSet.model_validate(claims)
         out = StageAResult()
         for c in cs.claims:
-            for check in (self._fact, self._day_count, self._computation, self._provision, self._authority):
+            for check in (self._record_ref, self._fact, self._day_count, self._computation, self._provision, self._authority):
                 check(c, out)
         return out
+
+    # -- record grounding ------------------------------------------------------------------------------------
+    def _record_ref(self, c: Claim, out: StageAResult) -> None:
+        """A claim that cites the record must cite something that exists: an invented exhibit or event is a
+        deterministic failure. Facts with no reference at all are left to Stage B (record support)."""
+        if not c.record_ref:
+            return
+        refs = re.findall(r"\b[ED]\d+\b", c.record_ref.upper())      # "E4, D2" / "E4 and D2" -> [E4, D2]
+        unknown = [r for r in refs if r not in self.events and r not in self.documents]
+        if not refs:
+            return
+        if unknown:
+            out.findings.append(Finding("ERR_UNKNOWN_RECORD_REF", c.text,
+                                        f"{', '.join(unknown)} not a chronology event or record document in this record", "A"))
 
     # -- record facts --------------------------------------------------------------------------------------
     def _fact(self, c: Claim, out: StageAResult) -> None:
@@ -62,11 +94,16 @@ class StageA:
                 return
             allowed = f.values if f.conflict else [f.value]
             if not any(_same(asserted, v) for v in allowed):
-                out.findings.append(Finding("ERR_FACT_MISMATCH", c.text, f"record {c.fact_key} = {allowed}", "A"))
+                if c.date is not None and any(_mentions(c.text, v) for v in allowed):
+                    out.notes.append({"claim": c.id, "note": f"{c.fact_key} stated correctly; {c.date.isoformat()} is a derived date"})
+                    return
+                out.findings.append(Finding("ERR_FACT_MISMATCH", c.text, f"record {c.fact_key} = {_show(allowed)}", "A"))
             elif f.conflict:
                 out.notes.append({"claim": c.id, "note": f"record conflict on {c.fact_key}: {f.values}; asserted value is one of them"})
         elif c.record_ref and c.record_ref in self.events and c.date is not None:
             e = self.events[c.record_ref]
+            if e.date and _mentions(c.text, e.date) and e.date != c.date:
+                return                                  # the event's own date is stated; c.date is derived from it
             if e.date and e.date_precision == "DAY" and e.date != c.date:
                 out.findings.append(Finding("ERR_FACT_MISMATCH", c.text, f"{e.id} is dated {e.date.isoformat()}: {e.event}", "A"))
             elif e.date and e.date_to and not (e.date <= c.date <= e.date_to):
@@ -148,11 +185,8 @@ class StageA:
             if getattr(k, attr) is None and val(key) is not None:
                 setattr(k, attr, val(key))
                 filled.append(attr)
-        if k.rule == "ART137_LIMITATION" and not k.acknowledgment_dates and self.case.typed_facts.acknowledgments:
-            ack = [a.date for a in self.case.typed_facts.acknowledgments if a.date]
-            if ack and "default_date" in filled:
-                k.acknowledgment_dates = ack
-                filled.append("acknowledgment_dates")
+        # Acknowledgments are never filled in: "without an acknowledgment, limitation expired on X" is a
+        # legitimate hypothetical and must be recomputed as stated.
         return filled
 
     # -- provisions and authorities ---------------------------------------------------------------------------
@@ -171,8 +205,10 @@ class StageA:
             return
         st = self.authorities.status(c.authority_title, self.cutoff, c.authority_court)
         if not st.found:
-            out.findings.append(Finding("ERR_UNVERIFIED_AUTHORITY", c.text,
-                                        "not found in the reference DB or the Supreme Court seed", "A"))
+            if self.mode == "live":
+                out.notes.append({"claim": c.id, "note": "authority not in any local source (possibly from the web): unverified"})
+            else:
+                out.findings.append(Finding("ERR_UNVERIFIED_AUTHORITY", c.text, "not found in any enabled authority source", "A"))
             return
         if st.anachronistic:
             when = st.date or str(st.year)

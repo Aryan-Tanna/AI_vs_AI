@@ -16,6 +16,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from claude_agent_sdk import (
+    ClaudeSDKError,
     AssistantMessage,
     ClaudeAgentOptions,
     RateLimitEvent,
@@ -73,9 +74,11 @@ class ClaudeCodeBackend:
     def build_options(self, spec: AgentSpec) -> ClaudeAgentOptions:
         role = self.settings.role(spec.role)
         mcp = {SERVER: create_sdk_mcp_server(SERVER, tools=spec.tools)} if spec.tools else {}
+        mcp.update(spec.external_mcp)
         return ClaudeAgentOptions(
-            tools=[],                                   # no Read/Bash/Grep/WebFetch...
-            allowed_tools=[tool_id(t.name) for t in spec.tools],
+            tools=list(spec.builtin_tools),             # none by default; WebFetch/WebSearch only when the mode allows
+            allowed_tools=[tool_id(t.name) for t in spec.tools] + list(spec.allow_rules)
+                          + [f"mcp__{name}" for name in spec.external_mcp],
             mcp_servers=mcp,
             strict_mcp_config=True,
             setting_sources=[],                         # no CLAUDE.md, settings, memory
@@ -97,6 +100,17 @@ class ClaudeCodeBackend:
         result: ResultMessage | None = None
         model_seen: str | None = None
 
+        try:
+            async for msg in self._stream(prompt, options, texts, trace):
+                result, model_seen = msg
+        except ClaudeSDKError as e:          # e.g. ResultError for max turns: a normal agent failure, not a crash
+            if "rate" in str(e).lower() and "limit" in str(e).lower():
+                raise UsageLimitReached(self.ledger.blocked_until(), None, str(e)[:200]) from e
+            raise AgentError(f"{spec.role}: {str(e)[:300]}") from e
+        return self._finish(spec, options, result, texts, trace, model_seen)
+
+    async def _stream(self, prompt, options, texts, trace):
+        result, model_seen = None, None
         async for msg in query(prompt=prompt, options=options):
             if isinstance(msg, RateLimitEvent):
                 info = msg.rate_limit_info
@@ -122,7 +136,9 @@ class ClaudeCodeBackend:
                                       "is_error": bool(block.is_error), "content": content[:TRACE_RESULT_CHARS]})
             elif isinstance(msg, ResultMessage):
                 result = msg
+        yield result, model_seen
 
+    def _finish(self, spec, options, result, texts, trace, model_seen) -> AgentResult:
         if result is None:
             raise AgentError("no result message from Claude Code")
         if result.is_error:

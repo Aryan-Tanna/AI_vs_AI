@@ -14,7 +14,7 @@ from lexarena.law.authorities import AuthorityRegistry
 from lexarena.law.provisions import LawStore
 from lexarena.public_db import UnspoiledCase
 from lexarena.retrieval.search import ReferenceIndex
-from lexarena.services import Services
+from lexarena.sources.registry import SourceRegistry
 from lexarena.themis.claims import ClaimSet
 from lexarena.themis.stage_a import StageA
 from lexarena.tools.research import make_research_tools
@@ -93,8 +93,48 @@ def test_section_references_tokenised():
 
 # ---- Phase 3: research tools ----------------------------------------------------------------------------
 
-def services():
-    return Services(LawStore.load(ROOT), AuthorityRegistry(REFS, SEED), ReferenceIndex(REFS))
+class _RefSource:
+    """Reference precedents source built in memory from REFS (same behaviour as the reference_jsonl type)."""
+    from lexarena.sources.base import SourceInfo as _SI
+    info = _SI("ref", "authority", court="NCLAT")
+
+    def __init__(self):
+        self.index, self.registry = ReferenceIndex(REFS), AuthorityRegistry(REFS, [])
+
+    def search(self, query, *, cutoff, exclude, provisions, k):
+        return [h.to_dict() for h in self.index.search(query, cutoff=cutoff, exclude=exclude, provisions=provisions, k=k)]
+
+    def status(self, title, cutoff):
+        return self.registry.status(title, cutoff, "NCLAT")
+
+
+class _SeedSource:
+    from lexarena.sources.base import SourceInfo as _SI
+    info = _SI("seed", "authority", court="SC")
+
+    def __init__(self):
+        self.registry = AuthorityRegistry([], SEED)
+
+    def search(self, query, **kw):
+        return []
+
+    def status(self, title, cutoff):
+        return self.registry.status(title, cutoff, "SC")
+
+
+class _LawSource:
+    from lexarena.sources.base import SourceInfo as _SI
+    info = _SI("law", "law")
+
+    def __init__(self):
+        self.store = LawStore.load(ROOT)
+
+    def get(self, provision, as_of):
+        return self.store.get(provision, as_of)
+
+
+def services(mode="eval"):
+    return SourceRegistry(mode, [_SeedSource(), _RefSource()], [_LawSource()], {}, [])
 
 
 def call(tool_obj, args):
@@ -225,11 +265,74 @@ def test_year_period_not_checked_as_day_count(stage_a):
 def test_missing_computation_inputs_taken_from_record(stage_a):
     r = run(stage_a, {"id": "C1", "kind": "COMPUTATION", "text": "The application is barred",
                       "computation": {"rule": "ART137_LIMITATION", "asserted_outcome": "BARRED"}})
-    assert codes(r) == ["ERR_ARITHMETIC"]                      # record: default 31.12.2015, ack 05.09.2018, filed 10.01.2020
-    assert any("inputs taken from the record" in n.get("note", "") for n in r.notes)
+    # Default and filing dates come from the record; acknowledgments are not filled in, so "barred" is recomputed
+    # exactly as the hypothetical states it (no acknowledgment) and passes.
+    assert codes(r) == []
+    assert any("inputs taken from the record: default_date, filing_date" in n.get("note", "") for n in r.notes)
+    r = run(stage_a, {"id": "C2", "kind": "COMPUTATION", "text": "Within time", "computation": {
+        "rule": "ART137_LIMITATION", "asserted_outcome": "WITHIN"}})
+    assert codes(r) == ["ERR_ARITHMETIC"]                      # no acknowledgment given: 10.01.2020 is out of time
 
 
 def test_authority_matched_by_bracketed_abbreviation():
     reg = AuthorityRegistry([ref_case("REF-P", "V. Padmakumar vs. Stressed Assets Stabilisation Fund (SASF) & Anr.", "2020-03-12", "p")], [])
     assert reg.status("V. Padmakumar v. SASF", D(2021, 1, 1)).found
     assert not reg.status("V. Padmanabhan v. SBI", D(2021, 1, 1)).found
+
+
+def test_framework_is_proceeding_specific_and_side_neutral():
+    from lexarena.agents.framework import framework_for, side_description
+    f7 = framework_for("SEC7_ADMISSION", None)
+    assert "Innoventive" in f7 and "Article 137" in f7 and "s.61(3)" not in f7
+    plan = framework_for("RESOLUTION_PLAN_APPROVAL", "SEC61_3")
+    assert "commercial wisdom" in plan and "s.61(3)" in plan and "material irregularity" in plan
+    assert side_description("APPELLANT", "SUSPENDED_DIRECTOR_PROMOTER", []).startswith("the appellant, a suspended director")
+    assert "financial creditor" in side_description("RESPONDENT", "SUSPENDED_DIRECTOR_PROMOTER", ["FINANCIAL_CREDITOR"])
+
+
+def test_sdk_errors_become_agent_errors(monkeypatch, tmp_path):
+    from claude_agent_sdk._errors import ResultError
+    import lexarena.llm.claude_code as cc
+    from lexarena.config import Settings
+    from lexarena.llm.agent import AgentError, AgentSpec
+    from lexarena.session.ledger import UsageLedger
+
+    async def failing_query(prompt, options):
+        err = Exception.__new__(ResultError)
+        Exception.__init__(err, "Claude Code returned an error result: Reached maximum number of turns (4)")
+        raise err
+        yield  # pragma: no cover
+
+    monkeypatch.setattr(cc, "query", failing_query)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    s = Settings(data_dir=tmp_path)
+    be = cc.ClaudeCodeBackend(s, UsageLedger(s.ledger_path))
+    with pytest.raises(AgentError, match="maximum number of turns"):
+        asyncio.run(be.run(AgentSpec(role="extractor", system_prompt="x"), "p"))
+
+
+def test_invented_record_reference_fails(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "RECORD_FACT", "text": "Email of 05.05.2019 raised a dispute", "record_ref": "D9"},
+            {"id": "C2", "kind": "RECORD_FACT", "text": "Balance sheet shows the loan", "record_ref": "D2"})
+    assert codes(r) == ["ERR_UNKNOWN_RECORD_REF"]
+
+
+def test_hypothetical_without_acknowledgment_is_not_overwritten(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "COMPUTATION", "text": "Without an acknowledgment, limitation expired on 31.12.2018",
+                      "computation": {"rule": "ART137_LIMITATION", "default_date": "2015-12-31", "filing_date": "2020-01-10",
+                                      "asserted_outcome": "BARRED", "asserted_date": "2018-12-31"}})
+    assert codes(r) == []
+
+
+def test_derived_date_next_to_record_date_is_not_a_mismatch(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "DATE", "text": "The period from default on 31.12.2015 ended on 31.12.2018",
+                      "record_ref": "E2", "date": "2018-12-31"},
+            {"id": "C2", "kind": "DATE", "text": "Limitation from 31.12.2015 ran to 31.12.2018",
+             "fact_key": "date_of_default", "date": "2018-12-31"})
+    assert codes(r) == []
+
+
+def test_combined_record_refs_are_split(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "RECORD_FACT", "text": "Board signed the balance sheet", "record_ref": "E4, D2"},
+            {"id": "C2", "kind": "RECORD_FACT", "text": "x", "record_ref": "E4 and D7"})
+    assert codes(r) == ["ERR_UNKNOWN_RECORD_REF"] and r.findings[0].evidence.startswith("D7 ")

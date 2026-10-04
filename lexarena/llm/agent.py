@@ -14,6 +14,9 @@ class AgentSpec:
     cache_salt: str = ""                        # e.g. case_uid + data version; tool results depend on it
     model: str | None = None                    # override Settings.roles[role].model
     max_turns: int | None = None
+    builtin_tools: list[str] = field(default_factory=list)    # Claude Code built-ins, e.g. ["WebFetch"] (mode-dependent)
+    allow_rules: list[str] = field(default_factory=list)      # permission rules, e.g. "WebFetch(domain:indiacode.nic.in)"
+    external_mcp: dict[str, dict] = field(default_factory=dict)  # configured MCP servers (live mode)
 
 
 @dataclass

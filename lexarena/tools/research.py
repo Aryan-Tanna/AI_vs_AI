@@ -11,7 +11,7 @@ from claude_agent_sdk import tool
 from lexarena.law.provisions import resolve
 from lexarena.rules import (Acknowledgment, limitation, minimum_default, sec9_filing_window, sec10a_bar,
                             sec61_appeal, sec62_appeal)
-from lexarena.services import Services
+from lexarena.sources.registry import SourceRegistry
 
 
 def _text(obj) -> dict:
@@ -26,23 +26,23 @@ def _date(s: str | None) -> dt.date | None:
     return dt.date.fromisoformat(s) if s else None
 
 
-def make_research_tools(law_as_of: dt.date, services: Services, exclude: set[str]) -> dict:
+def make_research_tools(law_as_of: dt.date, services: SourceRegistry, exclude: set[str]) -> dict:
     cutoff = law_as_of + dt.timedelta(days=1)
 
     @tool("search_authorities",
-          "Search NCLAT precedents decided before this appeal. Returns propositions/issues with case title, date, "
-          "outcome and any treatment warning. Supreme Court landmarks are checked with authority_status.",
+          "Search every enabled authority source (e.g. Supreme Court landmarks, NCLAT precedents) for authorities "
+          "decided before this appeal. Returns title, court, date, the passage, its source and any treatment warning.",
           {"type": "object", "properties": {
               "query": {"type": "string", "description": "What the authority should say"},
               "provisions": {"type": "array", "items": {"type": "string"}, "description": "e.g. ['Section 18 of the Limitation Act']"},
               "k": {"type": "integer", "minimum": 1, "maximum": 10}},
            "required": ["query"]})
     async def search_authorities(args):
-        if services.index is None:
-            return _err("Reference DB not built; run python -m lexarena.ingest.build_reference")
+        if not services.authority_sources:
+            return _err("No authority sources are enabled (config/sources.yaml)")
         provs = tuple(resolve(p)[0] for p in args.get("provisions") or [])
-        hits = services.index.search(args["query"], cutoff=cutoff, exclude=exclude, provisions=provs, k=int(args.get("k") or 6))
-        return _text([{k: v for k, v in h.to_dict().items() if k != "case_uid"} for h in hits] or "No authorities found.")
+        hits = services.search(args["query"], cutoff=cutoff, exclude=exclude, provisions=provs, k=int(args.get("k") or 6))
+        return _text(hits or "No authorities found.")
 
     @tool("get_provision", "Look up a provision as in force on the date of this appeal (summary, checklist, in-force status).",
           {"type": "object", "properties": {"provision": {"type": "string", "description": "e.g. 'Section 7 of the IBC' or IBC_2016_SEC_7"}},

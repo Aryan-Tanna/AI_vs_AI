@@ -1,5 +1,6 @@
 """Run configuration. Override any field with a LEX_* environment variable or a .env file."""
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -21,7 +22,7 @@ def _default_roles() -> dict[str, RoleModel]:
         "baseline": RoleModel(model="sonnet", max_turns=4),
         "advocate": RoleModel(model="sonnet", max_turns=12),
         "judge": RoleModel(model="opus", max_turns=12),
-        "extractor": RoleModel(model="haiku", max_turns=4, thinking=False),   # structured output may need a retry turn
+        "extractor": RoleModel(model="haiku", max_turns=6, thinking=False),   # structured output may need a retry turn
         "verifier": RoleModel(model="haiku", max_turns=4, thinking=False),
         "reflector": RoleModel(model="sonnet", max_turns=10),
     }
@@ -31,6 +32,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="LEX_", env_file=".env", extra="ignore")
 
     data_dir: Path = ROOT / "data"
+    mode: Literal["eval", "live"] = "eval"      # eval: closed, cutoff-respecting sources; live: everything incl. web search
+    sources_file: Path = ROOT / "config" / "sources.yaml"
     public_db_dir: Path = ROOT / "public_db"
     runs_dir: Path = ROOT / "runs"
     roles: dict[str, RoleModel] = Field(default_factory=_default_roles)

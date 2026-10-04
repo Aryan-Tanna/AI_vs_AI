@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "lexarena"
 version = "0.1.0"
@@ -7,10 +11,18 @@ dependencies = [
     "claude-agent-sdk>=0.2.163",
     "pydantic>=2.10",
     "pydantic-settings>=2.6",
+    "pyyaml>=6",
+    "numpy>=1.26",
+    "rapidfuzz>=3",
+    "z3-solver>=4.12",
 ]
 
 [project.optional-dependencies]
+dense = ["sentence-transformers>=3"]          # bge-small-en-v1.5 dense retrieval
 dev = ["pytest>=8", "ruff"]
+
+[tool.setuptools.packages.find]
+include = ["lexarena*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

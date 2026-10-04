@@ -1,6 +1,6 @@
 """Build the dense index for the reference DB (BM25 is built in memory at load time).
 
-  python -m lexarena.retrieval.build_index --dense       # one-off, CPU: tens of minutes for bge-m3
+  python -m lexarena.retrieval.build_index --dense       # one-off, CPU: a few minutes for bge-small (384 dims)
   python -m lexarena.retrieval.build_index --query "acknowledgment in balance sheet section 18" --cutoff 2022-01-01
 """
 import argparse

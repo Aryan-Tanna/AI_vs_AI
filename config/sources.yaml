@@ -1,0 +1,65 @@
+# Data sources for LexArena. Add a database here; no code change needed for the built-in types.
+#
+# Types: reference_jsonl (canonical reference DB), seed_json (curated landmark list), generic_jsonl (any
+# JSON/JSONL precedent file via a field mapping), law_db_json (law DB files). New storage kinds:
+# lexarena.sources.register_source_type(name, factory).
+#
+# modes: which run modes may use the source. eval = historical cases with an answer key (closed,
+# reproducible); live = new matters. In eval mode a source must respect the case cutoff.
+
+authority_sources:
+  - name: sc_seed
+    type: seed_json
+    path: data/seed/sc_landmarks.json
+    court: SC
+    respects_cutoff: true          # year-level; same-year entries are withheld from search
+    modes: [eval, live]
+    description: Supreme Court landmarks from CLAUDE.md §5 (year only, unverified)
+
+  - name: nclat_reference
+    type: reference_jsonl
+    path: data/canonical/reference_cases.jsonl
+    index_dir: data/index          # dense bge-small vectors, if built
+    court: NCLAT
+    respects_cutoff: true
+    modes: [eval, live]
+    description: 2,696 NCLAT decisions (LLM-written summaries)
+
+  # Example: plug in any other precedent file without an ingest step.
+  # - name: hc_judgments
+  #   type: generic_jsonl
+  #   path: other_db/*.jsonl
+  #   court: HC
+  #   fields: {id: doc_id, title: case_name, date: judgment_date, text: [headnote, holding]}
+  #   respects_cutoff: true
+  #   modes: [eval, live]
+
+law_sources:
+  - name: law_db_summaries
+    type: law_db_json
+    paths: [law_db/*.json, law2db/*.json]
+    modes: [eval, live]
+
+web:
+  # Statutory material from official sites: allowed in both modes. Pages show the CURRENT text, which may
+  # differ from the law as on the case date; agents are told so.
+  law_fetch_domains: [indiacode.nic.in, ibbi.gov.in, egazette.gov.in, mca.gov.in]
+  law_fetch_modes: [eval, live]
+  # Open web search (case law, commentary): live mode only - in eval it would find the real outcome.
+  case_law_search_modes: [live]
+
+# External MCP servers (live mode, or eval if the server enforces the cutoff itself).
+mcp_servers: []
+#  - name: my_law_api
+#    command: python
+#    args: [path/to/server.py]
+#    respects_cutoff: false
+#    modes: [live]
+
+# Raw precedent files -> canonical reference DB (python -m lexarena.ingest.build_reference).
+# `mapping` maps canonical field -> field name in the raw files.
+reference_ingest:
+  - name: nclat_precedents
+    glob: "nclat_precedents*/*.jsonl"
+    id_field: precedent_id
+    mapping: {}                    # raw files already use the canonical names
