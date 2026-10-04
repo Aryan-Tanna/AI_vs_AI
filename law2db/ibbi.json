@@ -1,0 +1,1409 @@
+[
+  {
+    "_id": "IBBI_CIRP_REG_2A",
+    "statute_id": "IBBI_CIRP_REG_2A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "2A",
+    "section_title": "Record or evidence of default by financial creditor",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "For the purposes of clause (a) of sub-section (3) of section 7 of the Code, this regulation prescribes the specific documentary records or evidence that a financial creditor may furnish to prove the existence of default by the corporate debtor when filing an application to initiate corporate insolvency resolution process.",
+    "core_judicial_inquiry": "Whether the financial creditor has furnished acceptable record or evidence of default under clause (a) or clause (b) of Regulation 2A, sufficient to establish existence of debt and default for admission of the application under Section 7.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_7",
+      "IBC_SEC_7_SUB_3_CLAUSE_A",
+      "BANKERS_BOOKS_EVIDENCE_ACT_1891_SEC_2_CLAUSE_3",
+      "IBBI_CIRP_REG_2D"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applicant must be a financial creditor as defined under the Code",
+        "Applicant must be filing or supporting an application under Section 7(3)(a) of the Code"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Certified copy of entries in the relevant account in the bankers' book as defined in clause (3) of section 2 of the Bankers' Books Evidence Act, 1891 (18 of 1891); OR",
+        "An order of a court or tribunal that has adjudicated upon the non-payment of a debt, where the period of appeal against such order has expired"
+      ],
+      "statutory_bars": [
+        "Order of court or tribunal cannot be relied upon if the period of appeal against such order has not yet expired"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSUFFICIENT_DEFAULT_EVIDENCE",
+      "ERR_BANKERS_BOOK_CERT_MISSING",
+      "ERR_APPEAL_PERIOD_NOT_EXPIRED",
+      "ERR_REG2A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_2D",
+    "statute_id": "IBBI_CIRP_REG_2D",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "2D",
+    "section_title": "Details of debt, default and limitation in respect of applications under section 7 or section 9",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires the financial creditor or operational creditor, while filing an application under Section 7 or Section 9 of the Code, to submit along with evidence the chronology of the debt and default, including the date the debt became due, date of default, dates of part payments (if any), date of last acknowledgment of debt, and the limitation period applicable.",
+    "core_judicial_inquiry": "Whether the applicant has furnished the complete chronology of debt and default under Regulation 2D, sufficient to enable the Adjudicating Authority to determine whether the application is within limitation.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_7",
+      "IBC_SEC_9",
+      "LIMITATION_ACT_1963_SEC_18",
+      "IBBI_CIRP_REG_2A",
+      "IBBI_CIRP_REG_2B"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applicant must be a financial creditor filing under Section 7 of the Code, or an operational creditor filing under Section 9 of the Code"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Chronology of the debt and default, submitted along with evidence",
+        "Date when the debt became due",
+        "Date of default",
+        "Dates of part payments, if any",
+        "Date of last acknowledgment of debt",
+        "The limitation applicable to the claim"
+      ],
+      "statutory_bars": [
+        "Application may be barred by limitation if the chronology of debt, default, and last acknowledgment does not establish the claim is within the limitation period"
+      ],
+      "saving_exceptions": [
+        "Date of last acknowledgment of debt, if furnished, may extend the limitation period under Section 18 of the Limitation Act, 1963"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_DEBT_CHRONOLOGY_MISSING",
+      "ERR_DEFAULT_DATE_MISSING",
+      "ERR_PART_PAYMENT_DATES_MISSING",
+      "ERR_LAST_ACKNOWLEDGMENT_DATE_MISSING",
+      "ERR_LIMITATION_NOT_ESTABLISHED",
+      "ERR_REG2D_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_6",
+    "statute_id": "IBBI_CIRP_REG_6",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "6",
+    "section_title": "Public announcement",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires the insolvency professional to make a public announcement immediately (not later than three days) upon his appointment as interim resolution professional. The announcement must be in the form notified by the Board, published in one English and one regional newspaper at relevant locations, on the corporate debtor's website and the Board-designated website, state where claim forms can be obtained, offer a choice of three insolvency professionals as authorised representatives for each class of creditors, and provide the last date for submission of proofs of claim (fourteen days from appointment). Expenses are borne by the applicant, subject to committee ratification.",
+    "core_judicial_inquiry": "Whether the interim resolution professional made the public announcement within three days of appointment and in compliance with all content and publication requirements under Regulation 6(2), such that creditors received adequate and timely notice to submit claims.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_13",
+      "IBC_SEC_15",
+      "IBBI_CIRP_REG_4A",
+      "IBBI_CIRP_REG_6A",
+      "IBBI_CIRP_REG_7",
+      "IBBI_CIRP_REG_8",
+      "IBBI_CIRP_REG_9",
+      "IBBI_CIRP_REG_12"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Must be an insolvency professional appointed as interim resolution professional of the corporate debtor"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Public announcement in such form as notified by the Board through circular",
+        "Publication in one English and one regional language newspaper with wide circulation at the location of registered office, principal office, and any other location of material business operations",
+        "Publication on the website, if any, of the corporate debtor",
+        "Publication on the website, if any, designated by the Board for the purpose",
+        "Statement of where claim forms can be downloaded or obtained from",
+        "Offer of choice of three insolvency professionals identified under Regulation 4A to act as authorised representative of creditors in each class",
+        "Last date for submission of proofs of claim, being fourteen days from the date of appointment of the interim resolution professional"
+      ],
+      "statutory_bars": [
+        "Failure to make public announcement within three days of appointment ('immediately') constitutes non-compliance"
+      ],
+      "saving_exceptions": [],
+      "expense_provision": "The applicant shall bear the expenses of the public announcement, reimbursable by the committee to the extent it ratifies them"
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 3,
+      "rectification_window_days": 14
+    },
+    "audit_error_codes": [
+      "ERR_PUBLIC_ANNOUNCEMENT_DELAYED",
+      "ERR_NEWSPAPER_PUBLICATION_MISSING",
+      "ERR_WEBSITE_PUBLICATION_MISSING",
+      "ERR_CLAIM_FORM_LOCATION_UNDISCLOSED",
+      "ERR_AR_CHOICE_NOT_OFFERED",
+      "ERR_CLAIM_DEADLINE_NONCOMPLIANT",
+      "ERR_REG6_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_7",
+    "statute_id": "IBBI_CIRP_REG_7",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "7",
+    "section_title": "Claims by operational creditors",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires a person claiming to be an operational creditor (other than a workman or employee) to submit claim with proof to the interim resolution professional, in person, by post, or electronically, in the form notified by the Board. Supplementary documents or clarifications may be submitted before constitution of the committee. The existence of debt may be proved through information utility records or other relevant documents including contracts, invoices, court/tribunal orders, financial accounts, and GST filings (GSTR-1, GSTR-3B, e-way bills) where applicable.",
+    "core_judicial_inquiry": "Whether the operational creditor has submitted claim with proof in the prescribed form and manner, and whether the existence of the operational debt is established through information utility records or other relevant documentary evidence under Regulation 7(2).",
+    "intersecting_statute_ids": [
+      "IBC_SEC_9",
+      "IBC_SEC_18",
+      "IBC_SEC_21",
+      "IBBI_CIRP_REG_2B",
+      "IBBI_CIRP_REG_10",
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_13",
+      "CGST_ACT_2017"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Person claiming to be an operational creditor of the corporate debtor",
+        "Excludes workmen or employees of the corporate debtor, who submit claims under a separate regulation"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Claim with proof submitted to the interim resolution professional in person, by post, or by electronic means",
+        "Claim submitted in such form as notified by the Board through circular",
+        "Existence of debt proved via records available with an information utility, if any, or other relevant documents",
+        "Other relevant documents may include: contract for supply of goods and services, invoice demanding payment, order of a court or tribunal adjudicating non-payment, or financial accounts",
+        "Copies of relevant extracts of Form GSTR-1 and Form GSTR-3B, and copy of e-way bill wherever applicable"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Supplementary documents or clarifications in support of the claim may be submitted before the constitution of the committee",
+        "GSTR-1/GSTR-3B/e-way bill requirement under clause (2)(b)(v) shall not apply to creditors who do not require GST registration and to goods/services not covered under any law relating to Goods and Services Tax"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_PROOF_MISSING",
+      "ERR_CLAIM_FORM_NONCOMPLIANT",
+      "ERR_DEBT_EVIDENCE_INSUFFICIENT",
+      "ERR_GST_EXTRACTS_MISSING",
+      "ERR_SUPPLEMENTARY_DOCS_LATE",
+      "ERR_REG7_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_8",
+    "statute_id": "IBBI_CIRP_REG_8",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "8",
+    "section_title": "Claims by financial creditors",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires a person claiming to be a financial creditor, other than a financial creditor belonging to a class of creditors, to submit claim with proof to the interim resolution professional in electronic form, in the form notified by the Board. Supplementary documents or clarifications may be submitted before constitution of the committee. The existence of debt may be proved through information utility records or other relevant documents including financial contracts, drawdown records, financial statements showing non-payment, or court/tribunal orders.",
+    "core_judicial_inquiry": "Whether the financial creditor has submitted claim with proof in electronic form in the prescribed manner, and whether the existence of the financial debt is established through information utility records or other relevant documentary evidence under Regulation 8(2).",
+    "intersecting_statute_ids": [
+      "IBC_SEC_7",
+      "IBC_SEC_18",
+      "IBC_SEC_21",
+      "IBBI_CIRP_REG_8A",
+      "IBBI_CIRP_REG_10",
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_13",
+      "IBBI_CIRP_REG_16A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Person claiming to be a financial creditor of the corporate debtor",
+        "Excludes a financial creditor belonging to a class of creditors, who submits claims under a separate regulation (Regulation 8A)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Claim with proof submitted to the interim resolution professional in electronic form",
+        "Claim submitted in such form as notified by the Board through circular",
+        "Existence of debt proved via records available with an information utility, if any, or other relevant documents",
+        "Other relevant documents may include: a financial contract supported by financial statements, a record evidencing drawdown of committed amounts by the corporate debtor, financial statements showing the debt has not been paid, or an order of a court or tribunal adjudicating non-payment"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Supplementary documents or clarifications in support of the claim may be submitted before the constitution of the committee"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_PROOF_MISSING",
+      "ERR_CLAIM_NOT_ELECTRONIC_FORM",
+      "ERR_CLAIM_FORM_NONCOMPLIANT",
+      "ERR_DEBT_EVIDENCE_INSUFFICIENT",
+      "ERR_FINANCIAL_CONTRACT_MISSING",
+      "ERR_DRAWDOWN_RECORD_MISSING",
+      "ERR_SUPPLEMENTARY_DOCS_LATE",
+      "ERR_REG8_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_8A",
+    "statute_id": "IBBI_CIRP_REG_8A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "8A",
+    "section_title": "Claims by creditors in a class",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires a person claiming to be a creditor in a class (e.g., real estate allottees) to submit claim with proof to the interim resolution professional in electronic form, in the form notified by the Board. The existence of debt may be proved through information utility records or other relevant documents such as agreement for sale, letter of allotment, or receipt of payment made. Such creditor may also indicate its choice of insolvency professional, from among the three options offered in the public announcement, to act as its authorised representative.",
+    "core_judicial_inquiry": "Whether the creditor in a class has submitted claim with proof in electronic form in the prescribed manner, and whether the existence of debt is established through information utility records or other relevant documentary evidence under Regulation 8A(2), including whether the creditor validly exercised its choice of authorised representative under Regulation 8A(3).",
+    "intersecting_statute_ids": [
+      "IBC_SEC_21_SUB_6A",
+      "IBC_SEC_25A",
+      "IBBI_CIRP_REG_2_CLAUSE_AA",
+      "IBBI_CIRP_REG_4A",
+      "IBBI_CIRP_REG_6",
+      "IBBI_CIRP_REG_16A",
+      "IBBI_CIRP_REG_16B",
+      "REAL_ESTATE_REGULATION_AND_DEVELOPMENT_ACT_2016"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Person claiming to be a creditor in a class, i.e., a class with at least ten financial creditors under clause (b) of sub-section (6A) of Section 21 of the Code"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Claim with proof submitted to the interim resolution professional in electronic form",
+        "Claim submitted in such form as notified by the Board through circular",
+        "Existence of debt proved via records available with an information utility, if any, or other relevant documents",
+        "Other relevant documents may include: agreement for sale, letter of allotment, receipt of payment made, or such other document evidencing existence of debt"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Creditor in a class may indicate its choice of an insolvency professional, from amongst the three choices provided by the interim resolution professional in the public announcement, to act as its authorised representative"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_PROOF_MISSING",
+      "ERR_CLAIM_NOT_ELECTRONIC_FORM",
+      "ERR_CLAIM_FORM_NONCOMPLIANT",
+      "ERR_DEBT_EVIDENCE_INSUFFICIENT",
+      "ERR_ALLOTMENT_LETTER_MISSING",
+      "ERR_AR_CHOICE_NOT_INDICATED",
+      "ERR_REG8A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_9",
+    "statute_id": "IBBI_CIRP_REG_9",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "9",
+    "section_title": "Claims by workmen and employees",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires a person claiming to be a workman or employee of the corporate debtor to submit claim with proof to the interim resolution professional in person, by post, or by electronic means, in the form notified by the Board. Where dues are owed to numerous workmen or employees, an authorised representative may submit one consolidated claim with proof on their behalf. The existence of dues may be proved individually or collectively through information utility records or other relevant documents including proof of employment, evidence of demand notice and non-payment, or court/tribunal orders.",
+    "core_judicial_inquiry": "Whether the workman or employee (or their authorised representative, in case of numerous dues) has submitted claim with proof in the prescribed form and manner, and whether the existence of dues is established through information utility records or other relevant documentary evidence under Regulation 9(3).",
+    "intersecting_statute_ids": [
+      "IBC_SEC_5_SUB_20",
+      "IBC_SEC_5_SUB_21",
+      "IBBI_CIRP_REG_10",
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_13",
+      "IBBI_CIRP_REG_16"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Person claiming to be a workman or an employee of the corporate debtor",
+        "Where dues are owed to numerous workmen or employees, an authorised representative may submit one consolidated claim on their behalf"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Claim with proof submitted to the interim resolution professional in person, by post, or by electronic means",
+        "Claim submitted in such form as notified by the Board through circular",
+        "Where numerous workmen/employees, authorised representative to submit one consolidated claim with proof in the form notified by the Board through circular",
+        "Existence of dues proved via records available with an information utility, if any, or other relevant documents",
+        "Other relevant documents may include: proof of employment such as contract of employment for the claim period, evidence of notice demanding payment of unpaid dues and proof that payment has not been made, or an order of a court or tribunal adjudicating non-payment"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Supplementary documents or clarifications in support of the claim may be submitted, on the claimant's own initiative or if required by the interim resolution professional, before the constitution of the committee"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_PROOF_MISSING",
+      "ERR_CLAIM_FORM_NONCOMPLIANT",
+      "ERR_DUES_EVIDENCE_INSUFFICIENT",
+      "ERR_EMPLOYMENT_PROOF_MISSING",
+      "ERR_CONSOLIDATED_CLAIM_NONCOMPLIANT",
+      "ERR_SUPPLEMENTARY_DOCS_LATE",
+      "ERR_REG9_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_9A",
+    "statute_id": "IBBI_CIRP_REG_9A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "9A",
+    "section_title": "Claims by other creditors",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires a person claiming to be a creditor, other than those covered under Regulations 7, 8, 8A or 9 (i.e., a residual category of creditors), to submit its claim with proof to the interim resolution professional or resolution professional, in person, by post, or by electronic means, in the form notified by the Board. The existence of such claim may be proved through information utility records or other relevant documents including demand evidence, bank statements showing non-satisfaction, or court/tribunal orders.",
+    "core_judicial_inquiry": "Whether the residual creditor (not falling within Regulations 7, 8, 8A or 9) has submitted claim with proof in the prescribed form and manner, and whether the existence of the claim is established through information utility records or other relevant documentary evidence under Regulation 9A(2).",
+    "intersecting_statute_ids": [
+      "IBBI_CIRP_REG_7",
+      "IBBI_CIRP_REG_8",
+      "IBBI_CIRP_REG_8A",
+      "IBBI_CIRP_REG_9",
+      "IBBI_CIRP_REG_10",
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_13"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Person claiming to be a creditor of the corporate debtor, other than a creditor covered under Regulation 7 (operational creditors), Regulation 8 (financial creditors), Regulation 8A (creditors in a class), or Regulation 9 (workmen and employees)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Claim with proof submitted to the interim resolution professional or resolution professional, in person, by post, or by electronic means",
+        "Claim submitted in such form as notified by the Board through circular",
+        "Existence of claim proved via records available with an information utility, if any, or other relevant documents sufficient to establish the claim",
+        "Other relevant documents may include: documentary evidence demanding satisfaction of the claim, bank statements of the creditor showing non-satisfaction of claim, or an order of court or tribunal adjudicating upon non-satisfaction of claim"
+      ],
+      "statutory_bars": [
+        "Regulation applies only to creditors not covered under Regulations 7, 8, 8A or 9; claims by creditors falling within those categories must be filed under the respective applicable regulation"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_PROOF_MISSING",
+      "ERR_CLAIM_FORM_NONCOMPLIANT",
+      "ERR_CLAIM_EVIDENCE_INSUFFICIENT",
+      "ERR_WRONG_CREDITOR_CATEGORY",
+      "ERR_BANK_STATEMENT_MISSING",
+      "ERR_REG9A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_10",
+    "statute_id": "IBBI_CIRP_REG_10",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "10",
+    "section_title": "Substantiation of claims",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the interim resolution professional or resolution professional, as the case may be, to call for such other evidence or clarification as he deems fit from a creditor, in order to substantiate the whole or part of its claim.",
+    "core_judicial_inquiry": "Whether the interim resolution professional or resolution professional properly exercised the discretion to call for additional evidence or clarification under Regulation 10, and whether the creditor's claim (or part thereof) stands substantiated on the record as a result.",
+    "intersecting_statute_ids": [
+      "IBBI_CIRP_REG_7",
+      "IBBI_CIRP_REG_8",
+      "IBBI_CIRP_REG_8A",
+      "IBBI_CIRP_REG_9",
+      "IBBI_CIRP_REG_9A",
+      "IBBI_CIRP_REG_13",
+      "IBBI_CIRP_REG_14"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to any creditor (operational, financial, class, workman/employee, or other) who has submitted a claim under Regulations 7, 8, 8A, 9 or 9A"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Creditor must furnish such other evidence or clarification as called for by the interim resolution professional or resolution professional to substantiate the whole or part of its claim"
+      ],
+      "statutory_bars": [
+        "Failure to furnish additional evidence or clarification called for under this regulation may result in the claim, or part thereof, remaining unsubstantiated and liable to rejection or partial admission"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_ADDITIONAL_EVIDENCE_NOT_FURNISHED",
+      "ERR_CLARIFICATION_NOT_PROVIDED",
+      "ERR_CLAIM_UNSUBSTANTIATED",
+      "ERR_REG10_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_11",
+    "statute_id": "IBBI_CIRP_REG_11",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "11",
+    "section_title": "Cost of proof",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Places the burden and cost of proving the debt due to a creditor squarely on that creditor. The creditor shall bear the cost of proving its own debt, with no provision for reimbursement of such proof-related expenses from the corporate debtor, the applicant, or the insolvency resolution process costs.",
+    "core_judicial_inquiry": "Whether the cost incurred by a creditor in proving the debt due to it has been correctly allocated to that creditor alone, and not improperly charged to the corporate debtor's estate or treated as part of insolvency resolution process costs.",
+    "intersecting_statute_ids": [
+      "IBBI_CIRP_REG_7",
+      "IBBI_CIRP_REG_8",
+      "IBBI_CIRP_REG_8A",
+      "IBBI_CIRP_REG_9",
+      "IBBI_CIRP_REG_9A",
+      "IBBI_CIRP_REG_10",
+      "IBBI_CIRP_REG_31"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to any creditor (operational, financial, class, workman/employee, or other) submitting or substantiating a claim in the corporate insolvency resolution process"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Creditor must independently bear all costs incurred in proving the debt due to it, including costs of obtaining and furnishing evidence or documentation"
+      ],
+      "statutory_bars": [
+        "Cost of proving the debt cannot be claimed as insolvency resolution process cost under Regulation 31, nor reimbursed by the corporate debtor or the committee"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PROOF_COST_MISALLOCATED",
+      "ERR_PROOF_COST_CLAIMED_AS_IRPC",
+      "ERR_REG11_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_12",
+    "statute_id": "IBBI_CIRP_REG_12",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "12",
+    "section_title": "Submission of proof of claims",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires a creditor to submit claim with proof on or before the last date mentioned in the public announcement. A creditor who misses this deadline may still submit claim with proof up to the date of issue of request for resolution plans under Regulation 36B, or ninety days from the insolvency commencement date, whichever is later, provided reasons are given for delay beyond ninety days. Where the creditor is a financial creditor under Regulation 8, it shall be included in the committee from the date of admission of such claim, without affecting the validity of prior committee decisions.",
+    "core_judicial_inquiry": "Whether the creditor submitted claim with proof within the last date in the public announcement, or, if delayed, whether it was submitted before issue of the request for resolution plans under Regulation 36B or ninety days from insolvency commencement (whichever is later) with adequate reasons for any delay beyond ninety days, and whether resulting committee inclusion (for a financial creditor) is properly timed without disturbing prior committee decisions.",
+    "intersecting_statute_ids": [
+      "IBBI_CIRP_REG_6",
+      "IBBI_CIRP_REG_7",
+      "IBBI_CIRP_REG_8",
+      "IBBI_CIRP_REG_8A",
+      "IBBI_CIRP_REG_9",
+      "IBBI_CIRP_REG_9A",
+      "IBBI_CIRP_REG_13",
+      "IBBI_CIRP_REG_36B",
+      "IBC_SEC_21"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any creditor (operational, financial, class, workman/employee, or other) submitting claim with proof under Regulations 7, 8, 8A, 9 or 9A"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Claim with proof submitted on or before the last date mentioned in the public announcement",
+        "Where delayed, claim with proof submitted up to the date of issue of request for resolution plans under Regulation 36B or ninety days from insolvency commencement date, whichever is later",
+        "Reasons provided for delay in submitting the claim beyond the period of ninety days from insolvency commencement date"
+      ],
+      "statutory_bars": [
+        "A claim submitted after the date of issue of request for resolution plans under Regulation 36B, or after ninety days from insolvency commencement date (whichever is later), without adequate reasons for the delay, is liable to be rejected as time-barred under this regulation"
+      ],
+      "saving_exceptions": [
+        "Creditor who fails to submit claim within the time stipulated in the public announcement may still submit it up to the later of: issue of request for resolution plans under Regulation 36B, or ninety days from insolvency commencement date",
+        "Inclusion of a financial creditor (under Regulation 8) in the committee upon later admission of claim does not affect the validity of any decision taken by the committee prior to such inclusion"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 90,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_SUBMITTED_LATE",
+      "ERR_DELAY_REASONS_NOT_PROVIDED",
+      "ERR_CLAIM_AFTER_RFRP_ISSUANCE",
+      "ERR_COMMITTEE_INCLUSION_TIMING_ERROR",
+      "ERR_REG12_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_12A",
+    "statute_id": "IBBI_CIRP_REG_12A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "12A",
+    "section_title": "Updation of claim",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Obligates a creditor to update its claim as and when the claim is satisfied, whether partly or fully, from any source and in any manner, after the insolvency commencement date. This ensures the admitted claim list accurately reflects the outstanding debt at any given point during the corporate insolvency resolution process.",
+    "core_judicial_inquiry": "Whether the creditor has updated its claim to reflect any partial or full satisfaction received from any source after the insolvency commencement date, and whether the interim resolution professional or resolution professional has correspondingly revised the admitted claim amount to prevent overstatement of the creditor's outstanding debt.",
+    "intersecting_statute_ids": [
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_13",
+      "IBBI_CIRP_REG_14",
+      "IBBI_CIRP_REG_7",
+      "IBBI_CIRP_REG_8",
+      "IBBI_CIRP_REG_9"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any creditor whose claim has been submitted and/or admitted in the corporate insolvency resolution process"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Creditor must update its claim as and when the claim is satisfied, partly or fully, from any source in any manner, after the insolvency commencement date"
+      ],
+      "statutory_bars": [
+        "Failure to update the claim following partial or full satisfaction may result in an inflated or inaccurate claim being relied upon for voting share or distribution purposes"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_UPDATION_NOT_DONE",
+      "ERR_CLAIM_OVERSTATED_POST_SATISFACTION",
+      "ERR_REG12A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_13",
+    "statute_id": "IBBI_CIRP_REG_13",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "13",
+    "section_title": "Verification of claims",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires the interim resolution professional or resolution professional to verify every claim as on the insolvency commencement date, within seven days from the last date of receipt of claims, and maintain a list of creditors with claimed amount, admitted amount, and security interest, updating it as necessary. After verification, the claim must be admitted or rejected (in whole or part) with reasons communicated to the creditor within seven days. Claims received late (after Regulation 12(1) period but up to seven days before the resolution plan voting meeting or liquidation initiation) must be verified and categorised as acceptable or non-acceptable for collation, with intimation to the creditor and, where acceptable, placement before the committee and the Adjudicating Authority for condonation of delay. The list of creditors must be made available for inspection, displayed on relevant websites, filed on the Board's electronic platform, filed with the Adjudicating Authority, and presented at the first committee meeting.",
+    "core_judicial_inquiry": "Whether the interim resolution professional or resolution professional verified every claim within seven days of the last date of receipt, communicated admission/rejection decisions with reasons within seven days, properly categorised late-received claims as acceptable or non-acceptable for collation with due intimation and reasons, and ensured the list of creditors was made available/filed/displayed in accordance with Regulation 13(2).",
+    "intersecting_statute_ids": [
+      "IBC_SEC_18",
+      "IBC_SEC_21",
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_12A",
+      "IBBI_CIRP_REG_14",
+      "IBBI_CIRP_REG_17",
+      "IBBI_CIRP_REG_36B"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to all creditors whose claims with proof have been submitted under Regulations 7, 8, 8A, 9 or 9A"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Verification of every claim as on the insolvency commencement date, within seven days from the last date of receipt of claims",
+        "Maintenance and updation of a list of creditors containing names, amount claimed, amount admitted, and security interest, if any",
+        "Communication of admission or rejection decision (in whole or part), with reasons, to the creditor within seven days of such admission or rejection",
+        "For claims received after the Regulation 12(1) period but up to seven days before the resolution plan voting meeting or liquidation initiation: verification and categorisation as acceptable or non-acceptable for collation",
+        "Intimation to the creditor within seven days of such categorisation, with reasons where categorised as non-acceptable",
+        "Acceptable late claims placed before the committee at its next meeting for recommendation on inclusion and treatment in the resolution plan, and submitted before the Adjudicating Authority for condonation of delay and adjudication wherever applicable",
+        "List of creditors made available for inspection by persons who submitted proofs of claim, and by members/partners/directors/guarantors of the corporate debtor or their authorised representatives",
+        "List of creditors displayed on the website, if any, of the corporate debtor",
+        "List of creditors filed on the electronic platform of the Board for dissemination on its website",
+        "List of creditors filed with the Adjudicating Authority",
+        "List of creditors presented at the first meeting of the committee"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Late-received claims (after Regulation 12(1) deadline but within the window up to seven days before the resolution plan voting meeting or liquidation initiation) may still be verified and, if categorised acceptable, placed before the committee and the Adjudicating Authority for condonation of delay"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 7,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "ERR_CLAIM_VERIFICATION_DELAYED",
+      "ERR_ADMISSION_REJECTION_NOT_COMMUNICATED",
+      "ERR_REASONS_NOT_PROVIDED",
+      "ERR_LATE_CLAIM_NOT_CATEGORISED",
+      "ERR_LATE_CLAIM_INTIMATION_MISSING",
+      "ERR_CREDITOR_LIST_NOT_FILED",
+      "ERR_CREDITOR_LIST_NOT_DISPLAYED",
+      "ERR_CREDITOR_LIST_NOT_PRESENTED_AT_COC",
+      "ERR_REG13_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_16A",
+    "statute_id": "IBBI_CIRP_REG_16A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "16A",
+    "section_title": "Authorised representative",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs selection, appointment, replacement, functions, fee structure, and duties of the authorised representative (AR) for creditors in a class. The interim resolution professional selects the insolvency professional chosen by the highest number of financial creditors in the class and applies to the Adjudicating Authority for appointment within two days of claim verification; pending appointment, the selected professional acts as interim representative. Delay in appointment does not affect prior committee decisions. Creditors representing at least 10% voting share in a class may seek replacement of the AR through a voting process offering at least three choices. The AR has no role in claim receipt/verification, must be provided updated creditor lists and electronic communication means, and voting share is computed on financial debt plus 8% p.a. interest unless otherwise agreed. The AR is entitled to prescribed fees for committee meetings and class meetings (forming part of insolvency resolution process costs for up to two meetings per committee meeting), must circulate agendas and seek preliminary views (not binding as voting instructions), and carries out a defined set of duties including facilitating informed decision-making, reviewing minutes, assisting with asset marketing strategy and plan evaluation, ensuring information access, updating creditors, and representing them before the Adjudicating Authority, NCLAT, and other authorities.",
+    "core_judicial_inquiry": "Whether the interim resolution professional or resolution professional selected, appointed, or facilitated replacement of the authorised representative in accordance with Regulation 16A, whether the AR's fee was correctly computed and charged as insolvency resolution process cost, and whether the AR discharged the duties enumerated under sub-regulation (10) including circulation of agenda, communication with the class, and representation before adjudicatory forums.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_21_SUB_6A",
+      "IBC_SEC_25A",
+      "IBBI_CIRP_REG_2_CLAUSE_AA",
+      "IBBI_CIRP_REG_4A",
+      "IBBI_CIRP_REG_8A",
+      "IBBI_CIRP_REG_12",
+      "IBBI_CIRP_REG_16",
+      "IBBI_CIRP_REG_16B",
+      "IBBI_CIRP_REG_16C",
+      "IBBI_CIRP_REG_18",
+      "IBBI_CIRP_REG_25",
+      "IBBI_CIRP_REG_25A",
+      "IBBI_CIRP_REG_31",
+      "IBBI_CIRP_REG_36C"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to financial creditors organised in a class (as defined under Regulation 2(aa), i.e., a class with at least ten financial creditors under Section 21(6A)(b))",
+        "Financial creditors representing not less than 10% voting share in the class may seek replacement of the AR"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Selection of insolvency professional chosen by the highest number of financial creditors in the class, in the form notified by the Board through circular, received under Regulation 12(1)",
+        "Application to the Adjudicating Authority for appointment of the selected AR within two days of verification of claims received under Regulation 12(1)",
+        "Provision of the list of creditors in each class to the respective AR appointed by the Adjudicating Authority, and updates thereof as and when the list changes",
+        "Provision of electronic means of communication between the AR and the creditors in the class",
+        "Circulation of agenda to creditors in a class before committee meetings, with a preliminary-views window opening at least 24 hours after the request and remaining open for at least 12 hours",
+        "AR's fee for committee meetings and class meetings as per the prescribed fee table, treated as insolvency resolution process cost for up to two meetings corresponding to each committee meeting"
+      ],
+      "statutory_bars": [
+        "Choice of insolvency professional to act as AR indicated by a financial creditor in a class, in the prescribed form, shall not be considered if received after the time stipulated in the public announcement",
+        "Preliminary views sought from creditors in a class shall not be considered as voting instructions"
+      ],
+      "saving_exceptions": [
+        "Delay in appointment of the authorised representative for any class of creditors shall not affect the validity of any decision taken by the committee",
+        "Pending Adjudicating Authority approval, the insolvency professional selected under sub-regulation (1) acts as interim representative with full rights and duties of an AR, including attending committee meetings",
+        "Financial creditors representing not less than 10% voting share in the class may seek replacement of the AR via a voting process offering at least three choices including the existing AR"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 2,
+      "rectification_window_days": 24
+    },
+    "audit_error_codes": [
+      "ERR_AR_SELECTION_NONCOMPLIANT",
+      "ERR_AR_APPOINTMENT_APPLICATION_DELAYED",
+      "ERR_LATE_FORM_AR_CHOICE_CONSIDERED",
+      "ERR_AR_ROLE_IN_CLAIM_VERIFICATION",
+      "ERR_CREDITOR_LIST_NOT_UPDATED_TO_AR",
+      "ERR_ELECTRONIC_COMMUNICATION_NOT_PROVIDED",
+      "ERR_VOTING_SHARE_MISCOMPUTED",
+      "ERR_AR_FEE_MISCALCULATED",
+      "ERR_AGENDA_NOT_CIRCULATED",
+      "ERR_PRELIMINARY_VIEWS_TREATED_AS_VOTE",
+      "ERR_AR_DUTIES_NOT_DISCHARGED",
+      "ERR_REG16A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_30A",
+    "statute_id": "IBBI_CIRP_REG_30A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "30A",
+    "section_title": "Withdrawal of application",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs withdrawal of an application under Section 12A of the Code. The resolution professional must file the withdrawal application with the Adjudicating Authority within three days of committee approval, in the Board-notified form, accompanied by a bank guarantee or demand draft covering estimated expenses under clauses (aa), (ab), (ac), (ba), (c), (d) and (e) of Regulation 31 up to the date of filing. Such application cannot be made before constitution of the committee or after issue of the expression of interest invitation under Regulation 36A. If approved by the Adjudicating Authority, the person who furnished the guarantee/draft must deposit the actual expenses (as determined by the resolution professional within three days of approval) into the corporate debtor's bank account, failing which the guarantee is invoked or the draft encashed, without prejudice to other action under the Code.",
+    "core_judicial_inquiry": "Whether the withdrawal application under Section 12A was filed within three days of committee approval, in the prescribed form, accompanied by an adequate bank guarantee or demand draft covering the specified categories of insolvency resolution process costs, and whether it was filed within the permissible window (after committee constitution but before issue of the expression of interest invitation) — and, upon approval, whether the applicant deposited actual expenses within three days, failing which invocation of the guarantee/draft is warranted.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_12A",
+      "IBC_SEC_21",
+      "IBBI_CIRP_REG_31",
+      "IBBI_CIRP_REG_36A",
+      "IBBI_CIRP_REG_33",
+      "IBBI_CIRP_REG_34"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applicant seeking withdrawal under Section 12A, acting through the resolution professional",
+        "Committee of creditors must have already approved the withdrawal application"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application filed by the resolution professional with the Adjudicating Authority within three days of committee approval",
+        "Application in such form as notified by the Board through circular",
+        "Application accompanied by a bank guarantee or demand draft towards estimated expenses under clauses (aa), (ab), (ac), (ba), (c), (d) and (e) of Regulation 31, till the date of filing, as determined by the resolution professional",
+        "Upon approval by the Adjudicating Authority, deposit of actual expenses incurred (as determined by the resolution professional within three days of such approval) into the bank account of the corporate debtor, within three days of approval"
+      ],
+      "statutory_bars": [
+        "Application for withdrawal shall not be made before the constitution of the committee under Section 21(1)",
+        "Application for withdrawal shall not be made after the issue of invitation for expression of interest under Regulation 36A",
+        "Failure to deposit the actual expenses within three days of Adjudicating Authority approval results in invocation of the bank guarantee or encashment of the demand draft, without prejudice to other action permissible under the Code"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 3,
+      "rectification_window_days": 3
+    },
+    "audit_error_codes": [
+      "ERR_WITHDRAWAL_APPLICATION_DELAYED",
+      "ERR_WITHDRAWAL_BEFORE_COC_CONSTITUTION",
+      "ERR_WITHDRAWAL_AFTER_EOI_ISSUANCE",
+      "ERR_BANK_GUARANTEE_INSUFFICIENT",
+      "ERR_EXPENSE_DEPOSIT_DELAYED",
+      "ERR_BANK_GUARANTEE_INVOKED",
+      "ERR_REG30A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_35",
+    "statute_id": "IBBI_CIRP_REG_35",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "35",
+    "section_title": "Fair value and Liquidation value",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Prescribes the method for determining fair value and liquidation value of the corporate debtor. Registered valuers appointed under Regulation 27 are organised into sets, one valuer per asset class, with a coordinating valuer designated per set. Valuers explain their methodology to the committee before computation. Each valuer submits an asset-class-level fair value and liquidation value report after physical verification, computed per Board-notified valuation standards; the coordinating valuer computes the corporate debtor's overall fair value factoring in underlying synergies. A third set of valuers may be appointed where two estimates are significantly different (25% or more) or the committee proposes so for recorded reasons. The average of the two closest fair value estimates (from coordinating valuers) and the average of the two closest liquidation value estimates (per asset class) are adopted as final. Valuers must prepare and document valuation reports per Board format. After receipt of resolution plans, the resolution professional shares fair value, liquidation value, and valuation reports with committee members electronically, subject to a confidentiality undertaking under Section 29(2). The resolution professional and registered valuers must maintain confidentiality of the fair value and liquidation value.",
+    "core_judicial_inquiry": "Whether the fair value and liquidation value of the corporate debtor were determined by registered valuers in strict compliance with the methodology prescribed under Regulation 35 — including asset-class-wise valuation, coordinating valuer computation, the 'significantly different' threshold triggering a third valuer, and the averaging mechanism — and whether confidentiality of such values was maintained by the resolution professional, registered valuers, and committee members as required.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_29",
+      "IBC_SEC_29_SUB_2",
+      "IBBI_CIRP_REG_27",
+      "IBBI_CIRP_REG_2_CLAUSE_HB",
+      "IBBI_CIRP_REG_2_CLAUSE_K",
+      "IBBI_CIRP_REG_36",
+      "IBBI_CIRP_REG_38",
+      "COMPANIES_REGISTERED_VALUERS_AND_VALUATION_RULES_2017"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to registered valuers appointed under Regulation 27 and the resolution professional conducting the corporate insolvency resolution process",
+        "Committee members receiving fair value, liquidation value, and valuation reports must furnish a confidentiality undertaking"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Set of registered valuers comprising one valuer per asset class, with a coordinating valuer designated per set by the resolution professional in consultation with the committee",
+        "Resolution professional to facilitate a meeting where valuers explain their valuation methodology to the committee before computation of estimates",
+        "Each registered valuer to submit, after physical verification of inventory and fixed assets, a report on fair value and liquidation value per Board-notified valuation standards",
+        "Coordinating valuer to compute fair value of the corporate debtor factoring in underlying synergies across assets within the set",
+        "Registered valuer to prepare valuation report and maintain documentation per Board-notified format",
+        "Resolution professional to provide fair value, liquidation value, and valuation reports to committee members in electronic form, after receiving a confidentiality undertaking under Section 29(2)",
+        "Resolution professional and registered valuers to maintain confidentiality of fair value and liquidation value"
+      ],
+      "statutory_bars": [
+        "Committee member cannot receive fair value, liquidation value, or valuation reports without first furnishing the confidentiality undertaking",
+        "Fair value, liquidation value, or information in valuation reports must not be used to cause undue gain or undue loss to any person"
+      ],
+      "saving_exceptions": [
+        "Resolution professional may appoint a third set of registered valuers where the two estimates of fair value or liquidation value are significantly different (25% or more), or where the committee proposes appointment of a third set for reasons recorded in writing",
+        "Where a third set is appointed, the average of the two closest estimates (of fair value and liquidation value respectively) is adopted as the final value"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_VALUER_SET_NONCOMPLIANT",
+      "ERR_COORDINATING_VALUER_NOT_DESIGNATED",
+      "ERR_METHODOLOGY_MEETING_NOT_HELD",
+      "ERR_VALUATION_REPORT_FORMAT_NONCOMPLIANT",
+      "ERR_THIRD_VALUER_SET_NOT_JUSTIFIED",
+      "ERR_SIGNIFICANT_DIFFERENCE_MISCALCULATED",
+      "ERR_CONFIDENTIALITY_UNDERTAKING_MISSING",
+      "ERR_VALUE_CONFIDENTIALITY_BREACH",
+      "ERR_REG35_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_35A",
+    "statute_id": "IBBI_CIRP_REG_35A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "35A",
+    "section_title": "Preferential and other transactions",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires the resolution professional to form an opinion, on or before the 75th day from insolvency commencement date, on whether the corporate debtor has been subjected to preferential (Section 43), undervalued (Section 45), extortionate credit (Section 50), or fraudulent/wrongful trading (Section 66) transactions. If such an opinion is formed, the resolution professional must make a determination by the 115th day, and apply to the Adjudicating Authority for appropriate relief by the 130th day. A copy of such application must be forwarded to the prospective resolution applicant to enable consideration while submitting the resolution plan within the originally stipulated time. Creditors must provide the resolution professional with relevant extracts from audits conducted by them (stock audit, transaction audit, forensic audit, etc.) to assist this process.",
+    "core_judicial_inquiry": "Whether the resolution professional formed an opinion on avoidance transactions by the 75th day, made a determination by the 115th day, and filed the application for appropriate relief before the Adjudicating Authority by the 130th day of the insolvency commencement date, and whether such application was duly forwarded to the prospective resolution applicant to inform the resolution plan.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_43",
+      "IBC_SEC_45",
+      "IBC_SEC_50",
+      "IBC_SEC_66",
+      "IBBI_CIRP_REG_36",
+      "IBBI_CIRP_REG_36B",
+      "IBBI_CIRP_REG_38",
+      "IBBI_CIRP_REG_39"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to the resolution professional conducting the corporate insolvency resolution process of the corporate debtor",
+        "Creditors of the corporate debtor are obligated to furnish relevant audit extracts to the resolution professional"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Formation of opinion on whether the corporate debtor has been subjected to transactions under Sections 43, 45, 50 or 66, on or before the 75th day from insolvency commencement date",
+        "Determination on such transactions, on or before the 115th day from insolvency commencement date",
+        "Application to the Adjudicating Authority for appropriate relief, on or before the 130th day from insolvency commencement date",
+        "Forwarding of a copy of the application to the prospective resolution applicant to enable consideration in the resolution plan within the time initially stipulated",
+        "Creditors to provide relevant extracts from audits conducted by them (stock audit, transaction audit, forensic audit, etc.) to the resolution professional"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 130,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_OPINION_NOT_FORMED_BY_75DAY",
+      "ERR_DETERMINATION_NOT_MADE_BY_115DAY",
+      "ERR_APPLICATION_NOT_FILED_BY_130DAY",
+      "ERR_APPLICATION_NOT_FORWARDED_TO_RA",
+      "ERR_CREDITOR_AUDIT_EXTRACTS_NOT_PROVIDED",
+      "ERR_REG35A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_36",
+    "statute_id": "IBBI_CIRP_REG_36",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "36",
+    "section_title": "Information memorandum",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires the resolution professional to submit the information memorandum in electronic form to each committee member on or before the 95th day from insolvency commencement date, along with subsequent updates. The information memorandum must highlight key selling propositions and comprehensively convey significant information about the corporate debtor, including assets/liabilities (with contingent liabilities), receivables, joint development agreements, attached assets, financial statements, creditor lists, related-party debts, guarantees, significant shareholders, litigation/investigations, identified avoidance transactions, workforce liabilities, business overview and growth drivers, real estate allottee details, guarantor asset transfer details, fair value (subject to committee-approved non-disclosure), and any other relevant information. Committee members may request further information with a bearing on the resolution plan. Creditors must provide the resolution professional with latest financial statements and relevant financial information. The information memorandum is shared only after obtaining a confidentiality undertaking under Section 29(2).",
+    "core_judicial_inquiry": "Whether the resolution professional submitted the information memorandum to committee members by the 95th day (with subsequent updates), whether the memorandum comprehensively contained all mandatory details enumerated under Regulation 36(2), and whether it was shared only after obtaining the requisite confidentiality undertaking under Section 29(2).",
+    "intersecting_statute_ids": [
+      "IBC_SEC_25_SUB_2_CLAUSE_H",
+      "IBC_SEC_29",
+      "IBC_SEC_29_SUB_2",
+      "IBBI_CIRP_REG_35",
+      "IBBI_CIRP_REG_35A",
+      "IBBI_CIRP_REG_36A",
+      "IBBI_CIRP_REG_36B",
+      "IBBI_CIRP_REG_28A",
+      "REAL_ESTATE_REGULATION_AND_DEVELOPMENT_ACT_2016"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to the resolution professional conducting the corporate insolvency resolution process",
+        "Recipients are members of the committee (and, subject to sub-regulation (4) confidentiality safeguards, prospective resolution applicants via subsequent regulations)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Submission of information memorandum in electronic form to each committee member on or before the 95th day from insolvency commencement date, and subsequent updates thereof",
+        "Details of assets and liabilities (including contingent liabilities) as on insolvency commencement date, with description (date/cost of acquisition, useful life, identification number, depreciation, book value, geographical coordinates)",
+        "Details of receivables including trade receivables, inter-corporate receivables, and contract receivables",
+        "Details of joint development agreements and similar collaboration arrangements",
+        "Details of assets under attachment by enforcement agencies",
+        "Latest annual financial statements; audited financial statements for last two financial years and provisional statements for current year (not earlier than 14 days from application date)",
+        "List of creditors with amounts claimed, admitted, and security interest",
+        "Particulars of related-party debts due from or to the corporate debtor",
+        "Details of guarantees given in relation to corporate debtor's debts, specifying related-party guarantors",
+        "Names and addresses of members/partners holding at least 1% stake, with size of stake",
+        "Details of material litigation and ongoing investigations/proceedings by Government/statutory authorities",
+        "Details of identified avoidance transactions under Chapter III or fraudulent/wrongful trading under Chapter VI of Part II of the Code, and subsequent filings before Adjudicating Authority per Regulation 35A(3A)",
+        "Number of workers/employees and liabilities towards them",
+        "Company overview including business performance, key contracts, investment highlights, and going-concern value factors",
+        "Details of allottees (names, amounts due, units allotted) not reflected in claims but in corporate debtor's books or RERA records",
+        "Details of guarantor assets proposed to be transferred under Section 28A, including description, value, and mode of transfer",
+        "Business evolution, industry overview and key growth drivers, for corporate debtors with book value of total assets exceeding Rs. 100 crore",
+        "Fair value, subject to committee's discretion to withhold for recorded reasons if beneficial to the resolution process",
+        "Any other information the resolution professional deems relevant to the committee",
+        "Creditors to provide latest financial statements and other relevant financial information available with them",
+        "Confidentiality undertaking obtained from committee member/resolution applicant before sharing the information memorandum, per Section 29(2)"
+      ],
+      "statutory_bars": [
+        "Information memorandum shall not be shared without first receiving a confidentiality undertaking under sub-regulation (4)"
+      ],
+      "saving_exceptions": [
+        "Committee may decide not to disclose the fair value for reasons recorded in writing, if it considers such non-disclosure beneficial for the resolution process",
+        "Committee member may request further information of the nature described in this regulation, which the resolution professional must provide within reasonable time if it has a bearing on the resolution plan"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 95,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_IM_SUBMISSION_DELAYED",
+      "ERR_IM_UPDATE_NOT_PROVIDED",
+      "ERR_IM_MANDATORY_DETAIL_MISSING",
+      "ERR_ASSET_LIABILITY_DESCRIPTION_INCOMPLETE",
+      "ERR_AVOIDANCE_TRANSACTION_DETAILS_MISSING",
+      "ERR_ALLOTTEE_DETAILS_MISSING",
+      "ERR_GUARANTOR_ASSET_DETAILS_MISSING",
+      "ERR_FAIR_VALUE_NONDISCLOSURE_UNJUSTIFIED",
+      "ERR_CONFIDENTIALITY_UNDERTAKING_MISSING",
+      "ERR_CREDITOR_FINANCIAL_INFO_NOT_PROVIDED",
+      "ERR_ADDITIONAL_INFO_REQUEST_UNFULFILLED",
+      "ERR_REG36_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_36A",
+    "statute_id": "IBBI_CIRP_REG_36A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "36A",
+    "section_title": "Invitation for expression of interest",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Requires the resolution professional to publish brief particulars of the invitation for expression of interest (EoI), in the Board-notified form, not later than the 60th day from insolvency commencement date, inviting eligible prospective resolution applicants to submit resolution plans (for the corporate debtor as a whole, or for sale of one or more assets, or both, with committee approval). Publication must be in newspapers, on the corporate debtor's and Board's websites, and in any other manner the committee decides. The detailed invitation must specify applicant eligibility criteria, Section 29A ineligibility norms, basic corporate debtor information, MSME registration status, and must not require any fee or non-refundable deposit; the last date for EoI submission must be at least 15 days from issue. Late EoIs are rejected. Each EoI must be unconditional and accompanied by specified undertakings (eligibility, Section 29A compliance, truthfulness, confidentiality). The resolution professional conducts due diligence, may seek clarifications, and issues a provisional list within 10 days of the EoI deadline, allows objections within 5 days, and issues a final list within 10 days of the objection deadline. For real estate projects, the committee may relax eligibility criteria and deposit conditions for qualifying allottee associations/groups.",
+    "core_judicial_inquiry": "Whether the resolution professional published the EoI invitation within the 60-day statutory deadline and through all mandated channels, whether the detailed invitation complied with the mandatory content requirements under Regulation 36A(4), whether submitted EoIs met the unconditional and undertaking requirements under sub-regulation (7), and whether the provisional and final applicant lists were issued within the prescribed 10-day and 5-day windows respectively.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_25_SUB_2_CLAUSE_H",
+      "IBC_SEC_29A",
+      "IBC_SEC_29",
+      "IBC_SEC_29_SUB_2",
+      "IBBI_CIRP_REG_36",
+      "IBBI_CIRP_REG_36B",
+      "IBBI_CIRP_REG_36C",
+      "MSMED_ACT_2006",
+      "REAL_ESTATE_REGULATION_AND_DEVELOPMENT_ACT_2016"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Prospective resolution applicant must be interested and eligible, meeting criteria approved by the committee under Section 25(2)(h)",
+        "Must not suffer from ineligibility under Section 29A, to the extent applicable",
+        "For real estate projects, an association or group of allottees representing not less than 10% or 100 creditors in the class (whichever is lower) may qualify for relaxed eligibility criteria and deposit conditions, subject to committee decision"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Publication of brief particulars of the EoI invitation, in Board-notified form, not later than the 60th day from insolvency commencement date",
+        "Publication in one English and one regional language newspaper with wide circulation at relevant locations",
+        "Publication on the website, if any, of the corporate debtor and the Board-designated website",
+        "Detailed invitation to state where it can be downloaded/obtained, and last date for EoI submission (at least 15 days from issue)",
+        "Detailed invitation to specify applicant eligibility criteria, Section 29A ineligibility norms, basic corporate debtor information, no fee/non-refundable deposit requirement, and MSME registration status",
+        "EoI to be unconditional and accompanied by undertakings: eligibility compliance, supporting records, Section 29A non-ineligibility undertaking, records for ineligibility assessment, undertaking to intimate subsequent ineligibility, truthfulness undertaking, and confidentiality undertaking under Section 29(2)",
+        "Resolution professional to conduct due diligence per Section 25(2)(h), Section 29A, and other invitation requirements",
+        "Issuance of provisional list of eligible prospective resolution applicants within 10 days of the EoI submission deadline",
+        "Issuance of final list within 10 days of the last date for receipt of objections"
+      ],
+      "statutory_bars": [
+        "Expression of interest received after the specified last date shall be rejected",
+        "Detailed invitation shall not require payment of any fee or non-refundable deposit for submission of expression of interest",
+        "Modification of the EoI invitation shall not be made more than once"
+      ],
+      "saving_exceptions": [
+        "For real estate projects, the committee may relax eligibility criteria and refundable deposit conditions for a qualifying association/group of allottees representing not less than 10% or 100 creditors in the class, whichever is lower",
+        "Objections to inclusion/exclusion in the provisional list may be made with supporting documents within 5 days of its issue"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 60,
+      "rectification_window_days": 15
+    },
+    "audit_error_codes": [
+      "ERR_EOI_PUBLICATION_DELAYED",
+      "ERR_EOI_PUBLICATION_CHANNEL_MISSING",
+      "ERR_EOI_CONTENT_NONCOMPLIANT",
+      "ERR_EOI_FEE_OR_DEPOSIT_CHARGED",
+      "ERR_EOI_MODIFIED_MULTIPLE_TIMES",
+      "ERR_EOI_LATE_SUBMISSION_ACCEPTED",
+      "ERR_EOI_UNDERTAKING_MISSING",
+      "ERR_DUE_DILIGENCE_INCOMPLETE",
+      "ERR_PROVISIONAL_LIST_DELAYED",
+      "ERR_OBJECTION_WINDOW_NONCOMPLIANT",
+      "ERR_FINAL_LIST_DELAYED",
+      "ERR_REG36A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_38",
+    "statute_id": "IBBI_CIRP_REG_38",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "38",
+    "section_title": "Mandatory contents of the resolution plan",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Prescribes the mandatory contents of a resolution plan. Payments to operational creditors must be prioritised over financial creditors; among financial creditors, those who did not vote in favour must be paid in priority (and at least pro rata in each stage, if payment is staged) over those who voted in favour. The plan must state how it addresses stakeholder interests, disclose past implementation failures by the applicant or related parties, specify the term, implementation schedule, management/control arrangements, and supervision mechanism, and provide for the manner of pursuing and distributing proceeds from avoidance/fraudulent transaction proceedings post-approval. It cannot assign avoidance transactions not disclosed in the information memorandum and intimated to applicants before the plan submission deadline. The plan must demonstrate that it addresses the cause of default, is feasible and viable, has effective implementation and approval provisions, and that the applicant has capability to implement it. It must include a beneficial-ownership statement and a Section 32A eligibility affidavit. The committee shall consider constituting a monitoring committee (which may include the RP, other IPs, committee representatives, or resolution applicant representatives, with RP fee capped) to submit quarterly implementation status reports to the Adjudicating Authority.",
+    "core_judicial_inquiry": "Whether the resolution plan complies with the mandatory payment priority waterfall (operational creditors first; dissenting financial creditors before assenting ones, pro rata per stage), includes all mandatory statements and disclosures (stakeholder treatment, past implementation failures, avoidance transaction treatment, beneficial ownership, Section 32A affidavit), and demonstrably satisfies the feasibility, viability, implementability, and applicant-capability criteria under Regulation 38(3), such that it is fit for committee approval and Adjudicating Authority sanction under Section 30/31.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_21",
+      "IBC_SEC_30",
+      "IBC_SEC_31",
+      "IBC_SEC_32A",
+      "IBBI_CIRP_REG_35A",
+      "IBBI_CIRP_REG_37",
+      "IBBI_CIRP_REG_39",
+      "IBC_PART_II_CHAPTER_III",
+      "IBC_PART_II_CHAPTER_VI"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to any resolution applicant submitting a resolution plan for the corporate debtor",
+        "Resolution applicant and its related parties must disclose any past failure to implement, or contribution to failure of implementation of, any other Adjudicating-Authority-approved resolution plan"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Payment to operational creditors in priority over financial creditors",
+        "Payment to dissenting/non-voting financial creditors in priority over financial creditors who voted in favour of the plan, including pro rata priority at each stage where payment is staged",
+        "Statement on how the plan has dealt with the interests of all stakeholders, including financial and operational creditors",
+        "Statement of details of past resolution plan implementation failure by the applicant or related parties, if any",
+        "Term of the plan and its implementation schedule",
+        "Management and control of the corporate debtor's business during the plan term",
+        "Adequate means for supervising implementation",
+        "Manner of pursuing avoidance transaction/fraudulent or wrongful trading proceedings post-approval, and distribution of proceeds therefrom",
+        "Demonstration that the plan addresses the cause of default, is feasible and viable, has provisions for effective implementation, has provisions for required approvals and their timeline, and that the applicant has capability to implement the plan",
+        "Statement of beneficial ownership in the Board-notified format, covering all natural persons ultimately owning/controlling the applicant, shareholding structure, and jurisdiction of intermediate entities",
+        "Affidavit, in Board-specified format, on the applicant's eligibility/ineligibility for the benefit of Section 32A"
+      ],
+      "statutory_bars": [
+        "Resolution plan shall not provide for assignment of avoidance transactions or fraudulent/wrongful trading claims that were not disclosed in the information memorandum and intimated to all prospective resolution applicants under Regulation 35A(3A) before the last date for submission of resolution plans"
+      ],
+      "saving_exceptions": [
+        "Clause (2)(d) (manner of pursuing avoidance transaction proceedings) shall not apply to any resolution plan submitted to the Adjudicating Authority under Section 30(6) on or before commencement of the (Second Amendment) Regulations, 2022",
+        "Sub-regulation (2A) (bar on unassigned/undisclosed avoidance transaction assignment) shall not apply to any resolution plan submitted under Section 30(6) on or before commencement of the (Fifth Amendment) Regulations, 2025",
+        "Committee may consider constituting a monitoring committee to supervise plan implementation, with resolution professional's fee (if included) capped at the CIRP-period monthly fee"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PAYMENT_PRIORITY_VIOLATED",
+      "ERR_DISSENTING_CREDITOR_PRIORITY_VIOLATED",
+      "ERR_STAKEHOLDER_STATEMENT_MISSING",
+      "ERR_PAST_FAILURE_DISCLOSURE_MISSING",
+      "ERR_IMPLEMENTATION_SCHEDULE_MISSING",
+      "ERR_SUPERVISION_MECHANISM_MISSING",
+      "ERR_AVOIDANCE_PROCEEDS_TREATMENT_MISSING",
+      "ERR_UNDISCLOSED_AVOIDANCE_ASSIGNMENT",
+      "ERR_FEASIBILITY_VIABILITY_NOT_DEMONSTRATED",
+      "ERR_APPLICANT_CAPABILITY_NOT_DEMONSTRATED",
+      "ERR_BENEFICIAL_OWNERSHIP_STATEMENT_MISSING",
+      "ERR_SEC32A_AFFIDAVIT_MISSING",
+      "ERR_MONITORING_COMMITTEE_FEE_EXCEEDED",
+      "ERR_REG38_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_39",
+    "statute_id": "IBBI_CIRP_REG_39",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "39",
+    "section_title": "Approval of resolution plan",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the submission, evaluation, and approval of resolution plans. A prospective resolution applicant in the final list may submit resolution plan(s) electronically within the RFRP timeline under Regulation 36B, accompanied by a Section 29A eligibility affidavit and a truthfulness undertaking. The resolution professional may allow one modification or use a challenge mechanism if envisaged in the RFRP; the committee shall not consider late, non-final-list, or non-compliant plans. The resolution professional submits all plans to the committee along with details of non-compliant plans and any identified preferential/undervalued/extortionate/fraudulent transactions. The committee evaluates compliant plans per the evaluation matrix, records deliberations on feasibility/viability, realisable value versus fair/liquidation value, and adequacy of market discovery, and votes on all plans simultaneously — a single plan needs requisite votes to be approved; among multiple plans, the highest-voted plan (meeting requisite votes) is approved, with a pre-announced tie-breaker for equal votes and re-voting on the highest-voted plan if none meets the threshold. At least one plan (where multiple are submitted) must provide for resolution as a going concern. The approved plan must be submitted to the Adjudicating Authority, generally at least 30 days before the CIRP completion deadline, with a compliance certificate and evidence of performance security. Orders on the plan are communicated to participants and the applicant; within 15 days of approval, claimants are informed of the payment principle/formula. Plan provisions override otherwise-required corporate consents. No proceedings lie against the IRP/RP for pre-CIRP actions of the corporate debtor. Post-approval management may seek district administration assistance for implementation, and an aggrieved creditor may seek Adjudicating Authority directions for non-implementation.",
+    "core_judicial_inquiry": "Whether the resolution plan was submitted by an applicant on the final list within the RFRP timeline with the requisite affidavit and undertakings, whether the committee properly evaluated only compliant plans per the evaluation matrix with recorded deliberations on feasibility, viability, realisable value, and market discovery adequacy, whether the voting and approval process (including tie-breaker and re-voting mechanisms) complied with Regulation 39(3)/(3A)/(3B), and whether the approved plan was submitted to the Adjudicating Authority within the prescribed timeline with the required compliance certificate and performance security evidence.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_12",
+      "IBC_SEC_29A",
+      "IBC_SEC_30",
+      "IBC_SEC_30_SUB_1",
+      "IBC_SEC_30_SUB_6",
+      "IBC_SEC_31",
+      "IBC_SEC_31_SUB_1",
+      "IBBI_CIRP_REG_35",
+      "IBBI_CIRP_REG_35A",
+      "IBBI_CIRP_REG_36B",
+      "IBBI_CIRP_REG_38"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Prospective resolution applicant must appear in the final list of prospective resolution applicants",
+        "Resolution plan must be submitted electronically within the time given in the request for resolution plans under Regulation 36B",
+        "Committee approval requires requisite voting share as defined under the Code (majority thresholds under Section 30(4))"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Affidavit stating eligibility under Section 29A to submit resolution plans",
+        "Undertaking that all information and records provided are true and correct, with consequences (ineligibility, deposit forfeiture, penal action) for false information",
+        "Resolution professional to submit all resolution plans to the committee, along with details of non-compliant plans and any identified preferential/undervalued/extortionate/fraudulent transactions and related Adjudicating Authority orders",
+        "Committee to evaluate compliant plans per the evaluation matrix and record deliberations on feasibility/viability, realisable value versus fair/liquidation value, and adequacy of market discovery",
+        "Simultaneous voting on all resolution plans put before the committee",
+        "At least one resolution plan (where multiple are submitted) to provide for resolution as a going concern",
+        "Compliance certificate in Board-notified form and evidence of receipt of performance security under Regulation 36B(4A), submitted with the approved plan to the Adjudicating Authority",
+        "Intimation to each claimant of the payment principle/formula within 15 days of the Adjudicating Authority's approval order"
+      ],
+      "statutory_bars": [
+        "Committee shall not consider a resolution plan received after the time specified under Regulation 36B",
+        "Committee shall not consider a resolution plan received from a person not appearing in the final list of prospective resolution applicants",
+        "Committee shall not consider a resolution plan that does not comply with Section 30(2) and Regulation 39(1)",
+        "Modification of a submitted resolution plan permitted only once, and only if envisaged in the request for resolution plans",
+        "No proceedings shall be initiated against the interim resolution professional or resolution professional for any actions of the corporate debtor prior to the insolvency commencement date"
+      ],
+      "saving_exceptions": [
+        "Resolution professional may allow one modification of the resolution plan, or use a challenge mechanism, if envisaged in the request for resolution plans",
+        "Where none of the resolution plans receives requisite votes, the committee shall vote again on the plan that received the highest votes, subject to Code timelines",
+        "Where two or more plans receive equal (and requisite) votes, the committee shall approve one per a pre-announced tie-breaker formula",
+        "Provisions in a resolution plan requiring otherwise-necessary corporate consents (under constitutional documents, shareholders'/joint venture agreements) take effect notwithstanding absence of such consent",
+        "Post-approval management may seek Adjudicating Authority assistance from local district administration to implement plan terms",
+        "Aggrieved creditor may apply to the Adjudicating Authority for directions regarding non-implementation of an approved resolution plan"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": 15
+    },
+    "audit_error_codes": [
+      "ERR_PLAN_SUBMITTED_LATE",
+      "ERR_APPLICANT_NOT_ON_FINAL_LIST",
+      "ERR_SEC29A_AFFIDAVIT_MISSING",
+      "ERR_TRUTHFULNESS_UNDERTAKING_MISSING",
+      "ERR_PLAN_MODIFIED_MULTIPLE_TIMES",
+      "ERR_NONCOMPLIANT_PLAN_CONSIDERED",
+      "ERR_EVALUATION_MATRIX_NOT_APPLIED",
+      "ERR_DELIBERATIONS_NOT_RECORDED",
+      "ERR_SIMULTANEOUS_VOTING_NOT_CONDUCTED",
+      "ERR_GOING_CONCERN_PLAN_ABSENT",
+      "ERR_TIE_BREAKER_NOT_PREANNOUNCED",
+      "ERR_COMPLIANCE_CERTIFICATE_MISSING",
+      "ERR_PERFORMANCE_SECURITY_EVIDENCE_MISSING",
+      "ERR_AA_SUBMISSION_DELAYED",
+      "ERR_CLAIMANT_INTIMATION_DELAYED",
+      "ERR_REG39_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_31A",
+    "statute_id": "IBBI_CIRP_REG_31A",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "31A",
+    "section_title": "Regulatory Fee",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Prescribes a regulatory fee payable to the Board (IBBI) in two circumstances: (1) at 0.25% of the realisable value to creditors under an approved resolution plan, where such realisable value exceeds the liquidation value, applicable to resolution plans approved under Section 31 on or after 1st October 2022 (with an exception for real estate resolution plans approved by an association/group of allottees, where the fee is not payable); and (2) at 1% of the cost booked as insolvency resolution process costs for hiring professionals or other services by the IRP/RP, payable in the manner specified under the IBBI (Insolvency Professionals) Regulations, 2016.",
+    "core_judicial_inquiry": "Whether the regulatory fee payable to the Board has been correctly computed and remitted — at 0.25% of the realisable value exceeding liquidation value for resolution plans approved on or after 1st October 2022 (subject to the real estate allottee-association exemption), and at 1% of professional/service hiring costs booked as insolvency resolution process costs — in accordance with Regulation 31A.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_31",
+      "IBBI_CIRP_REG_31",
+      "IBBI_CIRP_REG_35",
+      "IBBI_IP_REGULATIONS_2016_REG_7_SUB_2_CLAUSE_CB"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to resolution professionals and corporate debtors whose resolution plans are approved under Section 31 of the Code on or after 1st October 2022",
+        "Applies to insolvency resolution process costs incurred for hiring professionals or other services by the IRP/RP"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Regulatory fee at 0.25% of the realisable value to creditors under the approved resolution plan, payable only where such realisable value exceeds the liquidation value",
+        "Regulatory fee at 1% of the cost booked as insolvency resolution process costs for hiring any professional or other services by the IRP/RP, paid in the manner specified under clause (cb) of sub-regulation (2) of regulation 7 of the IBBI (Insolvency Professionals) Regulations, 2016"
+      ],
+      "statutory_bars": [
+        "Sub-regulation (1) fee applies only to resolution plans approved under Section 31 on or after 1st October 2022"
+      ],
+      "saving_exceptions": [
+        "Regulatory fee under sub-regulation (1) is not payable where the approved resolution plan for a real estate project is from an association or group of allottees in that project"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_REGULATORY_FEE_NOT_COMPUTED",
+      "ERR_REGULATORY_FEE_RATE_INCORRECT",
+      "ERR_REALISABLE_VALUE_COMPARISON_MISSING",
+      "ERR_REAL_ESTATE_EXEMPTION_MISAPPLIED",
+      "ERR_PROFESSIONAL_COST_FEE_NOT_REMITTED",
+      "ERR_REG31A_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_32",
+    "statute_id": "IBBI_CIRP_REG_32",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "32",
+    "section_title": "Essential supplies",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Defines the essential goods and services referred to in Section 14(2) of the Code, which cannot be suspended or terminated during the moratorium period. These are electricity, water, telecommunication services, and information technology services — to the extent such supplies are not a direct input to the output produced or supplied by the corporate debtor. An illustration clarifies that water supplied for drinking and sanitation purposes is essential supply, but not water used as a direct input for generation of hydro-electricity.",
+    "core_judicial_inquiry": "Whether the goods or services in question (electricity, water, telecommunication, or IT services) constitute 'essential supplies' under Regulation 32 that must be maintained during the moratorium under Section 14(2), or whether they fall outside this protection because they constitute a direct input to the output produced or supplied by the corporate debtor.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_14",
+      "IBC_SEC_14_SUB_2",
+      "IBBI_CIRP_REG_31"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to the corporate debtor during the moratorium period under Section 14 of the Code",
+        "Relevant to suppliers of electricity, water, telecommunication services, and information technology services to the corporate debtor"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Supply must fall within one of the four categories: electricity, water, telecommunication services, or information technology services",
+        "Supply must not be a direct input to the output produced or supplied by the corporate debtor, in order to qualify as an 'essential supply' protected under the moratorium"
+      ],
+      "statutory_bars": [
+        "A supply that is a direct input to the output produced or supplied by the corporate debtor does not qualify as an essential supply under this regulation, even if it falls within one of the four listed categories (e.g., water used for hydro-electricity generation, where electricity is the corporate debtor's output)"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_ESSENTIAL_SUPPLY_MISCLASSIFIED",
+      "ERR_DIRECT_INPUT_EXCLUSION_MISAPPLIED",
+      "ERR_ESSENTIAL_SUPPLY_SUSPENDED_DURING_MORATORIUM",
+      "ERR_REG32_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_33",
+    "statute_id": "IBBI_CIRP_REG_33",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "33",
+    "section_title": "Costs of the interim resolution professional",
+    "jurisdiction_type": "PROCEDURAL_MANDATE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the fixing and reimbursement of expenses incurred on or by the interim resolution professional (IRP). The applicant fixes the IRP's expenses; if the applicant has not done so, the Adjudicating Authority fixes them. The applicant bears these expenses, which the committee may reimburse to the extent it ratifies. Amounts ratified by the committee are treated as insolvency resolution process costs. 'Expenses' is defined to include the fee payable to the interim resolution professional, fee payable to the insolvency professional entity (if any), fee payable to professionals (if any), and other expenses incurred by the interim resolution professional.",
+    "core_judicial_inquiry": "Whether the expenses incurred on or by the interim resolution professional were properly fixed (by the applicant, or by the Adjudicating Authority in the applicant's default), whether the applicant initially bore such expenses, and whether the committee's ratification of these expenses — thereby converting them into insolvency resolution process costs — was validly obtained under Regulation 33.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_5_SUB_13",
+      "IBBI_CIRP_REG_31",
+      "IBBI_CIRP_REG_34",
+      "IBBI_CIRP_REG_34B"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to the applicant who filed the application under Section 7, 9, or 10, who is responsible for initially fixing and bearing the IRP's expenses",
+        "Applies to the interim resolution professional whose expenses are being fixed and reimbursed"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Applicant to fix the expenses to be incurred on or by the interim resolution professional",
+        "Where the applicant has not fixed expenses, the Adjudicating Authority shall fix them",
+        "Applicant to bear the expenses, reimbursable by the committee to the extent it ratifies them",
+        "Expenses ratified by the committee to be treated as insolvency resolution process costs",
+        "'Expenses' includes: fee to be paid to the interim resolution professional, fee to be paid to insolvency professional entity (if any), fee to be paid to professionals (if any), and other expenses incurred by the interim resolution professional"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Adjudicating Authority steps in to fix expenses only where the applicant has failed to do so under sub-regulation (1)"
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_IRP_EXPENSES_NOT_FIXED",
+      "ERR_APPLICANT_EXPENSE_BEARING_FAILURE",
+      "ERR_COMMITTEE_RATIFICATION_MISSING",
+      "ERR_IRPC_TREATMENT_INCORRECT",
+      "ERR_EXPENSE_DEFINITION_SCOPE_ERROR",
+      "ERR_REG33_NONCOMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBBI_CIRP_REG_37",
+    "statute_id": "IBBI_CIRP_REG_37",
+    "act_name": "Insolvency and Bankruptcy Board of India (Insolvency Resolution Process for Corporate Persons) Regulations, 2016",
+    "section_number": "37",
+    "section_title": "Resolution plan",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Provides an illustrative, non-exhaustive list of measures a resolution plan may provide for insolvency resolution of the corporate debtor, aimed at maximisation of value of its assets. These include transfer of all or part of assets to one or more persons; sale of all or part of assets (with or without security interest); restructuring by merger, amalgamation, or demerger; substantial acquisition of shares or merger/consolidation with other persons; cancellation or delisting of shares; satisfaction or modification of security interests; curing or waiving breach of debt terms; reduction in amount payable to creditors; extension of maturity date or change in interest rate or other debt terms; amendment of constitutional documents; issuance of securities for cash, property, securities, or in exchange for claims/interests; change in portfolio of goods/services; change in technology used; obtaining necessary Central/State Government and other regulatory approvals; and sale of one or more assets to one or more successful resolution applicants with manner of dealing with remaining assets.",
+    "core_judicial_inquiry": "Whether the measures proposed in the resolution plan fall within, or are of a nature consistent with, the illustrative categories under Regulation 37, and whether such measures are directed towards the maximisation of value of the corporate debtor's assets as required by the regulation.",
+    "intersecting_statute_ids": [
+      "IBC_SEC_30",
+      "IBC_SEC_31",
+      "IBBI_CIRP_REG_36",
+      "IBBI_CIRP_REG_38",
+      "IBBI_CIRP_REG_39",
+      "COMPANIES_ACT_2013"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to resolution applicants formulating a resolution plan for the corporate debtor"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Resolution plan to provide for measures necessary for insolvency resolution of the corporate debtor, directed at maximisation of value of its assets",
+        "Measures may include (non-exhaustively): transfer of all/part of assets; sale of all/part of assets with or without security interest; restructuring via merger, amalgamation, or demerger; substantial acquisition of shares, merger, or consolidation; cancellation or delisting of shares; satisfaction/modification of security interest; curing/waiving debt term breaches; reduction in amounts payable to creditors; extension of maturity date or change in interest rate/other debt terms; amendment of constitutional documents; issuance of securities; change in portfolio of goods/services; change in technology used; obtaining necessary Central/State Government and other regulatory approvals; sale of one or more assets to one or more successful resolution applicants with treatment of remaining assets"
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PLAN_MEASURES_NOT_VALUE_MAXIMISING",
+      "ERR_PLAN_MEASURE_UNAUTHORISED_TYPE",
+      "ERR_ASSET_TRANSFER_TERMS_UNCLEAR",
+      "ERR_REGULATORY_APPROVALS_NOT_ADDRESSED",
+      "ERR_REG37_NONCOMPLIANCE"
+    ]
+  }
+]

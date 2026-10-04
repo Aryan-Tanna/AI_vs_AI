@@ -1,0 +1,863 @@
+[
+  {
+    "_id": "LIMITATION_ACT_1963_ART_137",
+    "statute_id": "LIMITATION_ACT_1963_ART_137",
+    "act_name": "The Limitation Act, 1963",
+    "section_number": "Article 137",
+    "section_title": "Any other application for which no period of limitation is provided elsewhere in this Division",
+    "jurisdiction_type": "RESIDUAL_PROVISION",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Establishes a residual period of limitation of three years for any application for which no period of limitation is provided elsewhere in the Third Division, beginning when the right to apply accrues.",
+    "core_judicial_inquiry": "Determining whether the application is covered by any specific Article in the Third Division of the Schedule, and identifying the exact point in time when the right to apply accrued.",
+    "intersecting_statute_ids": [
+      "LIMITATION_ACT_1963_SEC_3",
+      "LIMITATION_ACT_1963_SEC_5",
+      "LIMITATION_ACT_1963_SEC_12",
+      "LIMITATION_ACT_1963_SEC_14"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any applicant entitled to make an application to a civil court where no specific limitation period is prescribed elsewhere in Part I of the Third Division."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Demonstrable accrual of a legal right to apply."
+      ],
+      "statutory_bars": [
+        "Expiry of three years from the date when the right to apply accrued."
+      ],
+      "saving_exceptions": [
+        "Extension of prescribed period under Section 5 upon showing sufficient cause.",
+        "Exclusion of time taken in legal proceedings under Section 12 or Section 14."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_LIMITATION_BARRED_ART_137",
+      "ERR_RIGHT_TO_APPLY_NOT_ACCRUED"
+    ]
+  },
+  {
+    "_id": "LIMITATION_ACT_1963_SEC_18",
+    "statute_id": "LIMITATION_ACT_1963_SEC_18",
+    "act_name": "The Limitation Act, 1963",
+    "section_number": "18",
+    "section_title": "Effect of acknowledgment in writing",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Establishes that a written and signed acknowledgment of liability made before the expiration of the prescribed period for a suit or application computes a fresh period of limitation from the time when the acknowledgment was signed.",
+    "core_judicial_inquiry": "Determining whether a written, signed acknowledgment of liability exists, whether it was executed prior to the expiry of the prescribed limitation period, and whether it was signed personally or by a duly authorized agent.",
+    "intersecting_statute_ids": [
+      "LIMITATION_ACT_1963_SEC_3",
+      "LIMITATION_ACT_1963_SEC_19",
+      "LIMITATION_ACT_1963_SEC_20"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party seeking to enforce a claim or legal right in respect of property or debt where liability has been acknowledged in writing by the opposing party or their predecessor-in-interest."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Acknowledgment must be in writing.",
+        "Must be signed personally by the party against whom the right is claimed or by a duly authorized agent.",
+        "Must be executed before the expiration of the prescribed period of limitation."
+      ],
+      "statutory_bars": [
+        "Acknowledgment executed after the expiry of the original prescribed limitation period.",
+        "Inadmissibility of oral evidence to prove the contents of the written acknowledgment.",
+        "Inapplicability to applications for the execution of a decree or order."
+      ],
+      "saving_exceptions": [
+        "Admissibility of oral evidence solely to prove the date of signing if the writing containing the acknowledgment is undated.",
+        "Validity of acknowledgment even if it omits the exact nature of property/right, indicates time for performance has not come, contains a refusal to pay, is coupled with a claim to set off, or is addressed to a third party."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_ACKNOWLEDGMENT_POST_EXPIRY",
+      "ERR_UNSIGNED_ACKNOWLEDGMENT",
+      "ERR_EXECUTION_APPLICATION_EXCLUDED"
+    ]
+  },
+  {
+    "_id": "LIMITATION_ACT_1963_SEC_5",
+    "statute_id": "LIMITATION_ACT_1963_SEC_5",
+    "act_name": "The Limitation Act, 1963",
+    "section_number": "5",
+    "section_title": "Extension of prescribed period in certain cases",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Empowers the court to admit an appeal or application after the expiry of the prescribed limitation period if the appellant or applicant demonstrates sufficient cause for the delay.",
+    "core_judicial_inquiry": "Evaluating whether the appellant or applicant has established 'sufficient cause' to justify the failure to prefer the appeal or make the application within the prescribed period.",
+    "intersecting_statute_ids": [
+      "LIMITATION_ACT_1963_SEC_3",
+      "CPC_1908_ORDER_XXI"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any appellant or applicant seeking to institute an appeal or application after the expiration of the prescribed period of limitation (excluding execution proceedings under Order XXI of CPC)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing of an application for condonation of delay.",
+        "Satisfaction of the court that sufficient cause existed for not filing within the prescribed period."
+      ],
+      "statutory_bars": [
+        "Inapplicability to original suits.",
+        "Express exclusion of any application under the provisions of Order XXI of the Code of Civil Procedure, 1908."
+      ],
+      "saving_exceptions": [
+        "Being misled by any order, practice, or judgment of the High Court in ascertaining or computing the prescribed period constitutes sufficient cause."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CONDONATION_DELAY_REJECTED",
+      "ERR_EXCLUDED_ORDER_XXI_CPC",
+      "ERR_INSUFFICIENT_CAUSE_SHOWN"
+    ]
+  },
+  {
+    "_id": "ARBITRATION_ACT_1996_SEC_8",
+    "statute_id": "ARBITRATION_ACT_1996_SEC_8",
+    "act_name": "The Arbitration and Conciliation Act, 1996[cite: 2]",
+    "section_number": "8[cite: 2]",
+    "section_title": "Power to refer parties to arbitration where there is an arbitration agreement[cite: 2]",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "JUDICIAL_AUTHORITY",
+    "statutory_summary": "Mandates a judicial authority to refer parties to arbitration when an action is brought regarding a matter subject to an arbitration agreement, provided a party applies before submitting their first statement on the substance of the dispute, unless no valid arbitration agreement exists prima facie[cite: 2].",
+    "core_judicial_inquiry": "Evaluating prima facie whether a valid arbitration agreement exists and verifying that the application was submitted not later than the date of submitting the first statement on the substance of the dispute[cite: 2].",
+    "intersecting_statute_ids": [
+      "ARBITRATION_ACT_1996_SEC_5",
+      "ARBITRATION_ACT_1996_SEC_7"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "A party to the arbitration agreement or any person claiming through or under him[cite: 2]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application made not later than the date of submitting the first statement on the substance of the dispute[cite: 2].",
+        "Accompanied by the original arbitration agreement or a duly certified copy thereof[cite: 2]."
+      ],
+      "statutory_bars": [
+        "Judicial finding that prima facie no valid arbitration agreement exists[cite: 2].",
+        "Application submitted after the date of submitting the first statement on the substance of the dispute[cite: 2]."
+      ],
+      "saving_exceptions": [
+        "If the original arbitration agreement or certified copy is retained by the other party, the applicant may file a copy of the agreement alongside a petition praying the court to call upon the other party to produce the original or certified copy[cite: 2]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_APPLICATION_POST_FIRST_STATEMENT",
+      "ERR_NO_VALID_ARBITRATION_AGREEMENT_PRIMA_FACIE",
+      "ERR_MISSING_ORIGINAL_OR_CERTIFIED_AGREEMENT"
+    ]
+  },
+  {
+    "_id": "ARBITRATION_ACT_1996_SEC_9",
+    "statute_id": "ARBITRATION_ACT_1996_SEC_9",
+    "act_name": "The Arbitration and Conciliation Act, 1996",
+    "section_number": "9",
+    "section_title": "Interim measures, etc., by Court",
+    "jurisdiction_type": "INTERIM_PROTECTION",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Empowers a party to apply to a court for interim measures of protection or appointment of a guardian before or during arbitral proceedings, or after the award is made but before enforcement under Section 36[cite: 2].",
+    "core_judicial_inquiry": "Evaluating whether interim measures are just and convenient, and if the arbitral tribunal is already constituted, determining whether circumstances render the remedy under Section 17 inefficacious[cite: 2].",
+    "intersecting_statute_ids": [
+      "ARBITRATION_ACT_1996_SEC_17",
+      "ARBITRATION_ACT_1996_SEC_36"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to an arbitration agreement seeking interim measures of protection or appointment of a guardian for a minor or person of unsound mind[cite: 2]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Arbitral proceedings must be commenced within 90 days (or within further time determined by the court) from the date of an interim order granted prior to commencement[cite: 2]."
+      ],
+      "statutory_bars": [
+        "Court shall not entertain an application once the arbitral tribunal has been constituted, unless the court finds the Section 17 remedy inefficacious[cite: 2]."
+      ],
+      "saving_exceptions": [
+        "Court jurisdiction is preserved post-constitution of the tribunal if the remedy under Section 17 is found not to be efficacious[cite: 2]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_ARBITRATION_NOT_COMMENCED_IN_90_DAYS",
+      "ERR_SECTION_17_EFFICACIOUS_BAR"
+    ]
+  },
+  {
+    "_id": "SARFAESI_ACT_2002_SEC_13_2",
+    "statute_id": "SARFAESI_ACT_2002_SEC_13_2",
+    "act_name": "The Securitisation and Reconstruction of Financial Assets and Enforcement of Security Interest Act, 2002[cite: 3]",
+    "section_number": "13(2)",
+    "section_title": "Enforcement of security interest[cite: 3]",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "SECURED_CREDITOR",
+    "statutory_summary": "Requires a secured creditor to issue a 60-day written demand notice to a defaulting borrower whose account is classified as an NPA, before taking recovery action under sub-section (4)[cite: 3].",
+    "core_judicial_inquiry": "Verifying existence of default, valid NPA classification, and proper service of the mandatory 60-day demand notice[cite: 3].",
+    "intersecting_statute_ids": [
+      "SARFAESI_ACT_2002_SEC_13_4",
+      "SARFAESI_ACT_2002_SEC_13_3A",
+      "SARFAESI_ACT_2002_SEC_14",
+      "SARFAESI_ACT_2002_SEC_17"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Secured creditor or debenture trustee entitled to enforce a security interest against a defaulting borrower[cite: 3]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Classification of the borrower's account as a non-performing asset (NPA)[cite: 3].",
+        "Issuance of a written notice giving 60 days to discharge liabilities in full[cite: 3]."
+      ],
+      "statutory_bars": [
+        "Failure to properly classify the account as an NPA[cite: 3].",
+        "Premature enforcement action taken before expiry of the 60-day demand period[cite: 3].",
+        "Full discharge of liabilities by the borrower within 60 days[cite: 3]."
+      ],
+      "saving_exceptions": [
+        "NPA classification is not required if the borrower raised funds through debt securities[cite: 3].",
+        "Debenture trustees may enforce security interest upon default per terms of executed security documents[cite: 3]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 60
+    },
+    "audit_error_codes": [
+      "ERR_NPA_CLASSIFICATION_INVALID",
+      "ERR_NOTICE_60_DAYS_NOT_SERVED",
+      "ERR_PREMATURE_ENFORCEMENT_ACTION"
+    ]
+  },
+  {
+    "_id": "NI_ACT_1881_SEC_138",
+    "statute_id": "NI_ACT_1881_SEC_138",
+    "act_name": "The Negotiable Instruments Act, 1881",
+    "section_number": "138",
+    "section_title": "Dishonour of cheque for insufficiency, etc., of funds in the account",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "METROPOLITAN_MAGISTRATE",
+    "statutory_summary": "Establishes criminal liability for the dishonour of a cheque issued to discharge a legally enforceable debt or liability due to insufficiency of funds or exceeding agreement limits, punishable by imprisonment up to two years, a fine up to twice the cheque amount, or both.",
+    "core_judicial_inquiry": "Determining whether the cheque was issued for a legally enforceable debt, presented within its validity period, returned unpaid for insufficient funds or exceeding arrangements, timely written notice was given, and the drawer failed to pay within 15 days of notice receipt.",
+    "intersecting_statute_ids": [
+      "NI_ACT_1881_SEC_139",
+      "NI_ACT_1881_SEC_140",
+      "NI_ACT_1881_SEC_141",
+      "NI_ACT_1881_SEC_142"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Payee or holder in due course of the dishonoured cheque."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Presentation of the cheque to the bank within six months from the date on which it is drawn or within the period of its validity, whichever is earlier.",
+        "Issuance of a written demand notice to the drawer within thirty days of receiving information from the bank regarding the return of the cheque as unpaid.",
+        "Failure of the drawer to make payment of the cheque amount to the payee/holder in due course within fifteen days of receipt of the written notice."
+      ],
+      "statutory_bars": [
+        "Cheque not issued for the discharge of a legally enforceable debt or other liability.",
+        "Failure to issue written notice within thirty days of receipt of dishonour memo from the bank.",
+        "Cheque presented beyond six months or the period of its validity.",
+        "Full payment made by the drawer within fifteen days of receiving the demand notice."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 15
+    },
+    "audit_error_codes": [
+      "ERR_PRESENTATION_BEYOND_VALIDITY",
+      "ERR_NOTICE_DELAYED_BEYOND_30_DAYS",
+      "ERR_DRAWER_PAID_WITHIN_15_DAYS",
+      "ERR_NO_LEGALLY_ENFORCEABLE_DEBT"
+    ]
+  },
+  {
+    "_id": "CONTRACT_ACT_1872_SEC_126",
+    "statute_id": "CONTRACT_ACT_1872_SEC_126",
+    "act_name": "The Indian Contract Act, 1872[cite: 5]",
+    "section_number": "126[cite: 5]",
+    "section_title": "\"Contract of guarantee\", \"surety\", \"principal debtor\" and \"creditor\"[cite: 5]",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Defines a contract of guarantee as a contract to perform the promise or discharge the liability of a third person in case of default, establishing the tripartite roles of surety, principal debtor, and creditor, and permitting the guarantee to be either oral or written[cite: 5].",
+    "core_judicial_inquiry": "Evaluating whether an agreement (oral or written) exists to perform a promise or discharge liability upon the default of a third person, and verifying the existence of an enforceable underlying obligation of the principal debtor[cite: 5].",
+    "intersecting_statute_ids": [
+      "CONTRACT_ACT_1872_SEC_127",
+      "CONTRACT_ACT_1872_SEC_128",
+      "CONTRACT_ACT_1872_SEC_140",
+      "CONTRACT_ACT_1872_SEC_142",
+      "CONTRACT_ACT_1872_SEC_143"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Creditor seeking enforcement of performance or discharge of liability against the surety upon default of the principal debtor[cite: 5]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Existence of a valid principal debt or obligation owed by the principal debtor[cite: 5].",
+        "Default by the principal debtor in performing the promise or discharging liability[cite: 5].",
+        "An express agreement (oral or written) by the surety to step in upon default[cite: 5]."
+      ],
+      "statutory_bars": [
+        "Absence of default by the principal debtor[cite: 5].",
+        "Guarantee obtained by misrepresentation or concealment of material facts[cite: 5]."
+      ],
+      "saving_exceptions": [
+        "A contract of guarantee is not required to be in writing under this section and may be established orally[cite: 5]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_NO_PRINCIPAL_DEFAULT",
+      "ERR_INVALID_GUARANTEE_CONTRACT",
+      "ERR_GUARANTEE_OBTAINED_BY_MISREPRESENTATION"
+    ]
+  },
+  {
+    "_id": "PMLA_2002_SEC_5",
+    "statute_id": "PMLA_2002_SEC_5",
+    "act_name": "The Prevention of Money-Laundering Act, 2002",
+    "section_number": "5",
+    "section_title": "Attachment of property involved in money-laundering",
+    "jurisdiction_type": "INTERIM_PROTECTION",
+    "forum_level": "ENFORCEMENT_DIRECTORATE",
+    "statutory_summary": "Authorizes the Director or an officer not below the rank of Deputy Director to provisionally attach property involved in money-laundering for up to 180 days upon recording reasons to believe that proceeds of crime are likely to be concealed, transferred, or dealt with to frustrate confiscation[cite: 6].",
+    "core_judicial_inquiry": "Evaluating whether material in possession establishes a recorded reason to believe that a person possesses proceeds of crime likely to be concealed or transferred to frustrate proceedings, and whether prerequisites regarding scheduled offence reports or urgent attachment needs are met[cite: 6].",
+    "intersecting_statute_ids": [
+      "PMLA_2002_SEC_8",
+      "PMLA_2002_SEC_17",
+      "PMLA_2002_SEC_18",
+      "CRPC_1973_SEC_173"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Director or any officer not below the rank of Deputy Director authorised by the Director[cite: 6]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Written recording of reasons to believe that proceeds of crime exist and are likely to be concealed, transferred, or dealt with[cite: 6].",
+        "Forwarding of a report under section 173 CrPC or a complaint before a Magistrate/court regarding the scheduled offence, unless covered by the second proviso[cite: 6].",
+        "Immediate submission of the attachment order and material in a sealed envelope to the Adjudicating Authority[cite: 6].",
+        "Filing a complaint stating facts of attachment before the Adjudicating Authority within thirty days of the order[cite: 6]."
+      ],
+      "statutory_bars": [
+        "Absence of written reasons for belief recorded by the authorised officer[cite: 6].",
+        "Attachment made without a scheduled offence report/complaint where the second proviso requirement for immediate attachment is not established[cite: 6].",
+        "Expiry of 180 days without confirmation order under Section 8(3)[cite: 6]."
+      ],
+      "saving_exceptions": [
+        "Provisional attachment permitted prior to scheduled offence report if immediate non-attachment is likely to frustrate proceedings (Second Proviso)[cite: 6].",
+        "Exclusion of High Court stay duration from the 180-day computation, plus up to 30 days after stay vacation (Third Proviso)[cite: 6].",
+        "Retention of right to enjoyment of attached immovable property by interested persons during provisional attachment[cite: 6]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 180,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "ERR_NO_RECORDED_REASONS_IN_WRITING",
+      "ERR_ATTACHMENT_EXPIRED_180_DAYS",
+      "ERR_COMPLAINT_NOT_FILED_WITHIN_30_DAYS",
+      "ERR_MISSING_SCHEDULED_OFFENCE_PREREQUISITE"
+    ]
+  },
+  {
+    "_id": "PMLA_2002_SEC_8",
+    "statute_id": "PMLA_2002_SEC_8",
+    "act_name": "The Prevention of Money-Laundering Act, 2002",
+    "section_number": "8",
+    "section_title": "Adjudication",
+    "jurisdiction_type": "ADJUDICATION_CONFISCATION",
+    "forum_level": "ADJUDICATING_AUTHORITY",
+    "statutory_summary": "Governs the adjudication procedure for attached, seized, or frozen property, requiring a show-cause notice of at least 30 days, confirmation of provisional attachment or retention during investigation (up to 365 days) or trial, and eventual confiscation or release by the Special Court, including provisions for restoring property to bona fide claimants.",
+    "core_judicial_inquiry": "Determining whether attached, seized, or frozen property is involved in money-laundering, whether provisional attachment should be confirmed, and upon trial conclusion, whether to order final confiscation to the Central Government, release to entitled parties, or restoration to legitimate third-party victims.",
+    "intersecting_statute_ids": [
+      "PMLA_2002_SEC_3",
+      "PMLA_2002_SEC_5",
+      "PMLA_2002_SEC_17",
+      "PMLA_2002_SEC_18",
+      "PMLA_2002_SEC_58B",
+      "PMLA_2002_SEC_60"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority acting upon a complaint under Section 5(5) or applications under Section 17(4) or Section 18(10).",
+        "Director or authorized officer seeking confirmation of attachment or order of confiscation.",
+        "Aggrieved person, joint property holder, or third-party claimant seeking to prove property is not involved in money-laundering or claiming restoration of property."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Issuance and service of a show-cause notice of not less than thirty days to the accused and all joint/beneficial owners.",
+        "Providing an opportunity of being heard to the aggrieved person, Director/authorized officer, and third-party claimants.",
+        "Recording of written findings on whether property is involved in money-laundering prior to confirming attachment or retention."
+      ],
+      "statutory_bars": [
+        "Failure to serve notice on all joint property holders or persons holding property on behalf of others.",
+        "Finding by the Special Court at the conclusion of trial that the offence of money-laundering has not taken place.",
+        "Rejection of restoration claim if the claimant failed to act in good faith, failed to take reasonable precautions, or was involved in the offence of money-laundering."
+      ],
+      "saving_exceptions": [
+        "Exclusion of court-ordered stay periods when computing the 365-day investigation retention window.",
+        "Power of Special Court to order confiscation or release on application when trial cannot be concluded due to death of accused or accused being declared a proclaimed offender.",
+        "Discretion of Special Court to consider property restoration claims of bona fide victims/claimants during or after trial."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 365,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "ERR_SHOW_CAUSE_NOTICE_LESS_THAN_30_DAYS",
+      "ERR_OMISSION_OF_JOINT_HOLDER_NOTICE",
+      "ERR_RETENTION_EXCEEDED_365_DAYS",
+      "ERR_RESTORATION_CLAIM_MALA_FIDE"
+    ]
+  },
+  {
+    "_id": "PMLA_2002_SEC_8",
+    "statute_id": "PMLA_2002_SEC_8",
+    "act_name": "The Prevention of Money-Laundering Act, 2002",
+    "section_number": "8",
+    "section_title": "Adjudication",
+    "jurisdiction_type": "ADJUDICATION_CONFISCATION",
+    "forum_level": "ADJUDICATING_AUTHORITY",
+    "statutory_summary": "Governs the adjudication procedure for attached, seized, or frozen property, requiring a show-cause notice of at least 30 days, confirmation of provisional attachment or retention during investigation (up to 365 days) or trial, and eventual confiscation or release by the Special Court, including provisions for restoring property to bona fide claimants.",
+    "core_judicial_inquiry": "Determining whether attached, seized, or frozen property is involved in money-laundering, whether provisional attachment should be confirmed, and upon trial conclusion, whether to order final confiscation to the Central Government, release to entitled parties, or restoration to legitimate third-party victims.",
+    "intersecting_statute_ids": [
+      "PMLA_2002_SEC_3",
+      "PMLA_2002_SEC_5",
+      "PMLA_2002_SEC_17",
+      "PMLA_2002_SEC_18",
+      "PMLA_2002_SEC_58B",
+      "PMLA_2002_SEC_60"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority acting upon a complaint under Section 5(5) or applications under Section 17(4) or Section 18(10).",
+        "Director or authorized officer seeking confirmation of attachment or order of confiscation.",
+        "Aggrieved person, joint property holder, or third-party claimant seeking to prove property is not involved in money-laundering or claiming restoration of property."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Issuance and service of a show-cause notice of not less than thirty days to the accused and all joint/beneficial owners.",
+        "Providing an opportunity of being heard to the aggrieved person, Director/authorized officer, and third-party claimants.",
+        "Recording of written findings on whether property is involved in money-laundering prior to confirming attachment or retention."
+      ],
+      "statutory_bars": [
+        "Failure to serve notice on all joint property holders or persons holding property on behalf of others.",
+        "Finding by the Special Court at the conclusion of trial that the offence of money-laundering has not taken place.",
+        "Rejection of restoration claim if the claimant failed to act in good faith, failed to take reasonable precautions, or was involved in the offence of money-laundering."
+      ],
+      "saving_exceptions": [
+        "Exclusion of court-ordered stay periods when computing the 365-day investigation retention window.",
+        "Power of Special Court to order confiscation or release on application when trial cannot be concluded due to death of accused or accused being declared a proclaimed offender.",
+        "Discretion of Special Court to consider property restoration claims of bona fide victims/claimants during or after trial."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 365,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "ERR_SHOW_CAUSE_NOTICE_LESS_THAN_30_DAYS",
+      "ERR_OMISSION_OF_JOINT_HOLDER_NOTICE",
+      "ERR_RETENTION_EXCEEDED_365_DAYS",
+      "ERR_RESTORATION_CLAIM_MALA_FIDE"
+    ]
+  },
+  {
+    "_id": "RERA_2016_SEC_18",
+    "statute_id": "RERA_2016_SEC_18",
+    "act_name": "The Real Estate (Regulation and Development) Act, 2016",
+    "section_number": "18",
+    "section_title": "Return of amount and compensation",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "REAL_ESTATE_REGULATORY_AUTHORITY",
+    "statutory_summary": "Mandates that if a promoter fails to give possession on time or discontinues business, withdrawing allottees can claim a full refund with interest and compensation, non-withdrawing allottees are entitled to monthly delay interest, and claims for loss due to defective land title are exempt from limitation bars.",
+    "core_judicial_inquiry": "Evaluating whether the promoter failed to hand over possession by the date specified in the agreement for sale or due to business discontinuance, determining the allottee's election to withdraw or remain, and assessing compensation for defective title or statutory breaches.",
+    "intersecting_statute_ids": [
+      "RERA_2016_SEC_4",
+      "RERA_2016_SEC_7",
+      "RERA_2016_SEC_12",
+      "RERA_2016_SEC_13",
+      "RERA_2016_SEC_19",
+      "RERA_2016_SEC_71"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any allottee who has booked, purchased, or been allotted an apartment, plot, or building in a real estate project."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Failure or inability of the promoter to give possession in accordance with the terms of the agreement for sale or due to suspension/revocation of registration.",
+        "Demand raised by the allottee for refund, interest, or compensation."
+      ],
+      "statutory_bars": [
+        "Possession offered within the stipulated timeframe in full compliance with the agreement for sale and sanctioned plans."
+      ],
+      "saving_exceptions": [
+        "If the allottee does not intend to withdraw from the project, they are entitled to monthly interest for every month of delay until possession is handed over.",
+        "Claims for compensation arising from defective land title are not barred by any law of limitation for the time being in force."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_FAILURE_TO_GIVE_POSSESSION",
+      "ERR_DEFECTIVE_TITLE_LOSS",
+      "ERR_REFUND_INTEREST_REFUSAL",
+      "ERR_MONTHLY_DELAY_INTEREST_DEFAULT"
+    ]
+  },
+  {
+    "_id": "RERA_2016_SEC_89",
+    "statute_id": "RERA_2016_SEC_89",
+    "act_name": "The Real Estate (Regulation and Development) Act, 2016[cite: 7]",
+    "section_number": "89[cite: 7]",
+    "section_title": "Act to have overriding effect[cite: 7]",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "REAL_ESTATE_REGULATORY_AUTHORITY",
+    "statutory_summary": "Establishes that the provisions of the Real Estate (Regulation and Development) Act, 2016 shall take effect notwithstanding anything inconsistent therewith contained in any other law for the time being in force[cite: 7].",
+    "core_judicial_inquiry": "Evaluating whether a direct conflict or inconsistency exists between a provision of RERA, 2016 and any other law in force, and applying the non-obstante clause to enforce RERA's priority[cite: 7].",
+    "intersecting_statute_ids": [
+      "RERA_2016_SEC_79",
+      "RERA_2016_SEC_88"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any aggrieved person, promoter, allottee, or real estate agent invoking RERA provisions where conflicting provisions in other laws are asserted[cite: 7]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Demonstration of an inconsistency between RERA, 2016 provisions and another statute or legal instrument for the time being in force[cite: 7]."
+      ],
+      "statutory_bars": [
+        "Where provisions of other laws are consistent with RERA, they apply concurrently rather than being overridden[cite: 7]."
+      ],
+      "saving_exceptions": [
+        "Application of other laws is preserved alongside RERA under Section 88, provided they are not inconsistent with RERA[cite: 7]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INCONSISTENT_LAW_APPLIED",
+      "ERR_NON_OBSTANTE_OVERRIDE_IGNORED"
+    ]
+  },
+  {
+    "_id": "STAMP_ACT_1899_SEC_33",
+    "statute_id": "STAMP_ACT_1899_SEC_33",
+    "act_name": "The Indian Stamp Act, 1899",
+    "section_number": "33",
+    "section_title": "Examination and impounding of instruments",
+    "jurisdiction_type": "REVENUE_PROTECTION",
+    "forum_level": "PUBLIC_OFFICE",
+    "statutory_summary": "Mandates every person authorized to receive evidence and every person in charge of a public office (except police officers) to examine any instrument produced or coming before them in the performance of their functions and impound it if it appears not to be duly stamped[cite: 8].",
+    "core_judicial_inquiry": "Determining whether an instrument produced before a public authority or person receiving evidence is chargeable with stamp duty and whether it bears a stamp of the required value and description under the law in force at the time of execution[cite: 8].",
+    "intersecting_statute_ids": [
+      "STAMP_ACT_1899_SEC_35",
+      "STAMP_ACT_1899_SEC_38",
+      "STAMP_ACT_1899_SEC_40"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Every person having by law or consent of parties authority to receive evidence[cite: 8].",
+        "Every person in charge of a public office[cite: 8]."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Instrument chargeable with stamp duty is produced or comes before the authority in the performance of official functions[cite: 8].",
+        "Examination of the instrument to ascertain compliance with stamp value and description required by law[cite: 8]."
+      ],
+      "statutory_bars": [
+        "Express exclusion of police officers from the requirement to examine or impound instruments[cite: 8].",
+        "Magistrates or Criminal Court Judges are not required to examine or impound instruments coming before them except in specified proceedings unless they think fit[cite: 8]."
+      ],
+      "saving_exceptions": [
+        "A Judge of a High Court may delegate the duty of examining and impounding instruments under this section to an officer appointed by the Court[cite: 8].",
+        "State Governments may determine in cases of doubt which offices shall be deemed public offices and who shall be deemed persons in charge[cite: 8].",
+        "State amendments (e.g., Orissa, UP) permit calling for original instruments or acting on copies within specified statutory limitation periods[cite: 8]."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSTRUMENT_NOT_DULY_STAMPED",
+      "ERR_FAILURE_TO_IMPOUND",
+      "ERR_UNAUTHORIZED_POLICE_IMPOUND"
+    ]
+  },
+  {
+    "_id": "STAMP_ACT_1899_SEC_35",
+    "statute_id": "STAMP_ACT_1899_SEC_35",
+    "act_name": "The Indian Stamp Act, 1899",
+    "section_number": "35",
+    "section_title": "Instruments not duly stamped inadmissible in evidence, etc.",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Bars any instrument chargeable with duty from being admitted in evidence, registered, authenticated, or acted upon by a public officer unless duly stamped, subject to exceptions for payment of deficit duty and penalty or specific statutory exemptions.",
+    "core_judicial_inquiry": "Evaluating whether an instrument produced in evidence or before a public officer is duly stamped, and if insufficiently stamped, determining whether it can be cured and admitted upon payment of the requisite deficit duty and statutory penalty.",
+    "intersecting_statute_ids": [
+      "STAMP_ACT_1899_SEC_32",
+      "STAMP_ACT_1899_SEC_33",
+      "STAMP_ACT_1899_SEC_36",
+      "STAMP_ACT_1899_SEC_38",
+      "STAMP_ACT_1899_SEC_40"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party seeking to tender an instrument in evidence before a court or authority, or seeking registration, authentication, or enforcement by a public officer."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Tender and payment of the proper deficient stamp duty.",
+        "Payment of the statutory penalty (five rupees or ten times the proper duty or deficient portion thereof, whichever is higher, subject to state amendments)."
+      ],
+      "statutory_bars": [
+        "Inadmissibility in evidence, prohibition against being acted upon, registered, or authenticated while the instrument remains insufficiently stamped without payment of required duty and penalty."
+      ],
+      "saving_exceptions": [
+        "Admissibility in evidence upon payment of the deficient duty along with the prescribed penalty.",
+        "Unstamped receipts admissible against the giver on payment of a one-rupee penalty by the person tendering it.",
+        "Contracts formed via correspondence where at least one letter bears the proper stamp.",
+        "Admission in Criminal Court proceedings (except specified maintenance or public nuisance proceedings under CrPC).",
+        "Instruments executed by or on behalf of the Government, or bearing a Collector's certificate of proper stamping under Section 32."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSTRUMENT_NOT_DULY_STAMPED",
+      "ERR_INADMISSIBLE_IN_EVIDENCE",
+      "ERR_PENALTY_AND_DEFICIT_UNPAID"
+    ]
+  },
+  {
+    "_id": "CGST_ACT_2017_SEC_82",
+    "statute_id": "CGST_ACT_2017_SEC_82",
+    "act_name": "The Central Goods and Services Tax Act, 2017",
+    "section_number": "82",
+    "section_title": "Tax to be first charge on property",
+    "jurisdiction_type": "REVENUE_PROTECTION",
+    "forum_level": "GST_AUTHORITY",
+    "statutory_summary": "Establishes that any tax, interest, or penalty payable to the Government by a taxable person or any other person constitutes a first charge on their property, notwithstanding anything to the contrary in other laws, except as provided under the Insolvency and Bankruptcy Code, 2016.",
+    "core_judicial_inquiry": "Determining whether tax dues constitute a first charge on the property of a defaulting taxable person and evaluating if proceedings under the Insolvency and Bankruptcy Code, 2016 override such statutory first charge.",
+    "intersecting_statute_ids": [
+      "CGST_ACT_2017_SEC_78",
+      "CGST_ACT_2017_SEC_79",
+      "CGST_ACT_2017_SEC_81",
+      "IBC_2016_SEC_53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Tax authorities / Government seeking enforcement and recovery of outstanding tax, interest, or penalty dues against a taxable person or other person."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Existence of a crystallised or legally enforceable liability on account of tax, interest, or penalty payable to the Government."
+      ],
+      "statutory_bars": [
+        "Overriding priority of claims governed under the Insolvency and Bankruptcy Code, 2016 (31 of 2016) in insolvency/liquidation proceedings."
+      ],
+      "saving_exceptions": [
+        "Explicit statutory saving clause preserving the provisions and waterfall mechanism of the Insolvency and Bankruptcy Code, 2016."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_TAX_DUE_NOT_ESTABLISHED",
+      "ERR_IBC_OVERRIDE_APPLICABLE",
+      "ERR_PRIORITY_CLAIM_CONFLICT"
+    ]
+  },
+  {
+    "_id": "CPC_1908_SEC_11",
+    "statute_id": "CPC_1908_SEC_11",
+    "act_name": "The Code of Civil Procedure, 1908",
+    "section_number": "11",
+    "section_title": "Res judicata",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Bars any Court from trying any suit or issue in which the matter directly and substantially in issue has been heard and finally decided in a former suit between the same parties or their privies litigating under the same title by a competent Court.",
+    "core_judicial_inquiry": "Determining whether the matter directly and substantially in issue (or which might and ought to have been raised) in the present suit was heard and finally decided in a former suit between the same parties or their representatives litigating under the same title by a competent court.",
+    "intersecting_statute_ids": [
+      "CPC_1908_SEC_9",
+      "CPC_1908_SEC_10",
+      "CPC_1908_SEC_12",
+      "CPC_1908_SEC_47"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a former suit or any person claiming under or through a party to the former suit, litigating under the same title."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Matter directly and substantially in issue in the current suit must have been directly and substantially in issue in the former suit.",
+        "Former suit must have been between the same parties or between parties under whom they or any of them claim.",
+        "Parties must have been litigating under the same title in the former suit.",
+        "The court deciding the former suit/issue must have been competent to try it.",
+        "The matter/issue must have been heard and finally decided in the former suit."
+      ],
+      "statutory_bars": [
+        "Strict bar against trial of any suit or issue where res judicata or constructive res judicata applies."
+      ],
+      "saving_exceptions": [
+        "Constructive res judicata applies to any matter which might and ought to have been made a ground of defence or attack in the former suit (Explanation IV).",
+        "Any relief claimed in a plaint which is not expressly granted is deemed to have been refused (Explanation V).",
+        "Res judicata applies to execution proceedings (Explanation VII) and to decisions of courts of limited jurisdiction (Explanation VIII)."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_RES_JUDICATA_BAR",
+      "ERR_CONSTRUCTIVE_RES_JUDICATA",
+      "ERR_MATTER_ALREADY_DECIDED"
+    ]
+  },
+  {
+    "_id": "CPC_1908_ORDER_XXXIX",
+    "statute_id": "CPC_1908_ORDER_XXXIX",
+    "act_name": "The Code of Civil Procedure, 1908",
+    "section_number": "Order XXXIX",
+    "section_title": "Temporary Injunctions and Interlocutory Orders",
+    "jurisdiction_type": "INTERIM_PROTECTION",
+    "forum_level": "CIVIL_COURT",
+    "statutory_summary": "Empowers Civil Courts to grant temporary injunctions to restrain the wasting, damaging, alienating, or wrongful sale of suit property, prevent dispossession/injury, or stop breaches of contract, while detailing enforcement mechanisms for disobedience, mandatory ex-parte safeguards, and interlocutory orders for interim sales or property preservation.",
+    "core_judicial_inquiry": "Evaluating prima facie case, balance of convenience, and irreparable injury to determine whether to grant, vary, vacate, or enforce a temporary injunction, or issue interlocutory orders for property preservation or interim sale.",
+    "intersecting_statute_ids": [
+      "CPC_1908_SEC_94",
+      "CPC_1908_SEC_95",
+      "SPECIFIC_RELIEF_ACT_1963_SEC_37",
+      "SPECIFIC_RELIEF_ACT_1963_SEC_38",
+      "SPECIFIC_RELIEF_ACT_1963_SEC_41"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party to a suit seeking temporary injunction to protect property in dispute, prevent wrongful sale/dispossession, or restrain breach of contract/injury.",
+        "Any party to a suit seeking interlocutory orders for detention, preservation, inspection, interim sale of perishable goods, or deposit of money held as trustee."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Proof by affidavit or otherwise demonstrating that the suit property is in danger of being wasted, damaged, alienated, wrongfully sold, or that the defendant threatens dispossession, injury, or removal of property to defraud creditors.",
+        "Issuance of notice to the opposite party prior to granting an injunction, unless delay would defeat its object.",
+        "For ex-parte injunctions: Recording of reasons by the Court, immediate service/delivery of the application, supporting affidavit, plaint, and relying documents via speed post with registration to the opposite party, and filing a compliance affidavit on the same or next day."
+      ],
+      "statutory_bars": [
+        "Mandatory vacation of ex-parte injunction if the applicant knowingly made false or misleading statements in a material particular.",
+        "Prohibition against discharging, varying, or setting aside an injunction granted after hearing, unless necessitated by a change in circumstances or proof of undue hardship.",
+        "State-specific prohibitions (e.g., UP Amendment) barring injunctions against disciplinary proceedings, service terminations, internal management of educational institutions, public auctions, or recovery of land revenue dues without adequate security."
+      ],
+      "saving_exceptions": [
+        "Court discretion to grant ex-parte temporary injunctions without prior notice where recording of written reasons shows that delay would defeat the object of the injunction."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": 1
+    },
+    "audit_error_codes": [
+      "ERR_NO_PRIMA_FACIE_CASE",
+      "ERR_EXPARTE_NOTICE_COMPLIANCE_FAILED",
+      "ERR_EXPARTE_FALSE_MISLEADING_STATEMENT",
+      "ERR_INJUNCTION_DISOBEDIENCE_BREACH",
+      "ERR_EXPARTE_DISPOSAL_EXCEEDED_30_DAYS"
+    ]
+  }
+]
