@@ -336,3 +336,22 @@ def test_combined_record_refs_are_split(stage_a):
     r = run(stage_a, {"id": "C1", "kind": "RECORD_FACT", "text": "Board signed the balance sheet", "record_ref": "E4, D2"},
             {"id": "C2", "kind": "RECORD_FACT", "text": "x", "record_ref": "E4 and D7"})
     assert codes(r) == ["ERR_UNKNOWN_RECORD_REF"] and r.findings[0].evidence.startswith("D7 ")
+
+
+def test_outcome_synonyms_and_dates_stated_in_event_text(stage_a):
+    r = run(stage_a, {"id": "C1", "kind": "COMPUTATION", "text": "Within limitation",
+                      "computation": {"rule": "ART137_LIMITATION", "default_date": "2015-12-31", "filing_date": "2020-01-10",
+                                      "acknowledgment_dates": ["2018-09-05"], "asserted_outcome": "IN_TIME"}},
+            {"id": "C2", "kind": "DATE", "text": "Sanction terms recorded", "record_ref": "E1", "date": "2012-06-15"})
+    assert codes(r) == []
+
+
+def test_plain_three_year_date_is_accepted_but_wrong_conclusion_is_not(stage_a):
+    ok = run(stage_a, {"id": "C1", "kind": "COMPUTATION", "text": "Three years from 31.12.2017 ends on 31.12.2020; filed in time",
+                       "computation": {"rule": "ART137_LIMITATION", "default_date": "2017-12-31", "filing_date": "2020-06-01",
+                                       "asserted_outcome": "WITHIN", "asserted_date": "2020-12-31"}})
+    assert codes(ok) == []
+    bad = run(stage_a, {"id": "C2", "kind": "COMPUTATION", "text": "Expired 31.12.2020, so a 2021 filing is barred",
+                        "computation": {"rule": "ART137_LIMITATION", "default_date": "2017-12-31", "filing_date": "2021-06-01",
+                                        "asserted_outcome": "BARRED", "asserted_date": "2020-12-31"}})
+    assert codes(bad) == ["ERR_ARITHMETIC"]               # the COVID exclusion keeps a 2021 filing in time

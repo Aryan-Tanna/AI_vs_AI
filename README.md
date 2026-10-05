@@ -53,6 +53,7 @@ python -m lexarena.cli run --wait                              # works within 5-
 python -m lexarena.cli status
 python -m lexarena.cli evaluate --run-id dev1 --split dev    # metrics vs sealed ground truth
 LEX_MODE=live python -m lexarena.cli run                       # live mode: open web search (no answer key)
+python -m lexarena.ui                                          # viewer: http://localhost:8501 (watch runs live)
 ```
 
 The default mode is `eval`. It's closed and reproducible: only sources that respect the date cutoff are used,

@@ -8,6 +8,7 @@ Jobs are written as a sequence of named steps (`ctx.step`). Each completed step'
 checkpointed, so a job interrupted mid-debate resumes at the next step in the next window.
 """
 import asyncio
+import json
 import logging
 import time
 from collections.abc import Awaitable, Callable
@@ -42,13 +43,31 @@ class JobContext:
         return self.job.checkpoint.setdefault("steps", {})
 
     async def step(self, name: str, fn: Callable[[], Awaitable[Any]]) -> Any:
-        """Run fn once per job; on resume return the stored output instead of calling it again."""
+        """Run fn once per job; on resume return the stored output instead of calling it again.
+        Start / end / error of every step go to the event log, which the viewer reads to show live progress."""
         if name in self.steps:
             return self.steps[name]
-        out = await fn()
+        t0 = time.time()
+        self._event(name, "start")
+        try:
+            out = await fn()
+        except BaseException as e:
+            self._event(name, "error", seconds=round(time.time() - t0, 1), error=f"{type(e).__name__}: {str(e)[:200]}")
+            raise
         self.steps[name] = out
         self.queue.save_checkpoint(self.job.id, self.job.checkpoint)
+        self._event(name, "end", seconds=round(time.time() - t0, 1))
         return out
+
+    def _event(self, step: str, phase: str, **extra) -> None:
+        try:
+            path = self.settings.state_dir / "events.jsonl"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("a", encoding="utf-8") as f:
+                f.write(json.dumps({"ts": time.time(), "job": self.job.key, "step": step, "phase": phase, **extra},
+                                   ensure_ascii=False) + "\n")
+        except OSError:
+            pass                                         # the event log is best-effort; it must never break a run
 
 
 Handler = Callable[[JobContext], Awaitable[dict]]

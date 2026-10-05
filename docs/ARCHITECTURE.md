@@ -42,7 +42,7 @@ Status and next steps: [ROADMAP.md](ROADMAP.md). Research simulation, not legal 
 
  PHASE 0 · OFFLINE DATA
    raw precedent dumps ─▶ ingest (field mapping, dedup, statute IDs) ─▶ reference_cases.jsonl     [built]
-   reference cases ─▶ SILVER public DB (auto; 1,087 train/dev cases, data/silver/)               [built]
+   reference cases ─▶ SILVER public DB (auto; 1,073 train/dev cases, data/silver/)               [built]
    judgment (+ NCLT order) ─▶ CASE BUILDER (agent) ─▶ validator ─▶ human ─▶ GOLD public DB        [planned]
                                      unspoiled | ground_truth (SEALED) | manifest | splits  (schema: docs/schema/)
    India Code/Gazette ─▶ Law DB v2 (verbatim, versioned) ─▶ get_provision(id, as_of)             [planned]
@@ -103,7 +103,8 @@ Status and next steps: [ROADMAP.md](ROADMAP.md). Research simulation, not legal 
 | THEMIS-LOCAL: extractor, Stage A, Stage B, revision | LLM call + code + LLM call | Haiku | Built |
 | Rule engine + Z3 | Code | — | Built (`lexarena/rules/`; real-case fixtures pending) |
 | Single-LLM baseline | LLM call | Sonnet | Built |
-| Silver DB builder (reference → public case format) | Code | — | Built: 1,087 cases (`python -m lexarena.ingest.build_silver`) |
+| Silver DB builder (reference → public case format) | Code | — | Built: 1,073 cases (`python -m lexarena.ingest.build_silver`) |
+| Viewer (`lexarena/ui/`) | Code (Streamlit) | — | Built: Live, Bench, Evaluation, Dashboard, Cases (`python -m lexarena.ui`) |
 | Case Builder (judgment → gold public case) | Agent | Sonnet / Opus | Planned |
 | THEMIS-GLOBAL (before bench) | Code + 1 LLM call | Sonnet | Built (`themis/global_.py`); tests not yet run |
 | 3 judges | Agents | Opus (Sonnet if the weekly Opus cap binds) | Built (`bench/judge.py`); tests not yet run |
@@ -136,6 +137,7 @@ python -m lexarena.cli run                            # work until the window is
 python -m lexarena.cli run --wait                     # sleep through resets until the queue is empty
 python -m lexarena.cli status                         # job counts, window state, failures
 python -m lexarena.cli evaluate --run-id dev1 --split dev   # metrics vs sealed ground truth (no model calls)
+python -m lexarena.ui                                 # viewer at http://localhost:8501 (read-only)
 LEX_MODE=live python -m lexarena.cli run              # live mode: open web search, MCP servers (no answer key)
 ```
 

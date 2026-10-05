@@ -12,7 +12,6 @@ from dataclasses import dataclass, field
 from lexarena.law.provisions import resolve
 from lexarena.rules import (Acknowledgment, limitation, minimum_default, sec9_filing_window, sec10a_bar,
                             sec61_appeal, sec62_appeal)
-from lexarena.rules.constants import COVID_EXCLUDED_START
 from lexarena.schemas.public_case import PublicUnspoiled
 from lexarena.themis.claims import Claim, ClaimSet
 from lexarena.themis.local import Finding
@@ -102,6 +101,8 @@ class StageA:
                 out.notes.append({"claim": c.id, "note": f"record conflict on {c.fact_key}: {f.values}; asserted value is one of them"})
         elif c.record_ref and c.record_ref in self.events and c.date is not None:
             e = self.events[c.record_ref]
+            if _mentions(e.event, c.date):
+                return                                  # the event's text states this date (e.g. "fixing default as 27.09.2019")
             if e.date and _mentions(c.text, e.date) and e.date != c.date:
                 return                                  # the event's own date is stated; c.date is derived from it
             if e.date and e.date_precision == "DAY" and e.date != c.date:
@@ -134,9 +135,9 @@ class StageA:
             if k.rule == "ART137_LIMITATION" and k.default_date:
                 acks = [Acknowledgment(d) for d in k.acknowledgment_dates]
                 res = limitation(k.default_date, k.filing_date, acks, covid=True)
-                accepted_dates = {res.value}
-                if k.filing_date and k.filing_date < COVID_EXCLUDED_START:
-                    accepted_dates.add(limitation(k.default_date, k.filing_date, acks, covid=False).value)
+                # Both the plain three-year end date and the COVID-extended one are correct arithmetic; the
+                # exclusion is a legal extension on top. A wrong conclusion is still caught by the outcome check.
+                accepted_dates = {res.value, limitation(k.default_date, k.filing_date, acks, covid=False).value}
                 outcome_map = {"WITHIN_LIMITATION": "WITHIN", "BARRED": "BARRED"}
             elif k.rule in ("SEC61_APPEAL", "SEC62_APPEAL") and k.order_date:
                 res = (sec61_appeal if k.rule == "SEC61_APPEAL" else sec62_appeal)(k.order_date, k.filing_date)
@@ -159,7 +160,8 @@ class StageA:
             out.notes.append({"claim": c.id, "note": f"{k.rule}: inputs missing; not recomputed"})
             return
         expected = outcome_map.get(res.status)
-        if k.asserted_outcome and expected and k.asserted_outcome != expected:
+        same = {"IN_TIME": "WITHIN", "BEYOND_LIMIT": "BARRED"}      # the extractor mixes appeal and limitation wording
+        if k.asserted_outcome and expected and same.get(k.asserted_outcome, k.asserted_outcome) != same.get(expected, expected):
             out.findings.append(Finding("ERR_ARITHMETIC", c.text, f"rule engine: {res.status} ({'; '.join(res.steps[-2:])})", "A"))
         if k.asserted_date and accepted_dates and k.asserted_date not in accepted_dates:
             out.findings.append(Finding("ERR_ARITHMETIC", c.text,

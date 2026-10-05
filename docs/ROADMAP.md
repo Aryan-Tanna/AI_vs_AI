@@ -14,7 +14,8 @@ truth), [ARCHITECTURE.md](ARCHITECTURE.md), [schema/README.md](schema/README.md)
 | Rule engine (Phase 1) | Art.137 limitation with s.18/19/14, COVID order, s.4 threshold, class creditors, s.10A, s.8/9 timing, s.61/62 appeals; Z3 for uncertain dates (ALWAYS / POSSIBLY / NEVER) | 37 rule tests |
 | Reference DB (Phase 0a) | 2,696 unique NCLAT cases from the raw files, cleaned, deduplicated, one statute ID scheme | `python -m lexarena.ingest.build_reference` |
 | Retrieval (Phase 2) | BM25 with section-aware tokens + bge-small-en-v1.5 dense (384 dims), fused; cutoff and exclusions applied before ranking; overruled flags surfaced | Leakage tests |
-| Silver public DB | 1,087 auto-built train/dev cases from the reference DB, anonymised, outcome-stripped, validated | `data/reports/silver_build.md`; `tests/test_silver.py` |
+| Viewer | Local read-only Streamlit app: live transcript with THEMIS gate per turn, bench and audit, evaluation, usage dashboard, case browser (`python -m lexarena.ui`) | AppTest on all pages; screenshots |
+| Silver public DB | 1,073 auto-built train/dev cases from the reference DB, anonymised, outcome-stripped, validated | `data/reports/silver_build.md`; `tests/test_silver.py` |
 | Agents + THEMIS-LOCAL (Phase 3) | Advocates with record and research tools and a proceeding-specific framework (identical for both sides); Haiku claim extraction; Stage A (invented record refs, facts, arithmetic, provisions in force, authorities); Stage B (misattribution, unsupported facts, new facts); revision by the same advocate | Three live debates on the synthetic case; 107 tests |
 
 **Measured cost:** a 5-turn debate with THEMIS-LOCAL costs about 27 calls and ~$1.5 API-equivalent (not billed
@@ -44,7 +45,7 @@ output from ~170k to ~52k tokens. Three debates plus our chat in the same window
 ## What to do next, in order
 
 ### 1. Silver DB: done
-`python -m lexarena.ingest.build_silver` builds **1,087 cases (907 train, 180 dev)** into `data/silver/`, all passing
+`python -m lexarena.ingest.build_silver` builds **1,073 cases (893 train, 180 dev)** into `data/silver/`, all passing
 the validator, with no model calls. It's heuristic: roles, proceeding type and grounds are approximate, and only the
 impugned-order date is a typed fact. **Live runs are paused** until the owner says so; then use
 `LEX_PUBLIC_DB_DIR=data/silver python -m lexarena.cli enqueue debate --split dev --run-id silver-dev1`.

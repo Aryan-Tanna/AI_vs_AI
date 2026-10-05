@@ -34,7 +34,10 @@ DATE_DMY = re.compile(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|j
 DATE_MDY = re.compile(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+((?:19|20)\d{2})\b", re.I)
 CASE_NO_BROAD = re.compile(
     r"\b(?:C\.?P\.?|I\.?A\.?|M\.?A\.?|C\.?A\.?|T\.?A\.?|I\.?B\.?|Company Petition|Company Appeal|Comp\.?\s*App\.?|"
-    r"Civil Appeal|SLP|Writ Petition|W\.?P\.?)\b[^.;:]{0,40}?\d+\s*(?:of|/)\s*(?:19|20)\d{2}(?:\s*\))?", re.I)
+    r"Civil Appeal|SLP|Writ Petition|W\.?P\.?)\b[^;:]{0,60}?\d+\s*(?:of|/)\s*(?:19|20)\d{2}(?:\s*\))?", re.I)
+CASE_NO_BARE = re.compile(r"\bNo\.?\s*\d{1,8}(?:\s*[-&,]\s*\d{1,8})*\s*(?:of|/)\s*(?:19|20)\d{2}\b", re.I)
+PETITION_TYPE = [(re.compile(r"section\s*7\b[^.;]{0,40}\b(application|petition)|\b(application|petition)[^.;]{0,30}section\s*7\b", re.I), "SEC7_ADMISSION"),
+                 (re.compile(r"section\s*9\b[^.;]{0,40}\b(application|petition)|\b(application|petition)[^.;]{0,30}section\s*9\b", re.I), "SEC9_ADMISSION")]
 NCLAT_OUTCOME = re.compile(
     r"\b(this (?:appellate )?tribunal|the appellate tribunal|nclat|the present appeal|this appeal|the appeal)\b"
     r".{0,120}\b(allowed|dismissed|set aside|upheld|affirmed|disposed|held that|holds that|rejected)\b", re.I)
@@ -43,8 +46,8 @@ CITIES = ["New Delhi", "Delhi", "Mumbai", "Chennai", "Kolkata", "Ahmedabad", "Hy
           "Chandigarh", "Allahabad", "Prayagraj", "Guwahati", "Jaipur", "Kochi", "Cuttack", "Indore", "Amaravati"]
 NEUTRALISE = [(re.compile(r"\berred\s+in\b", re.I), "was justified in"), (re.compile(r"\b(rightly|wrongly|correctly)\s+", re.I), ""),
               (re.compile(r"\bincorrectly\s+", re.I), "")]
-SUFFIX = re.compile(r"\b(m/s\.?|mr\.?|mrs\.?|ms\.?|shri|smt\.?|dr\.?|ltd\.?|limited|pvt\.?|private|&\s*anr\.?|&\s*ors\.?|"
-                    r"and\s+anr\.?|and\s+ors\.?|and\s+others|through\b.*|represented\s+by\b.*)", re.I)
+SUFFIX = re.compile(r"&\s*(?:anr|ors|others)\b\.?|\b(?:m/s\.?|mr\.?|mrs\.?|ms\.?|shri|smt\.?|dr\.?|ltd\.?|limited|pvt\.?|"
+                    r"private|and\s+anr\.?|and\s+ors\.?|and\s+others|through\b.*|represented\s+by\b.*)", re.I)
 
 PROCEEDING_RULES = [   # most specific first; first match wins
     ({"IBC_2016_SEC_95", "IBC_2016_SEC_96", "IBC_2016_SEC_97", "IBC_2016_SEC_99", "IBC_2016_SEC_100"}, "PERSONAL_GUARANTOR_95_100"),
@@ -112,8 +115,13 @@ def _party_patterns(core: str) -> list[re.Pattern]:
     forms = [core]
     if len(words) >= 3:
         forms.append(" ".join(words[:2]))
-    return [re.compile(r"(?<![A-Za-z])" + r"\s+".join(map(re.escape, f.split())) + r"(?![A-Za-z])", re.I)
+    pats = [re.compile(r"(?<![A-Za-z])" + r"\s+".join(map(re.escape, f.split())) + r"(?![A-Za-z])", re.I)
             for f in sorted(set(forms), key=len, reverse=True) if len(f) >= 4]
+    # acronym ("State Bank of India" -> SBI), matched case-sensitively so ordinary words are not hit
+    initials = "".join(w[0] for w in words if w[:1].isupper() and w.lower() not in ("of", "and", "the", "for"))
+    if 2 <= len(initials) <= 6:
+        pats.append(re.compile(r"(?<![A-Za-z])" + re.escape(initials.upper()) + r"(?![A-Za-z])"))
+    return pats
 
 
 APPLICANT_BY = r"(?:filed|instituted|preferred|moved)\s+by\s+the\s+{side}|{side}\s+(?:had\s+)?(?:filed|instituted|preferred)"
@@ -173,6 +181,10 @@ def build_case(ref: dict, uid: str) -> tuple[dict, dict, dict]:
 
     statutes = set(ref.get("statutes", []))
     ptype = _proceeding_type(statutes)
+    if ptype in ("SEC7_ADMISSION", "SEC9_ADMISSION"):          # the facts say which application was filed below
+        said = [p for rx, p in PETITION_TYPE if rx.search(facts_raw)]
+        if len(said) == 1:
+            ptype = said[0]
 
     # parties and anonymisation
     parties, real_parties, patterns = [], [], []
@@ -191,7 +203,7 @@ def build_case(ref: dict, uid: str) -> tuple[dict, dict, dict]:
     def anon(text: str) -> str:
         for pat, token in patterns:
             text = pat.sub(token, text)
-        for rx in (CASE_NO_BROAD, CASE_NUMBER_RE):
+        for rx in (CASE_NO_BROAD, CASE_NUMBER_RE, CASE_NO_BARE):
             for m in rx.finditer(text):
                 case_numbers.add(m.group(0).strip())
             text = rx.sub("[CASE_NUMBER]", text)
@@ -202,14 +214,17 @@ def build_case(ref: dict, uid: str) -> tuple[dict, dict, dict]:
     for sent in _sentences(facts_raw):
         if NCLAT_OUTCOME.search(sent):
             continue
-        ds = [d for d in _dates(sent) if d < decision]
+        all_dates = _dates(sent)
+        if any(d >= decision for d in all_dates):    # mentions the appeal's own decision (or later): leaks timing
+            continue
+        ds = all_dates
         if not ds:
             continue
         eid = f"E{len(events) + 1}"
-        events.append({"id": eid, "date": ds[-1].isoformat(), "date_precision": "DAY",
+        events.append({"id": eid, "date": max(ds).isoformat(), "date_precision": "DAY",
                        "event": anon(sent)[:400], "src": SRC("material_facts")})
         if NCLT.search(sent):
-            impugned = (eid, ds[-1], sent)          # latest NCLT sentence wins
+            impugned = (eid, max(ds), sent)          # latest NCLT sentence wins; its latest date is the order
     if not events:
         raise Skip("no dated facts")
     if impugned is None:
@@ -225,8 +240,18 @@ def build_case(ref: dict, uid: str) -> tuple[dict, dict, dict]:
     # and heuristic default/filing dates (tried and measured) produced wrong values, i.e. false flags.
     typed = {"impugned_order_date": {"value": impugned[1].isoformat(), "ref": impugned[0], "verified": False}}
 
-    issues = []
+    # The reference splitter sometimes cuts an issue mid-sentence (at "Rule 12." etc.): re-join any fragment that
+    # does not start a new question (starts lower-case, or with "of", "and", a section number...).
+    merged: list[str] = []
     for t in ref.get("legal_issues", []):
+        t = t.strip()
+        if merged and (not t[:1].isupper() or re.match(r"^(of|and|or|to|in|under|read with|the)\b", t, re.I)
+                       and not re.match(r"^the (?:question|issue)", t, re.I)):
+            merged[-1] = f"{merged[-1]} {t}"
+        else:
+            merged.append(t)
+    issues = []
+    for t in merged:
         n = _neutral_issue(anon(t))
         if n and len(n) > 15:
             prov = from_text(n)

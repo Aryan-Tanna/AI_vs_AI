@@ -96,7 +96,7 @@ validator (§6.6, `scripts/validate_public_db.py`, `scripts/export_schemas.py`);
 flow (§8.3); the rule engine + Z3 (`lexarena/rules/`, build Phase 1); reference DB ingest (`ingest/`),
 retrieval (`retrieval/`), law/authority lookups (`law/`), research tools (`tools/research.py`), THEMIS-LOCAL
 Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3); config-driven sources and
-run modes (`lexarena/sources/`, `config/sources.yaml`); silver public DB builder (`ingest/build_silver.py`); Phase 4 code: THEMIS-GLOBAL, bench, evaluator (built,
+run modes (`lexarena/sources/`, `config/sources.yaml`); silver public DB builder (`ingest/build_silver.py`); viewer (`lexarena/ui/`); Phase 4 code: THEMIS-GLOBAL, bench, evaluator (built,
 tests written but not yet run). 110 tests passing as of the last run + Phase 4 tests pending.
 Architecture in text + image: `docs/ARCHITECTURE.md`, `docs/architecture.png`. Status and next steps: `docs/ROADMAP.md`. Git: the raw data and
 docs are in the initial commit. Two raw filenames contain a space / `&` (`company act.json`,
@@ -568,8 +568,9 @@ is reported separately; it never replaces the label.
   the judgment's own summary of it, recorded in the manifest) and human-checked. Test split and lawyer study.
 - Cases whose outcome turned on a document's content that the judgment does not describe are excluded (§4.1).
 - **Silver built (2026-10-05):** `python -m lexarena.ingest.build_silver` → `data/silver/` (no model calls, ~8 s).
-  From 1,583 in-scope IBC reference cases decided ≤ 2024 (2025–26 kept out as the gold test pool): **1,087 built
-  (train 907 ≤ 2023, dev 180 = 2024), 0 validator errors**; 496 skipped (249 unspoiled text shares 8 words with the
+  From 1,583 in-scope IBC reference cases decided ≤ 2024 (2025–26 kept out as the gold test pool): **1,073 built
+  (train 893 ≤ 2023, dev 180 = 2024), 0 validator errors** (after dropping sentences that mention a date on or after
+  the appeal's own decision, a timing leak found with the viewer); 496 skipped (249 unspoiled text shares 8 words with the
   decision, 121 no NCLT order found, 49 no dated facts, 34 no neutral issue, 34 impugned-order sentence overlaps the
   decision, 8 other); report in `data/reports/silver_build.md`. Heuristic and noisy by design: proceeding type from
   statutes, appellant role from names/facts (522 OTHER), only the impugned-order date as a typed fact (heuristic
@@ -1161,8 +1162,13 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
 - [ ] **Z.2 Reflection memory** on train (§8.6); learning curve on dev.
 - [ ] **Z.3 Frozen test run** (one shot; no tuning after looking at test).
 - [ ] **Z.4 Human study** (§9.4).
-- [ ] **Z.5 Review UI** (Streamlit is enough): transcript viewer, THEMIS flags, bench order, ground-truth
-      reveal, lawyer annotation form. Research-simulation disclaimer on every page.
+- [~] **Z.5 Review UI** (`lexarena/ui/`, `python -m lexarena.ui`, localhost only, read-only): Live (transcript
+      filling turn by turn from the job checkpoint, THEMIS gate path per turn, tools used, pipeline progress strip,
+      auto-refresh), Bench (THEMIS-GLOBAL findings, judge votes, issue grid, dissent, reveal of the real outcome
+      only for decided cases), Evaluation (metrics vs baselines with CIs), Dashboard (usage window, queue, cost per
+      role), Cases (unspoiled records; never the manifest). Step events logged to `data/state/events.jsonl`.
+      Checked with Streamlit AppTest (all pages, no exceptions) and rendered screenshots. Remaining: lawyer
+      annotation form.
 - [ ] **Z.6 Paper/report + panel defence** (§11).
 
 ---

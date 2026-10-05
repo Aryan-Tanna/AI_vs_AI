@@ -19,6 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dense = ["sentence-transformers>=3"]          # bge-small-en-v1.5 dense retrieval
+ui = ["streamlit>=1.37", "pandas>=2", "plotly>=5"]   # viewer
 dev = ["pytest>=8", "ruff"]
 
 [tool.setuptools.packages.find]
