@@ -25,6 +25,11 @@ class ContextBudgetExceededError(LLMError):
     """The request is larger than the model or tier accepts. Never retried and never silently truncated."""
 
 
+class OutputTruncatedError(LLMError):
+    """The model stopped at its output-token limit. Retrying the same request would truncate again, so it is
+    never retried and never repaired; raise max_output_tokens in config or shrink the task."""
+
+
 class ProviderRequestError(LLMError):
     """A client-side error (bad request, auth). Retrying cannot help."""
 

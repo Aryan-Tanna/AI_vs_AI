@@ -12,6 +12,7 @@ from lexarena.llm.cache import ResponseCache
 from lexarena.llm.client import LLMClient
 from lexarena.llm.errors import (
     ContextBudgetExceededError,
+    OutputTruncatedError,
     ProviderUnavailableError,
     RateLimitedError,
     SchemaValidationError,
@@ -177,6 +178,15 @@ def test_context_overflow_fails_immediately(cfg: AppConfig, secrets: SecretStore
             role="verifier", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
         )
     assert len(fake.requests) == 1 and sleeps == []
+
+
+def test_truncated_output_fails_immediately(cfg: AppConfig, secrets: SecretStore, prompts: PromptStore) -> None:
+    fake = FakeProvider([OutputTruncatedError("hit max_output_tokens"), text_response(VALID)])
+    with pytest.raises(OutputTruncatedError):
+        make_client(cfg, secrets, fake).complete_json(
+            role="verifier", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+        )
+    assert len(fake.requests) == 1
 
 
 def test_cache_hit_skips_provider(tmp_path: Path, cfg: AppConfig, secrets: SecretStore, prompts: PromptStore) -> None:

@@ -10,6 +10,7 @@ import pytest
 from lexarena.llm.errors import (
     ContentBlockedError,
     ContextBudgetExceededError,
+    OutputTruncatedError,
     ProviderRequestError,
     ProviderUnavailableError,
     RateLimitedError,
@@ -125,6 +126,12 @@ def test_openai_error_mapping(status: int, body: dict[str, Any], headers: dict[s
         assert isinstance(exc.value, RateLimitedError) and exc.value.retry_after_s == 12
 
 
+def test_openai_truncated_output_raises() -> None:
+    body = {"choices": [{"message": {"content": '{"answer": '}, "finish_reason": "length"}], "usage": {}}
+    with pytest.raises(OutputTruncatedError):
+        _openai(lambda req: httpx.Response(200, json=body)).complete(_request("p"), api_key="k")
+
+
 def test_openai_timeout_is_retryable() -> None:
     def handler(req: httpx.Request) -> httpx.Response:
         raise httpx.ReadTimeout("slow", request=req)
@@ -232,6 +239,12 @@ def test_gemini_error_mapping(status: int, body: dict[str, Any], error: type) ->
         _gemini(lambda req: httpx.Response(status, json=body)).complete(_request("g"), api_key="k")
     if error is RateLimitedError:
         assert isinstance(exc.value, RateLimitedError) and exc.value.retry_after_s == 30
+
+
+def test_gemini_truncated_output_raises() -> None:
+    body = {"candidates": [{"content": {"parts": [{"text": '{"answer": '}]}, "finishReason": "MAX_TOKENS"}]}
+    with pytest.raises(OutputTruncatedError):
+        _gemini(lambda req: httpx.Response(200, json=body)).complete(_request("g"), api_key="k")
 
 
 def test_gemini_blocked_prompt_is_not_retryable() -> None:

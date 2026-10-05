@@ -6,10 +6,12 @@ from typing import Any
 
 import httpx
 
+from lexarena.llm.errors import OutputTruncatedError
 from lexarena.llm.providers.base import post_json
 from lexarena.llm.types import LLMRequest, LLMResponse
 from lexarena.schemas.config import OpenAICompatProviderConfig
 
+TRUNCATED = "length"
 CONTEXT_MARKERS = ("context_length_exceeded", "context length", "maximum context")
 
 
@@ -52,6 +54,10 @@ class OpenAICompatProvider:
             _retry_after,
         )
         choice = data["choices"][0]
+        if choice.get("finish_reason") == TRUNCATED:
+            raise OutputTruncatedError(
+                f"{request.model.name} hit max_output_tokens ({request.model.max_output_tokens})"
+            )
         usage = data.get("usage") or {}
         return LLMResponse(
             text=choice["message"].get("content") or "",

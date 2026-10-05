@@ -40,9 +40,9 @@ How the system uses each field:
 
 - `jurisdiction_type` selects the audit stance: asserting a claim, invoking a bar, or invoking an exception.
 - `core_judicial_inquiry` is the question judges answer per issue, and the question THEMIS layer 2 checks the argument addresses.
-- `audit_error_codes` names hard errors and Z3 tracked assertions.
+- `audit_error_codes` names hard errors and Z3 tracked assertions. **Superseded by D-021:** these codes label warnings, notes and lessons; only the SPEC D8 codes are hard errors.
 - `intersecting_statute_ids` auto-loads related provisions together.
-- `financial_threshold` and `procedural_timelines` apply only when no approved `temporal_overlay` row covers the case date.
+- `financial_threshold` and `procedural_timelines` apply only when no approved `temporal_overlay` row covers the case date. **Amended by D-022:** without an APPROVED overlay row or predicate for the case date, a mismatch with these values is a warning sent to THEMIS layer 2, never a hard error.
 
 ## 2. Precedent record (frozen; stored as JSON/JSONL)
 
@@ -123,7 +123,7 @@ Machine-checkable versions of checklist items. Only items whose numbers or dates
     }
   ],
   "expression": "OBJECT (Expression tree; grammar below)",
-  "error_code": "STRING (From the statute's audit_error_codes)",
+  "error_code": "STRING (From the statute's audit_error_codes; see D-021: the result feeds the D8 hard-error codes, and every predicate must have at least one claim: input)",
   "source_text": "STRING (Exact statute or notification text this encodes)",
   "status": "STRING (DRAFT | APPROVED | STALE | RETIRED)",
   "approved_by": "STRING or NULL",
@@ -172,7 +172,7 @@ One generic engine compiles any expression to Z3. No per-section Python.
 
 ## 6. Config shape (`config/config.vN.yaml`)
 
-All tunable values live here. The values below are placeholders to be calibrated on the dev set; the code must read them, never assume them.
+All tunable values live here. The values below are placeholders to be calibrated on the dev set; the code must read them, never assume them. **Extended by D-026:** the live shape (with `providers`, `prompts`, `llm`, the `auditor` role and per-model `family`, `max_output_tokens`, `api_key_env`) is `config/config.v1.yaml`, validated by `lexarena/schemas/config.py`.
 
 ```yaml
 version: v1

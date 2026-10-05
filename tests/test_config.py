@@ -13,7 +13,7 @@ import pytest
 import yaml
 from pydantic import BaseModel, ValidationError
 
-from lexarena.config import config_sha256, load_config
+from lexarena.config import CRLF, LF, config_sha256, load_config
 from lexarena.schemas.config import AppConfig
 from tests.conftest import CONFIG_V1
 
@@ -97,6 +97,15 @@ def test_config_hash_changes_with_content(tmp_path: Path) -> None:
     first = config_sha256(_write(tmp_path, raw))
     raw["seed"] = raw["seed"] + 1
     assert config_sha256(_write(tmp_path, raw)) != first
+
+
+def test_config_hash_ignores_line_endings(tmp_path: Path) -> None:
+    unix = CONFIG_V1.read_bytes().replace(CRLF, LF)
+    lf, crlf = tmp_path / "lf.yaml", tmp_path / "crlf.yaml"
+    lf.write_bytes(unix)
+    crlf.write_bytes(unix.replace(LF, CRLF))
+    assert lf.read_bytes() != crlf.read_bytes()
+    assert config_sha256(lf) == config_sha256(crlf)
 
 
 def test_verifier_must_differ_in_family_from_lawyer(tmp_path: Path) -> None:

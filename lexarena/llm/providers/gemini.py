@@ -7,11 +7,12 @@ from typing import Any
 
 import httpx
 
-from lexarena.llm.errors import ContentBlockedError
+from lexarena.llm.errors import ContentBlockedError, OutputTruncatedError
 from lexarena.llm.providers.base import post_json
 from lexarena.llm.types import LLMRequest, LLMResponse
 from lexarena.schemas.config import GeminiProviderConfig
 
+TRUNCATED = "MAX_TOKENS"
 CONTEXT_MARKERS = ("exceeds the maximum number of tokens", "input token count")
 DELAY = re.compile(r"^\s*([\d.]+)s\s*$")
 
@@ -67,6 +68,10 @@ class GeminiProvider:
             reason = (data.get("promptFeedback") or {}).get("blockReason", "no candidates returned")
             raise ContentBlockedError(f"Gemini returned no answer: {reason}")
         candidate = candidates[0]
+        if candidate.get("finishReason") == TRUNCATED:
+            raise OutputTruncatedError(
+                f"{request.model.name} hit max_output_tokens ({request.model.max_output_tokens})"
+            )
         parts = (candidate.get("content") or {}).get("parts") or []
         text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
         usage = data.get("usageMetadata") or {}
