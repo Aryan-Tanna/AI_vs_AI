@@ -211,7 +211,22 @@ tests/
 
 ## 12. Commands
 
-Fill this in as the repo grows (setup, tests, ingestion, single dev case, run).
+Run from the repo root. Secrets live only in `.env.local` (git-ignored; template in `.env.example`).
+
+| Task | Command |
+| --- | --- |
+| Set up or update the environment | `uv sync --python 3.12` |
+| Offline tests (no network, no services) | `.venv/Scripts/python -m pytest -q` |
+| Live LLM tests (spends quota) | `.venv/Scripts/python -m pytest --run-live -m live -s` |
+| Service tests (needs Docker) | `.venv/Scripts/python -m pytest --run-integration -m integration` |
+| Lint, format, types | `.venv/Scripts/ruff check lexarena tests`, `.venv/Scripts/ruff format lexarena tests`, `.venv/Scripts/mypy` |
+| Start MongoDB, Qdrant, Redis | `docker compose --env-file .env.local up -d` |
+| Show resolved config and its hash | `.venv/Scripts/lexarena config show` |
+| One real call per model role | `.venv/Scripts/lexarena llm smoke [--role ROLE]` |
+| Raw data audit | `python scripts/audit_raw.py` |
+| Quarantine dev-case precedents | `python scripts/quarantine_dev_overlap.py [--dry-run]` |
+
+LLM call log (IDs and hashes only, no prompt text): `.cache/logs/llm_calls.jsonl`. Response cache: `.cache/llm_cache.sqlite`.
 
 ## 13. Glossary
 

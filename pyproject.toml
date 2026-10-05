@@ -1,0 +1,57 @@
+[project]
+name = "lexarena"
+version = "0.0.1"
+description = "Verified multi-agent courtroom simulation for IBC litigation before the NCLT and NCLAT"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "pydantic>=2.9,<3",
+    "pydantic-settings>=2.11,<3",
+    "python-dotenv>=1.0",
+    "pyyaml>=6.0",
+    "httpx>=0.27,<1",
+    "pymongo>=4.16,<5",
+    "qdrant-client>=1.19,<1.20",
+    "redis>=5.2",
+]
+
+[project.scripts]
+lexarena = "lexarena.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.13",
+    "mypy>=1.13",
+    "types-PyYAML>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["lexarena"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: makes real LLM API calls and spends quota; run with --run-live",
+    "integration: needs MongoDB, Qdrant and Redis from docker compose; run with --run-integration",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["lexarena", "tests"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["qdrant_client.*", "redis.*"]
+ignore_missing_imports = true

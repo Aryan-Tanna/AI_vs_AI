@@ -1,0 +1,38 @@
+# Local services for LexArena. Start with:
+#   docker compose --env-file .env.local up -d
+# Ports bind to 127.0.0.1 only. Ground truth lives in its own database with its own user (non-negotiable 6).
+name: lexarena
+
+services:
+  mongo:
+    image: mongo:8.0.32
+    restart: unless-stopped
+    ports: ["127.0.0.1:27017:27017"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${LEXARENA_MONGO_ROOT_USER:?set in .env.local}
+      MONGO_INITDB_ROOT_PASSWORD: ${LEXARENA_MONGO_ROOT_PASSWORD:?set in .env.local}
+      LEXARENA_MONGO_APP_DB: ${LEXARENA_MONGO_APP_DB:?set in .env.local}
+      LEXARENA_MONGO_APP_USER: ${LEXARENA_MONGO_APP_USER:?set in .env.local}
+      LEXARENA_MONGO_APP_PASSWORD: ${LEXARENA_MONGO_APP_PASSWORD:?set in .env.local}
+      LEXARENA_MONGO_SEALED_DB: ${LEXARENA_MONGO_SEALED_DB:?set in .env.local}
+      LEXARENA_MONGO_SEALED_USER: ${LEXARENA_MONGO_SEALED_USER:?set in .env.local}
+      LEXARENA_MONGO_SEALED_PASSWORD: ${LEXARENA_MONGO_SEALED_PASSWORD:?set in .env.local}
+    volumes:
+      - mongo_data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/10-lexarena-users.js:ro
+
+  qdrant:
+    image: qdrant/qdrant:v1.19.2
+    restart: unless-stopped
+    ports: ["127.0.0.1:6333:6333"]
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  redis:
+    image: redis:8.10.2-alpine
+    restart: unless-stopped
+    ports: ["127.0.0.1:6379:6379"]
+
+volumes:
+  mongo_data:
+  qdrant_data:
