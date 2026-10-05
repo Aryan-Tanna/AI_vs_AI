@@ -6,6 +6,7 @@
   python -m lexarena.cli run                        # work until the window is ~full, then exit
   python -m lexarena.cli run --wait                 # keep going across 5-hour windows until the queue is empty
   python -m lexarena.cli status
+  python -m lexarena.cli evaluate --run-id dev1 --split dev   # metrics vs sealed ground truth (no model calls)
 """
 import argparse
 import asyncio
@@ -55,12 +56,21 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--wait", action="store_true", help="sleep through window resets until the queue is empty")
     r.add_argument("--kinds", help="comma-separated job kinds to run")
     sub.add_parser("status")
+    ev = sub.add_parser("evaluate")
+    ev.add_argument("--run-id", required=True)
+    ev.add_argument("--split", default="dev")
     args = p.parse_args(argv)
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     settings = Settings()
     ledger = UsageLedger(settings.ledger_path)
     queue = JobQueue(settings.jobs_db)
+
+    if args.cmd == "evaluate":
+        from lexarena.eval.evaluate import evaluate
+        res = evaluate(settings, args.run_id, args.split)
+        print((settings.runs_dir / args.run_id / "metrics.md").read_text(encoding="utf-8"))
+        return 0 if res["cases_scored"] else 1
 
     if args.cmd == "status":
         blocked = ledger.blocked_until()

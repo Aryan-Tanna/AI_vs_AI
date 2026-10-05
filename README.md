@@ -26,7 +26,7 @@ Requirements:
 
 ```
 pip install -e ".[dense,dev]"                                       # dense = bge-small retrieval (optional)
-python -m pytest                                                     # 107 tests, no model calls
+python -m pytest                                                     # 110 tests, no model calls
 ```
 
 Do **not** set `ANTHROPIC_API_KEY`. If it's set, Claude Code bills the API instead of the subscription, so the
@@ -37,6 +37,7 @@ backend refuses to start. Runs use the owner's own account; don't share one logi
 ```
 python -m lexarena.ingest.build_reference          # raw precedent files -> data/canonical/reference_cases.jsonl
 python -m lexarena.retrieval.build_index --dense   # bge-small-en-v1.5 vectors -> data/index/ (~40 min on CPU)
+python -m lexarena.ingest.build_silver            # silver train/dev cases -> data/silver/ (no model calls)
 python scripts/validate_public_db.py               # validate public_db/ (the simulation cases)
 ```
 
@@ -50,6 +51,7 @@ python -m lexarena.cli smoke                                   # one tiny call: 
 python -m lexarena.cli enqueue debate --split dev --run-id dev1
 python -m lexarena.cli run --wait                              # works within 5-hour windows, resumes after resets
 python -m lexarena.cli status
+python -m lexarena.cli evaluate --run-id dev1 --split dev    # metrics vs sealed ground truth
 LEX_MODE=live python -m lexarena.cli run                       # live mode: open web search (no answer key)
 ```
 

@@ -14,6 +14,7 @@ truth), [ARCHITECTURE.md](ARCHITECTURE.md), [schema/README.md](schema/README.md)
 | Rule engine (Phase 1) | Art.137 limitation with s.18/19/14, COVID order, s.4 threshold, class creditors, s.10A, s.8/9 timing, s.61/62 appeals; Z3 for uncertain dates (ALWAYS / POSSIBLY / NEVER) | 37 rule tests |
 | Reference DB (Phase 0a) | 2,696 unique NCLAT cases from the raw files, cleaned, deduplicated, one statute ID scheme | `python -m lexarena.ingest.build_reference` |
 | Retrieval (Phase 2) | BM25 with section-aware tokens + bge-small-en-v1.5 dense (384 dims), fused; cutoff and exclusions applied before ranking; overruled flags surfaced | Leakage tests |
+| Silver public DB | 1,087 auto-built train/dev cases from the reference DB, anonymised, outcome-stripped, validated | `data/reports/silver_build.md`; `tests/test_silver.py` |
 | Agents + THEMIS-LOCAL (Phase 3) | Advocates with record and research tools and a proceeding-specific framework (identical for both sides); Haiku claim extraction; Stage A (invented record refs, facts, arithmetic, provisions in force, authorities); Stage B (misattribution, unsupported facts, new facts); revision by the same advocate | Three live debates on the synthetic case; 107 tests |
 
 **Measured cost:** a 5-turn debate with THEMIS-LOCAL costs about 27 calls and ~$1.5 API-equivalent (not billed
@@ -42,14 +43,16 @@ output from ~170k to ~52k tokens. Three debates plus our chat in the same window
 
 ## What to do next, in order
 
-### 1. Silver DB builder (code only; unblocks train/dev runs now)
-Convert reference cases into unspoiled / ground truth / manifest records:
-- split by decision year
-- anonymise names with tokens
-- remove any outcome wording from the unspoiled record
-- pass the validator, with silver marked in the manifest
+### 1. Silver DB: done
+`python -m lexarena.ingest.build_silver` builds **1,087 cases (907 train, 180 dev)** into `data/silver/`, all passing
+the validator, with no model calls. It's heuristic: roles, proceeding type and grounds are approximate, and only the
+impugned-order date is a typed fact. **Live runs are paused** until the owner says so; then use
+`LEX_PUBLIC_DB_DIR=data/silver python -m lexarena.cli enqueue debate --split dev --run-id silver-dev1`.
 
-### 2. Phase 4: rest of the pipeline (can be developed on silver)
+### 2. Phase 4: code built 2026-10-05; tests written, not yet run
+Built: THEMIS-GLOBAL (`themis/global_.py`), bench (`bench/`), evaluator (`eval/`, `cli evaluate`). Next: run the
+unit tests (no model calls), then, when the owner allows live runs, one silver dev case end to end.
+Original plan for reference:
 1. THEMIS-GLOBAL on the whole transcript, before the bench (findings only, same format for both sides).
 2. Bench-question turn, then 3 judge agents (Opus, read-only tools), then the aggregator, then the order writer.
 3. Evaluator: unseal ground truth and compute metrics against the baselines (single LLM, majority class, metadata-only), with confidence intervals. Side-swap test and the with/without-GLOBAL ablation.
@@ -76,6 +79,6 @@ Convert reference cases into unspoiled / ground truth / manifest records:
 ## Decisions waiting on the project owner
 - Who collects the judgment texts, and who reviews gold cases?
 - Pro or Max subscription? (Throughput.)
-- Which lawyer verifies the authority table and the `VERIFY` items?
-- How do remands count for `appellant_won`?
+- Which lawyer verifies the authority table and the `VERIFY` items? (On hold: no lawyer yet.)
+- How do remands count for `appellant_won`? Silver currently counts a remand as an appellant win; confirm or change.
 - Will anyone else run jobs? If so, each person needs their own account, or the backend moves to an API key.

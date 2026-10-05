@@ -42,7 +42,7 @@ Status and next steps: [ROADMAP.md](ROADMAP.md). Research simulation, not legal 
 
  PHASE 0 · OFFLINE DATA
    raw precedent dumps ─▶ ingest (field mapping, dedup, statute IDs) ─▶ reference_cases.jsonl     [built]
-   reference cases ─▶ SILVER public DB (auto; train/dev only)                                     [planned]
+   reference cases ─▶ SILVER public DB (auto; 1,087 train/dev cases, data/silver/)               [built]
    judgment (+ NCLT order) ─▶ CASE BUILDER (agent) ─▶ validator ─▶ human ─▶ GOLD public DB        [planned]
                                      unspoiled | ground_truth (SEALED) | manifest | splits  (schema: docs/schema/)
    India Code/Gazette ─▶ Law DB v2 (verbatim, versioned) ─▶ get_provision(id, as_of)             [planned]
@@ -68,18 +68,18 @@ Status and next steps: [ROADMAP.md](ROADMAP.md). Research simulation, not legal 
      hearing transcript (hash-chained, shared page) → runs/<run_id>/<case>/transcript.json     [built]
    seal
 
- PHASE 2 · THEMIS-GLOBAL (whole transcript, BEFORE the bench)                                   [planned]
+ PHASE 2 · THEMIS-GLOBAL (whole transcript, BEFORE the bench)                                   [built]
    re-run Stage A on all claims · claim drift · self-contradiction · unanswered points by issue ·
    flagged citations reused ─▶ global findings report (same headings for both sides; no verdict)
 
- PHASE 3 · BENCH (independent, different Claude model)                                          [planned]
+ PHASE 3 · BENCH (independent, different Claude model)                                          [built]
    inputs: sealed transcript + global findings report
    TEXTUALIST · PURPOSIVE/COMMERCIAL · PROCEDURALIST (agents, opus; read-only tools)
         ─▶ aggregator (code: majority label, issue merge, dissent) ─▶ order writer (haiku call)
 
  PHASE 4 · EVALUATION (after the order)
-   evaluator (code: unseal ground truth, metrics, bootstrap CIs; reuses the global report)      [planned]
-   baselines: single LLM (sonnet) [built] · majority class · metadata-only [planned]
+   evaluator (code: unseal ground truth, metrics, bootstrap CIs; reuses the global report)      [built]
+   baselines: single LLM (sonnet) · majority class · metadata-only (from train)                 [built]
 
  PHASE 5 · REFLECTION MEMORY (train split only; frozen before dev/test)                        [planned]
    REFLECTION (agent per side) ─▶ lesson validator (code) ─▶ memory per side ─▶ recall_lessons
@@ -103,12 +103,12 @@ Status and next steps: [ROADMAP.md](ROADMAP.md). Research simulation, not legal 
 | THEMIS-LOCAL: extractor, Stage A, Stage B, revision | LLM call + code + LLM call | Haiku | Built |
 | Rule engine + Z3 | Code | — | Built (`lexarena/rules/`; real-case fixtures pending) |
 | Single-LLM baseline | LLM call | Sonnet | Built |
-| Silver DB builder (reference → public case format) | Code | — | Planned (next) |
+| Silver DB builder (reference → public case format) | Code | — | Built: 1,087 cases (`python -m lexarena.ingest.build_silver`) |
 | Case Builder (judgment → gold public case) | Agent | Sonnet / Opus | Planned |
-| THEMIS-GLOBAL (before bench) | Code + LLM calls | Haiku / Sonnet | Planned |
-| 3 judges | Agents | Opus (Sonnet if the weekly Opus cap binds) | Planned |
-| Aggregator + order writer | Code + LLM call | Haiku | Planned |
-| Evaluator, metadata baseline | Code | — | Planned |
+| THEMIS-GLOBAL (before bench) | Code + 1 LLM call | Sonnet | Built (`themis/global_.py`); tests not yet run |
+| 3 judges | Agents | Opus (Sonnet if the weekly Opus cap binds) | Built (`bench/judge.py`); tests not yet run |
+| Aggregator + order writer | Code + LLM call | Haiku | Built (`bench/aggregator.py`); tests not yet run |
+| Evaluator, metadata baseline | Code | — | Built (`eval/`, `cli evaluate`); issue-level alignment planned |
 | Reflection + lesson validator | Agent + code | Sonnet | Planned |
 
 ## Tool access by role
@@ -128,12 +128,14 @@ Status and next steps: [ROADMAP.md](ROADMAP.md). Research simulation, not legal 
 ```
 python -m lexarena.ingest.build_reference             # raw precedent dumps -> data/canonical/reference_cases.jsonl
 python -m lexarena.retrieval.build_index --dense      # bge-small vectors -> data/index/ (one-off, ~40 min on CPU)
+python -m lexarena.ingest.build_silver               # silver train/dev cases -> data/silver/ (no model calls)
 python scripts/validate_public_db.py                  # check public_db/ before using it
 python -m lexarena.cli smoke                          # 1 tiny Haiku call: login, tools, isolation, window state
 python -m lexarena.cli enqueue debate --split train --run-id train1
 python -m lexarena.cli run                            # work until the window is ~85 % full, then exit
 python -m lexarena.cli run --wait                     # sleep through resets until the queue is empty
 python -m lexarena.cli status                         # job counts, window state, failures
+python -m lexarena.cli evaluate --run-id dev1 --split dev   # metrics vs sealed ground truth (no model calls)
 LEX_MODE=live python -m lexarena.cli run              # live mode: open web search, MCP servers (no answer key)
 ```
 

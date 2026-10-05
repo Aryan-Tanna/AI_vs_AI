@@ -29,9 +29,13 @@ class FakeBackend:
         if self.calls in self.limit_on:
             raise UsageLimitReached(self.resets_at, "five_hour")
         self.ledger.rate_limit("allowed", self.resets_at, "five_hour", self.utilization)
+        judgment = {"issue_decisions": [{"issue": i, "finding": "f", "reasons": "r", "record_refs": [], "authorities_relied": []}
+                                        for i in ("I1", "I2")], "label": "DISMISSED", "appellant_won": False, "summary": "s"}
         out = {"advocate": {"prose": f"submission {self.calls}", "claims": []},
                "extractor": {"claims": []},
-               "verifier": {"findings": []}}.get(spec.role, {"label": "DISMISSED", "appellant_won": False, "reasons": "r"})
+               "verifier": {"findings": []},
+               "auditor": {"issues": []},
+               "judge": judgment}.get(spec.role, {"label": "DISMISSED", "appellant_won": False, "reasons": "r"})
         return AgentResult(out, "", 1, {}, None, [], "s", "fake")
 
 
@@ -59,11 +63,14 @@ def test_debate_resumes_after_limit_without_repeating_turns(env):
     # Next window (clock past the reset): turns 1–2 come from the checkpoint, only 3–5 are called.
     rep = asyncio.run(run_session(q, fake, ledger, HANDLERS, s, clock=lambda: 20_000))
     assert rep.stop is Stop.QUEUE_EMPTY and rep.done == 1
-    assert fake.calls == 16           # 6 ok + 1 limited + 9 resumed
+    # 6 ok + 1 limited + 9 resumed debate calls, then THEMIS-GLOBAL (1) and three judges (3)
+    assert fake.calls == 20
     sealed = json.loads((s.runs_dir / "t" / "PC-1" / "transcript.json").read_text(encoding="utf-8"))
     assert [t["turn"] for t in sealed["turns"]] == [1, 2, 3, 4, 5]
     assert sealed["seal"] == sealed["turns"][-1]["hash"]
     assert all(t["themis"]["status"] == "PASSED" for t in sealed["turns"])
+    verdict = json.loads((s.runs_dir / "t" / "PC-1" / "verdict.json").read_text(encoding="utf-8"))
+    assert verdict["label"] == "DISMISSED" and verdict["appellant_won"] is False and verdict["unanimous"]
 
 
 def test_blocked_window_starts_no_job(env):

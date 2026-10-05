@@ -104,6 +104,8 @@ def validate_dir(dir_: Path, allow_synthetic: bool = False) -> list[Problem]:
         err = lambda msg: problems.append(Problem(uid, "ERROR", msg))  # noqa: E731
         warn = lambda msg: problems.append(Problem(uid, "WARN", msg))  # noqa: E731
 
+        if m.build.method == "SILVER_AUTO" and m.split == "test":
+            err("silver (auto-built) cases may not be in the test split")
         if m.build.method == "SYNTHETIC_TEMPLATE" and not allow_synthetic:
             err("synthetic template record in a real DB directory")
 

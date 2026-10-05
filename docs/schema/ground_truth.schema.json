@@ -178,7 +178,8 @@
      "default": "JUDGMENT",
      "enum": [
       "JUDGMENT",
-      "IMPUGNED"
+      "IMPUGNED",
+      "REFERENCE_SUMMARY"
      ],
      "title": "Doc",
      "type": "string"

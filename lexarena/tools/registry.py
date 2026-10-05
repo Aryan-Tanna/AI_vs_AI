@@ -7,6 +7,8 @@ ROLE_TOOLS: dict[str, set[str]] = {
     "baseline": set(),                                  # reads the case from its prompt only
     "extractor": set(),                                 # THEMIS claim extraction: prompt only
     "verifier": set(),                                  # THEMIS Stage B: prompt only
+    "auditor": set(),                                   # THEMIS-GLOBAL: prompt only
+    "order_writer": set(),
     "advocate": {"read_record", "read_transcript"} | RESEARCH,
     "judge": {"read_record", "read_transcript"} | RESEARCH,
 }

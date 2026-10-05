@@ -96,7 +96,8 @@ validator (§6.6, `scripts/validate_public_db.py`, `scripts/export_schemas.py`);
 flow (§8.3); the rule engine + Z3 (`lexarena/rules/`, build Phase 1); reference DB ingest (`ingest/`),
 retrieval (`retrieval/`), law/authority lookups (`law/`), research tools (`tools/research.py`), THEMIS-LOCAL
 Stage A/B + extractor wired into the debate handler (build Phases 0a, 2, 3); config-driven sources and
-run modes (`lexarena/sources/`, `config/sources.yaml`). 107 tests in `tests/`.
+run modes (`lexarena/sources/`, `config/sources.yaml`); silver public DB builder (`ingest/build_silver.py`); Phase 4 code: THEMIS-GLOBAL, bench, evaluator (built,
+tests written but not yet run). 110 tests passing as of the last run + Phase 4 tests pending.
 Architecture in text + image: `docs/ARCHITECTURE.md`, `docs/architecture.png`. Status and next steps: `docs/ROADMAP.md`. Git: the raw data and
 docs are in the initial commit. Two raw filenames contain a space / `&` (`company act.json`,
 `ncalt&nclt.json`); do not rename raw files — map them to clean IDs in config. Platform is Windows 11,
@@ -566,6 +567,15 @@ is reported separately; it never replaces the label.
 - **Gold**: built by the Case Builder from the NCLAT judgment text (+ NCLT order where available; otherwise
   the judgment's own summary of it, recorded in the manifest) and human-checked. Test split and lawyer study.
 - Cases whose outcome turned on a document's content that the judgment does not describe are excluded (§4.1).
+- **Silver built (2026-10-05):** `python -m lexarena.ingest.build_silver` → `data/silver/` (no model calls, ~8 s).
+  From 1,583 in-scope IBC reference cases decided ≤ 2024 (2025–26 kept out as the gold test pool): **1,087 built
+  (train 907 ≤ 2023, dev 180 = 2024), 0 validator errors**; 496 skipped (249 unspoiled text shares 8 words with the
+  decision, 121 no NCLT order found, 49 no dated facts, 34 no neutral issue, 34 impugned-order sentence overlaps the
+  decision, 8 other); report in `data/reports/silver_build.md`. Heuristic and noisy by design: proceeding type from
+  statutes, appellant role from names/facts (522 OTHER), only the impugned-order date as a typed fact (heuristic
+  default/filing dates were measured to be wrong), grounds are issue-level headings, sentences stating the NCLAT's
+  own outcome dropped, `appellant_won` counts remands as wins (proposal pending the owner's decision, §13).
+  The validator rejects silver cases in the test split. Run on silver: `LEX_PUBLIC_DB_DIR=data/silver`.
 
 #### 6.6.5 Selection of the ~500
 - Temporal split (§9.1): train 250 (≤ 2023) · dev 100 (2024) · test 150 (2025–26, after every model's cutoff).
@@ -1059,6 +1069,7 @@ where retrieval needs the field.
 - [x] **PB1. Pydantic schemas** `lexarena/schemas/public_case.py` + `scripts/validate_public_db.py`
       (schema, `src` page resolution, leakage 8-gram scan, anonymisation scan, issue coverage, split/date
       rules, duplicate appeals) + JSON Schema export + synthetic example + 19 tests.
+- [x] **PB-S. Silver DB** (§6.6.4a): 1,087 auto-built train/dev cases from the reference DB, validated.
 - [ ] **PB2. Candidate pool + sampling plan**: list eligible IBC appeals per year/stratum (§6.6.5); confirm
       PDFs (judgment + impugned order) are obtainable. *Accept*: ≥ 1.5× candidates per stratum.
 - [ ] **PB3. Pilot 20 cases** end to end (draft → human review → validator); fix schema before scaling.
@@ -1125,14 +1136,25 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
       mismatch, day counts, computations redone by the rule engine, provision not in force, unverified /
       anachronistic authority; notes for record conflicts and coverage gaps), Haiku extractor and Stage B
       (`themis/checkers.py`), revision by the same advocate; wired into the debate handler per turn.
-- [ ] **U2. THEMIS-GLOBAL** (§8.3a) before the bench; report format side-symmetric, findings only.
+- [~] **U2. THEMIS-GLOBAL** (§8.3a), `themis/global_.py`: code part (Stage A re-run on every published claim,
+      claim drift, flagged citations reused, per-side flag counts and unsupported-fact rate) + one Sonnet call
+      (unanswered points, contradictions per issue, same headings for both sides) + a guard that strips
+      verdict-like sentences. Built 2026-10-05; tests written, **not yet run** (owner's instruction).
 - [x] **V. Orchestrator**: plain Python job handlers + checkpointed steps (`orchestrator/handlers.py`).
 - [~] **W. Smoke run**: two live end-to-end debates on the synthetic case (tools used correctly; THEMIS caught
       and fixed real errors; false positives found and fixed). Remaining: 10 real dev cases, lawyer reads every transcript.
 
 ### Phase 4 — Bench, global audit, metrics
-- [ ] **X. Bench** personas (§8.5), aggregator, issue-wise order.
-- [ ] **Y.** `eval/metrics.py` (reusing the THEMIS-GLOBAL report) + baselines + ablation runner.
+- [~] **X. Bench** (`bench/`): 3 persona judges as agents (Opus, read-only tools; judgment = issue decisions +
+      label), judge references re-checked by Stage A rules with one revision, optional bench-question turn
+      (`bench_questions`), majority aggregator with dissent, optional order writer (`order_writer`, output marked
+      SIMULATED), side-swap helpers (`bench/bias.py`). Wired into the debate job after the seal; writes
+      `runs/<run>/<case>/verdict.json`. Tests written, **not yet run**.
+- [~] **Y.** `eval/` built: ground-truth loader used only by the evaluator; accuracy / balanced accuracy /
+      macro-F1 with bootstrap CIs; majority and metadata baselines from the TRAIN split; single-LLM baseline
+      from `baseline.json`; McNemar system vs single-LLM; THEMIS flag rates per side; per-proceeding-type
+      breakdown; `python -m lexarena.cli evaluate --run-id X --split dev` → `metrics.json` / `metrics.md`.
+      Remaining: issue-level alignment (LLM-graded), ablation runner. Tests written, **not yet run**.
 - [ ] **Z.1 Dev evaluation** (full dev split) with baselines and CIs.
 
 ### Phase 5 — Memory, test, human study, write-up
@@ -1180,6 +1202,7 @@ acknowledgment signed on the last day; s.12(2) day counting and whether it exten
 | 2026-10-04 | Advocates, judges, case builder, reflection = tool-using agents; orchestrator, THEMIS checks, rules, aggregator, metrics = code | Agents where lookup decisions matter; code where reproducibility matters (§8.0) |
 | 2026-10-04 | Leakage filters enforced inside tools, not prompts | Agents can't bypass filters; full traces for replay |
 | 2026-10-04 | All model calls on the owner's Claude subscription via the Agent SDK (no API key, no gateway); work paced to 5-hour windows with a checkpointed job queue | Project owner's decision (budget) |
+| 2026-10-05 | No live runs until the owner says so; lawyer verification on hold; stay on Pro | Owner's decision (token budget, no lawyer yet) |
 | 2026-10-05 | Two data tiers: silver (auto from reference DB; train/dev) and gold (from judgments, human-checked; test) | Train/dev can start without PDFs; reported results stay clean |
 | 2026-10-05 | Sources are config-driven (`config/sources.yaml`); eval vs live mode; web = official statute sites in eval, open search in live only | Works on any DB; case-law web search would leak outcomes in evaluation |
 | 2026-10-04 | Dense retrieval model = bge-small-en-v1.5 (384 dims), not bge-m3 | Light (~130 MB), CPU-friendly; matches the original design; BM25 carries exact section matches |

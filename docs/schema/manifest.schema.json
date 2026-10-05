@@ -7,7 +7,8 @@
      "enum": [
       "LLM_DRAFT+HUMAN_REVIEW",
       "MANUAL",
-      "SYNTHETIC_TEMPLATE"
+      "SYNTHETIC_TEMPLATE",
+      "SILVER_AUTO"
      ],
      "title": "Method",
      "type": "string"
@@ -244,7 +245,8 @@
     "doc": {
      "enum": [
       "JUDGMENT",
-      "IMPUGNED"
+      "IMPUGNED",
+      "REFERENCE_SUMMARY"
      ],
      "title": "Doc",
      "type": "string"

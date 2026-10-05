@@ -30,7 +30,7 @@ Role = Literal[
 ]
 Label = Literal["ALLOWED", "DISMISSED", "PARTLY_ALLOWED", "ALLOWED_REMANDED", "WITHDRAWN", "DISPOSED"]
 Split = Literal["train", "dev", "test"]
-DocName = Literal["JUDGMENT", "IMPUGNED"]
+DocName = Literal["JUDGMENT", "IMPUGNED", "REFERENCE_SUMMARY"]   # REFERENCE_SUMMARY: silver cases (one "page" = the record)
 DatePrecision = Literal["DAY", "MONTH", "FY", "RANGE"]
 PartyKind = Literal["COMPANY", "LLP", "BANK", "NBFC", "ARC", "INDIVIDUAL", "GOVERNMENT", "STATUTORY_BODY",
                     "RESOLUTION_PROFESSIONAL", "LIQUIDATOR", "COC", "OTHER"]
@@ -348,7 +348,7 @@ class Strata(_Strict):
 
 
 class Build(_Strict):
-    method: Literal["LLM_DRAFT+HUMAN_REVIEW", "MANUAL", "SYNTHETIC_TEMPLATE"]
+    method: Literal["LLM_DRAFT+HUMAN_REVIEW", "MANUAL", "SYNTHETIC_TEMPLATE", "SILVER_AUTO"]
     drafted_by: str | None = None
     reviewed_by: str | None = None
     reviewed_at: dt.date | None = None

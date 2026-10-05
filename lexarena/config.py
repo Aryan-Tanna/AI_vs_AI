@@ -24,6 +24,8 @@ def _default_roles() -> dict[str, RoleModel]:
         "judge": RoleModel(model="opus", max_turns=12),
         "extractor": RoleModel(model="haiku", max_turns=6, thinking=False),   # structured output may need a retry turn
         "verifier": RoleModel(model="haiku", max_turns=4, thinking=False),
+        "auditor": RoleModel(model="sonnet", max_turns=4, thinking=False),    # THEMIS-GLOBAL (findings only)
+        "order_writer": RoleModel(model="haiku", max_turns=4, thinking=False),
         "reflector": RoleModel(model="sonnet", max_turns=10),
     }
 
