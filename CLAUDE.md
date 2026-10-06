@@ -225,6 +225,7 @@ Run from the repo root. Secrets live only in three git-ignored files (template i
 | Show resolved config and its hash | `.venv/Scripts/lexarena config show` |
 | One real call per model role | `.venv/Scripts/lexarena llm smoke [--role ROLE]` |
 | Raw data audit | `python scripts/audit_raw.py` |
+| Validate the Law DB, or validate and load it into MongoDB | `.venv/Scripts/lexarena law validate`, `.venv/Scripts/lexarena law load` |
 | Check Law DB and precedents against the frozen formats | `.venv/Scripts/python scripts/check_formats.py` |
 | Quarantine dev-case precedents | `python scripts/quarantine_dev_overlap.py [--dry-run]` |
 

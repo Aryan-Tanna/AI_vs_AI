@@ -16,6 +16,8 @@ CASE_GROUND_TRUTH = "case_ground_truth"  # in the sealed database only
 TRANSCRIPT_TURNS = "transcript_turns"
 TURN_PRIVATE = "turn_private"
 SESSIONS = "sessions"
+LAW_DB = "law_db"
+TEMPORAL_OVERLAY = "temporal_overlay"
 
 
 @dataclass(frozen=True)

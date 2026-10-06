@@ -10,7 +10,14 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict
 
-from lexarena.app import PROMPTS_ROOT, build_llm_client, configure_llm_logging
+from lexarena.app import (
+    DEFAULT_ENV_FILE,
+    PROMPTS_ROOT,
+    REPO_ROOT,
+    SEALED_ENV_FILE,
+    build_llm_client,
+    configure_llm_logging,
+)
 from lexarena.config import config_sha256, load_config
 from lexarena.llm.errors import LLMError
 from lexarena.prompts import PromptStore
@@ -70,6 +77,23 @@ def _llm_smoke(path: Path, roles: list[str] | None) -> int:
     return 1 if failures else 0
 
 
+def _law(action: str, source: Path) -> int:
+    from lexarena.ingest.law_db import load_law_db, read_law_sources, validate_law_db
+    from lexarena.storage.factory import SealedProcess
+
+    report = validate_law_db(*read_law_sources(source), source=str(source))
+    out: dict[str, object] = {"report": report.model_dump(mode="json")}
+    if action == "load":
+        if not report.loadable:
+            print(json.dumps(out, indent=2, ensure_ascii=False))  # literal-ok: display indentation
+            return 1
+        with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+            result = load_law_db(proc.ingest().law, report)
+        out["loaded"] = vars(result)
+    print(json.dumps(out, indent=2, ensure_ascii=False))  # literal-ok: display indentation
+    return 0 if report.loadable else 1
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="lexarena")
     parser.add_argument("--config", help="config file (default: LEXARENA_CONFIG_PATH)")
@@ -79,11 +103,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     llm_cmd = sub.add_parser("llm").add_subparsers(dest="action", required=True)
     smoke = llm_cmd.add_parser("smoke", help="one real schema-validated call per role (spends quota)")
     smoke.add_argument("--role", action="append", help="limit to this role (repeatable)")
+    law_cmd = sub.add_parser("law").add_subparsers(dest="action", required=True)
+    for action, text in (("validate", "validation report only"), ("load", "validate, then load into MongoDB")):
+        cmd = law_cmd.add_parser(action, help=text)
+        cmd.add_argument("--source", type=Path, default=REPO_ROOT / "data" / "law_db", help="folder of Law DB files")
     args = parser.parse_args(argv)
 
     path = _config_path(args.config)
     if args.group == "config":
         return _config_show(path)
+    if args.group == "law":
+        return _law(args.action, args.source)
     return _llm_smoke(path, args.role)
 
 

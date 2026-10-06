@@ -8,7 +8,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
   - Build: repo layout from CLAUDE.md, `pyproject.toml`, ruff and mypy config, config loader (pydantic-settings) with `config/config.v1.yaml`, LLM client wrapper with logging and caching, docker-compose for MongoDB, Qdrant and Redis.
   - Done when: `pytest` runs; a test proves config values are read, not defaulted in code; the LLM client returns schema-validated JSON from a dummy prompt.
 
-- [ ] **Step 1: Schemas and access control**
+- [x] **Step 1: Schemas and access control**
   - Build: Pydantic models for every format in DATA_FORMATS.md and SPEC H; role-scoped repositories in `lexarena/storage/`.
   - Done when: tests show lawyers, THEMIS-LOCAL, THEMIS-GLOBAL and judges cannot read `case_ground_truth` or the other agent's private data, and the evaluator can read ground truth only after `VERDICT_RECORDED`. Ground truth lives in a separate database whose credentials are absent from agent, THEMIS and judge processes, and a test proves the shared credentials are refused by MongoDB itself (D-024).
 

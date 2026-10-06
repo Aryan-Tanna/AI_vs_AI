@@ -28,6 +28,7 @@ from lexarena.secrets import SecretStore
 from lexarena.storage.cases import CaseRepository
 from lexarena.storage.errors import CredentialLeakError
 from lexarena.storage.ground_truth import GroundTruthRepository
+from lexarena.storage.law import LawRepository
 from lexarena.storage.mongo import ROOT_NAMESPACE, Doc, Namespace
 from lexarena.storage.policy import Principal, Role
 from lexarena.storage.session_memory import InProcessSessionMemory, SessionMemoryHandle
@@ -69,6 +70,7 @@ def check_session_secrets(secrets: SecretStore) -> None:
 @dataclass(frozen=True)
 class LawyerStores:
     case: CaseRepository
+    law: LawRepository
     transcript: TranscriptRepository
     memory: SessionMemoryHandle
 
@@ -76,6 +78,7 @@ class LawyerStores:
 @dataclass(frozen=True)
 class ThemisLocalStores:
     case: CaseRepository
+    law: LawRepository
     transcript: TranscriptRepository
     private_turns: PrivateTurnRepository
     agent_memory: SessionMemoryHandle  # its own agent's memory, read-only by policy
@@ -86,12 +89,14 @@ class ObserverStores:
     """THEMIS-GLOBAL and the judges: the agent view and the published transcript, nothing else."""
 
     case: CaseRepository
+    law: LawRepository
     transcript: TranscriptRepository
 
 
 @dataclass(frozen=True)
 class OrchestratorStores:
     cases: CaseRepository
+    law: LawRepository
     transcript: TranscriptRepository
     sessions: SessionRepository
     session_memory: InProcessSessionMemory
@@ -112,6 +117,13 @@ class ReflectionStores:
     sessions: SessionRepository
     ground_truth: GroundTruthRepository
     private_turns: PrivateTurnRepository
+
+
+@dataclass(frozen=True)
+class IngestStores:
+    """Offline ingestion: writes the Law DB and approved overlay rows (precedents join in Step 4)."""
+
+    law: LawRepository
 
 
 @dataclass(frozen=True)
@@ -159,6 +171,7 @@ class SessionProcess(_Process):
         p = Principal(Role.LAWYER, side)
         return LawyerStores(
             case=CaseRepository(p, self._app_db, self._ns),
+            law=LawRepository(p, self._app_db, self._ns),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             memory=self._memory.handle(p, session_id),
         )
@@ -167,6 +180,7 @@ class SessionProcess(_Process):
         p = Principal(Role.THEMIS_LOCAL, side)
         return ThemisLocalStores(
             case=CaseRepository(p, self._app_db, self._ns),
+            law=LawRepository(p, self._app_db, self._ns),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
             agent_memory=self._memory.handle(p, session_id),
@@ -182,6 +196,7 @@ class SessionProcess(_Process):
         p = Principal(Role.ORCHESTRATOR)
         return OrchestratorStores(
             cases=CaseRepository(p, self._app_db, self._ns),
+            law=LawRepository(p, self._app_db, self._ns),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             sessions=SessionRepository(p, self._app_db, self._ns),
             session_memory=self._memory,
@@ -190,6 +205,7 @@ class SessionProcess(_Process):
     def _observer(self, p: Principal) -> ObserverStores:
         return ObserverStores(
             case=CaseRepository(p, self._app_db, self._ns),
+            law=LawRepository(p, self._app_db, self._ns),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
         )
 
@@ -221,6 +237,9 @@ class SealedProcess(_Process):
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
             private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
         )
+
+    def ingest(self) -> IngestStores:
+        return IngestStores(law=LawRepository(Principal(Role.INGEST), self._app_db, self._ns))
 
     def clerk(self) -> ClerkStores:
         p = Principal(Role.CLERK)
