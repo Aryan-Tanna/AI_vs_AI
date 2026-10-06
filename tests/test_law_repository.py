@@ -210,3 +210,26 @@ def test_decision_keyed_rows_never_reveal_the_simulation_date(procs: Procs, tmp_
     view = procs.session.lawyer("PETITIONER", "S").law.get_statute(SYNTHETIC, as_of)
     assert view is not None and view.in_force == "CONFIRMED"  # positive control: the row was applied
     assert sentinel_date not in view.model_dump_json()
+
+
+def test_related_sections_show_only_what_exists_and_reconnect_when_added(procs: Procs, tmp_path: Path) -> None:
+    """D-040: a cross-reference to a section not in the Law DB is ignored, and works once the section is added."""
+    folder = tmp_path / "law"
+    folder.mkdir()
+    refs = ["TEST_ACT_SEC_2", "TEST_ACT_SEC_3"]
+    source = folder / "a.json"
+    source.write_text(json.dumps([law_record(SYNTHETIC, intersecting_statute_ids=refs), law_record("TEST_ACT_SEC_2")]))
+    ingest = procs.offline.ingest()
+    load_law_db(ingest.law, validate_law_db(*read_law_sources(folder)))
+    lawyer = procs.session.lawyer("PETITIONER", "S").law
+    as_of = AsOf(key_dates={})
+
+    view = lawyer.get_statute(SYNTHETIC, as_of)
+    assert view is not None and view.related_ids == ["TEST_ACT_SEC_2"]
+    assert view.record.intersecting_statute_ids == refs  # the stored record is unchanged
+
+    records = json.loads(source.read_text())
+    source.write_text(json.dumps([*records, law_record("TEST_ACT_SEC_3")]))
+    load_law_db(ingest.law, validate_law_db(*read_law_sources(folder)))
+    view = lawyer.get_statute(SYNTHETIC, as_of)
+    assert view is not None and view.related_ids == refs

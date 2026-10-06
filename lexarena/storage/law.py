@@ -109,4 +109,6 @@ class LawRepository:
             TemporalOverlayRow.model_validate(r)
             for r in self._overlay.find({"statute_id": statute_id, "status": "APPROVED"}, projection={"_id": False})
         ]
-        return resolve_statute(stored.record, rows, as_of)
+        refs = stored.record.intersecting_statute_ids
+        known = {d["_id"] for d in self._law.find({"_id": {"$in": refs}}, projection={"_id": True})}
+        return resolve_statute(stored.record, rows, as_of, known)

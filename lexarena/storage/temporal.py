@@ -17,6 +17,7 @@ reader may see:
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Collection
 from datetime import date
 from typing import TYPE_CHECKING, Literal
 
@@ -70,6 +71,9 @@ class StatuteView(StoredModel):
     in_force: Literal["CONFIRMED", "UNVERIFIED"]
     applied: list[AppliedOverlay]
     unresolved: list[UnresolvedOverlay]
+    # intersecting_statute_ids that exist in the Law DB, in record order (D-040). Whether each one is in force
+    # on the case dates is decided when it is itself fetched with get_statute.
+    related_ids: list[str]
 
 
 def covers(row: TemporalOverlayRow, day: date) -> bool:
@@ -84,7 +88,9 @@ def windows_overlap(a: TemporalOverlayRow, b: TemporalOverlayRow) -> bool:
     return a_starts_before_b_ends and b_starts_before_a_ends
 
 
-def resolve_statute(record: LawRecord, rows: list[TemporalOverlayRow], as_of: AsOf) -> StatuteView | None:
+def resolve_statute(
+    record: LawRecord, rows: list[TemporalOverlayRow], as_of: AsOf, known_ids: Collection[str] = ()
+) -> StatuteView | None:
     applicable = [r for r in rows if r.status == "APPROVED" and r.statute_id == record.statute_id]
     unresolved: list[UnresolvedOverlay] = []
     covering: dict[str, list[tuple[TemporalOverlayRow, date]]] = defaultdict(list)
@@ -119,6 +125,7 @@ def resolve_statute(record: LawRecord, rows: list[TemporalOverlayRow], as_of: As
         in_force="CONFIRMED" if in_force else "UNVERIFIED",
         applied=applied,
         unresolved=unresolved,
+        related_ids=[i for i in record.intersecting_statute_ids if i in known_ids],
     )
 
 
