@@ -48,11 +48,13 @@ class AsOf(StoredModel):
 
 
 class AppliedOverlay(StoredModel):
+    """No date here on purpose: a row keyed on DECISION would otherwise hand the simulation_date to every
+    session role (D-035). Readers know their own key dates; the label says which one was used."""
+
     overlay_id: str
     parameter: str
     value: bool | int | float | DateRange | str
     keyed_on: str
-    date_used: date
 
 
 class UnresolvedOverlay(StoredModel):
@@ -109,9 +111,7 @@ def resolve_statute(record: LawRecord, rows: list[TemporalOverlayRow], as_of: As
     if has_in_force_rows and not (in_force and in_force[0][0].value is True):
         return None
     applied = [
-        AppliedOverlay(**_ids(row), value=row.value, date_used=day)
-        for parameter in sorted(covering)
-        for row, day in covering[parameter]
+        AppliedOverlay(**_ids(row), value=row.value) for parameter in sorted(covering) for row, _ in covering[parameter]
     ]
     return StatuteView(
         statute_id=record.statute_id,

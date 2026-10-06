@@ -196,3 +196,17 @@ def test_overlapping_overlay_rows_are_rejected(procs: Procs, tmp_path: Path) -> 
     ingest.law.put_overlay(overlay("b", False, "2005-01-01", None))
     lawyer = procs.session.lawyer("PETITIONER", "S").law
     assert lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"FILING": date(2006, 1, 1)})) is None
+
+
+def test_decision_keyed_rows_never_reveal_the_simulation_date(procs: Procs, tmp_path: Path) -> None:
+    """D-035: no session-role read returns the decision date, even through an overlay keyed on it."""
+    from tests import builders
+
+    sentinel_date = "1999-12-31"  # literal-ok: sentinel simulation_date
+    ingest = procs.offline.ingest()
+    load_law_db(ingest.law, validate_law_db(*read_law_sources(synthetic_source(tmp_path))))
+    ingest.law.put_overlay(overlay("ov-decision", True, "1990-01-01", None, keyed_on="DECISION"))
+    as_of = AsOf.for_case(builders.case("TESTCASE_0001", date_marker=sentinel_date))
+    view = procs.session.lawyer("PETITIONER", "S").law.get_statute(SYNTHETIC, as_of)
+    assert view is not None and view.in_force == "CONFIRMED"  # positive control: the row was applied
+    assert sentinel_date not in view.model_dump_json()

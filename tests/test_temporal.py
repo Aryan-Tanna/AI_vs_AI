@@ -99,7 +99,7 @@ def test_other_parameters_apply_for_the_keyed_date() -> None:
     view = resolve_statute(record(), rows, on("2010-06-01"))
     assert view is not None
     [applied] = view.applied
-    assert (applied.overlay_id, applied.value, applied.date_used) == ("new", 2, date(2010, 6, 1))
+    assert (applied.overlay_id, applied.value, applied.keyed_on) == ("new", 2, "FILING")
 
 
 def test_overlapping_rows_for_one_parameter_are_a_data_error() -> None:
