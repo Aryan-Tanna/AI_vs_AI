@@ -4,7 +4,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
 
 ## Phase 1: the base (no case from the 500 is touched)
 
-- [ ] **Step 0: Repository and config**
+- [x] **Step 0: Repository and config**
   - Build: repo layout from CLAUDE.md, `pyproject.toml`, ruff and mypy config, config loader (pydantic-settings) with `config/config.v1.yaml`, LLM client wrapper with logging and caching, docker-compose for MongoDB, Qdrant and Redis.
   - Done when: `pytest` runs; a test proves config values are read, not defaulted in code; the LLM client returns schema-validated JSON from a dummy prompt.
 

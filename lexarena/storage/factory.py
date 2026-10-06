@@ -1,0 +1,230 @@
+"""Which process may hold which credentials, and which repositories each role receives.
+
+Two kinds of process (D-034):
+
+- `SessionProcess` runs a session: orchestrator, both lawyers, both THEMIS-LOCAL instances,
+  THEMIS-GLOBAL and the judges. It loads `.env.local` only and refuses to start if any credential from
+  `SESSION_FORBIDDEN_SECRETS` is visible to it, including through the process environment. It opens no
+  connection to the sealed database and can build no ground-truth repository.
+- `SealedProcess` runs offline and post-verdict work: the clerk, the evaluator and the reflection engine.
+  It also loads `.env.sealed`. The orchestrator starts it as a separate process after the verdict is
+  recorded, so ground-truth credentials never share memory with an agent (Step 13).
+
+Each role gets a bundle holding only the repositories it may use, each bound to that role's principal;
+the repositories re-check the policy on every call.
+"""
+
+from __future__ import annotations
+
+from collections.abc import Sequence
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Self
+
+from pymongo import MongoClient
+
+from lexarena.schemas.base import Side
+from lexarena.secrets import SecretStore
+from lexarena.storage.cases import CaseRepository
+from lexarena.storage.errors import CredentialLeakError
+from lexarena.storage.ground_truth import GroundTruthRepository
+from lexarena.storage.mongo import ROOT_NAMESPACE, Doc, Namespace
+from lexarena.storage.policy import Principal, Role
+from lexarena.storage.session_memory import InProcessSessionMemory, SessionMemoryHandle
+from lexarena.storage.sessions import SessionRepository
+from lexarena.storage.transcript import PrivateTurnRepository, TranscriptRepository
+
+APP_URI = "LEXARENA_MONGO_APP_URI"
+APP_DB = "LEXARENA_MONGO_APP_DB"
+SEALED_URI = "LEXARENA_MONGO_SEALED_URI"
+
+# Everything scripts/make_env.py writes to .env.sealed or .env.docker. A session process must see none of it.
+SESSION_FORBIDDEN_SECRETS = frozenset(
+    {
+        "LEXARENA_MONGO_SEALED_URI",
+        "LEXARENA_MONGO_SEALED_DB",
+        "LEXARENA_MONGO_SEALED_USER",
+        "LEXARENA_MONGO_SEALED_PASSWORD",
+        "LEXARENA_MONGO_ROOT_USER",
+        "LEXARENA_MONGO_ROOT_PASSWORD",
+        "LEXARENA_MONGO_APP_USER",
+        "LEXARENA_MONGO_APP_PASSWORD",
+        "LEXARENA_QDRANT_WRITE_API_KEY",
+        "LEXARENA_QDRANT_SERVER_API_KEY",
+        "LEXARENA_QDRANT_SERVER_READ_ONLY_API_KEY",
+        "LEXARENA_REDIS_PASSWORD",
+    }
+)
+
+
+def check_session_secrets(secrets: SecretStore) -> None:
+    visible = sorted(name for name in SESSION_FORBIDDEN_SECRETS if secrets.has(name))
+    if visible:
+        raise CredentialLeakError(f"a session process must not see these credentials: {visible}")
+
+
+# ---------------------------------------------------------------- bundles
+
+
+@dataclass(frozen=True)
+class LawyerStores:
+    case: CaseRepository
+    transcript: TranscriptRepository
+    memory: SessionMemoryHandle
+
+
+@dataclass(frozen=True)
+class ThemisLocalStores:
+    case: CaseRepository
+    transcript: TranscriptRepository
+    private_turns: PrivateTurnRepository
+    agent_memory: SessionMemoryHandle  # its own agent's memory, read-only by policy
+
+
+@dataclass(frozen=True)
+class ObserverStores:
+    """THEMIS-GLOBAL and the judges: the agent view and the published transcript, nothing else."""
+
+    case: CaseRepository
+    transcript: TranscriptRepository
+
+
+@dataclass(frozen=True)
+class OrchestratorStores:
+    cases: CaseRepository
+    transcript: TranscriptRepository
+    sessions: SessionRepository
+    session_memory: InProcessSessionMemory
+
+
+@dataclass(frozen=True)
+class EvaluatorStores:
+    cases: CaseRepository
+    transcript: TranscriptRepository
+    sessions: SessionRepository
+    ground_truth: GroundTruthRepository
+
+
+@dataclass(frozen=True)
+class ReflectionStores:
+    cases: CaseRepository
+    transcript: TranscriptRepository
+    sessions: SessionRepository
+    ground_truth: GroundTruthRepository
+    private_turns: PrivateTurnRepository
+
+
+@dataclass(frozen=True)
+class ClerkStores:
+    cases: CaseRepository
+    ground_truth: GroundTruthRepository
+
+
+# ---------------------------------------------------------------- processes
+
+
+class _Process:
+    def __init__(self, secrets: SecretStore, ns: Namespace) -> None:
+        self._ns = ns
+        self._clients: list[MongoClient[Doc]] = []
+        self._app_db = self._open(secrets.get(APP_URI))[secrets.get(APP_DB)]
+
+    def _open(self, uri: str) -> MongoClient[Doc]:
+        client: MongoClient[Doc] = MongoClient(uri)
+        self._clients.append(client)
+        return client
+
+    def close(self) -> None:
+        for client in self._clients:
+            client.close()
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        self.close()
+
+
+class SessionProcess(_Process):
+    def __init__(self, secrets: SecretStore, ns: Namespace = ROOT_NAMESPACE) -> None:
+        check_session_secrets(secrets)
+        super().__init__(secrets, ns)
+        self._memory = InProcessSessionMemory()
+
+    @classmethod
+    def from_env_files(cls, env_files: Sequence[Path], ns: Namespace = ROOT_NAMESPACE) -> SessionProcess:
+        return cls(SecretStore(env_file=env_files), ns)
+
+    def lawyer(self, side: Side, session_id: str) -> LawyerStores:
+        p = Principal(Role.LAWYER, side)
+        return LawyerStores(
+            case=CaseRepository(p, self._app_db, self._ns),
+            transcript=TranscriptRepository(p, self._app_db, self._ns),
+            memory=self._memory.handle(p, session_id),
+        )
+
+    def themis_local(self, side: Side, session_id: str) -> ThemisLocalStores:
+        p = Principal(Role.THEMIS_LOCAL, side)
+        return ThemisLocalStores(
+            case=CaseRepository(p, self._app_db, self._ns),
+            transcript=TranscriptRepository(p, self._app_db, self._ns),
+            private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
+            agent_memory=self._memory.handle(p, session_id),
+        )
+
+    def themis_global(self) -> ObserverStores:
+        return self._observer(Principal(Role.THEMIS_GLOBAL))
+
+    def judge(self) -> ObserverStores:
+        return self._observer(Principal(Role.JUDGE))
+
+    def orchestrator(self) -> OrchestratorStores:
+        p = Principal(Role.ORCHESTRATOR)
+        return OrchestratorStores(
+            cases=CaseRepository(p, self._app_db, self._ns),
+            transcript=TranscriptRepository(p, self._app_db, self._ns),
+            sessions=SessionRepository(p, self._app_db, self._ns),
+            session_memory=self._memory,
+        )
+
+    def _observer(self, p: Principal) -> ObserverStores:
+        return ObserverStores(
+            case=CaseRepository(p, self._app_db, self._ns),
+            transcript=TranscriptRepository(p, self._app_db, self._ns),
+        )
+
+
+class SealedProcess(_Process):
+    def __init__(self, secrets: SecretStore, ns: Namespace = ROOT_NAMESPACE) -> None:
+        super().__init__(secrets, ns)
+        self._sealed_db = self._open(secrets.get(SEALED_URI)).get_default_database()
+
+    @classmethod
+    def from_env_files(cls, env_files: Sequence[Path], ns: Namespace = ROOT_NAMESPACE) -> SealedProcess:
+        return cls(SecretStore(env_file=env_files), ns)
+
+    def evaluator(self) -> EvaluatorStores:
+        p = Principal(Role.EVALUATOR)
+        return EvaluatorStores(
+            cases=CaseRepository(p, self._app_db, self._ns),
+            transcript=TranscriptRepository(p, self._app_db, self._ns),
+            sessions=SessionRepository(p, self._app_db, self._ns),
+            ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+        )
+
+    def reflection(self, side: Side | None = None) -> ReflectionStores:
+        p = Principal(Role.REFLECTION, side)
+        return ReflectionStores(
+            cases=CaseRepository(p, self._app_db, self._ns),
+            transcript=TranscriptRepository(p, self._app_db, self._ns),
+            sessions=SessionRepository(p, self._app_db, self._ns),
+            ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+            private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
+        )
+
+    def clerk(self) -> ClerkStores:
+        p = Principal(Role.CLERK)
+        return ClerkStores(
+            cases=CaseRepository(p, self._app_db, self._ns),
+            ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+        )
