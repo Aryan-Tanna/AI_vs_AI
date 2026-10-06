@@ -278,28 +278,28 @@
     "section_title": "Insolvency resolution by operational creditor",
     "jurisdiction_type": "STATUTORY_PREREQUISITE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Establishes the mandatory pre-initiation procedure for operational creditors, requiring the delivery of a demand notice or invoice to the corporate debtor upon default[cite: 1]. Grants the corporate debtor 10 days to notify the creditor of a pre-existing dispute or provide proof of payment[cite: 1].",
-    "core_judicial_inquiry": "Whether a valid demand notice or invoice was delivered by the operational creditor, and whether the corporate debtor raised a valid pre-existing dispute or provided evidence of payment within the statutory 10-day period[cite: 1].",
+    "statutory_summary": "Establishes the mandatory pre-initiation procedure for operational creditors, requiring the delivery of a demand notice or invoice to the corporate debtor upon default. Grants the corporate debtor 10 days to notify the creditor of a pre-existing dispute or provide proof of payment.",
+    "core_judicial_inquiry": "Whether a valid demand notice or invoice was delivered by the operational creditor, and whether the corporate debtor raised a valid pre-existing dispute or provided evidence of payment within the statutory 10-day period.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_5",
       "IBC_2016_SEC_9"
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "An operational creditor upon the occurrence of a default[cite: 1]."
+        "An operational creditor upon the occurrence of a default."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Delivery of a demand notice of unpaid operational debt or a copy of an invoice demanding payment of the amount involved in the default[cite: 1].",
-        "Notice must be delivered to the corporate debtor in the prescribed form and manner[cite: 1]."
+        "Delivery of a demand notice of unpaid operational debt or a copy of an invoice demanding payment of the amount involved in the default.",
+        "Notice must be delivered to the corporate debtor in the prescribed form and manner."
       ],
       "statutory_bars": [
-        "Corporate debtor brings to notice the existence of a dispute or record of the pendency of a suit or arbitration proceedings filed before the receipt of the notice or invoice[cite: 1].",
-        "Corporate debtor proves payment of the unpaid operational debt by sending an attested copy of the record of electronic transfer[cite: 1].",
-        "Corporate debtor proves payment by sending an attested copy of a record that the operational creditor has encashed a cheque issued by the corporate debtor[cite: 1]."
+        "Corporate debtor brings to notice the existence of a dispute or record of the pendency of a suit or arbitration proceedings filed before the receipt of the notice or invoice.",
+        "Corporate debtor proves payment of the unpaid operational debt by sending an attested copy of the record of electronic transfer.",
+        "Corporate debtor proves payment by sending an attested copy of a record that the operational creditor has encashed a cheque issued by the corporate debtor."
       ],
       "saving_exceptions": []
     },
@@ -376,8 +376,8 @@
     "section_title": "Initiation of corporate insolvency resolution process by corporate applicant",
     "jurisdiction_type": "INITIATING_CLAIM",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Permits a corporate applicant of a corporate debtor that has committed a default to initiate the Corporate Insolvency Resolution Process (CIRP) by filing an application along with financial documents and a special resolution of shareholders or a three-fourths partner resolution[cite: 1].",
-    "core_judicial_inquiry": "Whether the corporate debtor has committed a default, whether the corporate applicant has provided the requisite corporate authorization (special resolution or 3/4th partner resolution) along with books of account, and whether the application is complete[cite: 1].",
+    "statutory_summary": "Permits a corporate applicant of a corporate debtor that has committed a default to initiate the Corporate Insolvency Resolution Process (CIRP) by filing an application along with financial documents and a special resolution of shareholders or a three-fourths partner resolution.",
+    "core_judicial_inquiry": "Whether the corporate debtor has committed a default, whether the corporate applicant has provided the requisite corporate authorization (special resolution or 3/4th partner resolution) along with books of account, and whether the application is complete.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_4",
       "IBC_2016_SEC_5",
@@ -387,24 +387,24 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Corporate applicant of a corporate debtor that has committed a default[cite: 1]."
+        "Corporate applicant of a corporate debtor that has committed a default."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Filing of application in prescribed form, manner, and accompanied with prescribed fee[cite: 1].",
-        "Information relating to books of account, specified documents, and other specified information[cite: 1].",
-        "Special resolution passed by shareholders of the corporate debtor or resolution passed by at least three-fourths of total partners of the corporate debtor approving the filing of the application[cite: 1]."
+        "Filing of application in prescribed form, manner, and accompanied with prescribed fee.",
+        "Information relating to books of account, specified documents, and other specified information.",
+        "Special resolution passed by shareholders of the corporate debtor or resolution passed by at least three-fourths of total partners of the corporate debtor approving the filing of the application."
       ],
       "statutory_bars": [
-        "Application filed under sub-section (1) is incomplete[cite: 1].",
-        "Failure to obtain or furnish the requisite special resolution of shareholders or 3/4th partner resolution[cite: 1].",
+        "Application filed under sub-section (1) is incomplete.",
+        "Failure to obtain or furnish the requisite special resolution of shareholders or 3/4th partner resolution.",
         "Corporate debtor or corporate applicant is disqualified under Section 11."
       ],
       "saving_exceptions": [
-        "Adjudicating Authority must give notice to the applicant to rectify defects in the application within seven days from the date of receipt of notice prior to rejecting an incomplete application[cite: 1]."
+        "Adjudicating Authority must give notice to the applicant to rectify defects in the application within seven days from the date of receipt of notice prior to rejecting an incomplete application."
       ]
     },
     "procedural_timelines": {
@@ -483,8 +483,8 @@
     "section_title": "Time-limit for completion of insolvency resolution process",
     "jurisdiction_type": "PROCEDURAL_TIMELINE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Establishes a mandatory 180-day time limit for completing the Corporate Insolvency Resolution Process (CIRP), permits a one-time extension of up to 90 days upon 66% CoC approval, and sets a mandatory outer limit of 330 days including legal proceedings[cite: 1].",
-    "core_judicial_inquiry": "Whether the CIRP cannot be completed within 180 days due to the nature of the case, whether the extension application is backed by a 66% CoC vote, whether an extension has already been granted, and whether the process duration exceeds the mandatory outer limit of 330 days[cite: 1].",
+    "statutory_summary": "Establishes a mandatory 180-day time limit for completing the Corporate Insolvency Resolution Process (CIRP), permits a one-time extension of up to 90 days upon 66% CoC approval, and sets a mandatory outer limit of 330 days including legal proceedings.",
+    "core_judicial_inquiry": "Whether the CIRP cannot be completed within 180 days due to the nature of the case, whether the extension application is backed by a 66% CoC vote, whether an extension has already been granted, and whether the process duration exceeds the mandatory outer limit of 330 days.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_5",
       "IBC_2016_SEC_7",
@@ -497,23 +497,23 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution professional instructed to seek an extension by a resolution passed at a meeting of the committee of creditors by a vote of sixty-six per cent of the voting shares[cite: 1]."
+        "Resolution professional instructed to seek an extension by a resolution passed at a meeting of the committee of creditors by a vote of sixty-six per cent of the voting shares."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Approval of the committee of creditors by a vote of not less than sixty-six per cent of voting shares[cite: 1].",
-        "Filing of an application by the resolution professional to the Adjudicating Authority seeking extension beyond one hundred and eighty days[cite: 1]."
+        "Approval of the committee of creditors by a vote of not less than sixty-six per cent of voting shares.",
+        "Filing of an application by the resolution professional to the Adjudicating Authority seeking extension beyond one hundred and eighty days."
       ],
       "statutory_bars": [
-        "Extension of the CIRP period granted more than once under Section 12(3)[cite: 1].",
-        "Exceeding the mandatory outer limit of three hundred and thirty days from the insolvency commencement date, including extensions and legal proceedings[cite: 1]."
+        "Extension of the CIRP period granted more than once under Section 12(3).",
+        "Exceeding the mandatory outer limit of three hundred and thirty days from the insolvency commencement date, including extensions and legal proceedings."
       ],
       "saving_exceptions": [
-        "One-time extension of CIRP duration beyond 180 days by a further period not exceeding 90 days if the Adjudicating Authority is satisfied that the process cannot be completed within 180 days[cite: 1].",
-        "Pending CIRPs not completed within 330 days at the commencement of the Insolvency and Bankruptcy Code (Amendment) Act, 2019 granted a 90-day completion window from such commencement date[cite: 1]."
+        "One-time extension of CIRP duration beyond 180 days by a further period not exceeding 90 days if the Adjudicating Authority is satisfied that the process cannot be completed within 180 days.",
+        "Pending CIRPs not completed within 330 days at the commencement of the Insolvency and Bankruptcy Code (Amendment) Act, 2019 granted a 90-day completion window from such commencement date."
       ]
     },
     "procedural_timelines": {
@@ -535,8 +535,8 @@
     "section_title": "Withdrawal of application admitted under section 7, 9 or 10",
     "jurisdiction_type": "EXIT_PROVISION",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Permits the Adjudicating Authority to allow the withdrawal of an admitted CIRP application under Section 7, 9, or 10 upon an application by the resolution professional backed by ninety per cent voting share approval of the committee of creditors[cite: 1].",
-    "core_judicial_inquiry": "Whether the resolution professional has obtained ninety per cent voting share approval from the committee of creditors for withdrawal, and whether the application is submitted after the constitution of the committee of creditors but before the issuance of the first invitation for resolution plans[cite: 1].",
+    "statutory_summary": "Permits the Adjudicating Authority to allow the withdrawal of an admitted CIRP application under Section 7, 9, or 10 upon an application by the resolution professional backed by ninety per cent voting share approval of the committee of creditors.",
+    "core_judicial_inquiry": "Whether the resolution professional has obtained ninety per cent voting share approval from the committee of creditors for withdrawal, and whether the application is submitted after the constitution of the committee of creditors but before the issuance of the first invitation for resolution plans.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_7",
       "IBC_2016_SEC_9",
@@ -546,19 +546,19 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution professional submitting the application with the approval of ninety per cent voting share of the committee of creditors[cite: 1]."
+        "Resolution professional submitting the application with the approval of ninety per cent voting share of the committee of creditors."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Approval of ninety per cent voting share of the committee of creditors in such manner as specified[cite: 1].",
-        "Application for withdrawal made directly by the resolution professional to the Adjudicating Authority[cite: 1]."
+        "Approval of ninety per cent voting share of the committee of creditors in such manner as specified.",
+        "Application for withdrawal made directly by the resolution professional to the Adjudicating Authority."
       ],
       "statutory_bars": [
-        "Withdrawal sought before the constitution of the committee of creditors under sub-section (1) of section 21[cite: 1].",
-        "Withdrawal sought after the first invitation for submission of a resolution plan has been issued by the resolution professional[cite: 1]."
+        "Withdrawal sought before the constitution of the committee of creditors under sub-section (1) of section 21.",
+        "Withdrawal sought after the first invitation for submission of a resolution plan has been issued by the resolution professional."
       ],
       "saving_exceptions": []
     },
@@ -629,8 +629,8 @@
     "section_title": "Moratorium",
     "jurisdiction_type": "PROHIBITORY_SHIELD",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Declares a mandatory moratorium upon CIRP commencement, prohibiting legal suits, asset transfers, security enforcement, and property recovery against the corporate debtor, while protecting statutory grants and critical supplies subject to payment of current dues[cite: 1].",
-    "core_judicial_inquiry": "Whether a suit, legal proceeding, execution, asset transfer, or security enforcement is barred by the moratorium order, whether an exception applies (e.g., personal guarantor or notified transaction), or whether critical/essential supplies or statutory grants can be suspended due to non-payment of current dues during the moratorium[cite: 1].",
+    "statutory_summary": "Declares a mandatory moratorium upon CIRP commencement, prohibiting legal suits, asset transfers, security enforcement, and property recovery against the corporate debtor, while protecting statutory grants and critical supplies subject to payment of current dues.",
+    "core_judicial_inquiry": "Whether a suit, legal proceeding, execution, asset transfer, or security enforcement is barred by the moratorium order, whether an exception applies (e.g., personal guarantor or notified transaction), or whether critical/essential supplies or statutory grants can be suspended due to non-payment of current dues during the moratorium.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_7",
       "IBC_2016_SEC_9",
@@ -642,27 +642,27 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Corporate debtor protected automatically upon the admission of a CIRP application under Section 7, 9, or 10[cite: 1]."
+        "Corporate debtor protected automatically upon the admission of a CIRP application under Section 7, 9, or 10."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Order of moratorium declared by the Adjudicating Authority on the insolvency commencement date[cite: 1].",
-        "Payment of current dues arising during the moratorium period for the continuation of essential/critical goods, services, or statutory licenses/permits[cite: 1]."
+        "Order of moratorium declared by the Adjudicating Authority on the insolvency commencement date.",
+        "Payment of current dues arising during the moratorium period for the continuation of essential/critical goods, services, or statutory licenses/permits."
       ],
       "statutory_bars": [
-        "Institution of suits or continuation of pending suits or proceedings against the corporate debtor including execution of judgments, decrees, or orders[cite: 1].",
-        "Transferring, encumbering, alienating, or disposing of corporate debtor assets or legal/beneficial rights[cite: 1].",
-        "Any action to foreclose, recover, or enforce security interest created by the corporate debtor, including under the SARFAESI Act, 2002[cite: 1].",
-        "Recovery of property by an owner or lessor where such property is occupied by or in possession of the corporate debtor[cite: 1].",
-        "Action or proceeding by a surety against the corporate debtor pursuant to a contract of guarantee during moratorium[cite: 1]."
+        "Institution of suits or continuation of pending suits or proceedings against the corporate debtor including execution of judgments, decrees, or orders.",
+        "Transferring, encumbering, alienating, or disposing of corporate debtor assets or legal/beneficial rights.",
+        "Any action to foreclose, recover, or enforce security interest created by the corporate debtor, including under the SARFAESI Act, 2002.",
+        "Recovery of property by an owner or lessor where such property is occupied by or in possession of the corporate debtor.",
+        "Action or proceeding by a surety against the corporate debtor pursuant to a contract of guarantee during moratorium."
       ],
       "saving_exceptions": [
-        "Transactions, agreements, or arrangements notified by the Central Government in consultation with financial sector regulators[cite: 1].",
-        "Actions against a surety in a contract of guarantee to a corporate debtor[cite: 1].",
-        "Termination or suspension of critical/essential supplies or statutory grants/licenses if the corporate debtor defaults on current dues arising during the moratorium period[cite: 1]."
+        "Transactions, agreements, or arrangements notified by the Central Government in consultation with financial sector regulators.",
+        "Actions against a surety in a contract of guarantee to a corporate debtor.",
+        "Termination or suspension of critical/essential supplies or statutory grants/licenses if the corporate debtor defaults on current dues arising during the moratorium period."
       ]
     },
     "procedural_timelines": {
@@ -736,8 +736,8 @@
     "section_title": "Appointment and tenure of interim resolution professional",
     "jurisdiction_type": "PROCEDURAL_DIRECTIVE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Governs the appointment procedure, eligibility verification, reference mechanisms to the Board (IBBI), and tenure of the Interim Resolution Professional (IRP) upon CIRP commencement[cite: 1].",
-    "core_judicial_inquiry": "Whether any disciplinary proceeding is pending against the proposed interim resolution professional, or whether a reference to the Board is required for recommending an eligible insolvency professional[cite: 1].",
+    "statutory_summary": "Governs the appointment procedure, eligibility verification, reference mechanisms to the Board (IBBI), and tenure of the Interim Resolution Professional (IRP) upon CIRP commencement.",
+    "core_judicial_inquiry": "Whether any disciplinary proceeding is pending against the proposed interim resolution professional, or whether a reference to the Board is required for recommending an eligible insolvency professional.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_7",
       "IBC_2016_SEC_9",
@@ -747,21 +747,21 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Adjudicating Authority appointing an Interim Resolution Professional on the insolvency commencement date[cite: 1]."
+        "Adjudicating Authority appointing an Interim Resolution Professional on the insolvency commencement date."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Appointment of the interim resolution professional on the insolvency commencement date[cite: 1].",
-        "For financial creditor applications under Section 7, appointment of the proposed RP if no disciplinary proceedings are pending against him[cite: 1].",
-        "For operational creditor applications under Section 9 with a proposed IRP, appointment of the proposed RP if no disciplinary proceedings are pending against him[cite: 1].",
-        "For operational creditor applications with no proposed IRP or corporate applicant applications under Section 10, mandatory reference by the Adjudicating Authority to the Board for recommendation[cite: 1].",
-        "Recommendation by the Board of an insolvency professional with no pending disciplinary proceedings within 10 days of receiving a reference[cite: 1]."
+        "Appointment of the interim resolution professional on the insolvency commencement date.",
+        "For financial creditor applications under Section 7, appointment of the proposed RP if no disciplinary proceedings are pending against him.",
+        "For operational creditor applications under Section 9 with a proposed IRP, appointment of the proposed RP if no disciplinary proceedings are pending against him.",
+        "For operational creditor applications with no proposed IRP or corporate applicant applications under Section 10, mandatory reference by the Adjudicating Authority to the Board for recommendation.",
+        "Recommendation by the Board of an insolvency professional with no pending disciplinary proceedings within 10 days of receiving a reference."
       ],
       "statutory_bars": [
-        "Pending disciplinary proceedings against the proposed insolvency professional[cite: 1]."
+        "Pending disciplinary proceedings against the proposed insolvency professional."
       ],
       "saving_exceptions": []
     },
@@ -831,8 +831,8 @@
     "section_title": "Duties of interim resolution professional",
     "jurisdiction_type": "STATUTORY_DUTY",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Outlines the mandatory duties of the Interim Resolution Professional (IRP), including asset and operational data collection, receiving, collating, and verifying creditor claims, constituting the Committee of Creditors, managing operations, and taking custody of assets owned by the corporate debtor[cite: 1].",
-    "core_judicial_inquiry": "Whether the interim resolution professional has fulfilled statutory duties—including claim collation/verification, Committee of Creditors constitution, and taking control over corporate debtor assets—without impermissibly taking custody of third-party or subsidiary assets[cite: 1].",
+    "statutory_summary": "Outlines the mandatory duties of the Interim Resolution Professional (IRP), including asset and operational data collection, receiving, collating, and verifying creditor claims, constituting the Committee of Creditors, managing operations, and taking custody of assets owned by the corporate debtor.",
+    "core_judicial_inquiry": "Whether the interim resolution professional has fulfilled statutory duties—including claim collation/verification, Committee of Creditors constitution, and taking control over corporate debtor assets—without impermissibly taking custody of third-party or subsidiary assets.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_13",
       "IBC_2016_SEC_15",
@@ -845,22 +845,22 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Interim resolution professional appointed under Section 16 upon admission of CIRP[cite: 1]."
+        "Interim resolution professional appointed under Section 16 upon admission of CIRP."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Collection of asset, financial, and operational information for the previous two years[cite: 1].",
-        "Receiving, collating, verifying, and determining the value of creditor claims pursuant to public announcement under Sections 13 and 15[cite: 1].",
-        "Constitution of the Committee of Creditors[cite: 1].",
-        "Taking custody and control of tangible, intangible, foreign, and security assets over which the corporate debtor has ownership rights[cite: 1]."
+        "Collection of asset, financial, and operational information for the previous two years.",
+        "Receiving, collating, verifying, and determining the value of creditor claims pursuant to public announcement under Sections 13 and 15.",
+        "Constitution of the Committee of Creditors.",
+        "Taking custody and control of tangible, intangible, foreign, and security assets over which the corporate debtor has ownership rights."
       ],
       "statutory_bars": [
-        "Taking control or custody of assets owned by a third party held under trust or contractual arrangement (including bailment)[cite: 1].",
-        "Taking control or custody of assets belonging to any Indian or foreign subsidiary of the corporate debtor[cite: 1].",
-        "Taking control or custody of assets notified by the Central Government in consultation with a financial sector regulator[cite: 1]."
+        "Taking control or custody of assets owned by a third party held under trust or contractual arrangement (including bailment).",
+        "Taking control or custody of assets belonging to any Indian or foreign subsidiary of the corporate debtor.",
+        "Taking control or custody of assets notified by the Central Government in consultation with a financial sector regulator."
       ],
       "saving_exceptions": []
     },
@@ -884,8 +884,8 @@
     "section_title": "Persons to extend cooperation to interim resolution professional",
     "jurisdiction_type": "ENFORCEMENT_DIRECTIVE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Mandates that current or former personnel, promoters, management associates, or contractual service providers of the corporate debtor extend all assistance and cooperation to the IRP or RP, and empowers the Adjudicating Authority to issue compliance orders upon an application detailing non-cooperation[cite: 1].",
-    "core_judicial_inquiry": "Whether the person from whom assistance or cooperation is sought falls under the statutory scope of Section 19(1) and whether that person has failed or refused to cooperate with the interim resolution professional or resolution professional[cite: 1].",
+    "statutory_summary": "Mandates that current or former personnel, promoters, management associates, or contractual service providers of the corporate debtor extend all assistance and cooperation to the IRP or RP, and empowers the Adjudicating Authority to issue compliance orders upon an application detailing non-cooperation.",
+    "core_judicial_inquiry": "Whether the person from whom assistance or cooperation is sought falls under the statutory scope of Section 19(1) and whether that person has failed or refused to cooperate with the interim resolution professional or resolution professional.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_16",
       "IBC_2016_SEC_17",
@@ -896,19 +896,19 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Interim resolution professional or resolution professional appointed under Chapter II[cite: 1]."
+        "Interim resolution professional or resolution professional appointed under Chapter II."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Target person is or has been personnel, promoter, associated with management, or engaged in a contract for service with the corporate debtor[cite: 1].",
-        "Failure or refusal by such person to assist or cooperate with the IRP or RP in managing affairs or performing statutory duties[cite: 1].",
-        "Filing of an application by the IRP or RP to the Adjudicating Authority for necessary directions under Section 19(2)[cite: 1]."
+        "Target person is or has been personnel, promoter, associated with management, or engaged in a contract for service with the corporate debtor.",
+        "Failure or refusal by such person to assist or cooperate with the IRP or RP in managing affairs or performing statutory duties.",
+        "Filing of an application by the IRP or RP to the Adjudicating Authority for necessary directions under Section 19(2)."
       ],
       "statutory_bars": [
-        "Respondent is not a person covered under Section 19(1) or otherwise required to assist or cooperate with the IRP or RP[cite: 1]."
+        "Respondent is not a person covered under Section 19(1) or otherwise required to assist or cooperate with the IRP or RP."
       ],
       "saving_exceptions": []
     },
@@ -931,8 +931,8 @@
     "section_title": "Management of operations of corporate debtor as going concern",
     "jurisdiction_type": "GOING_CONCERN_MANAGEMENT",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Mandates the interim resolution professional to make every endeavour to protect and preserve the value of the property of the corporate debtor and manage its operations as a going concern, providing explicit statutory authorities regarding professional appointments, contract modifications, raising interim finance, and issuing personnel instructions[cite: 1].",
-    "core_judicial_inquiry": "Whether the interim resolution professional acted within statutory authority to preserve property value and maintain the corporate debtor as a going concern, and whether required creditor consent was obtained when creating security interests over encumbered assets to raise interim finance[cite: 1].",
+    "statutory_summary": "Mandates the interim resolution professional to make every endeavour to protect and preserve the value of the property of the corporate debtor and manage its operations as a going concern, providing explicit statutory authorities regarding professional appointments, contract modifications, raising interim finance, and issuing personnel instructions.",
+    "core_judicial_inquiry": "Whether the interim resolution professional acted within statutory authority to preserve property value and maintain the corporate debtor as a going concern, and whether required creditor consent was obtained when creating security interests over encumbered assets to raise interim finance.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_5",
       "IBC_2016_SEC_16",
@@ -944,22 +944,22 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Interim resolution professional appointed under Section 16 upon the commencement of CIRP[cite: 1]."
+        "Interim resolution professional appointed under Section 16 upon the commencement of CIRP."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Duty to protect and preserve the value of the property of the corporate debtor[cite: 1].",
-        "Duty to manage the operations of the corporate debtor as a going concern[cite: 1].",
-        "Obtaining prior consent of creditors whose debt is secured over encumbered property before creating a security interest over such property to raise interim finance, unless the value of the property is at least twice the debt amount[cite: 1]."
+        "Duty to protect and preserve the value of the property of the corporate debtor.",
+        "Duty to manage the operations of the corporate debtor as a going concern.",
+        "Obtaining prior consent of creditors whose debt is secured over encumbered property before creating a security interest over such property to raise interim finance, unless the value of the property is at least twice the debt amount."
       ],
       "statutory_bars": [
-        "Creating a security interest over encumbered property for interim finance without prior consent of secured creditors when the value of the property is less than twice the debt amount[cite: 1]."
+        "Creating a security interest over encumbered property for interim finance without prior consent of secured creditors when the value of the property is less than twice the debt amount."
       ],
       "saving_exceptions": [
-        "Prior consent of the secured creditor is not required for creating a security interest over encumbered property if the value of such property is not less than the amount equivalent to twice the amount of the debt[cite: 1]."
+        "Prior consent of the secured creditor is not required for creating a security interest over encumbered property if the value of such property is not less than the amount equivalent to twice the amount of the debt."
       ]
     },
     "procedural_timelines": {
@@ -1042,8 +1042,8 @@
     "section_title": "Appointment of resolution professional",
     "jurisdiction_type": "PROCEDURAL_DIRECTIVE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Mandates holding the first CoC meeting within seven days of constitution to decide, by a minimum 66% voting share of financial creditors, whether to retain the IRP as Resolution Professional or replace them, subject to written consent and Board confirmation[cite: 1].",
-    "core_judicial_inquiry": "Whether the Committee of Creditors approved the continuation or replacement of the interim resolution professional by at least 66% voting share, submitted the written consent in the specified form, and obtained Board confirmation for any proposed replacement[cite: 1].",
+    "statutory_summary": "Mandates holding the first CoC meeting within seven days of constitution to decide, by a minimum 66% voting share of financial creditors, whether to retain the IRP as Resolution Professional or replace them, subject to written consent and Board confirmation.",
+    "core_judicial_inquiry": "Whether the Committee of Creditors approved the continuation or replacement of the interim resolution professional by at least 66% voting share, submitted the written consent in the specified form, and obtained Board confirmation for any proposed replacement.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_16",
       "IBC_2016_SEC_21",
@@ -1052,25 +1052,25 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Committee of Creditors voting in its first meeting by a majority of not less than sixty-six per cent of the voting share of financial creditors[cite: 1]."
+        "Committee of Creditors voting in its first meeting by a majority of not less than sixty-six per cent of the voting share of financial creditors."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Holding the first meeting of the committee of creditors within seven days of its constitution[cite: 1].",
-        "Resolution passed by a majority of not less than sixty-six per cent of the voting share of financial creditors[cite: 1].",
-        "Submission of written consent from the continuing or proposed resolution professional in the specified form[cite: 1].",
-        "Communication of decision to continue the IRP as RP to the IRP, the corporate debtor, and the Board[cite: 1].",
-        "Filing an application before the Adjudicating Authority with written consent if replacing the IRP, followed by forwarding the proposed RP's name to the Board for confirmation[cite: 1]."
+        "Holding the first meeting of the committee of creditors within seven days of its constitution.",
+        "Resolution passed by a majority of not less than sixty-six per cent of the voting share of financial creditors.",
+        "Submission of written consent from the continuing or proposed resolution professional in the specified form.",
+        "Communication of decision to continue the IRP as RP to the IRP, the corporate debtor, and the Board.",
+        "Filing an application before the Adjudicating Authority with written consent if replacing the IRP, followed by forwarding the proposed RP's name to the Board for confirmation."
       ],
       "statutory_bars": [
-        "Failure to obtain the mandatory sixty-six per cent voting share of financial creditors[cite: 1].",
-        "Absence of written consent in the specified form from the proposed or continuing resolution professional[cite: 1]."
+        "Failure to obtain the mandatory sixty-six per cent voting share of financial creditors.",
+        "Absence of written consent in the specified form from the proposed or continuing resolution professional."
       ],
       "saving_exceptions": [
-        "Where the Board does not confirm the proposed RP within ten days of receipt, the Adjudicating Authority shall order the IRP to continue functioning as RP until confirmation is granted[cite: 1]."
+        "Where the Board does not confirm the proposed RP within ten days of receipt, the Adjudicating Authority shall order the IRP to continue functioning as RP until confirmation is granted."
       ]
     },
     "procedural_timelines": {
@@ -1092,8 +1092,8 @@
     "section_title": "Resolution professional to conduct corporate insolvency resolution process",
     "jurisdiction_type": "CONDUCT_OF_PROCESS",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Mandates the resolution professional to conduct the entire CIRP and manage the operations of the corporate debtor during and beyond the CIRP period until an order approving the resolution plan or appointing a liquidator is passed[cite: 1].",
-    "core_judicial_inquiry": "Whether the resolution professional is properly conducting the CIRP and managing corporate debtor operations, whether management authority extends pending final orders under Section 31 or Section 34, and whether a replaced IRP has handed over all records[cite: 1].",
+    "statutory_summary": "Mandates the resolution professional to conduct the entire CIRP and manage the operations of the corporate debtor during and beyond the CIRP period until an order approving the resolution plan or appointing a liquidator is passed.",
+    "core_judicial_inquiry": "Whether the resolution professional is properly conducting the CIRP and managing corporate debtor operations, whether management authority extends pending final orders under Section 31 or Section 34, and whether a replaced IRP has handed over all records.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_16",
       "IBC_2016_SEC_17",
@@ -1107,23 +1107,23 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution professional appointed under Section 22 or Section 27 during the corporate insolvency resolution process[cite: 1]."
+        "Resolution professional appointed under Section 22 or Section 27 during the corporate insolvency resolution process."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Conduct the entire corporate insolvency resolution process and manage the operations of the corporate debtor during the CIRP period[cite: 1].",
-        "Exercise powers and perform duties vested or conferred on the interim resolution professional under Chapter II[cite: 1].",
-        "Mandatory handover by the interim resolution professional of all information, documents, and records pertaining to the corporate debtor upon appointment of the resolution professional under Section 22(4)[cite: 1].",
-        "Continued management of operations of the corporate debtor after the expiry of the CIRP period until an order approving the resolution plan under Section 31(1) or appointing a liquidator under Section 34 is passed[cite: 1]."
+        "Conduct the entire corporate insolvency resolution process and manage the operations of the corporate debtor during the CIRP period.",
+        "Exercise powers and perform duties vested or conferred on the interim resolution professional under Chapter II.",
+        "Mandatory handover by the interim resolution professional of all information, documents, and records pertaining to the corporate debtor upon appointment of the resolution professional under Section 22(4).",
+        "Continued management of operations of the corporate debtor after the expiry of the CIRP period until an order approving the resolution plan under Section 31(1) or appointing a liquidator under Section 34 is passed."
       ],
       "statutory_bars": [
-        "Interim resolution professional failing or refusing to provide information, documents, and records in possession and knowledge to the newly appointed resolution professional[cite: 1]."
+        "Interim resolution professional failing or refusing to provide information, documents, and records in possession and knowledge to the newly appointed resolution professional."
       ],
       "saving_exceptions": [
-        "Resolution professional continues to manage operations after expiry of the CIRP period until the Adjudicating Authority passes an order approving a resolution plan under Section 31(1) or appointing a liquidator under Section 34[cite: 1]."
+        "Resolution professional continues to manage operations after expiry of the CIRP period until the Adjudicating Authority passes an order approving a resolution plan under Section 31(1) or appointing a liquidator under Section 34."
       ]
     },
     "procedural_timelines": {
@@ -1144,8 +1144,8 @@
     "section_title": "Meeting of committee of creditors",
     "jurisdiction_type": "MEETING_GOVERNANCE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Regulates the convening, notice requirements, participation rights, representation, voting share determination, and conduct of Committee of Creditors (CoC) meetings managed by the resolution professional[cite: 1].",
-    "core_judicial_inquiry": "Whether meetings of the Committee of Creditors were properly convened and conducted by the resolution professional, whether mandatory notices were served on all required participants (including eligible operational creditors and suspended directors/partners), and whether voting rights were accurately assigned and exercised[cite: 1].",
+    "statutory_summary": "Regulates the convening, notice requirements, participation rights, representation, voting share determination, and conduct of Committee of Creditors (CoC) meetings managed by the resolution professional.",
+    "core_judicial_inquiry": "Whether meetings of the Committee of Creditors were properly convened and conducted by the resolution professional, whether mandatory notices were served on all required participants (including eligible operational creditors and suspended directors/partners), and whether voting rights were accurately assigned and exercised.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_21",
       "IBC_2016_SEC_22",
@@ -1157,27 +1157,27 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution professional responsible for conducting all CoC meetings[cite: 1].",
-        "Members of the Committee of Creditors, including authorised representatives[cite: 1].",
-        "Members of the suspended Board of Directors or partners of the corporate debtor[cite: 1].",
-        "Operational creditors or their representative if aggregate operational dues are not less than ten per cent of total debt[cite: 1]."
+        "Resolution professional responsible for conducting all CoC meetings.",
+        "Members of the Committee of Creditors, including authorised representatives.",
+        "Members of the suspended Board of Directors or partners of the corporate debtor.",
+        "Operational creditors or their representative if aggregate operational dues are not less than ten per cent of total debt."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "All meetings of the committee of creditors must be conducted by the resolution professional[cite: 1].",
-        "Notice of each CoC meeting must be given to CoC members (including authorised representatives), suspended directors/partners, and operational creditors holding at least ten per cent of aggregate debt[cite: 1].",
-        "Resolution professional must determine and assign voting share to each financial creditor in the specified manner[cite: 1].",
-        "Voting must be conducted strictly in accordance with assigned voting shares[cite: 1]."
+        "All meetings of the committee of creditors must be conducted by the resolution professional.",
+        "Notice of each CoC meeting must be given to CoC members (including authorised representatives), suspended directors/partners, and operational creditors holding at least ten per cent of aggregate debt.",
+        "Resolution professional must determine and assign voting share to each financial creditor in the specified manner.",
+        "Voting must be conducted strictly in accordance with assigned voting shares."
       ],
       "statutory_bars": [
-        "Directors, partners, and the representative of operational creditors are strictly barred from voting in CoC meetings[cite: 1].",
-        "A creditor cannot appoint the current resolution professional as their individual representative IP[cite: 1]."
+        "Directors, partners, and the representative of operational creditors are strictly barred from voting in CoC meetings.",
+        "A creditor cannot appoint the current resolution professional as their individual representative IP."
       ],
       "saving_exceptions": [
-        "Absence of any director, partner, or representative of operational creditors does not invalidate the proceedings of a CoC meeting[cite: 1]."
+        "Absence of any director, partner, or representative of operational creditors does not invalidate the proceedings of a CoC meeting."
       ]
     },
     "procedural_timelines": {
@@ -1200,8 +1200,8 @@
     "section_title": "Duties of resolution professional",
     "jurisdiction_type": "STATUTORY_DUTY",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Outlines the fundamental duties and explicit statutory powers of the Resolution Professional (RP) to preserve and protect corporate debtor assets, maintain business operations, prepare information memorandums, invite and present resolution plans, and file applications for avoidance transactions or fraudulent/wrongful trading[cite: 1].",
-    "core_judicial_inquiry": "Whether the resolution professional has fulfilled statutory obligations—including taking custody of assets, maintaining updated claim lists, issuing invitations for resolution plans based on CoC-approved criteria, and applying to the Adjudicating Authority for avoidance transactions or fraudulent/wrongful trading[cite: 1].",
+    "statutory_summary": "Outlines the fundamental duties and explicit statutory powers of the Resolution Professional (RP) to preserve and protect corporate debtor assets, maintain business operations, prepare information memorandums, invite and present resolution plans, and file applications for avoidance transactions or fraudulent/wrongful trading.",
+    "core_judicial_inquiry": "Whether the resolution professional has fulfilled statutory obligations—including taking custody of assets, maintaining updated claim lists, issuing invitations for resolution plans based on CoC-approved criteria, and applying to the Adjudicating Authority for avoidance transactions or fraudulent/wrongful trading.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_21",
       "IBC_2016_SEC_22",
@@ -1219,26 +1219,26 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution professional appointed under Section 22 or Section 27 to conduct the corporate insolvency resolution process[cite: 1]."
+        "Resolution professional appointed under Section 22 or Section 27 to conduct the corporate insolvency resolution process."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Duty to preserve and protect all assets and continued business operations of the corporate debtor[cite: 1].",
-        "Taking immediate custody and control of all assets and business records of the corporate debtor[cite: 1].",
-        "Representing the corporate debtor in legal, quasi-judicial, or arbitration proceedings[cite: 1].",
-        "Maintaining an updated list of claims[cite: 1].",
-        "Convening and attending all meetings of the committee of creditors[cite: 1].",
-        "Preparing the information memorandum in accordance with Section 29[cite: 1].",
-        "Inviting prospective resolution applicants based on criteria laid down with the prior approval of the committee of creditors[cite: 1].",
-        "Presenting all compliant resolution plans at meetings of the committee of creditors[cite: 1].",
-        "Filing applications to the Adjudicating Authority in respect of avoidance transactions or fraudulent/wrongful trading[cite: 1]."
+        "Duty to preserve and protect all assets and continued business operations of the corporate debtor.",
+        "Taking immediate custody and control of all assets and business records of the corporate debtor.",
+        "Representing the corporate debtor in legal, quasi-judicial, or arbitration proceedings.",
+        "Maintaining an updated list of claims.",
+        "Convening and attending all meetings of the committee of creditors.",
+        "Preparing the information memorandum in accordance with Section 29.",
+        "Inviting prospective resolution applicants based on criteria laid down with the prior approval of the committee of creditors.",
+        "Presenting all compliant resolution plans at meetings of the committee of creditors.",
+        "Filing applications to the Adjudicating Authority in respect of avoidance transactions or fraudulent/wrongful trading."
       ],
       "statutory_bars": [
-        "Raising interim finance without the prior approval of the committee of creditors under Section 28[cite: 1].",
-        "Inviting prospective resolution applicants without obtaining prior approval of the eligibility criteria from the committee of creditors[cite: 1]."
+        "Raising interim finance without the prior approval of the committee of creditors under Section 28.",
+        "Inviting prospective resolution applicants without obtaining prior approval of the eligibility criteria from the committee of creditors."
       ],
       "saving_exceptions": []
     },
@@ -1263,8 +1263,8 @@
     "section_title": "Rights and duties of authorised representative of financial creditors",
     "jurisdiction_type": "CLASS_REPRESENTATION_GOVERNANCE",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Defines the rights and duties of an authorised representative (AR) of financial creditors, including participation and voting in CoC meetings, circulating agenda/minutes, filing voting instructions, and applying the class majority rule (>50% of cast votes) for Section 21(6A) creditors except on Section 12A withdrawal applications[cite: 1].",
-    "core_judicial_inquiry": "Whether the authorised representative acted in accordance with statutory voting mandates—applying the >50% class majority rule for Section 21(6A) creditors or individual split voting for Section 12A applications—and fulfilled procedural duties to circulate agenda/minutes and record voting instructions with the CoC[cite: 1].",
+    "statutory_summary": "Defines the rights and duties of an authorised representative (AR) of financial creditors, including participation and voting in CoC meetings, circulating agenda/minutes, filing voting instructions, and applying the class majority rule (>50% of cast votes) for Section 21(6A) creditors except on Section 12A withdrawal applications.",
+    "core_judicial_inquiry": "Whether the authorised representative acted in accordance with statutory voting mandates—applying the >50% class majority rule for Section 21(6A) creditors or individual split voting for Section 12A applications—and fulfilled procedural duties to circulate agenda/minutes and record voting instructions with the CoC.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_12A",
       "IBC_2016_SEC_21",
@@ -1273,25 +1273,25 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Authorised representative appointed under sub-section (6) or sub-section (6A) of section 21 or sub-section (5) of section 24[cite: 1]."
+        "Authorised representative appointed under sub-section (6) or sub-section (6A) of section 21 or sub-section (5) of section 24."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Duty to circulate the agenda and minutes of CoC meetings to represented financial creditors[cite: 1].",
-        "Obtaining prior voting instructions from financial creditors through physical or electronic means[cite: 1].",
-        "For Section 21(6A) ARs, casting vote on behalf of all represented financial creditors in accordance with the decision of more than fifty per cent of the voting share of creditors who cast their vote[cite: 1].",
-        "Duty to file physical or electronic voting instructions received from financial creditors with the committee of creditors[cite: 1]."
+        "Duty to circulate the agenda and minutes of CoC meetings to represented financial creditors.",
+        "Obtaining prior voting instructions from financial creditors through physical or electronic means.",
+        "For Section 21(6A) ARs, casting vote on behalf of all represented financial creditors in accordance with the decision of more than fifty per cent of the voting share of creditors who cast their vote.",
+        "Duty to file physical or electronic voting instructions received from financial creditors with the committee of creditors."
       ],
       "statutory_bars": [
-        "Authorised representative acting against the interest of the financial creditors represented[cite: 1].",
-        "Failing to abstain from voting on behalf of an individual financial creditor who has not provided prior voting instructions under the Section 25A(3) voting mechanism[cite: 1]."
+        "Authorised representative acting against the interest of the financial creditors represented.",
+        "Failing to abstain from voting on behalf of an individual financial creditor who has not provided prior voting instructions under the Section 25A(3) voting mechanism."
       ],
       "saving_exceptions": [
-        "For Section 21(6A) authorised representatives, the vote of all represented creditors is cast as a single block based on the decision of >50% of voting share of creditors who cast their vote[cite: 1].",
-        "For voting on Section 12A withdrawal applications, Section 21(6A) ARs are carved out from the block voting rule and must cast votes individually per creditor instruction under Section 25A(3)[cite: 1]."
+        "For Section 21(6A) authorised representatives, the vote of all represented creditors is cast as a single block based on the decision of >50% of voting share of creditors who cast their vote.",
+        "For voting on Section 12A withdrawal applications, Section 21(6A) ARs are carved out from the block voting rule and must cast votes individually per creditor instruction under Section 25A(3)."
       ]
     },
     "procedural_timelines": {
@@ -1314,8 +1314,8 @@
     "section_title": "Replacement of resolution professional by committee of creditors",
     "jurisdiction_type": "REPLACEMENT_MECHANISM",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Empowers the committee of creditors to replace an existing resolution professional at any time during CIRP by a vote of sixty-six per cent of voting shares, subject to written consent from the proposed RP and confirmation by the Board[cite: 1].",
-    "core_judicial_inquiry": "Whether the resolution to replace the resolution professional was passed by at least sixty-six per cent of voting shares of the committee of creditors, accompanied by written consent in the specified form, and whether any disciplinary proceedings are pending against the proposed resolution professional[cite: 1].",
+    "statutory_summary": "Empowers the committee of creditors to replace an existing resolution professional at any time during CIRP by a vote of sixty-six per cent of voting shares, subject to written consent from the proposed RP and confirmation by the Board.",
+    "core_judicial_inquiry": "Whether the resolution to replace the resolution professional was passed by at least sixty-six per cent of voting shares of the committee of creditors, accompanied by written consent in the specified form, and whether any disciplinary proceedings are pending against the proposed resolution professional.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_16",
       "IBC_2016_SEC_21",
@@ -1325,25 +1325,25 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Committee of creditors acting by a vote of sixty-six per cent of voting shares[cite: 1]."
+        "Committee of creditors acting by a vote of sixty-six per cent of voting shares."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Resolution passed at a meeting of the committee of creditors by a vote of sixty-six per cent of voting shares[cite: 1].",
-        "Written consent from the proposed resolution professional in the specified form[cite: 1].",
-        "Forwarding of the proposed resolution professional's name by the committee of creditors to the Adjudicating Authority[cite: 1].",
-        "Forwarding of the proposed name by the Adjudicating Authority to the Board for confirmation[cite: 1]."
+        "Resolution passed at a meeting of the committee of creditors by a vote of sixty-six per cent of voting shares.",
+        "Written consent from the proposed resolution professional in the specified form.",
+        "Forwarding of the proposed resolution professional's name by the committee of creditors to the Adjudicating Authority.",
+        "Forwarding of the proposed name by the Adjudicating Authority to the Board for confirmation."
       ],
       "statutory_bars": [
-        "Failure to obtain the required sixty-six per cent voting share of the committee of creditors[cite: 1].",
-        "Pending disciplinary proceedings against the proposed resolution professional[cite: 1].",
-        "Absence of written consent in the specified form from the proposed resolution professional[cite: 1]."
+        "Failure to obtain the required sixty-six per cent voting share of the committee of creditors.",
+        "Pending disciplinary proceedings against the proposed resolution professional.",
+        "Absence of written consent in the specified form from the proposed resolution professional."
       ],
       "saving_exceptions": [
-        "Where disciplinary proceedings are pending against the proposed resolution professional, the resolution professional appointed under section 22 shall continue until another resolution professional is appointed under this section[cite: 1]."
+        "Where disciplinary proceedings are pending against the proposed resolution professional, the resolution professional appointed under section 22 shall continue until another resolution professional is appointed under this section."
       ]
     },
     "procedural_timelines": {
@@ -1414,8 +1414,8 @@
     "section_title": "Person not eligible to be resolution applicant",
     "jurisdiction_type": "STATUTORY_BAR",
     "forum_level": "NCLT_ORIGINAL",
-    "statutory_summary": "Prescribes comprehensive negative eligibility criteria that render a person, persons acting jointly or in concert, or connected persons ineligible to submit a resolution plan during corporate insolvency resolution process[cite: 1].",
-    "core_judicial_inquiry": "Whether a resolution applicant, any person acting jointly or in concert with them, or any connected person falls under any statutory disqualifications specified under clauses (a) to (j) of Section 29A[cite: 1].",
+    "statutory_summary": "Prescribes comprehensive negative eligibility criteria that render a person, persons acting jointly or in concert, or connected persons ineligible to submit a resolution plan during corporate insolvency resolution process.",
+    "core_judicial_inquiry": "Whether a resolution applicant, any person acting jointly or in concert with them, or any connected person falls under any statutory disqualifications specified under clauses (a) to (j) of Section 29A.",
     "intersecting_statute_ids": [
       "IBC_2016_SEC_5",
       "IBC_2016_SEC_25",
@@ -1428,36 +1428,36 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution applicant submitting a plan individually or jointly pursuant to invitation under Section 25(2)(h) or Section 54K[cite: 1].",
-        "Must not suffer from any personal disqualification under clauses (a) to (i) or have any connected person suffering from such disqualification under clause (j)[cite: 1]."
+        "Resolution applicant submitting a plan individually or jointly pursuant to invitation under Section 25(2)(h) or Section 54K.",
+        "Must not suffer from any personal disqualification under clauses (a) to (i) or have any connected person suffering from such disqualification under clause (j)."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Filing of an affidavit along with the resolution plan declaring eligibility under Section 29A[cite: 1].",
-        "Mandatory verification of eligibility of the resolution applicant and all connected persons by the resolution professional and committee of creditors[cite: 1]."
+        "Filing of an affidavit along with the resolution plan declaring eligibility under Section 29A.",
+        "Mandatory verification of eligibility of the resolution applicant and all connected persons by the resolution professional and committee of creditors."
       ],
       "statutory_bars": [
-        "Is an undischarged insolvent[cite: 1].",
-        "Is a wilful defaulter under RBI guidelines[cite: 1].",
-        "Has an account classified as a non-performing asset (NPA) for at least one year prior to CIRP commencement date[cite: 1].",
-        "Has been convicted of an offence punishable with imprisonment for two years or more under the Twelfth Schedule, or seven years or more under any other law[cite: 1].",
-        "Is disqualified to act as a director under the Companies Act, 2013[cite: 1].",
-        "Is prohibited by SEBI from trading in securities or accessing securities markets[cite: 1].",
-        "Was a promoter or in management/control of a corporate debtor where avoidance orders for preferential, undervalued, extortionate credit, or fraudulent transactions were made by the Adjudicating Authority[cite: 1].",
-        "Has executed an invoked and unpaid guarantee in favour of a creditor in respect of a corporate debtor under CIRP[cite: 1].",
-        "Is subject to any disability corresponding to clauses (a) to (h) under foreign jurisdiction law[cite: 1].",
-        "Has a connected person (promoter, management/control, holding/subsidiary/associate company, or related party) ineligible under clauses (a) to (i)[cite: 1]."
+        "Is an undischarged insolvent.",
+        "Is a wilful defaulter under RBI guidelines.",
+        "Has an account classified as a non-performing asset (NPA) for at least one year prior to CIRP commencement date.",
+        "Has been convicted of an offence punishable with imprisonment for two years or more under the Twelfth Schedule, or seven years or more under any other law.",
+        "Is disqualified to act as a director under the Companies Act, 2013.",
+        "Is prohibited by SEBI from trading in securities or accessing securities markets.",
+        "Was a promoter or in management/control of a corporate debtor where avoidance orders for preferential, undervalued, extortionate credit, or fraudulent transactions were made by the Adjudicating Authority.",
+        "Has executed an invoked and unpaid guarantee in favour of a creditor in respect of a corporate debtor under CIRP.",
+        "Is subject to any disability corresponding to clauses (a) to (h) under foreign jurisdiction law.",
+        "Has a connected person (promoter, management/control, holding/subsidiary/associate company, or related party) ineligible under clauses (a) to (i)."
       ],
       "saving_exceptions": [
-        "NPA disqualification under clause (c) is cured if the applicant pays all overdue amounts with interest and charges prior to submitting the resolution plan[cite: 1].",
-        "NPA disqualification does not apply to a financial entity resolution applicant that is not a related party to the corporate debtor[cite: 1].",
-        "NPA disqualification does not apply for three years if the NPA account was acquired pursuant to a prior approved resolution plan under the Code[cite: 1].",
-        "Criminal conviction bar under clause (d) lapses after two years from release from imprisonment[cite: 1].",
-        "Avoidance transaction bar under clause (g) does not apply if transactions occurred prior to acquisition of the corporate debtor under a prior approved resolution plan/scheme without contribution by the applicant[cite: 1].",
-        "Disqualification exceptions for connected persons apply to non-related party financial entities[cite: 1]."
+        "NPA disqualification under clause (c) is cured if the applicant pays all overdue amounts with interest and charges prior to submitting the resolution plan.",
+        "NPA disqualification does not apply to a financial entity resolution applicant that is not a related party to the corporate debtor.",
+        "NPA disqualification does not apply for three years if the NPA account was acquired pursuant to a prior approved resolution plan under the Code.",
+        "Criminal conviction bar under clause (d) lapses after two years from release from imprisonment.",
+        "Avoidance transaction bar under clause (g) does not apply if transactions occurred prior to acquisition of the corporate debtor under a prior approved resolution plan/scheme without contribution by the applicant.",
+        "Disqualification exceptions for connected persons apply to non-related party financial entities."
       ]
     },
     "procedural_timelines": {
@@ -1498,37 +1498,37 @@
     ],
     "diagnostic_checklist": {
       "applicant_eligibility": [
-        "Resolution applicant submitting a resolution plan individually or jointly pursuant to the information memorandum[cite: 1].",
-        "Must submit an affidavit confirming eligibility under Section 29A along with the resolution plan[cite: 1]."
+        "Resolution applicant submitting a resolution plan individually or jointly pursuant to the information memorandum.",
+        "Must submit an affidavit confirming eligibility under Section 29A along with the resolution plan."
       ],
       "financial_threshold": {
         "minimum_amount": null,
         "currency": null
       },
       "mandatory_prerequisites": [
-        "Affidavit affirming Section 29A eligibility accompanying the resolution plan[cite: 1].",
-        "Priority payment of insolvency resolution process costs[cite: 1].",
-        "Payment of debts to operational creditors that is not less than the higher of liquidation value under Section 53 or plan distribution value under Section 53 priority[cite: 1].",
-        "Payment of debts to dissenting financial creditors that is not less than the lower of liquidation value under Section 53 or plan distribution value under Section 53 priority[cite: 1].",
-        "Provisions for post-approval management of the corporate debtor[cite: 1].",
-        "Provisions for implementation and supervision of the resolution plan, including monitoring committee constitution[cite: 1].",
-        "Plan does not contravene any provision of law for the time being in force[cite: 1].",
-        "Approval by the Committee of Creditors by a vote of not less than sixty-six per cent of voting share of financial creditors[cite: 1].",
-        "Committee of Creditors recording reasons for approval after evaluating feasibility, viability, manner of distribution, and security interest value[cite: 1].",
-        "Submission of the approved resolution plan by the resolution professional to the Adjudicating Authority[cite: 1]."
+        "Affidavit affirming Section 29A eligibility accompanying the resolution plan.",
+        "Priority payment of insolvency resolution process costs.",
+        "Payment of debts to operational creditors that is not less than the higher of liquidation value under Section 53 or plan distribution value under Section 53 priority.",
+        "Payment of debts to dissenting financial creditors that is not less than the lower of liquidation value under Section 53 or plan distribution value under Section 53 priority.",
+        "Provisions for post-approval management of the corporate debtor.",
+        "Provisions for implementation and supervision of the resolution plan, including monitoring committee constitution.",
+        "Plan does not contravene any provision of law for the time being in force.",
+        "Approval by the Committee of Creditors by a vote of not less than sixty-six per cent of voting share of financial creditors.",
+        "Committee of Creditors recording reasons for approval after evaluating feasibility, viability, manner of distribution, and security interest value.",
+        "Submission of the approved resolution plan by the resolution professional to the Adjudicating Authority."
       ],
       "statutory_bars": [
-        "Ineligibility of the resolution applicant under Section 29A[cite: 1].",
-        "Failure to provide priority payment for CIRP costs[cite: 1].",
-        "Operational creditor payout below statutory minimum threshold[cite: 1].",
-        "Dissenting financial creditor payout below statutory minimum threshold[cite: 1].",
-        "Resolution plan contravenes any law in force[cite: 1].",
-        "Approval by Committee of Creditors with less than sixty-six per cent voting share[cite: 1]."
+        "Ineligibility of the resolution applicant under Section 29A.",
+        "Failure to provide priority payment for CIRP costs.",
+        "Operational creditor payout below statutory minimum threshold.",
+        "Dissenting financial creditor payout below statutory minimum threshold.",
+        "Resolution plan contravenes any law in force.",
+        "Approval by Committee of Creditors with less than sixty-six per cent voting share."
       ],
       "saving_exceptions": [
-        "Deemed shareholder approval under the Companies Act, 2013 or other laws for actions required under the resolution plan[cite: 1].",
-        "A period not exceeding thirty days allowed to resolution applicants ineligible under Section 29A(c) to pay overdue amounts with interest to cure ineligibility[cite: 1].",
-        "Section 30(2)(ba) protections under Amendment Act 2026 do not apply to CIRP proceedings where CoC approval or liquidation orders occurred prior to the commencement of the 2026 Act[cite: 1]."
+        "Deemed shareholder approval under the Companies Act, 2013 or other laws for actions required under the resolution plan.",
+        "A period not exceeding thirty days allowed to resolution applicants ineligible under Section 29A(c) to pay overdue amounts with interest to cure ineligibility.",
+        "Section 30(2)(ba) protections under Amendment Act 2026 do not apply to CIRP proceedings where CoC approval or liquidation orders occurred prior to the commencement of the 2026 Act."
       ]
     },
     "procedural_timelines": {
