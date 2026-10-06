@@ -7,7 +7,7 @@ import pytest
 from dotenv import dotenv_values
 
 from lexarena.secrets import MissingSecretError, SecretStore
-from tests.conftest import ENV_FILE, REPO_ROOT
+from tests.conftest import DOCKER_ENV_FILE, ENV_FILE, REPO_ROOT, SEALED_ENV_FILE
 
 
 def test_reads_from_env_file(tmp_path: Path) -> None:
@@ -48,11 +48,13 @@ def test_no_real_secret_value_appears_in_tracked_text() -> None:
     if not ENV_FILE.exists():
         pytest.skip(".env.local not present")
     secret_name = re.compile(r"(?i)key|api|password|secret|token|uri")
-    values = [v for k, v in dotenv_values(ENV_FILE).items() if v and secret_name.search(k)]
+    env_files = [f for f in (ENV_FILE, SEALED_ENV_FILE, DOCKER_ENV_FILE) if f.exists()]
+    values = [v for f in env_files for k, v in dotenv_values(f).items() if v and secret_name.search(k)]
     suffixes = {".py", ".yaml", ".yml", ".txt", ".md", ".json", ".toml"}
     folders = ("config", "prompts", "lexarena", "tests", "docs", "scripts")
     scanned = [p for d in folders for p in (REPO_ROOT / d).rglob("*") if p.is_file() and p.suffix in suffixes]
-    scanned += [REPO_ROOT / "pyproject.toml", REPO_ROOT / "docker-compose.yml", REPO_ROOT / ".env.example"]
+    scanned += [REPO_ROOT / "pyproject.toml", REPO_ROOT / "docker-compose.yml", REPO_ROOT / "CLAUDE.md"]
+    scanned += list(REPO_ROOT.glob("*.example")) + list(REPO_ROOT.glob(".env*.example"))
     leaks = [
         str(p)
         for p in scanned

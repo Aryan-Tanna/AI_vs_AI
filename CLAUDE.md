@@ -211,7 +211,7 @@ tests/
 
 ## 12. Commands
 
-Run from the repo root. Secrets live only in `.env.local` (git-ignored; template in `.env.example`).
+Run from the repo root. Secrets live only in three git-ignored files (template in `.env.example`, D-034): `.env.local` (API keys and app credentials; every process), `.env.sealed` (sealed MongoDB and Qdrant write key; clerk, ingestion, evaluator and reflection only, never a session process), `.env.docker` (docker compose only).
 
 | Task | Command |
 | --- | --- |
@@ -220,10 +220,12 @@ Run from the repo root. Secrets live only in `.env.local` (git-ignored; template
 | Live LLM tests (spends quota) | `.venv/Scripts/python -m pytest --run-live -m live -s` |
 | Service tests (needs Docker) | `.venv/Scripts/python -m pytest --run-integration -m integration` |
 | Lint, format, types | `.venv/Scripts/ruff check lexarena tests`, `.venv/Scripts/ruff format lexarena tests`, `.venv/Scripts/mypy` |
-| Start MongoDB, Qdrant, Redis | `docker compose --env-file .env.local up -d` |
+| Generate service credentials (keeps API keys) | `.venv/Scripts/python scripts/make_env.py` (then recreate volumes: `docker compose --env-file .env.docker down -v`) |
+| Start MongoDB, Qdrant, Redis | `docker compose --env-file .env.docker up -d` |
 | Show resolved config and its hash | `.venv/Scripts/lexarena config show` |
 | One real call per model role | `.venv/Scripts/lexarena llm smoke [--role ROLE]` |
 | Raw data audit | `python scripts/audit_raw.py` |
+| Check Law DB and precedents against the frozen formats | `.venv/Scripts/python scripts/check_formats.py` |
 | Quarantine dev-case precedents | `python scripts/quarantine_dev_overlap.py [--dry-run]` |
 
 LLM call log (IDs and hashes only, no prompt text): `.cache/logs/llm_calls.jsonl`. Response cache: `.cache/llm_cache.sqlite`.

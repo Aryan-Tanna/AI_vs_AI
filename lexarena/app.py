@@ -19,6 +19,7 @@ from lexarena.secrets import SecretStore
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROMPTS_ROOT = REPO_ROOT / "prompts"
 DEFAULT_ENV_FILE = REPO_ROOT / ".env.local"
+SEALED_ENV_FILE = REPO_ROOT / ".env.sealed"  # offline and post-verdict processes only (D-034)
 
 
 def build_providers(config: AppConfig, http: httpx.Client) -> dict[str, Provider]:

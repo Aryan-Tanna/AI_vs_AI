@@ -8,6 +8,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_V1 = REPO_ROOT / "config" / "config.v1.yaml"
 PROMPTS_ROOT = REPO_ROOT / "prompts"
 ENV_FILE = REPO_ROOT / ".env.local"
+SEALED_ENV_FILE = REPO_ROOT / ".env.sealed"
+DOCKER_ENV_FILE = REPO_ROOT / ".env.docker"
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
