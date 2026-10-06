@@ -4,10 +4,11 @@ Two views of the same stored document:
 
 - `Case` is the whole document (build block, split, agent view including `simulation_date`). Only the
   clerk, the orchestrator and post-verdict components read it.
-- `AgentCaseView` is what lawyers, THEMIS and judges receive: the agent view without `simulation_date`,
-  and nothing from `build` or `split`. The decision date and build data help a model recognise the real
-  case, so they never reach a prompt (SPEC H1 "stripped before prompting"; D-035). Retrieval applies the
-  date cut-off and exclusion list server-side from `Case`.
+- `AgentCaseView` is what the repositories of lawyers, THEMIS and judges return: the agent view without
+  `simulation_date`, and nothing from `build` or `split`. The decision date and build data help a model
+  recognise the real case (SPEC H1 "stripped before prompting"; D-035). The orchestrator still holds the
+  full `Case` to apply the date cut-off and exclusion list server-side, so keeping these values out of
+  assembled prompts is checked again in Step 9 (R-018).
 
 Structural cross-references (every fact, exhibit, party and issue ID that is referred to exists) are
 checked here, because a dangling ID would let an agent cite a record item that does not exist.

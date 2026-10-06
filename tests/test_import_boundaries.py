@@ -14,7 +14,11 @@ import pytest
 from tests.conftest import REPO_ROOT
 
 PACKAGE = REPO_ROOT / "lexarena"
-SEALED_PATHS = ("lexarena.storage.ground_truth", "lexarena.storage.factory.SealedProcess")
+SEALED_PATHS = (
+    "lexarena.storage.ground_truth",
+    "lexarena.storage.factory.SealedProcess",
+    "lexarena.app.SEALED_ENV_FILE",
+)
 NO_INFRASTRUCTURE = (*SEALED_PATHS, "lexarena.secrets", "lexarena.storage.factory", "pymongo", "qdrant_client", "redis")
 
 FORBIDDEN: dict[str, tuple[str, ...]] = {
