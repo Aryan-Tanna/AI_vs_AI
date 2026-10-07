@@ -54,8 +54,8 @@ One step per session. Tick a step only when every "done when" item holds and I h
   - Done when: a planted contradiction in a test transcript is found; the report contains no ground-truth fields.
 
 - [ ] **Step 11: Judges**
-  - Build: persona prompts (drafted into `review/` for my approval), order-swapped scoring, aggregation, tie rule, validator with ID checks.
-  - Done when: on dev sessions, swapping presentation order changes scores by less than the gap fixed in config before measuring (SPEC E1: 0.15), the full distribution of gaps is reported, and every reason cites valid IDs (D-024).
+  - Build: persona prompts (drafted into `review/` for my approval); issue-wise reasoned decisions, each decided twice in swapped order; abstention on disagreement; majority verdict with dissent; advocacy scores as the secondary measure and tie-breaker; THEMIS layer 1 check of judge references with one revision; validator with ID checks (D-048).
+  - Done when: on dev sessions, the order-swap disagreement rate per judge and the score gap distribution (SPEC E1: 0.15) are reported against limits fixed in config before measuring; every reason cites valid IDs (D-024); each judge's overall result follows from its issue findings.
 
 - [ ] **Step 12: Evaluator and reflection**
   - Build: post-verdict unseal, per-issue alignment, lesson extraction with provenance, rejection of base-rate lessons and lessons containing names, three-step dedup, weighting with decay.

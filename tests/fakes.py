@@ -35,12 +35,16 @@ class WordEmbedder:
 
     dim = 8
 
+    def __init__(self) -> None:
+        self.calls = 0
+
     def count_tokens(self, text: str) -> int:
         return len(text.split())
 
     def embed(self, texts: list[str]) -> list[list[float]]:
         import hashlib
 
+        self.calls += 1
         out = []
         for text in texts:
             digest = hashlib.sha256(text.encode("utf-8")).digest()

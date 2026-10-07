@@ -1,15 +1,18 @@
 """Precedent DB preparation and incremental ingestion into Qdrant (BUILD_PLAN Step 4, DATA_FORMATS §2, D-024).
 
 The stored record is never modified: each Qdrant point's payload is the record exactly as in the source, plus
-derived fields beside it (`precedent_uid`, `statutes_normalized`, `decision_date_ts`, `content_hash`,
-`source_file`). Point IDs come from `precedent_uid` (D-024), because `precedent_id` values collide across
-different cases; colliding IDs are reported, identical copies of one record collapse into one point, and
-differing copies of one case are reported (the first, in file order, is kept).
+derived fields beside it (`DERIVED_FIELDS`). Point IDs come from `precedent_uid` (D-024), because `precedent_id`
+values collide across different cases; colliding IDs are reported, identical copies of one record collapse into
+one point, and differing copies of one case are reported (the first, in file order, is kept).
 
 Vectors (D-005): `facts`, one vector per labelled section of `material_facts` except PARTY IDENTITIES, with
 sections over the window size split into windows; `ratio`, parts 1 to 3 of `ratio_decidendi`.
 Statute citations are normalised to Law DB IDs by general rules only (exact, longest ID the citation starts
-with, then a single spelling-variant match); everything unresolved is reported (D-033).
+with, then a single spelling-variant match), then through the reviewed alias table in data (Q-028, D-049);
+everything unresolved is reported (D-033).
+
+Incremental ingestion: `content_hash` (the record) decides re-embedding; `derived_hash` (the derived fields)
+refreshes the payload alone, so a Law DB or alias change reaches stored points without re-embedding them.
 """
 
 from __future__ import annotations
@@ -31,6 +34,7 @@ from lexarena.embedding import Embedder, token_windows
 from lexarena.ingest.json_files import read_json_values
 from lexarena.ingest.law_db import suggest_ids
 from lexarena.schemas.precedent import PrecedentRecord
+from lexarena.schemas.statute_alias import StatuteAliasTable
 from lexarena.storage.precedents import FACTS, RATIO, PrecedentRepository
 
 # DATA_FORMATS §2: "Numbered labelled sections: 1. PARTY IDENTITIES: ... 2. COMMERCIAL TRANSACTION: ..."
@@ -38,6 +42,9 @@ SECTION = re.compile(r"(?:^|\s)(?P<number>\d+)\.\s+(?P<label>[A-Z][A-Z /&\-]*[A-
 EXCLUDED_FACT_SECTIONS = frozenset({"PARTY IDENTITIES"})  # documented: names, not facts to search on
 RATIO_PARTS_EMBEDDED = 3  # literal-ok: DATA_FORMATS §2 embeds ratio parts 1 to 3; part 4 is case-specific
 INGEST_BATCH = 64  # literal-ok: records embedded and upserted per batch (memory, not behaviour)
+DERIVED_FIELDS = frozenset(
+    {"precedent_uid", "statutes_normalized", "decision_date_ts", "source_file", "content_hash", "derived_hash"}
+)
 UID_NAMESPACE = uuid.UUID("6f1c0d1e-8a55-4c6f-9d4b-6c2a3e0b7f11")  # literal-ok: fixed namespace for uuid5 point IDs
 
 
@@ -119,12 +126,23 @@ def ratio_text(ratio_decidendi: str) -> str:
     return " ".join(f"{label}: {body}" for label, body in sections[:RATIO_PARTS_EMBEDDED])
 
 
-def normalize_statutes(cited: list[str], known: set[str]) -> tuple[list[str], list[str]]:
+def load_statute_aliases(path: Path) -> StatuteAliasTable:
+    return StatuteAliasTable.model_validate_json(path.read_text(encoding="utf-8"))
+
+
+def missing_alias_targets(table: StatuteAliasTable, known: set[str]) -> list[str]:
+    """Alias targets that start no Law DB ID: an alias that can never resolve anything (reported, not fatal)."""
+    return sorted(a.law_db_prefix for a in table.aliases if not any(k.startswith(a.law_db_prefix) for k in known))
+
+
+def normalize_statutes(
+    cited: list[str], known: set[str], aliases: StatuteAliasTable | None = None
+) -> tuple[list[str], list[str]]:
     """Law DB IDs for the citations (in order, unique) and the citations that resolve to none."""
     found: list[str] = []
     unresolved: list[str] = []
     for item in cited:
-        match = resolve_statute_id(item, known)[0]
+        match = resolve_statute_id(item, known, aliases)[0]
         if match is None:
             if item not in unresolved:
                 unresolved.append(item)
@@ -133,11 +151,21 @@ def normalize_statutes(cited: list[str], known: set[str]) -> tuple[list[str], li
     return found, unresolved
 
 
-def resolve_statute_id(cited: str, known: set[str]) -> tuple[str | None, str]:
-    """(Law DB ID, rule used) by general rules only: exact; longest known ID it starts with; one spelling variant."""
+def _spelling_key(cited: str) -> str:
+    """Upper case, every run of separators as one underscore, `SECTION`/`SEC.` as `SEC`, brackets kept."""
+    key = re.sub(r"[^A-Z0-9()\[\]]+", "_", cited.upper()).strip("_")
+    return re.sub(r"(?:^|_)SECTION(?=_)", "_SEC", key).lstrip("_")
+
+
+def _general_rules(cited: str, known: set[str]) -> tuple[str | None, str]:
+    """(Law DB ID, rule used) by general rules only: exact; bracketed sub-section; longest known ID it starts
+    with; one spelling variant."""
     if cited in known:
         return cited, "exact"
-    # A bracketed sub-section or clause ("..._60(5)", "..._7(1)(a)") belongs to the section before the bracket.
+    # "..._13(2)" may be a Law DB ID written "..._13_2"; otherwise the bracket belongs to the section before it.
+    underscored = re.sub(r"[(\[]\s*([0-9A-Za-z]+)\s*[)\]]", r"_\1", cited).upper()
+    if underscored != cited.upper() and underscored in known:
+        return underscored, "bracket_as_underscore"
     bare = re.split(r"[(\[]", cited, maxsplit=1)[0].rstrip("_ ")
     if bare != cited and bare in known:
         return bare, "bracketed_subsection"
@@ -149,6 +177,25 @@ def resolve_statute_id(cited: str, known: set[str]) -> tuple[str | None, str]:
     candidates = suggest_ids(bare, known)
     if len(candidates) == 1:
         return candidates[0], "spelling_variant"
+    return None, "unresolved"
+
+
+def resolve_statute_id(cited: str, known: set[str], aliases: StatuteAliasTable | None = None) -> tuple[str | None, str]:
+    """The general rules on the citation as written; then on its normalised spelling; then, if an alias applies,
+    on the aliased spelling. Every rewrite keeps the section number, so no rule can reach a different section."""
+    match, rule = _general_rules(cited, known)
+    if match is not None:
+        return match, rule
+    key = _spelling_key(cited)
+    if key != cited:
+        match, rule = _general_rules(key, known)
+        if match is not None:
+            return match, "normalised_spelling"
+    rewritten = aliases.rewrite(key) if aliases is not None else None
+    if rewritten is not None:
+        match, _ = _general_rules(rewritten, known)
+        if match is not None:
+            return match, "alias"
     return None, "unresolved"
 
 
@@ -187,6 +234,7 @@ def prepare_precedents(
     embedder: Embedder,
     window_tokens: int,
     max_tokens: int | None = None,
+    aliases: StatuteAliasTable | None = None,
 ) -> PreparedPrecedents:
     malformed: list[MalformedPrecedent] = []
     undated: list[str] = []
@@ -223,9 +271,9 @@ def prepare_precedents(
             continue
         for path in record.undocumented_fields():
             undocumented[path] += 1
-        statutes, unresolved = normalize_statutes(record.statutes_cited, known_statutes)
+        statutes, unresolved = normalize_statutes(record.statutes_cited, known_statutes, aliases)
         for cited in record.statutes_cited:
-            resolution[resolve_statute_id(cited, known_statutes)[1]] += 1
+            resolution[resolve_statute_id(cited, known_statutes, aliases)[1]] += 1
         unresolved_counts.update(unresolved)
         if not _sections(record.material_facts):
             no_headings += 1
@@ -237,14 +285,15 @@ def prepare_precedents(
         ratio = ratio_text(record.ratio_decidendi)
         if max_tokens is not None and count(ratio) > max_tokens:
             ratio_long += 1
-        payload = {
-            **src.raw,
+        derived = {
             "precedent_uid": uid,
             "statutes_normalized": statutes,
             "decision_date_ts": f"{day.isoformat()}T00:00:00Z",
-            "content_hash": digest,
             "source_file": src.file,
         }
+        # content_hash decides re-embedding (the record changed); derived_hash catches derived fields that change
+        # without the record, e.g. when the Law DB or the alias table grows.
+        payload = {**src.raw, **derived, "content_hash": digest, "derived_hash": content_hash(derived)}
         by_uid[uid] = PreparedPoint(uid, str(uuid.uuid5(UID_NAMESPACE, uid)), payload, digest, facts, ratio)
 
     ids: Counter[str] = Counter(p.payload["precedent_id"] for p in by_uid.values())
@@ -265,7 +314,7 @@ def prepare_precedents(
         ratio_over_model_limit=ratio_long,
         undocumented_fields=dict(undocumented),
         points=len(points),
-        snapshot=snapshot_id({p.precedent_uid: p.content_hash for p in points}),
+        snapshot=snapshot_id({p.precedent_uid: p.content_hash + p.payload["derived_hash"] for p in points}),
     )
     return PreparedPrecedents(points=points, report=report)
 
@@ -274,6 +323,7 @@ def prepare_precedents(
 class PrecedentLoadResult:
     inserted: int
     updated: int
+    payload_refreshed: int
     unchanged: int
     removed: int
     points: int
@@ -283,10 +333,18 @@ class PrecedentLoadResult:
 def ingest_precedents(
     repo: PrecedentRepository, prepared: PreparedPrecedents, embedder: Embedder
 ) -> PrecedentLoadResult:
-    """Make the Qdrant collection equal the prepared points; embed only new or changed records."""
+    """Make the Qdrant collection equal the prepared points; embed only new or changed records, and refresh the
+    payload alone where only derived fields changed."""
     repo.ensure_collection(embedder.dim)
-    stored = repo.content_hashes()
-    todo = [p for p in prepared.points if stored.get(p.point_id) != p.content_hash]
+    stored = repo.stored_hashes()
+    todo = [p for p in prepared.points if stored.get(p.point_id, (None, None))[0] != p.content_hash]
+    stale = [
+        p
+        for p in prepared.points
+        if p.point_id in stored
+        and stored[p.point_id][0] == p.content_hash
+        and stored[p.point_id][1] != p.payload["derived_hash"]
+    ]
     for start in range(0, len(todo), INGEST_BATCH):
         batch = todo[start : start + INGEST_BATCH]
         texts = [t for p in batch for t in p.facts_texts] + [p.ratio_text for p in batch]
@@ -302,6 +360,8 @@ def ingest_precedents(
             for p, ratio in zip(batch, ratio_vectors, strict=True)
         ]
         repo.upsert(points)
+    for p in stale:
+        repo.overwrite_payload(p.point_id, p.payload)
     wanted = {p.point_id for p in prepared.points}
     gone = sorted(set(stored) - wanted)
     repo.delete(gone)
@@ -309,7 +369,8 @@ def ingest_precedents(
     return PrecedentLoadResult(
         inserted=inserted,
         updated=len(todo) - inserted,
-        unchanged=len(prepared.points) - len(todo),
+        payload_refreshed=len(stale),
+        unchanged=len(prepared.points) - len(todo) - len(stale),
         removed=len(gone),
         points=repo.count(),
         snapshot=prepared.report.snapshot,

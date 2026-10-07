@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from lexarena.ingest.precedents import (
+    DERIVED_FIELDS,
     facts_sections,
     normalize_statutes,
     prepare_precedents,
@@ -78,8 +79,7 @@ def test_prepare_derives_fields_without_touching_the_record(tmp_path: Path) -> N
     write_jsonl(tmp_path, "a.jsonl", [precedent("P1")])
     prepared = prepare_precedents(*read_precedent_sources(tmp_path), KNOWN, WordEmbedder(), window_tokens=50)
     [p] = prepared.points
-    derived = {"precedent_uid", "statutes_normalized", "decision_date_ts", "content_hash", "source_file"}
-    assert {k: v for k, v in p.payload.items() if k not in derived} == precedent("P1")
+    assert {k: v for k, v in p.payload.items() if k not in DERIVED_FIELDS} == precedent("P1")
     assert p.payload["decision_date_ts"] == "2001-02-03T00:00:00Z"
     assert len(p.facts_texts) == 2 and p.ratio_text
 

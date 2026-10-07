@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 from qdrant_client import QdrantClient
 
-from lexarena.ingest.precedents import ingest_precedents, prepare_precedents, read_precedent_sources
+from lexarena.ingest.precedents import DERIVED_FIELDS, ingest_precedents, prepare_precedents, read_precedent_sources
 from lexarena.secrets import SecretStore
 from lexarena.storage.errors import AccessDeniedError
 from lexarena.storage.policy import Principal, Role
@@ -64,9 +64,7 @@ def test_count_payloads_dates_and_rerun(tmp_path: Path, clients: tuple[QdrantCli
     for payload in random.Random(0).sample(lawyer.all_payloads(), 5):
         source = by_uid[payload["precedent_id"] + payload["case_title"]]
         assert {k: v for k, v in payload.items() if k in source} == source
-        assert set(payload) - set(source) == {
-            "precedent_uid", "statutes_normalized", "decision_date_ts", "content_hash", "source_file"
-        }  # fmt: skip
+        assert set(payload) - set(source) == DERIVED_FIELDS
 
     cutoff = date(2008, 1, 1)
     found = lawyer.search_ratio(WordEmbedder().embed(["<rule>"])[0], decided_before=cutoff, exclude_ids=[], limit=20)
@@ -79,6 +77,31 @@ def test_count_payloads_dates_and_rerun(tmp_path: Path, clients: tuple[QdrantCli
     again = load(tmp_path, ingest_repo)
     assert (again.inserted, again.updated, again.removed, again.unchanged) == (0, 0, 0, 8)  # type: ignore[attr-defined]
     assert again.snapshot == first.snapshot  # type: ignore[attr-defined]
+
+
+def test_derived_field_changes_refresh_payloads_without_re_embedding(
+    tmp_path: Path, clients: tuple[QdrantClient, QdrantClient, str]
+) -> None:
+    """The Law DB grows after ingestion: statutes_normalized must follow, though no record changed."""
+    writer, _, name = clients
+    repo = PrecedentRepository(Principal(Role.INGEST), writer, name)
+    write_jsonl(tmp_path, "a.jsonl", [precedent("P1", statutes_cited=["TEST_ACT_SEC_7", "TEST_ACT_SEC_8"])])
+    first = ingest_precedents(
+        repo, prepare_precedents(*read_precedent_sources(tmp_path), KNOWN, WordEmbedder(), window_tokens=50),
+        WordEmbedder(),
+    )  # fmt: skip
+    grown = prepare_precedents(
+        *read_precedent_sources(tmp_path), KNOWN | {"TEST_ACT_SEC_8"}, WordEmbedder(), window_tokens=50
+    )
+    embedder = WordEmbedder()
+    second = ingest_precedents(repo, grown, embedder)
+    assert (second.inserted, second.updated, second.payload_refreshed) == (0, 0, 1)
+    assert embedder.calls == 0
+    [payload] = repo.all_payloads()
+    assert payload["statutes_normalized"] == ["TEST_ACT_SEC_7", "TEST_ACT_SEC_8"]
+    assert second.snapshot != first.snapshot
+    third = ingest_precedents(repo, grown, WordEmbedder())
+    assert (third.payload_refreshed, third.unchanged) == (0, 1)
 
 
 def test_edits_and_removals_are_incremental(tmp_path: Path, clients: tuple[QdrantClient, QdrantClient, str]) -> None:
@@ -100,8 +123,14 @@ def test_session_roles_cannot_write_and_judges_cannot_search_openly(
     writer, reader, name = clients
     write_jsonl(tmp_path, "a.jsonl", records())
     load(tmp_path, PrecedentRepository(Principal(Role.INGEST), writer, name))
-    with pytest.raises(AccessDeniedError):
-        PrecedentRepository(Principal(Role.LAWYER, "PETITIONER"), reader, name).delete(["x"])
+    for role in (Role.LAWYER, Role.THEMIS_LOCAL, Role.JUDGE):
+        repo = PrecedentRepository(Principal(role, "PETITIONER" if role is not Role.JUDGE else None), reader, name)
+        with pytest.raises(AccessDeniedError):
+            repo.delete(["x"])
+        with pytest.raises(AccessDeniedError):
+            repo.overwrite_payload(str(uuid.uuid4()), {"x": 1})
+    with pytest.raises(Exception, match=r"(?i)forbidden|403"):
+        PrecedentRepository(Principal(Role.INGEST), reader, name).overwrite_payload(str(uuid.uuid4()), {"x": 1})
     # The read-only key is refused by Qdrant itself, whatever the Python role says.
     with pytest.raises(Exception, match=r"(?i)forbidden|403"):
         PrecedentRepository(Principal(Role.INGEST), reader, name).delete([str(uuid.uuid4())])

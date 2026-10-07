@@ -94,9 +94,15 @@ def _law(action: str, source: Path) -> int:
     return 0 if report.loadable else 1
 
 
-def _precedents(action: str, source: Path, config_path: Path) -> int:
+def _precedents(action: str, source: Path, aliases_path: Path, config_path: Path) -> int:
     from lexarena.embedding import FastEmbedder
-    from lexarena.ingest.precedents import ingest_precedents, prepare_precedents, read_precedent_sources
+    from lexarena.ingest.precedents import (
+        ingest_precedents,
+        load_statute_aliases,
+        missing_alias_targets,
+        prepare_precedents,
+        read_precedent_sources,
+    )
     from lexarena.storage.factory import SealedProcess
 
     cfg = load_config(config_path).embedding
@@ -106,10 +112,14 @@ def _precedents(action: str, source: Path, config_path: Path) -> int:
         known = stores.law.statute_ids()
         if not known:
             raise SystemExit("the Law DB is empty; run lexarena law load first")
+        aliases = load_statute_aliases(aliases_path)
         prepared = prepare_precedents(
-            *read_precedent_sources(source), known, embedder, cfg.window_tokens, cfg.max_tokens
+            *read_precedent_sources(source), known, embedder, cfg.window_tokens, cfg.max_tokens, aliases
         )
-        out: dict[str, object] = {"report": prepared.report.model_dump(mode="json")}
+        out: dict[str, object] = {
+            "report": prepared.report.model_dump(mode="json"),
+            "alias_targets_matching_no_law_db_id": missing_alias_targets(aliases, known),
+        }
         if action == "load":
             out["loaded"] = vars(ingest_precedents(stores.precedents, prepared, embedder))
     print(json.dumps(out, indent=2, ensure_ascii=False))  # literal-ok: display indentation
@@ -133,6 +143,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     for action, text in (("validate", "report only"), ("load", "validate, embed and load into Qdrant (incremental)")):
         cmd = prec_cmd.add_parser(action, help=text)
         cmd.add_argument("--source", type=Path, default=REPO_ROOT / "data" / "precedents", help="precedent folder")
+        cmd.add_argument(
+            "--aliases", type=Path, default=REPO_ROOT / "data" / "statute_aliases.json", help="statute alias table"
+        )
     from lexarena import cli_review
 
     cli_review.add_parsers(sub)
@@ -144,7 +157,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.group == "law":
         return _law(args.action, args.source)
     if args.group == "precedents":
-        return _precedents(args.action, args.source, path)
+        return _precedents(args.action, args.source, args.aliases, path)
     if args.group in ("sources", "draft", "review"):
         return cli_review.run(args, path)
     return _llm_smoke(path, args.role)

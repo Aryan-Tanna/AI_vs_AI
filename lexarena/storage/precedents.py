@@ -58,6 +58,11 @@ class PrecedentRepository:
         if points:
             self._client.upsert(self._collection, points=points, wait=True)
 
+    def overwrite_payload(self, point_id: str, payload: dict[str, Any]) -> None:
+        """Replace a point's payload, keeping its vectors (derived fields changed, the record did not)."""
+        require(self._principal, Store.PRECEDENTS, Op.WRITE)
+        self._client.overwrite_payload(self._collection, payload=payload, points=[point_id], wait=True)
+
     def delete(self, point_ids: list[str]) -> None:
         require(self._principal, Store.PRECEDENTS, Op.WRITE)
         if point_ids:
@@ -84,12 +89,16 @@ class PrecedentRepository:
             if offset is None:
                 return points
 
-    def content_hashes(self) -> dict[str, str]:
-        """point ID -> content_hash, for incremental ingestion."""
+    def stored_hashes(self) -> dict[str, tuple[str, str | None]]:
+        """point ID -> (content_hash, derived_hash), for incremental ingestion. Points stored before derived_hash
+        existed return None for it, so their payload is refreshed once."""
         require(self._principal, Store.PRECEDENTS, Op.READ)
         if not self._client.collection_exists(self._collection):
             return {}
-        return {str(p.id): p.payload["content_hash"] for p in self._scroll(["content_hash"])}
+        return {
+            str(p.id): (p.payload["content_hash"], p.payload.get("derived_hash"))
+            for p in self._scroll(["content_hash", "derived_hash"])
+        }
 
     def all_payloads(self) -> list[dict[str, Any]]:
         require(self._principal, Store.PRECEDENTS, Op.READ)

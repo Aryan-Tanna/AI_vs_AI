@@ -1,0 +1,16 @@
+{
+  "aliases": [
+    {"cited_prefix": "COMPANIES_ACT_2013_SEC_", "law_db_prefix": "CA2013_SEC", "reason": "Companies Act, 2013: long name in precedents, CA2013 in the Law DB"},
+    {"cited_prefix": "CA_2013_SEC_", "law_db_prefix": "CA2013_SEC", "reason": "Companies Act, 2013: separator variant"},
+    {"cited_prefix": "IBBI_CIRP_REGULATIONS_2016_REG_", "law_db_prefix": "IBBI_CIRP_REG_", "reason": "IBBI (Insolvency Resolution Process for Corporate Persons) Regulations, 2016: the Law DB omits the year"},
+    {"cited_prefix": "CIRP_REGULATIONS_2016_REG_", "law_db_prefix": "IBBI_CIRP_REG_", "reason": "Same CIRP Regulations, 2016, cited without the IBBI prefix"},
+    {"cited_prefix": "NCLAT_RULES_2016_RULE_", "law_db_prefix": "NCLAT_RULES2016_R", "reason": "NCLAT Rules, 2016: separator and RULE/R variant. NCLT Rules, 2016 are a different instrument and are not aliased"},
+    {"cited_prefix": "LIMITATION_ACT_1963_ARTICLE_", "law_db_prefix": "LIMITATION_ACT_1963_ART_", "reason": "Limitation Act, 1963 Schedule articles: ARTICLE/ART variant"},
+    {"cited_prefix": "INDIAN_CONTRACT_ACT_1872_SEC_", "law_db_prefix": "CONTRACT_ACT_1872_SEC_", "reason": "Indian Contract Act, 1872: the Law DB omits INDIAN"},
+    {"cited_prefix": "ARBITRATION_AND_CONCILIATION_ACT_1996_SEC_", "law_db_prefix": "ARBITRATION_ACT_1996_SEC_", "reason": "Arbitration and Conciliation Act, 1996: short name in the Law DB"},
+    {"cited_prefix": "INDIAN_STAMP_ACT_1899_SEC_", "law_db_prefix": "STAMP_ACT_1899_SEC_", "reason": "Indian Stamp Act, 1899: the Law DB omits INDIAN"},
+    {"cited_prefix": "NEGOTIABLE_INSTRUMENTS_ACT_1881_SEC_", "law_db_prefix": "NI_ACT_1881_SEC_", "reason": "Negotiable Instruments Act, 1881: NI in the Law DB"},
+    {"cited_prefix": "RERA_ACT_2016_SEC_", "law_db_prefix": "RERA_2016_SEC_", "reason": "Real Estate (Regulation and Development) Act, 2016: the Law DB omits ACT"},
+    {"cited_prefix": "CODE_OF_CIVIL_PROCEDURE_1908_SEC_", "law_db_prefix": "CPC_1908_SEC_", "reason": "Code of Civil Procedure, 1908: CPC in the Law DB"}
+  ]
+}

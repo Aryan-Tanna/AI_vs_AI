@@ -86,9 +86,10 @@ In test runs, both experience memories are read-only.
 
 ## 5. Judging
 
-- Each persona scores each framed issue twice, with the two sides presented in swapped order. Dimensions: accuracy, consistency, rebuttal, grounding; weights come from config.
-- Judges see anonymous counsel labels and only FLAGGED hard errors. They use read-only tools, and every reason must cite record, statute or precedent IDs, which the validator checks.
-- The winner is the side with the higher aggregate score; the tie rule is in config. The validator confirms each judge's reasons match its scores.
+- Each persona decides each framed issue twice, with the two sides presented in swapped order: finding, governing rule (statute or precedent ID), application to record IDs, conclusion, and the side whose position it upholds; then the overall result (D-048).
+- A judge whose two decisions disagree abstains for that case; the abstention rate is reported.
+- Judges see anonymous counsel labels and only FLAGGED hard errors. They use read-only tools, and every reason must cite record, statute or precedent IDs. THEMIS layer 1 rules check those references, with one revision; the validator confirms each judge's overall result follows from its issue findings.
+- The verdict is the majority of the non-abstaining judges, with dissent recorded. Advocacy scores (accuracy, consistency, rebuttal, grounding; weights in config) are produced alongside, reported as a secondary measure, break a tie (rule in config), and feed reflection.
 
 ## 6. Learning
 

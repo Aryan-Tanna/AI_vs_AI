@@ -31,7 +31,7 @@ I chose IBC cases only, to stay narrow and deep.
 ## Choices I have made (don't reopen these without asking me)
 
 - **Real cases, not moot problems.** The record each case uses is built from the real judgment. "Closed record" only means agents cannot add facts the real case doesn't contain.
-- **Winner by advocacy score.** The side with the higher aggregate advocacy score from the three judges wins, with the debiasing guards in SPEC E1. The real outcome is used only after the verdict, for evaluation and learning.
+- **Winner by the bench's reasoned decision** (changed 2026-10-08, D-048). The three judges decide each issue with reasons tied to record, statute and precedent IDs, twice with the sides swapped, and the majority decides. Advocacy scores stay as a secondary measure and tie-breaker. The real outcome is used only after the verdict, for evaluation and learning.
 - **LEX-P represents the party seeking relief** in the proceeding being simulated (the appellant in appeals). LEX-D opposes.
 - **Frozen formats.** My Law DB and precedent DB formats stay as they are. The precedent DB has two vectors: `material_facts` (one sub-vector per section) and `ratio_decidendi`.
 - **Z3 design.** For each statute an argument relies on, an extractor builds a JSON mirroring that statute's `diagnostic_checklist` and `procedural_timelines`. Z3 checks it against the real Law DB entry and the case's real amounts and dates. It checks whether the lawyer stated the law and facts accurately, never whether the case is winnable.
