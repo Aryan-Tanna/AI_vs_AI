@@ -1,0 +1,5 @@
+How many days are there in a common (non-leap) year of the Gregorian calendar?
+
+Respond with a single JSON object with exactly two keys:
+- "answer": the number of days, as an integer
+- "unit": the unit of the answer, as a string

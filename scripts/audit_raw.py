@@ -1,4 +1,4 @@
-"""Reproducible audit of the raw precedent + law files. Numbers quoted in CLAUDE.md §3 come from here.
+"""Reproducible audit of the raw precedent + law files. Numbers quoted in docs/OPEN_QUESTIONS.md come from here.
 
 Run: python scripts/audit_raw.py
 """
@@ -56,7 +56,7 @@ def canon_statute(s):
 
 
 def main():
-    files = sorted(ROOT.glob("nclat_precedents*/*.jsonl"))
+    files = sorted(ROOT.glob("data/precedents/*/*.jsonl"))
     raw_ids = sum(f.read_text(encoding="utf-8").count('"precedent_id"') for f in files)
     recs, errs = [], []
     for f in files:
@@ -87,7 +87,7 @@ def main():
     sec = collections.Counter(c for cs in cites for c in set(cs) if c.startswith("IBC_2016_SEC_"))
     print("top IBC sections by #cases:", [(k.replace("IBC_2016_SEC_", ""), v) for k, v in sec.most_common(25)])
 
-    law = [x for f in glob.glob(str(ROOT / "law_db/*.json")) + glob.glob(str(ROOT / "law2db/*.json"))
+    law = [x for f in glob.glob(str(ROOT / "data/law_db/*.json"))
            for x in json.load(open(f, encoding="utf-8"))]
     law_ids = {canon_statute(x["_id"]) for x in law}
     allc = collections.Counter(c for cs in cites for c in cs)

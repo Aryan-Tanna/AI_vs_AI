@@ -1,0 +1,95 @@
+# LexArena config v1 (shape: docs/DATA_FORMATS.md §6). Every value here is read by code; none is defaulted in Python.
+#
+# Provenance tag on each value:
+#   [SPEC xx]      stated in docs/SPEC.md section xx (still uncalibrated unless it says otherwise)
+#   [D-0nn]        fixed by a logged decision in docs/DECISIONS.md
+#   [MEASURED]     observed from the provider on 2026-10-06
+#   [PLACEHOLDER]  chosen by Claude Code to make the system run; calibrate on the dev set in BUILD_PLAN Step 14
+#
+# Gemini free tier [MEASURED 2026-10-06]: 20 requests/day per model; gemini-3.8-flash returned 503 on most calls,
+# then hit its quota, so roles use gemini-3.5-flash (clerk) and gemini-2.5-flash (judge, auditor, reflection),
+# which answered 4/4 probes. Groq free tier [MEASURED]: 7,000 input tokens per request, 1,000 requests/day.
+#
+# Build-and-tune models only. Phase 2 will use paid DeepSeek and Qwen APIs; every calibrated value must be
+# re-measured on those models before the freeze (see docs/OPEN_QUESTIONS.md R-014).
+
+version: v1
+
+providers:
+  groq:
+    kind: openai_compatible
+    base_url: https://api.groq.com/openai/v1
+    json_mode: json_schema               # [MEASURED] strict json_schema works on gpt-oss and qwen3.8
+    max_tokens_param: max_completion_tokens
+    timeout_s: 120                       # [PLACEHOLDER]
+  gemini:
+    kind: gemini
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    json_mode: json_schema               # responseJsonSchema
+    timeout_s: 300                       # [PLACEHOLDER] long judgments take ~30 s [MEASURED]
+
+models:
+  # Lawyers: one model for both sides (non-negotiable 3).
+  lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 2048, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]
+  # THEMIS-LOCAL layer 2 and entailment: different family from the lawyers [SPEC I3-7].
+  verifier:        {provider: groq,   family: qwen,    name: qwen/qwen3.8-27b,    temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API3}
+  judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}  # temperature [PLACEHOLDER]
+  # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
+  auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
+  # Clerk two-model agreement: independent families (ARCHITECTURE §3).
+  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api}
+  clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API4}
+  reflection:      {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
+
+prompts:
+  schema_repair: {id: llm/schema_repair, version: 1}
+  smoke: {id: smoke/dummy, version: 1}
+
+llm:
+  max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
+  backoff_initial_s: 2                   # [PLACEHOLDER]
+  backoff_multiplier: 2                  # [PLACEHOLDER]
+  backoff_max_s: 60                      # [PLACEHOLDER] Groq free tier refills tokens per minute [MEASURED]
+  cache_enabled: true
+  cache_path: .cache/llm_cache.sqlite
+  log_path: .cache/logs/llm_calls.jsonl
+
+embedding:
+  model: BAAI/bge-small-en-v1.5          # [SPEC B5]
+  max_tokens: 512                        # model limit [SPEC B5]
+  window_tokens: 480                     # [SPEC B5]
+
+retrieval:
+  facts_threshold: 0.75                  # [SPEC B6] uncalibrated
+  ratio_threshold: 0.75                  # [PLACEHOLDER] SPEC B6 expects a separate value
+  top_k: 5                               # [SPEC B7]
+
+session:
+  alternating_turns: 8                   # [D-011]
+  parallel_closings: true                # [D-011]
+  max_turn_tokens: 1200                  # [PLACEHOLDER] same cap for both sides [SPEC E1]
+
+themis_local:
+  retry_cap: 3                           # [SPEC D8]
+  extraction_min_confidence: 0.7         # [SPEC D1]
+  repetition_hard_threshold: 0.95        # [SPEC D8]
+  score_weights: {rule: 0.5, llm: 0.5}   # [PLACEHOLDER]
+  penalty_cap: 0.30                      # [SPEC D6]
+
+judging:
+  weights: {accuracy: 0.35, consistency: 0.25, rebuttal: 0.20, grounding: 0.20}   # [SPEC E1]
+  order_swap_max_gap: 0.15               # [SPEC E1] fixed before measuring [D-024]
+  tie_margin: 0.02                       # [SPEC E1]
+
+memory:
+  pinned_token_budget: 250               # [SPEC E6]
+  pinned_k: 5                            # [PLACEHOLDER]
+  decay_lambda: 0.98                     # [SPEC F4]
+  retire_below_confidence: 0.2           # [SPEC F4]
+  dedup_embedding_threshold: 0.90        # [PLACEHOLDER] SPEC F3 warns 0.90 can merge opposite lessons
+
+splits:
+  test_count: 100                        # [INTENT]
+  validation_count: 50                   # [SPEC G1] reporting only, no tuning [D-023]
+
+seed: 7                                  # [PLACEHOLDER]

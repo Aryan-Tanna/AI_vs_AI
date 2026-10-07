@@ -1,0 +1,3264 @@
+[
+  {
+    "_id": "IBC_2016_SEC_3",
+    "statute_id": "IBC_2016_SEC_3",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "3",
+    "section_title": "Definitions",
+    "jurisdiction_type": "DEFINITIONAL_FRAMEWORK",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes foundational definitions and general legal concepts for the entire Code, including claim, debt, default, corporate debtor, creditor, financial service provider, security interest, and service provider.",
+    "core_judicial_inquiry": "Whether an entity, obligation, transaction, or claim meets the general statutory definitions required to invoke or apply the provisions of the Code.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_2",
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_188",
+      "IBC_2016_SEC_201",
+      "IBC_2016_SEC_206",
+      "IBC_2016_SEC_210"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies across all entities, creditors, debtors, and service providers governed by the Code.",
+        "Explicitly excludes financial service providers from the definition of a corporate person under Section 3(7)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Definitions apply throughout the Code unless the context otherwise requires."
+      ],
+      "statutory_bars": [
+        "Entities acting as financial service providers are excluded from the scope of corporate person/corporate debtor.",
+        "Security interest explicitly excludes performance guarantees and security interests created merely by operation of law."
+      ],
+      "saving_exceptions": [
+        "Expressions used but not defined in the Code adopt meanings assigned under the Indian Contract Act 1872, Companies Act 2013, SEBI Act 1992, LLP Act 2008, and other specified Acts under Section 3(37)."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INVALID_GENERAL_DEFINITION",
+      "ERR_EXCLUDED_FINANCIAL_SERVICE_PROVIDER",
+      "ERR_NON_QUALIFYING_SECURITY_INTEREST",
+      "ERR_UNDEFINED_CLAIM_OR_DEBT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_4",
+    "statute_id": "IBC_2016_SEC_4",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "4",
+    "section_title": "Application of this Part",
+    "jurisdiction_type": "JURISDICTIONAL_THRESHOLD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes the minimum default threshold required to initiate corporate insolvency, liquidation, or pre-packaged insolvency processes under Part II of the Code.",
+    "core_judicial_inquiry": "Whether the amount of default committed by the corporate debtor meets or exceeds the statutory minimum threshold of one crore rupees (or the amount notified by the Central Government).",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_6",
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_8",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_54A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Applies to matters relating to the insolvency and liquidation of corporate debtors under Part II.",
+        "Applies to corporate debtors eligible for pre-packaged insolvency resolution process under Chapter III-A."
+      ],
+      "financial_threshold": {
+        "minimum_amount": 10000000,
+        "currency": "INR"
+      },
+      "mandatory_prerequisites": [
+        "Existence of a default committed by a corporate debtor that meets or exceeds the statutory monetary threshold."
+      ],
+      "statutory_bars": [
+        "Default amount is below the statutory threshold of one crore rupees (or below the threshold notified by the Central Government)."
+      ],
+      "saving_exceptions": [
+        "Central Government notification mechanism specifying a minimum default value of higher value up to one crore rupees for Part II matters.",
+        "Central Government notification mechanism specifying a distinct minimum default value of higher value up to one crore rupees for Chapter III-A pre-packaged insolvency matters."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_BELOW_MINIMUM_DEFAULT_THRESHOLD",
+      "ERR_PART_II_INAPPLICABLE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_5",
+    "statute_id": "IBC_2016_SEC_5",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "5",
+    "section_title": "Definitions",
+    "jurisdiction_type": "DEFINITIONAL_FRAMEWORK",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Provides statutory definitions for key legal terms and expressions used throughout Part II of the Code, including Adjudicating Authority, financial debt, operational debt, corporate applicant, related party, avoidance transaction, and resolution plan.",
+    "core_judicial_inquiry": "Whether a person, debt, transaction, cost, or process satisfies the specific statutory definitions and criteria prescribed for the purpose of Part II proceedings.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_3",
+      "IBC_2016_SEC_4",
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_8",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_29A",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_49",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Specifies qualifying criteria for corporate applicants (corporate debtor, authorized member/partner, individual managing operations, or controller of financial affairs).",
+        "Defines financial creditors (persons owed financial debt) and operational creditors (persons owed operational debt).",
+        "Defines resolution applicants who submit resolution plans pursuant to invitations under Section 25(2)(h) or Section 54K."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Terms must be construed in accordance with their specific statutory definitions for all proceedings under Part II unless the context otherwise requires."
+      ],
+      "statutory_bars": [
+        "Excludes claims that do not fall within the scope of financial debt (disbursed against consideration for time value of money) or operational debt (goods, services, employment, or government dues).",
+        "Restricts related parties of the corporate debtor or individual from exercising voting rights in the committee of creditors under Part II provisions."
+      ],
+      "saving_exceptions": [
+        "Real estate project allottees are explicitly deemed to have amounts with the commercial effect of a borrowing under Section 5(8)(f).",
+        "Financial entities regulated by financial sector regulators are exempted from certain related party disqualifications if related solely due to debt-to-equity conversion prior to the insolvency commencement date."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INVALID_STATUTORY_DEFINITION",
+      "ERR_NON_QUALIFYING_DEBT_CATEGORY",
+      "ERR_MISCLASSIFIED_CREDITOR_CLASS",
+      "ERR_UNAUTHORIZED_CORPORATE_APPLICANT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_6",
+    "statute_id": "IBC_2016_SEC_6",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "6",
+    "section_title": "Persons who may initiate corporate insolvency resolution process",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes locus standi for initiating the Corporate Insolvency Resolution Process (CIRP), granting standing exclusively to financial creditors, operational creditors, and the corporate debtor itself upon the occurrence of a default.",
+    "core_judicial_inquiry": "Whether the applicant qualifies as a financial creditor, operational creditor, or corporate applicant, and whether a default has been committed by the corporate debtor.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_4",
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_8",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_11"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Financial creditor (individually or jointly with other financial creditors)",
+        "Operational creditor",
+        "Corporate debtor itself (through a corporate applicant)"
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Occurrence of a default by the corporate debtor as defined under Section 3(12)",
+        "Compliance with the initiation procedure specified under Section 7, Section 9, or Section 10"
+      ],
+      "statutory_bars": [
+        "Applicant does not fall into one of the three enumerated statutory categories",
+        "No default has occurred",
+        "Applicant is barred under Section 11"
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_LACK_OF_LOCUS_STANDI",
+      "ERR_INVALID_INITIATING_PARTY",
+      "ERR_NO_DEFAULT_COMMITTED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_7",
+    "statute_id": "IBC_2016_SEC_7",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "7",
+    "section_title": "Initiation of corporate insolvency resolution process by financial creditor",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers financial creditors, either individually or jointly, to initiate the Corporate Insolvency Resolution Process (CIRP) against a corporate debtor upon default, establishing specific numerical thresholds for class creditors and real estate allottees.",
+    "core_judicial_inquiry": "Whether a financial default has occurred, whether the applicant meets statutory class/quorum thresholds where applicable, whether the application is complete, and whether any disciplinary proceeding is pending against the proposed interim resolution professional.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_3",
+      "IBC_2016_SEC_4",
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_6",
+      "IBC_2016_SEC_11",
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_21"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Financial creditor acting either by itself or jointly with other financial creditors.",
+        "Any other person notified by the Central Government acting on behalf of the financial creditor.",
+        "For financial creditors in a class under Section 21(6A)(a) or (b): application must be filed jointly by not less than 100 such creditors or not less than 10% of the total number of such creditors in the same class, whichever is less.",
+        "For financial creditors who are allottees under a real estate project: application must be filed jointly by not less than 100 such allottees or not less than 10% of the total number of such allottees under the same real estate project, whichever is less."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing of application in prescribed form, manner, and accompanied by the prescribed fee.",
+        "Submission of record of default recorded with the information utility or other specified record/evidence of default.",
+        "Proposal of the name of an insolvency professional to act as interim resolution professional.",
+        "Any other information as specified by the Insolvency and Bankruptcy Board of India."
+      ],
+      "statutory_bars": [
+        "Adjudicating Authority is satisfied that default has not occurred.",
+        "Application filed under sub-section (2) is incomplete.",
+        "Disciplinary proceeding is pending against the proposed interim resolution professional.",
+        "Failure to meet mandatory class or real estate allottee quorum thresholds."
+      ],
+      "saving_exceptions": [
+        "Adjudicating Authority must give notice to the applicant to rectify defects in the application within 7 days of receipt of notice prior to rejecting an incomplete application.",
+        "Record of default in respect of financial debt owed to a financial institution recorded with information utility is considered sufficient proof to ascertain existence of default.",
+        "Where statutory requirements under Section 7(5)(a) are complied with, no other ground shall be considered to reject the application."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 14,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "ERR_NO_DEFAULT_ASCERTAINED",
+      "ERR_INCOMPLETE_APPLICATION",
+      "ERR_PENDING_DISCIPLINARY_PROCEEDING",
+      "ERR_CLASS_QUORUM_NOT_MET",
+      "ERR_REAL_ESTATE_ALLOTTEE_QUORUM_NOT_MET",
+      "ERR_RECTIFICATION_TIMEOUT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_8",
+    "statute_id": "IBC_2016_SEC_8",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "8",
+    "section_title": "Insolvency resolution by operational creditor",
+    "jurisdiction_type": "STATUTORY_PREREQUISITE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes the mandatory pre-initiation procedure for operational creditors, requiring the delivery of a demand notice or invoice to the corporate debtor upon default. Grants the corporate debtor 10 days to notify the creditor of a pre-existing dispute or provide proof of payment.",
+    "core_judicial_inquiry": "Whether a valid demand notice or invoice was delivered by the operational creditor, and whether the corporate debtor raised a valid pre-existing dispute or provided evidence of payment within the statutory 10-day period.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_9"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "An operational creditor upon the occurrence of a default."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Delivery of a demand notice of unpaid operational debt or a copy of an invoice demanding payment of the amount involved in the default.",
+        "Notice must be delivered to the corporate debtor in the prescribed form and manner."
+      ],
+      "statutory_bars": [
+        "Corporate debtor brings to notice the existence of a dispute or record of the pendency of a suit or arbitration proceedings filed before the receipt of the notice or invoice.",
+        "Corporate debtor proves payment of the unpaid operational debt by sending an attested copy of the record of electronic transfer.",
+        "Corporate debtor proves payment by sending an attested copy of a record that the operational creditor has encashed a cheque issued by the corporate debtor."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PRE_EXISTING_DISPUTE_ESTABLISHED",
+      "ERR_OPERATIONAL_DEBT_PAID",
+      "ERR_DEMAND_NOTICE_NOT_DELIVERED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_9",
+    "statute_id": "IBC_2016_SEC_9",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "9",
+    "section_title": "Application for initiation of corporate insolvency resolution process by operational creditor",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Permits an operational creditor to file an application to initiate CIRP against a corporate debtor after 10 days from serving a Section 8 demand notice, provided no payment or notice of dispute has been received.",
+    "core_judicial_inquiry": "Whether the operational creditor delivered a valid Section 8 notice or invoice, whether the corporate debtor failed to pay or raise a pre-existing dispute, whether the application is complete, and whether any disciplinary proceeding is pending against the proposed IRP.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_8",
+      "IBC_2016_SEC_11",
+      "IBC_2016_SEC_16"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Operational creditor who delivered a demand notice or invoice under Section 8(1) and did not receive payment or notice of dispute within 10 days."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Copy of the invoice demanding payment or demand notice delivered to the corporate debtor.",
+        "Affidavit confirming no notice of dispute was given by the corporate debtor.",
+        "Copy of certificate from financial institutions maintaining accounts of the operational creditor confirming non-payment (if available).",
+        "Copy of record with information utility confirming non-payment (if available).",
+        "Any other proof or specified information confirming non-payment of unpaid operational debt."
+      ],
+      "statutory_bars": [
+        "Application filed under sub-section (2) is incomplete.",
+        "Payment of the unpaid operational debt has been made by the corporate debtor.",
+        "Failure to deliver the invoice or demand notice for payment to the corporate debtor.",
+        "Notice of dispute received by the operational creditor or record of dispute exists in the information utility.",
+        "Disciplinary proceeding is pending against the proposed interim resolution professional."
+      ],
+      "saving_exceptions": [
+        "Adjudicating Authority must give notice to the applicant to rectify defects in the application within seven days of receipt of notice prior to rejecting an incomplete application."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 14,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "ERR_NOTICE_OF_DISPUTE_EXISTS",
+      "ERR_OPERATIONAL_DEBT_PAID",
+      "ERR_DEMAND_NOTICE_NOT_DELIVERED",
+      "ERR_INCOMPLETE_APPLICATION",
+      "ERR_PENDING_DISCIPLINARY_PROCEEDING",
+      "ERR_RECTIFICATION_TIMEOUT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_10",
+    "statute_id": "IBC_2016_SEC_10",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "10",
+    "section_title": "Initiation of corporate insolvency resolution process by corporate applicant",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Permits a corporate applicant of a corporate debtor that has committed a default to initiate the Corporate Insolvency Resolution Process (CIRP) by filing an application along with financial documents and a special resolution of shareholders or a three-fourths partner resolution.",
+    "core_judicial_inquiry": "Whether the corporate debtor has committed a default, whether the corporate applicant has provided the requisite corporate authorization (special resolution or 3/4th partner resolution) along with books of account, and whether the application is complete.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_4",
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_6",
+      "IBC_2016_SEC_11",
+      "IBC_2016_SEC_16"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Corporate applicant of a corporate debtor that has committed a default."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing of application in prescribed form, manner, and accompanied with prescribed fee.",
+        "Information relating to books of account, specified documents, and other specified information.",
+        "Special resolution passed by shareholders of the corporate debtor or resolution passed by at least three-fourths of total partners of the corporate debtor approving the filing of the application."
+      ],
+      "statutory_bars": [
+        "Application filed under sub-section (1) is incomplete.",
+        "Failure to obtain or furnish the requisite special resolution of shareholders or 3/4th partner resolution.",
+        "Corporate debtor or corporate applicant is disqualified under Section 11."
+      ],
+      "saving_exceptions": [
+        "Adjudicating Authority must give notice to the applicant to rectify defects in the application within seven days from the date of receipt of notice prior to rejecting an incomplete application."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 14,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "ERR_INCOMPLETE_APPLICATION",
+      "ERR_MISSING_SHAREHOLDER_RESOLUTION",
+      "ERR_MISSING_PARTNER_RESOLUTION",
+      "ERR_NO_DEFAULT_COMMITTED",
+      "ERR_RECTIFICATION_TIMEOUT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_11",
+    "statute_id": "IBC_2016_SEC_11",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "11",
+    "section_title": "Persons not entitled to make application",
+    "jurisdiction_type": "STATUTORY_BAR",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Lists statutory disqualifications that prohibit specific corporate debtors, financial creditors, operational creditors, or corporate applicants from initiating a Corporate Insolvency Resolution Process (CIRP).",
+    "core_judicial_inquiry": "Whether the applicant or corporate debtor falls within any of the statutory bars listed under Section 11, such as being in ongoing insolvency proceedings, having completed CIRP or PPIRP within the preceding 12 months, having violated an approved resolution plan, or being subject to a liquidation order.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_6",
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_54L"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any entity or creditor seeking to initiate CIRP under Section 7, 9, or 10 must not be subject to the statutory disqualifications enumerated in Section 11."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Verification that the applicant and corporate debtor are free from disqualifications specified under clauses (a) to (d)."
+      ],
+      "statutory_bars": [
+        "A corporate debtor currently undergoing CIRP or PPIRP.",
+        "A financial creditor or operational creditor of a corporate debtor currently undergoing PPIRP.",
+        "A corporate debtor that completed CIRP twelve months preceding the date of making the application.",
+        "A corporate debtor in respect of whom a resolution plan was approved under Chapter III-A twelve months preceding the date of making the application.",
+        "A corporate debtor or financial creditor who has violated any terms of an approved resolution plan twelve months before the date of making the application.",
+        "A corporate debtor in respect of whom a liquidation order has been made."
+      ],
+      "saving_exceptions": [
+        "Under Explanation II, nothing in Section 11 prevents a corporate debtor referred to in clauses (a) to (d) from initiating CIRP against another corporate debtor."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_STATUTORY_BAR_ON_INITIATION",
+      "ERR_CORPORATE_DEBTOR_UNDERGOING_CIRP_OR_PPIRP",
+      "ERR_CIRP_COMPLETED_WITHIN_TWELVE_MONTHS",
+      "ERR_PPIRP_APPROVED_WITHIN_TWELVE_MONTHS",
+      "ERR_VIOLATION_OF_APPROVED_RESOLUTION_PLAN",
+      "ERR_LIQUIDATION_ORDER_EXISTS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_12",
+    "statute_id": "IBC_2016_SEC_12",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "12",
+    "section_title": "Time-limit for completion of insolvency resolution process",
+    "jurisdiction_type": "PROCEDURAL_TIMELINE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes a mandatory 180-day time limit for completing the Corporate Insolvency Resolution Process (CIRP), permits a one-time extension of up to 90 days upon 66% CoC approval, and sets a mandatory outer limit of 330 days including legal proceedings.",
+    "core_judicial_inquiry": "Whether the CIRP cannot be completed within 180 days due to the nature of the case, whether the extension application is backed by a 66% CoC vote, whether an extension has already been granted, and whether the process duration exceeds the mandatory outer limit of 330 days.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional instructed to seek an extension by a resolution passed at a meeting of the committee of creditors by a vote of sixty-six per cent of the voting shares."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Approval of the committee of creditors by a vote of not less than sixty-six per cent of voting shares.",
+        "Filing of an application by the resolution professional to the Adjudicating Authority seeking extension beyond one hundred and eighty days."
+      ],
+      "statutory_bars": [
+        "Extension of the CIRP period granted more than once under Section 12(3).",
+        "Exceeding the mandatory outer limit of three hundred and thirty days from the insolvency commencement date, including extensions and legal proceedings."
+      ],
+      "saving_exceptions": [
+        "One-time extension of CIRP duration beyond 180 days by a further period not exceeding 90 days if the Adjudicating Authority is satisfied that the process cannot be completed within 180 days.",
+        "Pending CIRPs not completed within 330 days at the commencement of the Insolvency and Bankruptcy Code (Amendment) Act, 2019 granted a 90-day completion window from such commencement date."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CIRP_TIMELINE_EXCEEDED",
+      "ERR_INSUFFICIENT_COC_VOTE_FOR_EXTENSION",
+      "ERR_MULTIPLE_EXTENSIONS_PROHIBITED",
+      "ERR_MANDATORY_OUTER_LIMIT_EXCEEDED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_12A",
+    "statute_id": "IBC_2016_SEC_12A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "12A",
+    "section_title": "Withdrawal of application admitted under section 7, 9 or 10",
+    "jurisdiction_type": "EXIT_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Permits the Adjudicating Authority to allow the withdrawal of an admitted CIRP application under Section 7, 9, or 10 upon an application by the resolution professional backed by ninety per cent voting share approval of the committee of creditors.",
+    "core_judicial_inquiry": "Whether the resolution professional has obtained ninety per cent voting share approval from the committee of creditors for withdrawal, and whether the application is submitted after the constitution of the committee of creditors but before the issuance of the first invitation for resolution plans.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_25"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional submitting the application with the approval of ninety per cent voting share of the committee of creditors."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Approval of ninety per cent voting share of the committee of creditors in such manner as specified.",
+        "Application for withdrawal made directly by the resolution professional to the Adjudicating Authority."
+      ],
+      "statutory_bars": [
+        "Withdrawal sought before the constitution of the committee of creditors under sub-section (1) of section 21.",
+        "Withdrawal sought after the first invitation for submission of a resolution plan has been issued by the resolution professional."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSUFFICIENT_COC_VOTE_FOR_WITHDRAWAL",
+      "ERR_WITHDRAWAL_BEFORE_COC_CONSTITUTION",
+      "ERR_WITHDRAWAL_AFTER_INVITATION_FOR_PLANS",
+      "ERR_UNAUTHORIZED_WITHDRAWAL_APPLICANT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_13",
+    "statute_id": "IBC_2016_SEC_13",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "13",
+    "section_title": "Declaration of moratorium and public announcement",
+    "jurisdiction_type": "PROCEDURAL_DIRECTIVE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates that upon admitting a CIRP application under Section 7, 9, or 10, the Adjudicating Authority must issue an order declaring a moratorium, causing a public announcement calling for claims, and appointing an interim resolution professional.",
+    "core_judicial_inquiry": "Whether an application under Section 7, Section 9, or Section 10 has been formally admitted, triggering the mandatory statutory requirement to declare a moratorium, order a public announcement, and appoint an interim resolution professional.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_15",
+      "IBC_2016_SEC_16"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority acting consequential to the admission of an application under Section 7, Section 9, or Section 10."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Formal admission of a CIRP application under Section 7, Section 9, or Section 10 by the Adjudicating Authority.",
+        "Issuance of an order declaring a moratorium pursuant to Section 14.",
+        "Issuance of an order appointing an interim resolution professional in the manner laid down in Section 16.",
+        "Public announcement of the initiation of CIRP and call for submission of claims under Section 15 to be made immediately after the appointment of the interim resolution professional."
+      ],
+      "statutory_bars": [
+        "Non-admission or rejection of the underlying application under Section 7, Section 9, or Section 10."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_APPLICATION_NOT_ADMITTED",
+      "ERR_FAILURE_TO_DECLARE_MORATORIUM",
+      "ERR_FAILURE_TO_APPOINT_IRP",
+      "ERR_DELAYED_PUBLIC_ANNOUNCEMENT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_14",
+    "statute_id": "IBC_2016_SEC_14",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "14",
+    "section_title": "Moratorium",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Declares a mandatory moratorium upon CIRP commencement, prohibiting legal suits, asset transfers, security enforcement, and property recovery against the corporate debtor, while protecting statutory grants and critical supplies subject to payment of current dues.",
+    "core_judicial_inquiry": "Whether a suit, legal proceeding, execution, asset transfer, or security enforcement is barred by the moratorium order, whether an exception applies (e.g., personal guarantor or notified transaction), or whether critical/essential supplies or statutory grants can be suspended due to non-payment of current dues during the moratorium.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_13",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_60"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Corporate debtor protected automatically upon the admission of a CIRP application under Section 7, 9, or 10."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Order of moratorium declared by the Adjudicating Authority on the insolvency commencement date.",
+        "Payment of current dues arising during the moratorium period for the continuation of essential/critical goods, services, or statutory licenses/permits."
+      ],
+      "statutory_bars": [
+        "Institution of suits or continuation of pending suits or proceedings against the corporate debtor including execution of judgments, decrees, or orders.",
+        "Transferring, encumbering, alienating, or disposing of corporate debtor assets or legal/beneficial rights.",
+        "Any action to foreclose, recover, or enforce security interest created by the corporate debtor, including under the SARFAESI Act, 2002.",
+        "Recovery of property by an owner or lessor where such property is occupied by or in possession of the corporate debtor.",
+        "Action or proceeding by a surety against the corporate debtor pursuant to a contract of guarantee during moratorium."
+      ],
+      "saving_exceptions": [
+        "Transactions, agreements, or arrangements notified by the Central Government in consultation with financial sector regulators.",
+        "Actions against a surety in a contract of guarantee to a corporate debtor.",
+        "Termination or suspension of critical/essential supplies or statutory grants/licenses if the corporate debtor defaults on current dues arising during the moratorium period."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_MORATORIUM_VIOLATION",
+      "ERR_UNAUTHORIZED_ASSET_TRANSFER",
+      "ERR_ILLEGAL_SECURITY_ENFORCEMENT",
+      "ERR_PROHIBITED_SUIT_CONTINUATION",
+      "ERR_CRITICAL_SUPPLY_DISRUPTION",
+      "ERR_DEFAULT_ON_CURRENT_MORATORIUM_DUES"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_15",
+    "statute_id": "IBC_2016_SEC_15",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "15",
+    "section_title": "Public announcement of corporate insolvency resolution process",
+    "jurisdiction_type": "PROCEDURAL_DIRECTIVE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the publication and specifies the required contents of the public announcement of the Corporate Insolvency Resolution Process (CIRP), including details of the corporate debtor, claim submission deadline, IRP details, penalties for false claims, and CIRP closing date.",
+    "core_judicial_inquiry": "Whether the public announcement was made in the specified manner and contains all mandatory statutory information, including corporate debtor details, claim deadlines, IRP particulars, and the CIRP completion date.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_13",
+      "IBC_2016_SEC_16"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Interim resolution professional appointed under Section 16 pursuant to an order of admission under Section 13."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Inclusion of the name and address of the corporate debtor under CIRP.",
+        "Inclusion of the name of the authority with which the corporate debtor is incorporated or registered.",
+        "Inclusion of the last date for submission of claims as specified.",
+        "Inclusion of details of the interim resolution professional vested with management and responsible for receiving claims.",
+        "Inclusion of notice regarding penalties for false or misleading claims.",
+        "Inclusion of the CIRP closing date, set as the 180th day from the admission of the application under Section 7, 9, or 10.",
+        "Public announcement must be made in the manner specified by the Board."
+      ],
+      "statutory_bars": [
+        "Omission of mandatory details required under sub-section (1) or non-compliance with the specified publication manner under sub-section (2)."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PUBLIC_ANNOUNCEMENT_DEFECTIVE",
+      "ERR_MISSING_CLAIM_DEADLINE",
+      "ERR_INVALID_CIRP_CLOSING_DATE",
+      "ERR_IRP_DETAILS_OMITTED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_16",
+    "statute_id": "IBC_2016_SEC_16",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "16",
+    "section_title": "Appointment and tenure of interim resolution professional",
+    "jurisdiction_type": "PROCEDURAL_DIRECTIVE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the appointment procedure, eligibility verification, reference mechanisms to the Board (IBBI), and tenure of the Interim Resolution Professional (IRP) upon CIRP commencement.",
+    "core_judicial_inquiry": "Whether any disciplinary proceeding is pending against the proposed interim resolution professional, or whether a reference to the Board is required for recommending an eligible insolvency professional.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_13",
+      "IBC_2016_SEC_22"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority appointing an Interim Resolution Professional on the insolvency commencement date."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Appointment of the interim resolution professional on the insolvency commencement date.",
+        "For financial creditor applications under Section 7, appointment of the proposed RP if no disciplinary proceedings are pending against him.",
+        "For operational creditor applications under Section 9 with a proposed IRP, appointment of the proposed RP if no disciplinary proceedings are pending against him.",
+        "For operational creditor applications with no proposed IRP or corporate applicant applications under Section 10, mandatory reference by the Adjudicating Authority to the Board for recommendation.",
+        "Recommendation by the Board of an insolvency professional with no pending disciplinary proceedings within 10 days of receiving a reference."
+      ],
+      "statutory_bars": [
+        "Pending disciplinary proceedings against the proposed insolvency professional."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 10,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PENDING_DISCIPLINARY_PROCEEDING",
+      "ERR_IBBI_RECOMMENDATION_TIMEOUT",
+      "ERR_IRP_APPOINTMENT_FAILURE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_17",
+    "statute_id": "IBC_2016_SEC_17",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "17",
+    "section_title": "Management of affairs of corporate debtor by interim resolution professional",
+    "jurisdiction_type": "MANAGEMENT_VESTING",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Vests the management of the corporate debtor in the interim resolution professional, suspends the powers of the board of directors or partners, mandates corporate personnel and financial institutions to follow IRP instructions, and grants the IRP access to records and authority over legal compliances.",
+    "core_judicial_inquiry": "Whether the management of the corporate debtor stands vested in the IRP, whether powers of the board or partners are suspended, and whether officers, managers, or financial institutions are failing to comply with IRP instructions or provide access to records.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_18",
+      "IBC_2016_SEC_19",
+      "IBC_2016_SEC_20",
+      "IBC_2016_SEC_23"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Interim resolution professional appointed under Section 16 upon admission of CIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Vesting of the management of affairs of the corporate debtor in the interim resolution professional from the date of appointment.",
+        "Suspension of powers of the board of directors or partners of the corporate debtor.",
+        "Reporting of officers and managers to the interim resolution professional with full access to documents and records.",
+        "Mandatory compliance by financial institutions maintaining corporate debtor accounts with IRP instructions."
+      ],
+      "statutory_bars": [
+        "Exercise of corporate or managerial powers by the suspended board of directors or partners after IRP appointment.",
+        "Refusal or delay by officers, managers, statutory auditors, or financial institutions to extend cooperation or provide access to records and bank accounts."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_BOARD_POWERS_SUSPENDED",
+      "ERR_NON_COMPLIANCE_BY_FINANCIAL_INSTITUTION",
+      "ERR_OFFICER_NON_COOPERATION",
+      "ERR_DENIAL_OF_ACCESS_TO_RECORDS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_18",
+    "statute_id": "IBC_2016_SEC_18",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "18",
+    "section_title": "Duties of interim resolution professional",
+    "jurisdiction_type": "STATUTORY_DUTY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Outlines the mandatory duties of the Interim Resolution Professional (IRP), including asset and operational data collection, receiving, collating, and verifying creditor claims, constituting the Committee of Creditors, managing operations, and taking custody of assets owned by the corporate debtor.",
+    "core_judicial_inquiry": "Whether the interim resolution professional has fulfilled statutory duties—including claim collation/verification, Committee of Creditors constitution, and taking control over corporate debtor assets—without impermissibly taking custody of third-party or subsidiary assets.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_13",
+      "IBC_2016_SEC_15",
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_17",
+      "IBC_2016_SEC_19",
+      "IBC_2016_SEC_20",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_22"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Interim resolution professional appointed under Section 16 upon admission of CIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Collection of asset, financial, and operational information for the previous two years.",
+        "Receiving, collating, verifying, and determining the value of creditor claims pursuant to public announcement under Sections 13 and 15.",
+        "Constitution of the Committee of Creditors.",
+        "Taking custody and control of tangible, intangible, foreign, and security assets over which the corporate debtor has ownership rights."
+      ],
+      "statutory_bars": [
+        "Taking control or custody of assets owned by a third party held under trust or contractual arrangement (including bailment).",
+        "Taking control or custody of assets belonging to any Indian or foreign subsidiary of the corporate debtor.",
+        "Taking control or custody of assets notified by the Central Government in consultation with a financial sector regulator."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_FAILURE_TO_COLLATE_CLAIMS",
+      "ERR_FAILURE_TO_CONSTITUTE_COC",
+      "ERR_THIRD_PARTY_ASSET_INCLUSION",
+      "ERR_SUBSIDIARY_ASSET_INCLUSION",
+      "ERR_UNAUTHORIZED_ASSET_CONTROL"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_19",
+    "statute_id": "IBC_2016_SEC_19",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "19",
+    "section_title": "Persons to extend cooperation to interim resolution professional",
+    "jurisdiction_type": "ENFORCEMENT_DIRECTIVE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates that current or former personnel, promoters, management associates, or contractual service providers of the corporate debtor extend all assistance and cooperation to the IRP or RP, and empowers the Adjudicating Authority to issue compliance orders upon an application detailing non-cooperation.",
+    "core_judicial_inquiry": "Whether the person from whom assistance or cooperation is sought falls under the statutory scope of Section 19(1) and whether that person has failed or refused to cooperate with the interim resolution professional or resolution professional.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_17",
+      "IBC_2016_SEC_18",
+      "IBC_2016_SEC_23",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_70"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Interim resolution professional or resolution professional appointed under Chapter II."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Target person is or has been personnel, promoter, associated with management, or engaged in a contract for service with the corporate debtor.",
+        "Failure or refusal by such person to assist or cooperate with the IRP or RP in managing affairs or performing statutory duties.",
+        "Filing of an application by the IRP or RP to the Adjudicating Authority for necessary directions under Section 19(2)."
+      ],
+      "statutory_bars": [
+        "Respondent is not a person covered under Section 19(1) or otherwise required to assist or cooperate with the IRP or RP."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_NON_COOPERATION_BY_PERSONNEL",
+      "ERR_PROMOTER_FAILURE_TO_ASSIST",
+      "ERR_REFUSAL_TO_PROVIDE_RECORDS",
+      "ERR_NON_COMPLIANCE_WITH_IRP_INSTRUCTIONS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_20",
+    "statute_id": "IBC_2016_SEC_20",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "20",
+    "section_title": "Management of operations of corporate debtor as going concern",
+    "jurisdiction_type": "GOING_CONCERN_MANAGEMENT",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the interim resolution professional to make every endeavour to protect and preserve the value of the property of the corporate debtor and manage its operations as a going concern, providing explicit statutory authorities regarding professional appointments, contract modifications, raising interim finance, and issuing personnel instructions.",
+    "core_judicial_inquiry": "Whether the interim resolution professional acted within statutory authority to preserve property value and maintain the corporate debtor as a going concern, and whether required creditor consent was obtained when creating security interests over encumbered assets to raise interim finance.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_17",
+      "IBC_2016_SEC_18",
+      "IBC_2016_SEC_23",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_28"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Interim resolution professional appointed under Section 16 upon the commencement of CIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Duty to protect and preserve the value of the property of the corporate debtor.",
+        "Duty to manage the operations of the corporate debtor as a going concern.",
+        "Obtaining prior consent of creditors whose debt is secured over encumbered property before creating a security interest over such property to raise interim finance, unless the value of the property is at least twice the debt amount."
+      ],
+      "statutory_bars": [
+        "Creating a security interest over encumbered property for interim finance without prior consent of secured creditors when the value of the property is less than twice the debt amount."
+      ],
+      "saving_exceptions": [
+        "Prior consent of the secured creditor is not required for creating a security interest over encumbered property if the value of such property is not less than the amount equivalent to twice the amount of the debt."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_UNAUTHORIZED_SECURITY_CREATION",
+      "ERR_INTERIM_FINANCE_CONSENT_MISSING",
+      "ERR_FAILURE_TO_MAINTAIN_GOING_CONCERN"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_21",
+    "statute_id": "IBC_2016_SEC_21",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "21",
+    "section_title": "Committee of creditors",
+    "jurisdiction_type": "GOVERNANCE_STRUCTURE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the constitution of the Committee of Creditors (CoC) comprising all non-related party financial creditors, specifies voting share determination, establishes mechanisms for class representation by authorised representatives, sets the default decision threshold at 51% voting share, and extends CoC supervision to the liquidation process.",
+    "core_judicial_inquiry": "Whether the CoC has been properly constituted with eligible financial creditors, whether related party financial creditors have been excluded (or validly saved under the debt-to-equity conversion proviso), whether authorised representatives were properly appointed for class creditors, and whether decisions meet the statutory voting threshold.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_18",
+      "IBC_2016_SEC_22",
+      "IBC_2016_SEC_24",
+      "IBC_2016_SEC_25A",
+      "IBC_2016_SEC_27",
+      "IBC_2016_SEC_28",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_34A",
+      "IBC_2016_SEC_35"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "All financial creditors of the corporate debtor to whom financial debt is owed.",
+        "Regulated financial creditors who are related parties solely due to pre-ICD debt-to-equity conversions or substitutions.",
+        "Authorised representatives appointed to represent classes of financial creditors, security holders, deposit holders, or minor/incapacitated creditors."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Collation of all claims received and determination of financial position by the interim resolution professional prior to constituting the CoC.",
+        "Filing of an application by the IRP to the Adjudicating Authority for the appointment of an Authorised Representative where financial debt is owed to a class of creditors exceeding the specified number.",
+        "Determination of voting share based on the proportion of financial debt owed to each financial creditor relative to total financial debt owed to eligible CoC members.",
+        "Mandatory minimum threshold of 51% voting share for standard CoC decisions, unless a higher threshold is specified by another provision of the Code.",
+        "RP must furnish financial information requested by the CoC within seven days of requisition."
+      ],
+      "statutory_bars": [
+        "Financial creditors or their authorised representatives who are related parties of the corporate debtor are barred from representation, participation, or voting in CoC meetings.",
+        "Financial creditors holding operational debt assigned/transferred from operational creditors are treated as operational creditors for that debt and excluded from financial creditor voting share."
+      ],
+      "saving_exceptions": [
+        "The related party bar does not apply to a financial creditor regulated by a financial sector regulator if it became a related party solely on account of conversion or substitution of debt into equity shares or convertible instruments prior to the insolvency commencement date.",
+        "Where a corporate debtor has no financial creditors, the CoC shall be constituted comprising specified persons (such as operational creditors or workmen) to exercise specified functions."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_RELATED_PARTY_VOTING_VIOLATION",
+      "ERR_IMPROPER_COC_CONSTITUTION",
+      "ERR_MISCALCULATED_VOTING_SHARE",
+      "ERR_INSUFFICIENT_VOTING_THRESHOLD",
+      "ERR_AUTHORISED_REPRESENTATIVE_APPOINTMENT_FAILURE",
+      "ERR_FAILURE_TO_PROVIDE_FINANCIAL_INFO"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_22",
+    "statute_id": "IBC_2016_SEC_22",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "22",
+    "section_title": "Appointment of resolution professional",
+    "jurisdiction_type": "PROCEDURAL_DIRECTIVE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates holding the first CoC meeting within seven days of constitution to decide, by a minimum 66% voting share of financial creditors, whether to retain the IRP as Resolution Professional or replace them, subject to written consent and Board confirmation.",
+    "core_judicial_inquiry": "Whether the Committee of Creditors approved the continuation or replacement of the interim resolution professional by at least 66% voting share, submitted the written consent in the specified form, and obtained Board confirmation for any proposed replacement.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_23",
+      "IBC_2016_SEC_27"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Committee of Creditors voting in its first meeting by a majority of not less than sixty-six per cent of the voting share of financial creditors."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Holding the first meeting of the committee of creditors within seven days of its constitution.",
+        "Resolution passed by a majority of not less than sixty-six per cent of the voting share of financial creditors.",
+        "Submission of written consent from the continuing or proposed resolution professional in the specified form.",
+        "Communication of decision to continue the IRP as RP to the IRP, the corporate debtor, and the Board.",
+        "Filing an application before the Adjudicating Authority with written consent if replacing the IRP, followed by forwarding the proposed RP's name to the Board for confirmation."
+      ],
+      "statutory_bars": [
+        "Failure to obtain the mandatory sixty-six per cent voting share of financial creditors.",
+        "Absence of written consent in the specified form from the proposed or continuing resolution professional."
+      ],
+      "saving_exceptions": [
+        "Where the Board does not confirm the proposed RP within ten days of receipt, the Adjudicating Authority shall order the IRP to continue functioning as RP until confirmation is granted."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 10,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_FIRST_COC_MEETING_DELAYED",
+      "ERR_INSUFFICIENT_VOTING_SHARE_FOR_RP",
+      "ERR_MISSING_WRITTEN_CONSENT",
+      "ERR_IBBI_CONFIRMATION_TIMEOUT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_23",
+    "statute_id": "IBC_2016_SEC_23",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "23",
+    "section_title": "Resolution professional to conduct corporate insolvency resolution process",
+    "jurisdiction_type": "CONDUCT_OF_PROCESS",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the resolution professional to conduct the entire CIRP and manage the operations of the corporate debtor during and beyond the CIRP period until an order approving the resolution plan or appointing a liquidator is passed.",
+    "core_judicial_inquiry": "Whether the resolution professional is properly conducting the CIRP and managing corporate debtor operations, whether management authority extends pending final orders under Section 31 or Section 34, and whether a replaced IRP has handed over all records.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_17",
+      "IBC_2016_SEC_18",
+      "IBC_2016_SEC_20",
+      "IBC_2016_SEC_22",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_27",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_34"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional appointed under Section 22 or Section 27 during the corporate insolvency resolution process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Conduct the entire corporate insolvency resolution process and manage the operations of the corporate debtor during the CIRP period.",
+        "Exercise powers and perform duties vested or conferred on the interim resolution professional under Chapter II.",
+        "Mandatory handover by the interim resolution professional of all information, documents, and records pertaining to the corporate debtor upon appointment of the resolution professional under Section 22(4).",
+        "Continued management of operations of the corporate debtor after the expiry of the CIRP period until an order approving the resolution plan under Section 31(1) or appointing a liquidator under Section 34 is passed."
+      ],
+      "statutory_bars": [
+        "Interim resolution professional failing or refusing to provide information, documents, and records in possession and knowledge to the newly appointed resolution professional."
+      ],
+      "saving_exceptions": [
+        "Resolution professional continues to manage operations after expiry of the CIRP period until the Adjudicating Authority passes an order approving a resolution plan under Section 31(1) or appointing a liquidator under Section 34."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_RP_CONDUCT_NON_COMPLIANCE",
+      "ERR_IRP_RECORD_HANDOVER_FAILURE",
+      "ERR_UNAUTHORIZED_MANAGEMENT_VACATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_24",
+    "statute_id": "IBC_2016_SEC_24",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "24",
+    "section_title": "Meeting of committee of creditors",
+    "jurisdiction_type": "MEETING_GOVERNANCE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Regulates the convening, notice requirements, participation rights, representation, voting share determination, and conduct of Committee of Creditors (CoC) meetings managed by the resolution professional.",
+    "core_judicial_inquiry": "Whether meetings of the Committee of Creditors were properly convened and conducted by the resolution professional, whether mandatory notices were served on all required participants (including eligible operational creditors and suspended directors/partners), and whether voting rights were accurately assigned and exercised.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_22",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_25A",
+      "IBC_2016_SEC_27",
+      "IBC_2016_SEC_28",
+      "IBC_2016_SEC_30"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional responsible for conducting all CoC meetings.",
+        "Members of the Committee of Creditors, including authorised representatives.",
+        "Members of the suspended Board of Directors or partners of the corporate debtor.",
+        "Operational creditors or their representative if aggregate operational dues are not less than ten per cent of total debt."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "All meetings of the committee of creditors must be conducted by the resolution professional.",
+        "Notice of each CoC meeting must be given to CoC members (including authorised representatives), suspended directors/partners, and operational creditors holding at least ten per cent of aggregate debt.",
+        "Resolution professional must determine and assign voting share to each financial creditor in the specified manner.",
+        "Voting must be conducted strictly in accordance with assigned voting shares."
+      ],
+      "statutory_bars": [
+        "Directors, partners, and the representative of operational creditors are strictly barred from voting in CoC meetings.",
+        "A creditor cannot appoint the current resolution professional as their individual representative IP."
+      ],
+      "saving_exceptions": [
+        "Absence of any director, partner, or representative of operational creditors does not invalidate the proceedings of a CoC meeting."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_IMPROPER_NOTICE_OF_COC_MEETING",
+      "ERR_UNAUTHORIZED_VOTING_BY_NON_MEMBER",
+      "ERR_FAILURE_TO_NOTIFY_OPERATIONAL_CREDITORS",
+      "ERR_MISCALCULATED_VOTING_SHARE",
+      "ERR_IMPROPER_MEETING_CONDUCT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_25",
+    "statute_id": "IBC_2016_SEC_25",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "25",
+    "section_title": "Duties of resolution professional",
+    "jurisdiction_type": "STATUTORY_DUTY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Outlines the fundamental duties and explicit statutory powers of the Resolution Professional (RP) to preserve and protect corporate debtor assets, maintain business operations, prepare information memorandums, invite and present resolution plans, and file applications for avoidance transactions or fraudulent/wrongful trading.",
+    "core_judicial_inquiry": "Whether the resolution professional has fulfilled statutory obligations—including taking custody of assets, maintaining updated claim lists, issuing invitations for resolution plans based on CoC-approved criteria, and applying to the Adjudicating Authority for avoidance transactions or fraudulent/wrongful trading.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_22",
+      "IBC_2016_SEC_23",
+      "IBC_2016_SEC_24",
+      "IBC_2016_SEC_26",
+      "IBC_2016_SEC_28",
+      "IBC_2016_SEC_29",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_49",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional appointed under Section 22 or Section 27 to conduct the corporate insolvency resolution process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Duty to preserve and protect all assets and continued business operations of the corporate debtor.",
+        "Taking immediate custody and control of all assets and business records of the corporate debtor.",
+        "Representing the corporate debtor in legal, quasi-judicial, or arbitration proceedings.",
+        "Maintaining an updated list of claims.",
+        "Convening and attending all meetings of the committee of creditors.",
+        "Preparing the information memorandum in accordance with Section 29.",
+        "Inviting prospective resolution applicants based on criteria laid down with the prior approval of the committee of creditors.",
+        "Presenting all compliant resolution plans at meetings of the committee of creditors.",
+        "Filing applications to the Adjudicating Authority in respect of avoidance transactions or fraudulent/wrongful trading."
+      ],
+      "statutory_bars": [
+        "Raising interim finance without the prior approval of the committee of creditors under Section 28.",
+        "Inviting prospective resolution applicants without obtaining prior approval of the eligibility criteria from the committee of creditors."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_RP_DUTY_BREACH",
+      "ERR_UNAUTHORIZED_INTERIM_FINANCE",
+      "ERR_FAILURE_TO_TAKE_ASSET_CUSTODY",
+      "ERR_FAILURE_TO_INVITE_RESOLUTION_PLANS",
+      "ERR_UNAPPROVED_ELIGIBILITY_CRITERIA",
+      "ERR_FAILURE_TO_FILE_AVOIDANCE_APPLICATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_25A",
+    "statute_id": "IBC_2016_SEC_25A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "25A",
+    "section_title": "Rights and duties of authorised representative of financial creditors",
+    "jurisdiction_type": "CLASS_REPRESENTATION_GOVERNANCE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Defines the rights and duties of an authorised representative (AR) of financial creditors, including participation and voting in CoC meetings, circulating agenda/minutes, filing voting instructions, and applying the class majority rule (>50% of cast votes) for Section 21(6A) creditors except on Section 12A withdrawal applications.",
+    "core_judicial_inquiry": "Whether the authorised representative acted in accordance with statutory voting mandates—applying the >50% class majority rule for Section 21(6A) creditors or individual split voting for Section 12A applications—and fulfilled procedural duties to circulate agenda/minutes and record voting instructions with the CoC.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_12A",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_24",
+      "IBC_2016_SEC_25"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Authorised representative appointed under sub-section (6) or sub-section (6A) of section 21 or sub-section (5) of section 24."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Duty to circulate the agenda and minutes of CoC meetings to represented financial creditors.",
+        "Obtaining prior voting instructions from financial creditors through physical or electronic means.",
+        "For Section 21(6A) ARs, casting vote on behalf of all represented financial creditors in accordance with the decision of more than fifty per cent of the voting share of creditors who cast their vote.",
+        "Duty to file physical or electronic voting instructions received from financial creditors with the committee of creditors."
+      ],
+      "statutory_bars": [
+        "Authorised representative acting against the interest of the financial creditors represented.",
+        "Failing to abstain from voting on behalf of an individual financial creditor who has not provided prior voting instructions under the Section 25A(3) voting mechanism."
+      ],
+      "saving_exceptions": [
+        "For Section 21(6A) authorised representatives, the vote of all represented creditors is cast as a single block based on the decision of >50% of voting share of creditors who cast their vote.",
+        "For voting on Section 12A withdrawal applications, Section 21(6A) ARs are carved out from the block voting rule and must cast votes individually per creditor instruction under Section 25A(3)."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_AR_VOTING_INSTRUCTION_BREACH",
+      "ERR_FAILURE_TO_CIRCULATE_AGENDA_MINUTES",
+      "ERR_IMPROPER_CLASS_VOTE_CALCULATION",
+      "ERR_SECTION_12A_VOTING_MISAPPLICATION",
+      "ERR_FAILURE_TO_FILE_VOTING_INSTRUCTIONS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_27",
+    "statute_id": "IBC_2016_SEC_27",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "27",
+    "section_title": "Replacement of resolution professional by committee of creditors",
+    "jurisdiction_type": "REPLACEMENT_MECHANISM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the committee of creditors to replace an existing resolution professional at any time during CIRP by a vote of sixty-six per cent of voting shares, subject to written consent from the proposed RP and confirmation by the Board.",
+    "core_judicial_inquiry": "Whether the resolution to replace the resolution professional was passed by at least sixty-six per cent of voting shares of the committee of creditors, accompanied by written consent in the specified form, and whether any disciplinary proceedings are pending against the proposed resolution professional.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_22",
+      "IBC_2016_SEC_23",
+      "IBC_2016_SEC_24"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Committee of creditors acting by a vote of sixty-six per cent of voting shares."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Resolution passed at a meeting of the committee of creditors by a vote of sixty-six per cent of voting shares.",
+        "Written consent from the proposed resolution professional in the specified form.",
+        "Forwarding of the proposed resolution professional's name by the committee of creditors to the Adjudicating Authority.",
+        "Forwarding of the proposed name by the Adjudicating Authority to the Board for confirmation."
+      ],
+      "statutory_bars": [
+        "Failure to obtain the required sixty-six per cent voting share of the committee of creditors.",
+        "Pending disciplinary proceedings against the proposed resolution professional.",
+        "Absence of written consent in the specified form from the proposed resolution professional."
+      ],
+      "saving_exceptions": [
+        "Where disciplinary proceedings are pending against the proposed resolution professional, the resolution professional appointed under section 22 shall continue until another resolution professional is appointed under this section."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSUFFICIENT_VOTING_SHARE_FOR_REPLACEMENT",
+      "ERR_PENDING_DISCIPLINARY_PROCEEDING",
+      "ERR_MISSING_WRITTEN_CONSENT",
+      "ERR_IMPROPER_REPLACEMENT_PROCEDURE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_28",
+    "statute_id": "IBC_2016_SEC_28",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "28",
+    "section_title": "Approval of committee of creditors for certain actions",
+    "jurisdiction_type": "GOVERNANCE_CONTROL",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Restricts the resolution professional from taking specific critical management, financial, structural, or legal actions during CIRP without prior approval of the committee of creditors by a vote of sixty-six per cent of voting shares, declaring any unapproved action void.",
+    "core_judicial_inquiry": "Whether the resolution professional took any enumerated action under Section 28(1) without convening a meeting and obtaining prior approval from the committee of creditors by a sixty-six per cent voting share.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_20",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_24",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_27",
+      "IBC_2016_SEC_220"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional seeking prior approval for actions enumerated under sub-section (1).",
+        "Committee of creditors reporting unapproved actions of the resolution professional to the Board."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Resolution professional must convene a meeting of the committee of creditors prior to taking any action listed under sub-section (1).",
+        "Obtaining prior approval passed by a vote of not less than sixty-six per cent of voting shares of the financial creditors.",
+        "Seeking prior approval for actions including raising excess interim finance, creating security interests, changing capital structure, modifying ownership/management, entering related party transactions, delegating authority, or altering auditor/personnel contracts."
+      ],
+      "statutory_bars": [
+        "Taking any action enumerated under Section 28(1) without seeking and obtaining prior approval of the committee of creditors.",
+        "Action supported by less than sixty-six per cent of the voting shares of the committee of creditors."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_UNAPPROVED_RP_ACTION",
+      "ERR_INSUFFICIENT_VOTING_SHARE_SEC_28",
+      "ERR_VOID_ACTION_WITHOUT_CONSENT",
+      "ERR_UNAUTHORIZED_DELEGATION_OF_AUTHORITY"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_29A",
+    "statute_id": "IBC_2016_SEC_29A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "29A",
+    "section_title": "Person not eligible to be resolution applicant",
+    "jurisdiction_type": "STATUTORY_BAR",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Prescribes comprehensive negative eligibility criteria that render a person, persons acting jointly or in concert, or connected persons ineligible to submit a resolution plan during corporate insolvency resolution process.",
+    "core_judicial_inquiry": "Whether a resolution applicant, any person acting jointly or in concert with them, or any connected person falls under any statutory disqualifications specified under clauses (a) to (j) of Section 29A.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_54K",
+      "IBC_2016_SEC_66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution applicant submitting a plan individually or jointly pursuant to invitation under Section 25(2)(h) or Section 54K.",
+        "Must not suffer from any personal disqualification under clauses (a) to (i) or have any connected person suffering from such disqualification under clause (j)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing of an affidavit along with the resolution plan declaring eligibility under Section 29A.",
+        "Mandatory verification of eligibility of the resolution applicant and all connected persons by the resolution professional and committee of creditors."
+      ],
+      "statutory_bars": [
+        "Is an undischarged insolvent.",
+        "Is a wilful defaulter under RBI guidelines.",
+        "Has an account classified as a non-performing asset (NPA) for at least one year prior to CIRP commencement date.",
+        "Has been convicted of an offence punishable with imprisonment for two years or more under the Twelfth Schedule, or seven years or more under any other law.",
+        "Is disqualified to act as a director under the Companies Act, 2013.",
+        "Is prohibited by SEBI from trading in securities or accessing securities markets.",
+        "Was a promoter or in management/control of a corporate debtor where avoidance orders for preferential, undervalued, extortionate credit, or fraudulent transactions were made by the Adjudicating Authority.",
+        "Has executed an invoked and unpaid guarantee in favour of a creditor in respect of a corporate debtor under CIRP.",
+        "Is subject to any disability corresponding to clauses (a) to (h) under foreign jurisdiction law.",
+        "Has a connected person (promoter, management/control, holding/subsidiary/associate company, or related party) ineligible under clauses (a) to (i)."
+      ],
+      "saving_exceptions": [
+        "NPA disqualification under clause (c) is cured if the applicant pays all overdue amounts with interest and charges prior to submitting the resolution plan.",
+        "NPA disqualification does not apply to a financial entity resolution applicant that is not a related party to the corporate debtor.",
+        "NPA disqualification does not apply for three years if the NPA account was acquired pursuant to a prior approved resolution plan under the Code.",
+        "Criminal conviction bar under clause (d) lapses after two years from release from imprisonment.",
+        "Avoidance transaction bar under clause (g) does not apply if transactions occurred prior to acquisition of the corporate debtor under a prior approved resolution plan/scheme without contribution by the applicant.",
+        "Disqualification exceptions for connected persons apply to non-related party financial entities."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INELIGIBLE_RESOLUTION_APPLICANT",
+      "ERR_WILFUL_DEFAULTER",
+      "ERR_NPA_DISQUALIFICATION",
+      "ERR_CRIMINAL_CONVICTION_BAR",
+      "ERR_DIRECTOR_DISQUALIFIED",
+      "ERR_SEBI_PROHIBITED",
+      "ERR_AVOIDANCE_ORDER_PROMOTER",
+      "ERR_UNPAID_INVOKED_GUARANTEE",
+      "ERR_CONNECTED_PERSON_DISQUALIFIED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_30",
+    "statute_id": "IBC_2016_SEC_30",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "30",
+    "section_title": "Submission of resolution plan",
+    "jurisdiction_type": "PLAN_SUBMISSION_AND_APPROVAL",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Regulates the submission of resolution plans, mandatory compliance checks by the resolution professional, mandatory payout protections for operational and dissenting financial creditors, and the 66% voting threshold for Committee of Creditors approval.",
+    "core_judicial_inquiry": "Whether the resolution plan satisfies all statutory conditions under Section 30(2)—including Section 29A eligibility, priority payment of CIRP costs, operational and dissenting financial creditor statutory minimums, feasibility and viability, and non-contravention of law—and has been approved by at least 66% voting share of the Committee of Creditors.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_12",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_29A",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_53",
+      "IBC_2016_SEC_61",
+      "IBC_2016_SEC_62"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution applicant submitting a resolution plan individually or jointly pursuant to the information memorandum.",
+        "Must submit an affidavit confirming eligibility under Section 29A along with the resolution plan."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Affidavit affirming Section 29A eligibility accompanying the resolution plan.",
+        "Priority payment of insolvency resolution process costs.",
+        "Payment of debts to operational creditors that is not less than the higher of liquidation value under Section 53 or plan distribution value under Section 53 priority.",
+        "Payment of debts to dissenting financial creditors that is not less than the lower of liquidation value under Section 53 or plan distribution value under Section 53 priority.",
+        "Provisions for post-approval management of the corporate debtor.",
+        "Provisions for implementation and supervision of the resolution plan, including monitoring committee constitution.",
+        "Plan does not contravene any provision of law for the time being in force.",
+        "Approval by the Committee of Creditors by a vote of not less than sixty-six per cent of voting share of financial creditors.",
+        "Committee of Creditors recording reasons for approval after evaluating feasibility, viability, manner of distribution, and security interest value.",
+        "Submission of the approved resolution plan by the resolution professional to the Adjudicating Authority."
+      ],
+      "statutory_bars": [
+        "Ineligibility of the resolution applicant under Section 29A.",
+        "Failure to provide priority payment for CIRP costs.",
+        "Operational creditor payout below statutory minimum threshold.",
+        "Dissenting financial creditor payout below statutory minimum threshold.",
+        "Resolution plan contravenes any law in force.",
+        "Approval by Committee of Creditors with less than sixty-six per cent voting share."
+      ],
+      "saving_exceptions": [
+        "Deemed shareholder approval under the Companies Act, 2013 or other laws for actions required under the resolution plan.",
+        "A period not exceeding thirty days allowed to resolution applicants ineligible under Section 29A(c) to pay overdue amounts with interest to cure ineligibility.",
+        "Section 30(2)(ba) protections under Amendment Act 2026 do not apply to CIRP proceedings where CoC approval or liquidation orders occurred prior to the commencement of the 2026 Act."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 30
+    },
+    "audit_error_codes": [
+      "ERR_INELIGIBLE_RESOLUTION_APPLICANT",
+      "ERR_MISSING_29A_AFFIDAVIT",
+      "ERR_CIRP_COST_PRIORITY_VIOLATION",
+      "ERR_OPERATIONAL_CREDITOR_PAYOUT_DEFICIT",
+      "ERR_DISSENTING_FINANCIAL_CREDITOR_PAYOUT_DEFICIT",
+      "ERR_LAW_CONTRAVENTION",
+      "ERR_INSUFFICIENT_COC_VOTE_FOR_PLAN",
+      "ERR_MISSING_COC_REASONS",
+      "ERR_FEASIBILITY_VIABILITY_NOT_CONSIDERED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_31",
+    "statute_id": "IBC_2016_SEC_31",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "31",
+    "section_title": "Approval of resolution plan",
+    "jurisdiction_type": "PLAN_APPROVAL_AND_BINDING_EFFECT",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the judicial approval or rejection of a CoC-approved resolution plan by the Adjudicating Authority, making it binding on all stakeholders (including government authorities), extinguishing past unprovided claims, terminating moratorium, and protecting statutory grants and licenses during subsistence.",
+    "core_judicial_inquiry": "Whether the CoC-approved resolution plan satisfies Section 30(2) requirements and contains provisions for effective implementation, whether required Competition Commission of India (CCI) approvals were obtained prior to submission under Section 30(6), and whether prior claims against the corporate debtor stand extinguished upon approval.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_32A",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_60",
+      "IBC_2016_SEC_61"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional submitting the CoC-approved resolution plan under Section 30(6)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Satisfaction of the Adjudicating Authority that the resolution plan meets Section 30(2) requirements and has provisions for effective implementation.",
+        "Prior approval of the Competition Commission of India under the Competition Act, 2002 if the plan involves a combination, obtained before submission to the Adjudicating Authority.",
+        "Statutory approval of plan implementation by Adjudicating Authority within 30 days of receipt.",
+        "Obtaining other statutory/regulatory approvals required under any law within one year from plan approval date or as provided by such law.",
+        "Forwarding of all CIRP records and resolution plan to the Board database by the resolution professional."
+      ],
+      "statutory_bars": [
+        "Failure of the resolution plan to conform to requirements referred to in Section 30(2).",
+        "Failure to obtain Competition Commission of India approval before submitting the plan to the Adjudicating Authority.",
+        "Institution or continuation of proceedings against the corporate debtor or its assets on the basis of prior extinguished claims.",
+        "Suspension or termination of statutory licenses, permits, or grants by government authorities during the remaining subsistence period, provided current obligations are met."
+      ],
+      "saving_exceptions": [
+        "Adjudicating Authority may give notice to the CoC to rectify defects in the resolution plan before rejecting it.",
+        "Adjudicating Authority may, on RP application backed by 66% CoC vote, first approve plan implementation and subsequently approve the distribution manner within 30 days.",
+        "Extinction of claims under Section 31(6) does not affect claims or proceedings against promoters, former management, guarantors, or co-debtors jointly/severally liable."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PLAN_NON_COMPLIANCE_SEC_30_2",
+      "ERR_MISSING_CCI_APPROVAL",
+      "ERR_ADJUDICATION_DELAY_UNEXPLAINED",
+      "ERR_ILLEGAL_CONTINUANCE_OF_EXTINGUISHED_CLAIMS",
+      "ERR_UNLAWFUL_LICENSE_TERMINATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_32A",
+    "statute_id": "IBC_2016_SEC_32A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "32A",
+    "section_title": "Liability for prior offences, etc.",
+    "jurisdiction_type": "IMMUNITY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Grants statutory immunity to the corporate debtor and its assets from prosecution, attachment, seizure, or confiscation for offences committed prior to CIRP commencement, provided there is a complete change in management/control to an independent third party pursuant to an approved resolution plan or liquidation sale, while maintaining personal liability for defaulting officers and promoters.",
+    "core_judicial_inquiry": "Whether the approval of a resolution plan under Section 31 or sale of liquidation assets under Chapter III results in a bona fide change of management or control to a person who is not a promoter, related party, or conspirator/abettor in the pre-CIRP offence, thereby entitling the corporate debtor and its property to statutory immunity from criminal prosecution and asset attachment.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_29A",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Corporate debtor or successful resolution applicant/acquirer taking over control of the corporate debtor or its assets pursuant to an approved resolution plan under Section 31 or liquidation sale under Chapter III."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Approval of a resolution plan by the Adjudicating Authority under Section 31 or sale of liquidation assets under Chapter III.",
+        "Transfer of management or control of the corporate debtor/property to a person who was not a promoter, in management/control, or a related party of the corporate debtor prior to CIRP commencement.",
+        "Acquirer or new management must not be a person regarding whom investigating authorities have filed a report or complaint alleging abetment or conspiracy for the pre-CIRP offence.",
+        "Corporate debtor and associated persons must extend full assistance and co-operation to any authority investigating a pre-CIRP offence."
+      ],
+      "statutory_bars": [
+        "New acquirer or management is a promoter, in management/control, or a related party of the pre-CIRP corporate debtor.",
+        "New acquirer or management is named in a report or complaint submitted to a court/authority as an abettor or conspirator in the offence.",
+        "Prohibition against statutory authorities taking action against corporate debtor property (attachment, seizure, retention, or confiscation) covered by an approved resolution plan or liquidation sale."
+      ],
+      "saving_exceptions": [
+        "Designated partners, officers in default, promoters, or persons directly or indirectly involved in the pre-CIRP offence remain personally liable to be prosecuted and punished despite corporate debtor immunity.",
+        "Immunity does not bar actions against property owned by third parties or persons other than the qualifying acquirer/corporate debtor under applicable laws."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INELIGIBLE_ACQUIRER_FOR_IMMUNITY",
+      "ERR_RELATED_PARTY_MANAGEMENT_TRANSFER",
+      "ERR_UNLAWFUL_ASSET_ATTACHMENT_POST_PLAN",
+      "ERR_PROSECUTION_OF_IMMUNE_CORPORATE_DEBTOR",
+      "ERR_FAILURE_TO_COOPERATE_WITH_INVESTIGATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_33",
+    "statute_id": "IBC_2016_SEC_33",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "33",
+    "section_title": "Initiation of liquidation",
+    "jurisdiction_type": "LIQUIDATION_TRIGGER",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the initiation of the liquidation process or dissolution of the corporate debtor upon CIRP expiry without an approved plan, plan rejection, 66% CoC decision, or plan contravention, while permitting a one-time restoration of CIRP for up to 120 days upon CoC application.",
+    "core_judicial_inquiry": "Whether statutory grounds for liquidation exist (non-receipt/rejection of resolution plan, 66% CoC vote, or plan contravention), whether the CoC has validly applied for a one-time CIRP restoration for up to 120 days under Section 33(1A), or whether CIRP should be reinstated following a plan contravention.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_12",
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_34",
+      "IBC_2016_SEC_52",
+      "IBC_2016_SEC_54",
+      "IBC_2016_SEC_54L"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority acting suo motu upon non-receipt of a plan under Section 30(6) or rejection under Section 31.",
+        "Resolution Professional intimating decision of the Committee of Creditors (passed by at least 66% voting share) to liquidate or dissolve the corporate debtor.",
+        "Committee of Creditors (by at least 66% voting share) applying for a one-time restoration of CIRP prior to issuance of a liquidation order.",
+        "Any person whose interests are prejudicially affected by a contravention of an approved resolution plan under Section 31 or Section 54L."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Non-receipt of resolution plan prior to CIRP expiry or rejection of resolution plan under Section 31.",
+        "Or, intimation of CoC resolution passed by not less than sixty-six per cent of voting share to liquidate or dissolve the corporate debtor.",
+        "Or, application by an affected person establishing that the corporate debtor has contravened an approved resolution plan.",
+        "Passing of liquidation order requiring public announcement, notice to corporate registry, declaration of moratorium under Section 14(1)(a) & (c), and appointment of a liquidator under Section 34.",
+        "Adjudicating Authority must pass liquidation order within 30 days from receipt of intimation or application, recording reasons in writing if delayed."
+      ],
+      "statutory_bars": [
+        "Bar on commencing or proceeding with any suit or legal proceeding by or against the corporate debtor post-liquidation order without leave of the Adjudicating Authority.",
+        "Restoration of CIRP under Section 33(1A) cannot be granted more than once."
+      ],
+      "saving_exceptions": [
+        "CoC may, by a vote of at least sixty-six per cent of voting share, apply to restore CIRP for a duration not exceeding 120 days before a liquidation order is passed.",
+        "In case of plan contravention under Section 33(3), the Adjudicating Authority may reinstate CIRP instead of ordering liquidation.",
+        "Liquidation moratorium does not apply to transactions notified by the Central Government in consultation with financial sector regulators.",
+        "Liquidation order does not operate as a notice of discharge if the corporate debtor's business is continued during liquidation by the liquidator."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": 120
+    },
+    "audit_error_codes": [
+      "ERR_NON_RECEIPT_OF_RESOLUTION_PLAN",
+      "ERR_RESOLUTION_PLAN_REJECTED",
+      "ERR_INSUFFICIENT_VOTING_SHARE_FOR_LIQUIDATION",
+      "ERR_RESOLUTION_PLAN_CONTRAVENTION",
+      "ERR_EXCEEDED_MAX_RESTORATION_COUNT",
+      "ERR_UNAUTHORIZED_LEGAL_PROCEEDING_POST_LIQUIDATION",
+      "ERR_LIQUIDATION_ORDER_DELAY_UNEXPLAINED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_34",
+    "statute_id": "IBC_2016_SEC_34",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "34",
+    "section_title": "Appointment of liquidator and fee to be paid",
+    "jurisdiction_type": "LIQUIDATION_GOVERNANCE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the reference to the Board for recommending an insolvency professional as liquidator (strictly excluding the CIRP Resolution Professional), vesting of management powers in the liquidator, mandatory cooperation under Section 19 principles, record handover by the former RP, and determination/payment of liquidator fees under Section 53.",
+    "core_judicial_inquiry": "Whether the insolvency professional proposed as liquidator was recommended by the Board (excluding the CIRP Resolution Professional) with written consent, whether powers of the board of directors/KMPs stand vested in the liquidator, and whether former CIRP RPs or corporate personnel fulfilled record transfer and cooperation obligations.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_19",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_34A",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority initiating liquidator appointment upon passing a liquidation order under Section 33.",
+        "Insolvency professional (other than the CIRP Resolution Professional) recommended by the Board with written consent."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Reference by the Adjudicating Authority to the Board for recommending an insolvency professional upon passing a Section 33 liquidation order.",
+        "Proposal by the Board of an insolvency professional (other than the CIRP RP) along with written consent within ten days of reference.",
+        "Cessation of powers of the board of directors, key managerial personnel, and partners, with full vesting of powers in the liquidator upon appointment.",
+        "Mandatory forwarding of all CIRP records by the former resolution professional to the appointed liquidator.",
+        "Mandatory assistance and cooperation by personnel, promoters, management associates, and service providers under Section 19 mutatis mutandis.",
+        "Payment of liquidator fees from the proceeds of the liquidation estate in priority under Section 53."
+      ],
+      "statutory_bars": [
+        "Strict statutory prohibition against appointing or replacing the CIRP Resolution Professional as the liquidator for the liquidation process of the corporate debtor.",
+        "Failure or refusal by corporate personnel or former management to extend assistance and cooperation to the liquidator.",
+        "Failure of former resolution professional to hand over all CIRP records to the liquidator."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 10,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_CIRP_RP_APPOINTED_AS_LIQUIDATOR",
+      "ERR_IBBI_RECOMMENDATION_TIMEOUT",
+      "ERR_FAILURE_TO_HANDOVER_CIRP_RECORDS",
+      "ERR_PERSONNEL_NON_COOPERATION_LIQUIDATION",
+      "ERR_LIQUIDATOR_FEE_NON_COMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_35",
+    "statute_id": "IBC_2016_SEC_35",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "35",
+    "section_title": "Powers and duties of liquidator",
+    "jurisdiction_type": "STATUTORY_POWER_AND_DUTY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Enumerates the comprehensive statutory powers and duties of the liquidator to manage the liquidation estate, evaluate and sell assets, settle claims, continue or institute legal/avoidance proceedings, and distribute proceeds under the supervision of the committee of creditors.",
+    "core_judicial_inquiry": "Whether the liquidator exercised statutory powers and performed duties within the framework of the Code—including asset custody, sale restrictions under Section 29A, avoidance transaction filings, claim settlement, and CoC supervision—subject to directions of the Adjudicating Authority.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_29A",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_34",
+      "IBC_2016_SEC_38",
+      "IBC_2016_SEC_39",
+      "IBC_2016_SEC_40",
+      "IBC_2016_SEC_41",
+      "IBC_2016_SEC_42",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_52",
+      "IBC_2016_SEC_53",
+      "IBC_2016_SEC_66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Liquidator appointed under Section 34 exercising statutory powers and performing duties during the liquidation process.",
+        "Committee of creditors supervising the conduct of the liquidation process under Section 35(2)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Taking immediate custody and control of all assets, properties, effects, and actionable claims of the corporate debtor.",
+        "Evaluation of assets and preparation of valuation report in the manner specified by the Board.",
+        "Maintaining an updated list of claims of creditors in such manner as may be specified.",
+        "Selling property of the corporate debtor by public auction or private contract in accordance with specified regulations.",
+        "Supervision of the liquidation process by the committee of creditors in the specified manner.",
+        "Settling claims of creditors and distributing proceeds in accordance with the provisions of the Code (Section 53 priorities)."
+      ],
+      "statutory_bars": [
+        "Strict prohibition against selling immovable/movable property or actionable claims of the corporate debtor in liquidation to any person who is ineligible to be a resolution applicant under Section 29A."
+      ],
+      "saving_exceptions": [
+        "Liquidator may carry on the business of the corporate debtor so far as may be necessary for its beneficial liquidation.",
+        "Amendments to clauses (a) and (j) of sub-section (1) made by the 2026 Amendment Act do not apply to liquidation and voluntary liquidation processes initiated on or before May 26, 2026."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_UNAUTHORIZED_SALE_TO_29A_INELIGIBLE_PERSON",
+      "ERR_FAILURE_TO_TAKE_ASSET_CUSTODY",
+      "ERR_IMPROPER_CLAIM_SETTLEMENT_OR_DISTRIBUTION",
+      "ERR_LACK_OF_COC_SUPERVISION",
+      "ERR_FAILURE_TO_FILE_AVOIDANCE_PROCEEDINGS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_43",
+    "statute_id": "IBC_2016_SEC_43",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "43",
+    "section_title": "Preferential transactions and relevant time",
+    "jurisdiction_type": "AVOIDANCE_TRANSACTION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the resolution professional or liquidator to apply to the Adjudicating Authority for avoidance of preferential transactions made for antecedent debts that place a creditor, surety, or guarantor in a better position than under Section 53 distribution within statutory look-back periods.",
+    "core_judicial_inquiry": "Whether a transfer of corporate debtor property/interest was made for an antecedent liability, resulted in a preferential position under Section 53, occurred within the relevant look-back period (1 year for non-related parties, 2 years for related parties), and whether it falls outside the ordinary course of business or new value exceptions.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_44",
+      "IBC_2016_SEC_53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional during corporate insolvency resolution process.",
+        "Liquidator during liquidation process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Transfer of property or an interest thereof of the corporate debtor for the benefit of a creditor, surety, or guarantor on account of an antecedent financial/operational debt or liability.",
+        "Transfer puts the transferee in a more beneficial position than they would have received under Section 53 distribution.",
+        "Transaction occurred within the relevant time: 2 years starting from preceding the initiation date to the insolvency commencement date for related parties (excluding employees), or 1 year for non-related parties."
+      ],
+      "statutory_bars": [
+        "Transfer made in the ordinary course of business or financial affairs of the corporate debtor or the transferee.",
+        "Transfer creating a purchase-money security interest securing new value registered with an information utility within thirty days of the corporate debtor receiving possession."
+      ],
+      "saving_exceptions": [
+        "Transfers made in pursuance of a court order are explicitly not protected and can still be declared as preferential transactions."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PREFERENTIAL_TRANSACTION_FOUND",
+      "ERR_OUTSIDE_LOOKBACK_PERIOD",
+      "ERR_ORDINARY_COURSE_EXEMPTION",
+      "ERR_NEW_VALUE_SECURITY_EXEMPTION",
+      "ERR_COURT_ORDER_PREFERENCE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_45",
+    "statute_id": "IBC_2016_SEC_45",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "45",
+    "section_title": "Avoidance of undervalued transactions",
+    "jurisdiction_type": "AVOIDANCE_TRANSACTION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the resolution professional or liquidator to apply to the Adjudicating Authority to declare transactions as void and reverse their effect if the corporate debtor gifted assets or transferred them for significantly undervalue outside the ordinary course of business during the relevant look-back period under Section 46.",
+    "core_judicial_inquiry": "Whether the corporate debtor gifted assets or transferred them for consideration significantly less than the value of consideration provided by the corporate debtor, outside the ordinary course of business, during the relevant look-back period specified under Section 46.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_46",
+      "IBC_2016_SEC_47",
+      "IBC_2016_SEC_48"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional during corporate insolvency resolution process.",
+        "Liquidator during liquidation process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Transfer of one or more assets by the corporate debtor by way of gift or for consideration significantly less than the value of consideration provided by the corporate debtor.",
+        "Determination by the RP or liquidator that the transaction occurred within the relevant look-back period under Section 46.",
+        "Filing of an application before the Adjudicating Authority to declare such transaction void and reverse its effect."
+      ],
+      "statutory_bars": [
+        "Transaction took place in the ordinary course of business of the corporate debtor."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_UNDERVALUED_TRANSACTION_FOUND",
+      "ERR_ORDINARY_COURSE_EXEMPTION",
+      "ERR_OUTSIDE_LOOKBACK_PERIOD",
+      "ERR_SIGNIFICANT_CONSIDERATION_DEFICIT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_50",
+    "statute_id": "IBC_2016_SEC_50",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "50",
+    "section_title": "Extortionate credit transactions",
+    "jurisdiction_type": "AVOIDANCE_TRANSACTION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the resolution professional or liquidator to apply to the Adjudicating Authority for avoidance of credit transactions involving financial or operational debt entered into within two years prior to the initiation date that required exorbitant payments by the corporate debtor.",
+    "core_judicial_inquiry": "Whether the credit transaction required exorbitant payments by the corporate debtor during the two-year look-back period preceding the initiation date, and whether the provider is exempt as a law-compliant financial service provider.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_51"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution professional during corporate insolvency resolution process.",
+        "Liquidator during liquidation process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Corporate debtor was party to a credit transaction involving the receipt of financial or operational debt.",
+        "Terms of the transaction required exorbitant payments to be made by the corporate debtor.",
+        "Transaction took place during the period starting two years preceding the initiation date and ending on the insolvency commencement date.",
+        "Application made by the RP or liquidator to the Adjudicating Authority for avoidance under Section 50."
+      ],
+      "statutory_bars": [
+        "Debt extended by any person providing financial services in compliance with any law for the time being in force shall in no event be considered an extortionate credit transaction."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_EXTORTIONATE_CREDIT_TRANSACTION_FOUND",
+      "ERR_FINANCIAL_SERVICE_PROVIDER_EXEMPTION",
+      "ERR_OUTSIDE_LOOKBACK_PERIOD",
+      "ERR_EXORBITANT_PAYMENTS_UNESTABLISHED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_52",
+    "statute_id": "IBC_2016_SEC_52",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "52",
+    "section_title": "Secured creditor in liquidation proceedings",
+    "jurisdiction_type": "SECURED_CREDITOR_RIGHTS",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Provides secured creditors in liquidation the choice to either relinquish their security interest to the liquidation estate or realise it independently, subject to a 14-day notice window, 66% consent requirement among joint secured creditors, liquidator verification, mandatory deduction of process/workmen costs, and return of excess proceeds.",
+    "core_judicial_inquiry": "Whether the secured creditor validly exercised its option to realise its security interest within the 14-day statutory period, obtained the requisite 66% consent from co-secured creditors where applicable, verified its security interest with the liquidator, and deducted/remitted mandatory CIRP, liquidation, and workmen costs to the liquidator.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_53"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Secured creditor of the corporate debtor in liquidation proceedings."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Secured creditor seeking to realise security interest must inform the liquidator and identify the specific asset within 14 days from the liquidation commencement date.",
+        "Agreement of secured creditors representing not less than sixty-six per cent of the value of all claims secured by the asset where multiple secured creditors hold security interest over the same asset.",
+        "Verification of security interest by the liquidator through Information Utility records or specified means before permitting realization.",
+        "Mandatory deduction of CIRP costs, liquidation costs, and workmen's dues under Section 53(1)(a) and 53(1)(b)(i) from realization proceeds and remittance of such amounts to the liquidator.",
+        "Accounting for and tendering any surplus realization proceeds beyond the debt due to the liquidator."
+      ],
+      "statutory_bars": [
+        "Failure to inform liquidator and identify asset within 14 days results in deemed relinquishment of the security interest to the liquidation estate.",
+        "Prohibition on realization where multiple secured creditors exist unless approved by secured creditors representing at least sixty-six per cent of secured claim value."
+      ],
+      "saving_exceptions": [
+        "Secured creditor facing resistance in taking possession or selling the asset may apply to the Adjudicating Authority for facilitating realisation.",
+        "Unpaid debt balance following realization is paid by the liquidator under the priority specified in Section 53(1)(e).",
+        "Sub-section (2) as amended by the Amendment Act, 2026 does not apply to liquidation processes initiated on or before May 26, 2026."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 14
+    },
+    "audit_error_codes": [
+      "ERR_DEEMED_RELINQUISHMENT_EXPIRED_NOTICE",
+      "ERR_INSUFFICIENT_SECURED_CREDITOR_CONSENT",
+      "ERR_UNVERIFIED_SECURITY_INTEREST",
+      "ERR_FAILURE_TO_DEDUCT_WORKMEN_OR_PROCESS_COSTS",
+      "ERR_FAILURE_TO_SURRENDER_SURPLUS_PROCEEDS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_53",
+    "statute_id": "IBC_2016_SEC_53",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "53",
+    "section_title": "Distribution of assets",
+    "jurisdiction_type": "WATERFALL_DISTRIBUTION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes a mandatory waterfall hierarchy for distributing liquidation asset proceeds overriding all other laws, prioritizing CIRP/liquidation costs, workmen dues and relinquished secured debts, employee wages, unsecured financial debts, statutory government dues/unpaid secured balances, remaining debts, and equity/preference shareholders.",
+    "core_judicial_inquiry": "Whether the liquidator distributed liquidation proceeds in strict compliance with the statutory waterfall hierarchy under Section 53(1), correctly categorized claims and security values, proportionately deducted fees, and disregarded contractual arrangements that attempt to alter inter-class statutory priority.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_34",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_52"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Liquidator distributing proceeds of the liquidation estate under Chapter III.",
+        "Creditors, workmen, employees, government authorities, and shareholders entitled to distribution under the statutory waterfall."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Full payment of CIRP costs and liquidation costs under clause (a) in priority to all other claims.",
+        "Equal ranking and pari passu distribution among claims within the same sub-clause (e.g., workmen dues for 24 months and relinquished secured debt under clause (b)).",
+        "Limiting secured creditor priority under clause (b)(ii) to the determined value of the relinquished security interest, with any remaining balance treated as unsecured.",
+        "Categorizing Central and State Government dues for the 2 years preceding liquidation (whether secured by operation of law/contract or unsecured) under clause (e)(i), with any excess government dues falling under clause (f).",
+        "Proportionate deduction of liquidator fees from proceeds payable to each class of recipients."
+      ],
+      "statutory_bars": [
+        "Prohibition against altering or disrupting the statutory waterfall order through contractual arrangements between recipients of different ranking classes.",
+        "Prohibition against making distributions to lower-priority classes before higher-priority classes are fully satisfied or paid in equal proportion."
+      ],
+      "saving_exceptions": [
+        "Contractual inter-creditor arrangements between creditors belonging to the same equal-ranking class (e.g., inter-creditor subordination among secured creditors) are valid and shall not be disregarded."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_WATERFALL_PRIORITY_VIOLATION",
+      "ERR_IMPROPER_LIQUIDATOR_FEE_DEDUCTION",
+      "ERR_MISCLASSIFIED_WORKMEN_DUES",
+      "ERR_OVERVALUED_RELINQUISHED_SECURITY_CLAIM",
+      "ERR_IMPROPER_GOVERNMENT_DUE_PRIORITY",
+      "ERR_UNLAWFUL_INTERCLASS_CONTRACTUAL_BYPASS"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54",
+    "statute_id": "IBC_2016_SEC_54",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54",
+    "section_title": "Dissolution of corporate debtor",
+    "jurisdiction_type": "DISSOLUTION_TERMINATION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the complete liquidation and dissolution of the corporate debtor upon application by the liquidator within 180 days (extendable by 90 days) or upon CoC decision, while preserving the continuation of pending avoidance, fraudulent trading, and distribution-related legal proceedings.",
+    "core_judicial_inquiry": "Whether the corporate debtor's assets have been completely liquidated or a valid CoC dissolution decision was taken under Section 33(2), whether the dissolution application was filed within statutory time limits, and whether appropriate CoC arrangements exist to pursue pending avoidance and litigation proceedings post-dissolution.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_35",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_47",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_53",
+      "IBC_2016_SEC_66",
+      "IBC_2016_SEC_224"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Liquidator completing asset liquidation and filing for dissolution under sub-section (1).",
+        "Committee of Creditors deciding to dissolve the corporate debtor under Section 33(2)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application by the liquidator to the Adjudicating Authority for dissolution within 180 days from the liquidation commencement date.",
+        "CoC determination regarding the manner of pursuing and distributing proceeds from pending avoidance, fraudulent/wrongful trading, or Section 47 proceedings under sub-section (1A).",
+        "CoC arrangements for pursuing pending suits or legal proceedings relating to Section 53 distributions under sub-section (1B).",
+        "Forwarding a copy of the dissolution order to the corporate registration authority (ROC) within seven days of the order.",
+        "Adjudicating Authority passing the dissolution order within thirty days of application/intimation, recording written reasons if delayed."
+      ],
+      "statutory_bars": [
+        "Liquidator failing to apply for dissolution within the 180-day window without obtaining an explicit time extension from the Adjudicating Authority."
+      ],
+      "saving_exceptions": [
+        "The Adjudicating Authority may extend the 180-day dissolution application period by up to ninety days upon application showing sufficient cause.",
+        "Passing of a dissolution order shall not affect or abate the continuation of pending avoidance/fraudulent trading proceedings (sub-section 1A) or Section 53 distribution suits (sub-section 1B).",
+        "If assets remain upon a Section 33(2) CoC dissolution order, proceeds are disposed of to pay CIRP costs and any surplus is credited to the Insolvency and Bankruptcy Fund under Section 224."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": 90
+    },
+    "audit_error_codes": [
+      "ERR_DISSOLUTION_APPLICATION_DELAYED",
+      "ERR_FAILURE_TO_ARRANGE_PENDING_PROCEEDINGS",
+      "ERR_FAILURE_TO_NOTIFY_REGISTRAR",
+      "ERR_ADJUDICATION_DELAY_UNEXPLAINED",
+      "ERR_IMPROPER_SURPLUS_DISPOSAL"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54A",
+    "statute_id": "IBC_2016_SEC_54A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54A",
+    "section_title": "Corporate debtors eligible for pre-packaged insolvency resolution process",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes the eligibility criteria and mandatory pre-filing requirements for micro, small, or medium enterprise (MSME) corporate debtors to initiate a pre-packaged insolvency resolution process (PPIRP), requiring specific corporate, director, and financial creditor approvals along with a base resolution plan.",
+    "core_judicial_inquiry": "Whether the corporate debtor qualifies as an MSME under the MSMED Act, 2006, meets all statutory non-disqualification conditions under Section 54A(2), and has secured the mandatory majority director declarations, 3/4th partner or special member resolutions, 51% unrelated financial creditor approvals, and provided a compliant base resolution plan.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_4",
+      "IBC_2016_SEC_29A",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_54B",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54K",
+      "MSMED_ACT_2006_SEC_7"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Corporate debtor classified as a micro, small, or medium enterprise under Section 7(1) of the Micro, Small and Medium Enterprises Development Act, 2006.",
+        "Corporate debtor that has committed a default meeting the threshold specified under Section 4."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Approval of the proposed Resolution Professional by unrelated financial creditors representing not less than fifty-one per cent in value of financial debt.",
+        "Declaration by a majority of directors or partners stating filing within a period not exceeding ninety days, absence of intent to defraud, and the name of the proposed RP.",
+        "Special resolution passed by members or resolution passed by at least three-fourths of partners approving the filing of an application for initiating PPIRP.",
+        "Approval for filing the PPIRP application from unrelated financial creditors representing not less than fifty-one per cent in value of financial debt.",
+        "Prior disclosure to financial creditors of the director declaration, member/partner resolution, base resolution plan conforming to Section 54K, and specified documents before seeking filing approval."
+      ],
+      "statutory_bars": [
+        "Corporate debtor has undergone a pre-packaged insolvency resolution process or completed CIRP during the three years preceding the initiation date.",
+        "Corporate debtor is currently undergoing a corporate insolvency resolution process (CIRP).",
+        "An order requiring the corporate debtor to be liquidated under Section 33 has been passed.",
+        "Corporate debtor is ineligible to submit a resolution plan under Section 29A."
+      ],
+      "saving_exceptions": [
+        "Where a corporate debtor does not have any financial creditors who are not related parties, the required proposals and approvals shall be provided by such persons as may be specified by the Board."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 90
+    },
+    "audit_error_codes": [
+      "ERR_NOT_QUALIFIED_AS_MSME",
+      "ERR_CIRP_OR_PPIRP_WITHIN_THREE_YEARS",
+      "ERR_UNDERGOING_CIRP",
+      "ERR_LIQUIDATION_ORDER_EXISTS",
+      "ERR_INELIGIBLE_UNDER_SEC_29A",
+      "ERR_INSUFFICIENT_FC_VOTE_FOR_RP_PROPOSAL",
+      "ERR_INSUFFICIENT_FC_VOTE_FOR_PPIRP_FILING",
+      "ERR_MISSING_DIRECTOR_DECLARATION",
+      "ERR_MISSING_SPECIAL_RESOLUTION",
+      "ERR_BASE_PLAN_NON_COMPLIANT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54B",
+    "statute_id": "IBC_2016_SEC_54B",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54B",
+    "section_title": "Duties of insolvency professional before initiation of pre-packaged insolvency resolution process",
+    "jurisdiction_type": "STATUTORY_DUTY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Outlines the pre-initiation duties of the proposed resolution professional for a pre-packaged insolvency process, including verifying Section 54A eligibility, ensuring base resolution plan compliance, submitting reports to the Board, and treating pre-initiation fees as PPIRP costs upon admission.",
+    "core_judicial_inquiry": "Whether the proposed insolvency professional properly evaluated the corporate debtor's compliance with Section 54A eligibility criteria, verified that the base resolution plan conforms to statutory requirements, and filed the mandatory pre-initiation reports with the Board prior to PPIRP application submission.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54K"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Insolvency professional proposed to be appointed as resolution professional and approved by financial creditors under Section 54A(2)(e)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Commencement of duties upon financial creditor approval under Section 54A(2)(e).",
+        "Preparation of a report confirming that the corporate debtor meets Section 54A eligibility requirements.",
+        "Verification and confirmation that the base resolution plan conforms to requirements under Section 54A(4)(c) and Section 54K.",
+        "Filing of the compliance report and other specified documents with the Board (IBBI).",
+        "Inclusion of pre-initiation IP fees in pre-packaged insolvency resolution process costs upon admission of the application."
+      ],
+      "statutory_bars": [
+        "Cessation of pre-initiation duties if the corporate debtor fails to file the PPIRP application within the timeline declared under Section 54A(2)(f).",
+        "Cessation of pre-initiation duties upon admission or rejection of the PPIRP application by the Adjudicating Authority."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_MISSING_PRE_INITIATION_REPORT",
+      "ERR_NON_COMPLIANT_BASE_PLAN",
+      "ERR_FAILURE_TO_FILE_WITH_BOARD",
+      "ERR_EXPIRED_PRE_INITIATION_TIMELINE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54C",
+    "statute_id": "IBC_2016_SEC_54C",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54C",
+    "section_title": "Application to initiate pre-packaged insolvency resolution process",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the filing and judicial admission of an application by a corporate applicant to initiate a pre-packaged insolvency resolution process (PPIRP), establishing a 14-day adjudication window and 7-day defect rectification mechanism.",
+    "core_judicial_inquiry": "Whether the application filed by the corporate applicant is complete, meets all prerequisites of Section 54A, and whether any identified defects have been cured within seven days of notice.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_4",
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_54B",
+      "IBC_2016_SEC_54D",
+      "IBC_2016_SEC_54E",
+      "IBC_2016_SEC_54K"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Corporate applicant of a corporate debtor that meets the eligibility requirements under Section 54A."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing the application in the prescribed form, with specified particulars, manner, and fee.",
+        "Furnishing all specified information and supporting documentation along with the application.",
+        "Compliance with eligibility criteria and pre-filing approvals under Section 54A."
+      ],
+      "statutory_bars": [
+        "Application is incomplete and the applicant fails to rectify defects within the statutory notice period.",
+        "Failure of the corporate debtor to meet Section 54A prerequisites."
+      ],
+      "saving_exceptions": [
+        "Mandatory requirement for the Adjudicating Authority to issue notice giving the applicant seven days to rectify defects before rejecting an incomplete application."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 14,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "ERR_INCOMPLETE_PPIRP_APPLICATION",
+      "ERR_DEFECT_NOT_RECTIFIED_WITHIN_TIMELINE",
+      "ERR_ELIGIBILITY_NON_COMPLIANCE_SEC_54A",
+      "ERR_ADJUDICATION_WINDOW_EXCEEDED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54D",
+    "statute_id": "IBC_2016_SEC_54D",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54D",
+    "section_title": "Time-limit for completion of pre-packaged insolvency resolution process",
+    "jurisdiction_type": "PROCEDURAL_TIMELINE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates a strict 120-day overall limit for completing the PPIRP, requiring the resolution professional to submit a CoC-approved resolution plan to the Adjudicating Authority within 90 days, or immediately apply for process termination if no plan is approved within that timeframe.",
+    "core_judicial_inquiry": "Whether the resolution plan approved by the CoC was submitted by the RP within the mandatory 90-day window from commencement, or whether the RP filed for termination on the day following the 90-day expiry upon non-approval of a plan.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54K",
+      "IBC_2016_SEC_54L",
+      "IBC_2016_SEC_54N"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional appointed to conduct the pre-packaged insolvency resolution process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Submission of CoC-approved resolution plan to the Adjudicating Authority under Section 54K within ninety days from the pre-packaged insolvency commencement date.",
+        "Completion of the entire pre-packaged insolvency resolution process within one hundred and twenty days from the commencement date.",
+        "Mandatory filing of an application for termination of PPIRP by the RP on the day after the expiry of ninety days if no resolution plan is approved by the CoC."
+      ],
+      "statutory_bars": [
+        "Submission of a resolution plan to the Adjudicating Authority after the expiry of ninety days from the commencement date without prior statutory relief.",
+        "Continuation of PPIRP beyond one hundred and twenty days from the pre-packaged insolvency commencement date."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 120,
+      "rectification_window_days": 90
+    },
+    "audit_error_codes": [
+      "ERR_PPIRP_90_DAY_PLAN_SUBMISSION_EXCEEDED",
+      "ERR_PPIRP_120_DAY_OVERALL_TIMELINE_EXCEEDED",
+      "ERR_FAILURE_TO_FILE_TERMINATION_APPLICATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54E",
+    "statute_id": "IBC_2016_SEC_54E",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54E",
+    "section_title": "Declaration of moratorium and public announcement during pre-packaged insolvency resolution process",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the Adjudicating Authority to declare a moratorium under Section 14, appoint the Resolution Professional, and cause a public announcement of PPIRP initiation on the pre-packaged insolvency commencement date upon admitting an application under Section 54C.",
+    "core_judicial_inquiry": "Whether an order of admission under Section 54C has been passed triggering the mandatory order of moratorium, appointment of an eligible Resolution Professional (free of pending disciplinary proceedings), and immediate public announcement.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54D",
+      "IBC_2016_SEC_54F"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority issuing order on the pre-packaged insolvency commencement date along with admission under Section 54C."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Order of admission of PPIRP application passed under Section 54C.",
+        "Declaration of moratorium under Section 14(1) read with Section 14(3) mutatis mutandis effective until PPIRP completion.",
+        "Appointment of the proposed Resolution Professional if no disciplinary proceedings are pending against them.",
+        "Immediate public announcement of PPIRP initiation by the appointed Resolution Professional following appointment."
+      ],
+      "statutory_bars": [
+        "Appointment of the proposed Resolution Professional named in the application if disciplinary proceedings are pending against them."
+      ],
+      "saving_exceptions": [
+        "Where disciplinary proceedings are pending against the proposed Resolution Professional, the Adjudicating Authority shall appoint an RP based on recommendations made by the Board."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_MORATORIUM_NOT_DECLARED",
+      "ERR_PENDING_DISCIPLINARY_PROCEEDING_RP",
+      "ERR_PUBLIC_ANNOUNCEMENT_DELAYED",
+      "ERR_UNAUTHORIZED_PROCEEDING_DURING_MORATORIUM"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54F",
+    "statute_id": "IBC_2016_SEC_54F",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54F",
+    "section_title": "Duties and powers of resolution professional during pre-packaged insolvency resolution process",
+    "jurisdiction_type": "STATUTORY_POWER_AND_DUTY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Delineates the duties, powers, and governance mechanisms of the Resolution Professional during a Pre-Packaged Insolvency Resolution Process (PPIRP), including claim verification, CoC constitution, monitoring management, filing avoidance applications, accessing financial records, and ensuring statutory cooperation from personnel and financial institutions.",
+    "core_judicial_inquiry": "Whether the resolution professional properly exercised statutory powers and fulfilled mandatory duties during PPIRP—including claim confirmation, information memorandum preparation, avoidance transaction investigation, and CoC governance—and whether corporate personnel and financial institutions provided mandatory cooperation.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_19",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54E",
+      "IBC_2016_SEC_54G",
+      "IBC_2016_SEC_54H",
+      "IBC_2016_SEC_66"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional appointed under Section 54E to conduct the pre-packaged insolvency resolution process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Confirmation and maintenance of updated list of claims submitted under Section 54G and informing creditors.",
+        "Monitoring the management of the affairs of the corporate debtor and informing the Committee of Creditors of any breach by directors or partners.",
+        "Constituting the Committee of Creditors, convening, and attending all its meetings.",
+        "Preparing the Information Memorandum based on the preliminary information memorandum submitted under Section 54G.",
+        "Investigating and filing applications for avoidance transactions under Chapter III or fraudulent/wrongful trading under Chapter VI.",
+        "Financial institutions maintaining accounts of the corporate debtor must furnish all requested information to the RP.",
+        "Personnel, promoters, management, and service providers must extend all assistance and cooperation under Section 19 principles.",
+        "Ratification of pre-CoC RP fees and expenses by the Committee of Creditors."
+      ],
+      "statutory_bars": [
+        "Failure or refusal by personnel, promoters, or associated persons to extend cooperation to the Resolution Professional.",
+        "Failure of financial institutions to furnish account details and records to the Resolution Professional."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_PPIRP_RP_FAILURE_TO_CONFIRM_CLAIMS",
+      "ERR_FAILURE_TO_CONSTITUTE_COC_PPIRP",
+      "ERR_FAILURE_TO_FILE_AVOIDANCE_PPIRP",
+      "ERR_PERSONNEL_NON_COOPERATION_PPIRP",
+      "ERR_FINANCIAL_INSTITUTION_NON_DISCLOSURE",
+      "ERR_UNRATIFIED_PRE_COC_FEES"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54G",
+    "statute_id": "IBC_2016_SEC_54G",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54G",
+    "section_title": "List of claims and preliminary information memorandum",
+    "jurisdiction_type": "STATUTORY_DUTY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the corporate debtor to submit an updated list of claims and a preliminary information memorandum to the resolution professional within two days of PPIRP commencement, while establishing personal civil liability for promoters, directors, and partners for loss caused by material omissions or misleading disclosures.",
+    "core_judicial_inquiry": "Whether the corporate debtor submitted the updated list of claims and preliminary information memorandum within the mandatory two-day timeframe, and whether any material omission or misleading disclosure caused loss or damage to a party, establishing compensation liability against responsible corporate officers.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54E",
+      "IBC_2016_SEC_54F",
+      "IBC_2016_SEC_77A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional receiving disclosures during PPIRP.",
+        "Any person sustaining loss or damage as a consequence of material omissions or misleading information in the list of claims or preliminary information memorandum."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Submission of an updated list of claims (including details of creditors, security interests, and guarantees) to the resolution professional within two days of pre-packaged insolvency commencement date.",
+        "Submission of a preliminary information memorandum containing relevant information for formulating a resolution plan within two days of pre-packaged insolvency commencement date.",
+        "Proof of loss or damage sustained due to material omission or misleading information when seeking compensation."
+      ],
+      "statutory_bars": [
+        "Corporate debtor's failure to submit required disclosures within two days of pre-packaged insolvency commencement date."
+      ],
+      "saving_exceptions": [
+        "Statutory defense against personal compensation liability if the list of claims or preliminary information memorandum was submitted without the knowledge or consent of the promoter, director, partner, or authorizing officer."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 2
+    },
+    "audit_error_codes": [
+      "ERR_PPIRP_DISCLOSURE_DELAY",
+      "ERR_MATERIAL_OMISSION_IN_PIM",
+      "ERR_MISLEADING_INFO_IN_CLAIMS_LIST",
+      "ERR_MISSTATEMENT_COMPENSATION_LIABILITY"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54H",
+    "statute_id": "IBC_2016_SEC_54H",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54H",
+    "section_title": "Management of affairs of corporate debtor",
+    "jurisdiction_type": "DEBTOR_IN_POSSESSION_GOVERNANCE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes a debtor-in-possession governance model during PPIRP where the management of the corporate debtor remains vested in its Board of Directors or partners, mandating them to preserve property value and maintain operations as a going concern.",
+    "core_judicial_inquiry": "Whether the Board of Directors or partners of the corporate debtor in possession under PPIRP fulfilled their statutory duty to protect and preserve asset value, manage the corporate debtor as a going concern, and comply with prescribed operational restrictions.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54F",
+      "IBC_2016_SEC_54J"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Board of Directors or partners of the corporate debtor continuing in possession during the pre-packaged insolvency resolution process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Vesting of management of corporate debtor affairs in the existing Board of Directors or partners during the PPIRP period.",
+        "Mandatory duty of management to make every endeavour to protect and preserve the value of corporate debtor property.",
+        "Mandatory duty to manage corporate operations as a going concern.",
+        "Promoters, members, personnel, and partners exercising statutory/contractual rights and obligations subject to Chapter III-A provisions and prescribed restrictions."
+      ],
+      "statutory_bars": [
+        "Failure by management to maintain the corporate debtor as a going concern or willful depletion/diminution of asset value during PPIRP."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_BREACH_OF_GOING_CONCERN_DUTY",
+      "ERR_FAILURE_TO_PRESERVE_ASSET_VALUE",
+      "ERR_UNAUTHORIZED_MANAGEMENT_ACTION_PPIRP"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54I",
+    "statute_id": "IBC_2016_SEC_54I",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54I",
+    "section_title": "Committee of creditors",
+    "jurisdiction_type": "COC_GOVERNANCE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Mandates the Resolution Professional to constitute the Committee of Creditors (CoC) within seven days of the PPIRP commencement date based on confirmed claims, conduct its first meeting within seven days of constitution, and apply Section 21 governance rules mutatis mutandis.",
+    "core_judicial_inquiry": "Whether the Resolution Professional constituted the Committee of Creditors within seven days of pre-packaged insolvency commencement based on Section 54F(2)(a) confirmed claims, held the initial meeting within seven days of constitution, and complied with Section 21 requirements as modified for PPIRP.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_21",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_54F",
+      "IBC_2016_SEC_54K"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional appointed under Section 54E responsible for constituting and convening the Committee of Creditors during PPIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Constitution of the Committee of Creditors within seven days of the pre-packaged insolvency commencement date based on the list of claims confirmed under Section 54F(2)(a).",
+        "Holding the first meeting of the Committee of Creditors within seven days of its constitution.",
+        "Compliance with Section 21 provisions (except sub-section 1) mutatis mutandis, with references to resolution professional under sub-sections (9) and (10) construed as references to corporate debtor or resolution professional."
+      ],
+      "statutory_bars": [
+        "Failure to constitute the Committee of Creditors or hold its first meeting within the prescribed seven-day timelines."
+      ],
+      "saving_exceptions": [
+        "Alteration of Committee of Creditors composition based on an updated list of claims shall not affect or invalidate any past decisions taken by the Committee of Creditors."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 7
+    },
+    "audit_error_codes": [
+      "ERR_PPIRP_COC_CONSTITUTION_DELAY",
+      "ERR_PPIRP_COC_FIRST_MEETING_DELAY",
+      "ERR_IMPROPER_COC_COMPOSITION",
+      "ERR_SECTION_21_NON_COMPLIANCE"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54J",
+    "statute_id": "IBC_2016_SEC_54J",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54J",
+    "section_title": "Vesting management of corporate debtor with resolution professional",
+    "jurisdiction_type": "MANAGEMENT_VESTING",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Adjudicating Authority to displace the debtor-in-possession management during PPIRP and vest management of the corporate debtor with the Resolution Professional upon application backed by a 66% CoC vote and a finding of fraudulent conduct or gross mismanagement.",
+    "core_judicial_inquiry": "Whether the Committee of Creditors resolved by a vote of not less than sixty-six per cent of voting share to vest management with the Resolution Professional, and whether the affairs of the corporate debtor during PPIRP were conducted in a fraudulent manner or suffered from gross mismanagement.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_17",
+      "IBC_2016_SEC_18",
+      "IBC_2016_SEC_19",
+      "IBC_2016_SEC_20",
+      "IBC_2016_SEC_25",
+      "IBC_2016_SEC_28",
+      "IBC_2016_SEC_54H",
+      "IBC_2016_SEC_54I"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional acting pursuant to a resolution passed by the Committee of Creditors with not less than sixty-six per cent of voting share during PPIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Resolution passed by the Committee of Creditors by a vote of not less than sixty-six per cent of voting shares resolving to vest management with the Resolution Professional.",
+        "Application filed by the Resolution Professional to the Adjudicating Authority in the specified form and manner.",
+        "Finding by the Adjudicating Authority that the affairs of the corporate debtor were conducted in a fraudulent manner or subjected to gross mismanagement during PPIRP.",
+        "Invocation and application of Sections 14(2), 14(2A), 17, 18(e)-(g), 19, 20, 25(1), 25(2)(a)-(c) & (k), and 28 mutatis mutandis from the date of the order until the end of PPIRP."
+      ],
+      "statutory_bars": [
+        "Resolution passed with less than sixty-six per cent of CoC voting shares.",
+        "Failure to establish fraudulent conduct or gross mismanagement during the PPIRP period."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSUFFICIENT_VOTING_SHARE_FOR_MANAGEMENT_VESTING",
+      "ERR_UNPROVEN_FRAUD_OR_GROSS_MISMANAGEMENT",
+      "ERR_UNAUTHORIZED_VESTING_APPLICATION",
+      "ERR_FAILURE_TO_COMPLY_WITH_SECTION_17_POST_ORDER"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54K",
+    "statute_id": "IBC_2016_SEC_54K",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54K",
+    "section_title": "Consideration and approval of resolution plan",
+    "jurisdiction_type": "RESOLUTION_PLAN_APPROVAL",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the submission, evaluation, competition, and approval process of resolution plans under PPIRP, requiring base plan submission within two days, direct CoC approval if operational creditors are unimpaired, competitive bidding against third-party resolution applicants if operational creditors are impaired, and a mandatory 66% CoC voting threshold.",
+    "core_judicial_inquiry": "Whether the base or competing resolution plan complies with Section 30(1) and (2) mutatis mutandis, whether operational creditor claims were impaired triggering competitive bidding under sub-section (5), whether proper evaluation criteria were applied, and whether the plan secured a 66% CoC approval vote considering feasibility, viability, and Section 53 waterfall priorities.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_5",
+      "IBC_2016_SEC_29",
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_53",
+      "IBC_2016_SEC_54A",
+      "IBC_2016_SEC_54D",
+      "IBC_2016_SEC_54L",
+      "IBC_2016_SEC_54N"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Corporate debtor submitting the base resolution plan (individually or jointly with any other person).",
+        "Prospective resolution applicants fulfilling criteria laid down by the resolution professional with CoC approval.",
+        "Resolution professional presenting and submitting resolution plans to the Committee of Creditors and Adjudicating Authority."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Corporate debtor must submit the base resolution plan to the resolution professional within two days of the pre-packaged insolvency commencement date.",
+        "Resolution plans must conform to Section 30(1) and (2) requirements mutatis mutandis.",
+        "Competitive bidding process inviting prospective resolution applicants if the base resolution plan is not approved or impairs operational creditor claims.",
+        "Approval of the resolution plan by the Committee of Creditors by a vote of not less than sixty-six per cent of voting share.",
+        "Assessment of feasibility and viability, distribution manner, Section 53 priorities, and security interest value by the Committee of Creditors prior to approval.",
+        "CoC must require promoters to dilute shareholding/voting/control rights if claims are impaired, or record written reasons prior to approval if no dilution is provided."
+      ],
+      "statutory_bars": [
+        "Inability to approve a base resolution plan directly under sub-section (4) if operational creditor claims are impaired (i.e., not providing full payment of confirmed claims).",
+        "Failure to achieve sixty-six per cent CoC approval for a selected competing resolution plan, requiring the RP to apply for PPIRP termination."
+      ],
+      "saving_exceptions": [
+        "CoC may provide the corporate debtor an opportunity to revise the base resolution plan prior to approval or invitation of third-party plans.",
+        "Direct approval of base resolution plan without competitive bidding if operational creditor claims are not impaired."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 2
+    },
+    "audit_error_codes": [
+      "ERR_BASE_PLAN_SUBMISSION_DELAY",
+      "ERR_IMPAIRED_OC_UNCOMPETED_PLAN",
+      "ERR_NON_COMPLIANCE_SEC_30_REQUIREMENTS",
+      "ERR_INSUFFICIENT_VOTING_SHARE_PLAN_APPROVAL",
+      "ERR_FAILURE_TO_RECORD_REASONS_NON_DILUTION",
+      "ERR_FAILURE_TO_FILE_TERMINATION_UPON_PLAN_REJECTION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54L",
+    "statute_id": "IBC_2016_SEC_54L",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54L",
+    "section_title": "Approval of resolution plan",
+    "jurisdiction_type": "RESOLUTION_PLAN_APPROVAL",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the judicial approval or rejection of CoC-approved PPIRP resolution plans by the Adjudicating Authority within thirty days, requiring compliance with Section 30(2) and effective implementation, while mandating liquidation if a plan fails to change existing management after a Section 54J order.",
+    "core_judicial_inquiry": "Whether the CoC-approved PPIRP resolution plan satisfies Section 30(2) requirements and contains effective implementation provisions, whether defects can be cured upon notice to CoC, and whether a Section 54J management takeover order requires mandatory rejection and liquidation due to failure to change management/control.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_30",
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_54J",
+      "IBC_2016_SEC_54K",
+      "IBC_2016_SEC_54N"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority evaluating the resolution plan submitted by the Resolution Professional following Committee of Creditors approval under Section 54K."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Resolution plan approved by the Committee of Creditors under Section 54K(4) or Section 54K(12).",
+        "Judicial satisfaction that the resolution plan complies with all requirements specified under Section 30(2).",
+        "Judicial satisfaction that the resolution plan contains adequate provisions for its effective implementation.",
+        "Mandatory change of management/control to a person who was not a promoter or in existing management/control where an order under Section 54J(2) had been passed during PPIRP."
+      ],
+      "statutory_bars": [
+        "Failure of the resolution plan to meet Section 30(2) requirements or include effective implementation provisions.",
+        "Resolution plan retaining existing promoters/management in control where a Section 54J(2) order for fraudulent conduct or gross mismanagement was passed, triggering mandatory rejection, PPIRP termination, and liquidation order under Section 33."
+      ],
+      "saving_exceptions": [
+        "Adjudicating Authority may give notice to the Committee of Creditors to rectify any defects in the resolution plan before passing an order rejecting it."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_NON_COMPLIANT_PPIRP_PLAN",
+      "ERR_NO_EFFECTIVE_IMPLEMENTATION_PROVISION",
+      "ERR_SECTION_54J_MANAGEMENT_CHANGE_VIOLATION",
+      "ERR_MANDATORY_LIQUIDATION_TRIGGERED_PPIRP",
+      "ERR_ADJUDICATION_WINDOW_EXCEEDED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54M",
+    "statute_id": "IBC_2016_SEC_54M",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54M",
+    "section_title": "Appeal against order under section 54L",
+    "jurisdiction_type": "APPELLATE_REMEDY",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Provides that any appeal against an order of the Adjudicating Authority approving a pre-packaged insolvency resolution plan under Section 54L(1) must strictly be made on the statutory grounds laid down under Section 61(3).",
+    "core_judicial_inquiry": "Whether the appeal challenging the order approving the PPIRP resolution plan under Section 54L(1) is strictly founded on one or more of the exhaustive grounds set out under Section 61(3).",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_54L",
+      "IBC_2016_SEC_61"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any person aggrieved by an order approving a pre-packaged insolvency resolution plan passed under Section 54L(1)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "An order of the Adjudicating Authority approving a PPIRP resolution plan under Section 54L(1).",
+        "Pleading and establishing specific grounds for appeal strictly matching the grounds specified in Section 61(3)."
+      ],
+      "statutory_bars": [
+        "Appeals brought on grounds other than those explicitly enumerated under Section 61(3)."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_UNAUTHORIZED_APPEAL_GROUNDS_PPIRP",
+      "ERR_NON_COMPLIANT_APPEAL_SECTION_61"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54N",
+    "statute_id": "IBC_2016_SEC_54N",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54N",
+    "section_title": "Termination of pre-packaged insolvency resolution process",
+    "jurisdiction_type": "PROCESS_TERMINATION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Governs the termination of PPIRP due to non-approval of a resolution plan within 90 days, rejection of competing plans, or a 66% CoC vote, requiring the Adjudicating Authority to pass a termination order within 30 days, determine the continuation of avoidance proceedings, allocate costs to the corporate debtor, or order liquidation if Section 54J management takeover was active.",
+    "core_judicial_inquiry": "Whether valid statutory grounds exist for PPIRP termination (expiry of time under Section 54D(3), plan rejection under Section 54K(12), or 66% CoC vote), how pending avoidance/fraudulent trading proceedings shall continue, and whether a prior Section 54J(2) order necessitates a mandatory liquidation order.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_54D",
+      "IBC_2016_SEC_54J",
+      "IBC_2016_SEC_54K",
+      "IBC_2016_SEC_66",
+      "IBC_2016_SEC_67A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional applying upon failure to approve a resolution plan under Section 54D(3) or Section 54K(12).",
+        "Resolution Professional intimating the Adjudicating Authority of a Committee of Creditors decision to terminate PPIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application filed by RP under Section 54D(3) (no plan approved in 90 days) or Section 54K(12) proviso (competing plan rejected).",
+        "OR intimation by RP of CoC decision to terminate approved by not less than sixty-six per cent of voting shares prior to plan approval.",
+        "Adjudicating Authority passing an order within thirty days terminating PPIRP and specifying the continuation manner for Chapter III, Section 66, and Section 67A proceedings.",
+        "Corporate debtor bearing the pre-packaged insolvency resolution process costs upon termination."
+      ],
+      "statutory_bars": [
+        "CoC termination intimation lacking the required sixty-six per cent voting share approval."
+      ],
+      "saving_exceptions": [
+        "Where an order under Section 54J(2) (fraudulent conduct or gross mismanagement) was passed during PPIRP, termination automatically triggers a liquidation order under Section 33 and includes PPIRP costs as part of liquidation costs."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSUFFICIENT_VOTING_SHARE_FOR_TERMINATION",
+      "ERR_ADJUDICATION_WINDOW_EXCEEDED",
+      "ERR_FAILURE_TO_ORDER_LIQUIDATION_POST_SECTION_54J",
+      "ERR_UNPROVIDED_AVOIDANCE_CONTINUATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54O",
+    "statute_id": "IBC_2016_SEC_54O",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54O",
+    "section_title": "Initiation of corporate insolvency resolution process",
+    "jurisdiction_type": "PROCESS_CONVERSION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Committee of Creditors during PPIRP to resolve by a 66% vote to terminate PPIRP and convert the proceedings into a regular Corporate Insolvency Resolution Process (CIRP) under Chapter II, while carrying forward PPIRP costs, continuing avoidance proceedings, and calculating look-back periods from the PPIRP commencement date.",
+    "core_judicial_inquiry": "Whether the Committee of Creditors passed a valid resolution by not less than sixty-six per cent of voting share to convert PPIRP to CIRP prior to plan approval, whether the corporate debtor is eligible for CIRP under Chapter II, and whether the RP submitted written consent to act as IRP.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_16",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_46",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_54E",
+      "IBC_2016_SEC_54K",
+      "IBC_2016_SEC_66",
+      "IBC_2016_SEC_67A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional intimating the decision of the Committee of Creditors during PPIRP."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Decision of the Committee of Creditors passed by a vote of not less than sixty-six per cent of voting shares before approval of a resolution plan under Section 54K.",
+        "Corporate debtor must be eligible for corporate insolvency resolution process under Chapter II.",
+        "Intimation of the CoC decision by the Resolution Professional to the Adjudicating Authority.",
+        "Submission of written consent by the Resolution Professional to act as Interim Resolution Professional for CIRP.",
+        "Passing of order by the Adjudicating Authority within thirty days of intimation terminating PPIRP and initiating CIRP.",
+        "Inclusion of PPIRP costs as part of insolvency resolution process costs for CIRP.",
+        "Continuation of Chapter III avoidance proceedings and Sections 66 and 67A proceedings during CIRP.",
+        "Inclusion of the PPIRP duration when computing relevant look-back periods under Sections 43, 46, and 50, with 'insolvency commencement date' deemed to mean 'pre-packaged insolvency commencement date'."
+      ],
+      "statutory_bars": [
+        "CoC conversion resolution passed with less than sixty-six per cent of voting shares.",
+        "CoC resolution passed after the approval of a resolution plan under Section 54K.",
+        "Ineligibility of the corporate debtor for CIRP under Chapter II."
+      ],
+      "saving_exceptions": [
+        "If the Resolution Professional fails to submit written consent to act as IRP, the Adjudicating Authority shall appoint an IRP by referring to the Board under Section 16."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 30,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INSUFFICIENT_VOTING_SHARE_CONVERSION",
+      "ERR_CONVERSION_POST_PLAN_APPROVAL",
+      "ERR_INELIGIBLE_FOR_CIRP_CHAPTER_II",
+      "ERR_ADJUDICATION_WINDOW_EXCEEDED",
+      "ERR_MISSING_IRP_WRITTEN_CONSENT"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_54P",
+    "statute_id": "IBC_2016_SEC_54P",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "54P",
+    "section_title": "Application of provisions of Chapters II, III, VI and VII to this Chapter",
+    "jurisdiction_type": "INTERPRETATIVE_SAVINGS_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Applies specified provisions of Chapters II, III, VI, and VII of the Insolvency and Bankruptcy Code mutatis mutandis to the pre-packaged insolvency resolution process (PPIRP), subject to defined textual and contextual modifications.",
+    "core_judicial_inquiry": "Whether a statutory provision imported from Chapters II, III, VI, or VII applies to a PPIRP proceeding and has been correctly construed in accordance with the specific adaptation rules and terminology substitutions mandated under Section 54P.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_24",
+      "IBC_2016_SEC_25A",
+      "IBC_2016_SEC_26",
+      "IBC_2016_SEC_27",
+      "IBC_2016_SEC_28",
+      "IBC_2016_SEC_29A",
+      "IBC_2016_SEC_32A",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_51",
+      "IBC_2016_SEC_54E",
+      "IBC_2016_SEC_54F",
+      "IBC_2016_SEC_54J",
+      "IBC_2016_SEC_54L",
+      "IBC_2016_SEC_61",
+      "IBC_2016_SEC_74"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Parties, resolution professionals, creditors, and corporate applicants involved in pre-packaged insolvency resolution proceedings under Chapter III-A."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Reading imported provisions (including Sections 24, 25A, 26, 27, 28, 29A, 32A, 43 to 51, and Chapters VI and VII) mutatis mutandis in the context of PPIRP.",
+        "Construing references to members of the suspended Board of Directors as members of the active Board of Directors or partners, unless a management takeover order under Section 54J has been passed.",
+        "Construing references to Section 25(2)(j) avoidance filings as Section 54F(2)(h) filings by the Resolution Professional.",
+        "Construing references to Section 16 (IRP appointment) as Section 54E (RP appointment during PPIRP).",
+        "Construing references to 'resolution professional' in Section 28(1) and (4) as 'corporate debtor' in line with debtor-in-possession governance.",
+        "Substituting 'pre-packaged insolvency commencement date', 'pre-packaged insolvency resolution process', and 'pre-packaged insolvency resolution process period' for their corresponding CIRP terms."
+      ],
+      "statutory_bars": [
+        "Inappropriate application of unadapted CIRP mechanisms that contradict the debtor-in-possession structure or specific statutory modifications under Section 54P."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_MISAPPLICATION_OF_CIRP_PROVISIONS_TO_PPIRP",
+      "ERR_FAILURE_TO_APPLY_MUTATIS_MUTANDIS_SUBSTITUTIONS",
+      "ERR_INCORRECT_TERMINOLOGY_ADAPTATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_60",
+    "statute_id": "IBC_2016_SEC_60",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "60",
+    "section_title": "Adjudicating authority for corporate persons",
+    "jurisdiction_type": "JURISDICTIONAL_OVERLAY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Designates the NCLT having territorial jurisdiction over the registered office as the adjudicating authority for corporate persons and guarantors, consolidates guarantor insolvency/bankruptcy proceedings with the corporate debtor's NCLT bench, grants comprehensive subject-matter jurisdiction over related claims/questions, and excludes the moratorium period from limitation calculations.",
+    "core_judicial_inquiry": "Whether the NCLT has territorial jurisdiction based on the registered office location, whether pending insolvency/bankruptcy proceedings of corporate or personal guarantors must be filed in or transferred to the NCLT handling the corporate debtor's CIRP/liquidation, and whether the matter arises out of or in relation to insolvency/liquidation proceedings.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_61",
+      "IBC_2016_SEC_238",
+      "LIMITATION_ACT_1963"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Financial creditors, operational creditors, corporate applicants, resolution professionals, liquidators, or bankruptcy trustees initiating or filing proceedings relating to corporate debtors, corporate guarantors, or personal guarantors."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing applications before the NCLT bench having territorial jurisdiction over the registered office of the corporate person.",
+        "Filing insolvency, liquidation, or bankruptcy proceedings against a corporate guarantor or personal guarantor before the same NCLT bench where CIRP or liquidation of the corporate debtor is pending.",
+        "Transferring any pending insolvency, liquidation, or bankruptcy proceedings of guarantors from other courts or tribunals to the NCLT dealing with the corporate debtor.",
+        "Exclusion of the moratorium period under Section 14 when calculating the limitation period under the Limitation Act, 1963 for any suit or application by or against the corporate debtor."
+      ],
+      "statutory_bars": [
+        "Filing guarantor insolvency or bankruptcy applications in a separate forum or different NCLT bench when CIRP or liquidation against the principal corporate debtor is active."
+      ],
+      "saving_exceptions": [
+        "NCLT is vested with all the powers of the Debt Recovery Tribunal (DRT) under Part III for the purpose of guarantor insolvency and bankruptcy proceedings under sub-section (2)."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_LACK_OF_TERRITORIAL_JURISDICTION",
+      "ERR_IMPROPER_FORUM_FOR_GUARANTOR_INSOLVENCY",
+      "ERR_FAILURE_TO_TRANSFER_GUARANTOR_PROCEEDING",
+      "ERR_EXPIRED_LIMITATION_PERIOD"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_61",
+    "statute_id": "IBC_2016_SEC_61",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "61",
+    "section_title": "Appeals and Appellate Authority",
+    "jurisdiction_type": "APPELLATE_REMEDY",
+    "forum_level": "NCLAT_APPELLATE",
+    "statutory_summary": "Establishes the right of appeal to the National Company Law Appellate Tribunal (NCLAT) for any person aggrieved by an order of the Adjudicating Authority (NCLT), setting a 30-day filing limit (condonable up to 15 days), defining specific grounds for appealing resolution plan approvals, liquidation orders, and PPIRP-to-CIRP conversion orders, and mandating disposal within three months.",
+    "core_judicial_inquiry": "Whether the appeal is filed within the 30-day statutory period (or within 15 additional days upon showing sufficient cause), and whether the grounds raised satisfy the specific legal thresholds—such as contravention of law or material irregularity under sub-section (3), or material irregularity/fraud under sub-sections (4) and (5)—for challenging orders under Sections 31, 33, 54L(4), 54N(4), or 54-O(2).",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_31",
+      "IBC_2016_SEC_33",
+      "IBC_2016_SEC_54L",
+      "IBC_2016_SEC_54N",
+      "IBC_2016_SEC_54O",
+      "IBC_2016_SEC_60",
+      "COMPANIES_ACT_2013"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any person aggrieved by an order of the Adjudicating Authority (NCLT) under Part II of the Code."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Filing of the appeal before the National Company Law Appellate Tribunal (NCLAT) within thirty days from the date of the Adjudicating Authority's order.",
+        "Pleading specific statutory grounds under Section 61(3) when challenging an order approving a resolution plan under Section 31.",
+        "Pleading material irregularity or fraud under Section 61(4) when challenging a liquidation order under Section 33, Section 54L(4), or Section 54N(4).",
+        "Pleading material irregularity or fraud under Section 61(5) when challenging a CIRP initiation order under Section 54-O(2)."
+      ],
+      "statutory_bars": [
+        "Appeals filed beyond forty-five days from the date of the order (30 days standard + 15 days maximum condonable period).",
+        "Appeals against Section 31 plan approval orders brought on grounds outside those enumerated under Section 61(3).",
+        "Appeals against liquidation orders or Section 54-O(2) conversion orders brought without alleging and establishing material irregularity or fraud."
+      ],
+      "saving_exceptions": [
+        "Power of NCLAT to condone a delay of up to fifteen days beyond the initial thirty-day limitation period if satisfied that there was sufficient cause for the delay."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": 90,
+      "rectification_window_days": 15
+    },
+    "audit_error_codes": [
+      "ERR_APPEAL_BARRED_BY_LIMITATION",
+      "ERR_INVALID_GROUNDS_FOR_PLAN_APPEAL",
+      "ERR_FAILURE_TO_PROVE_FRAUD_OR_MATERIAL_IRREGULARITY",
+      "ERR_DISPOSAL_TIMELINE_EXCEEDED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_62",
+    "statute_id": "IBC_2016_SEC_62",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "62",
+    "section_title": "Appeal to Supreme Court",
+    "jurisdiction_type": "APPELLATE_REMEDY",
+    "forum_level": "SUPREME_COURT_APPELLATE",
+    "statutory_summary": "Establishes a statutory right of appeal to the Supreme Court of India against any order of the National Company Law Appellate Tribunal (NCLAT) strictly on a question of law, within forty-five days from receipt of the order (condonable by up to fifteen days upon showing sufficient cause).",
+    "core_judicial_inquiry": "Whether the appeal arises out of an order of NCLAT, presents a valid question of law, and was filed within forty-five days of receipt of the order (or within an additional fifteen days supported by sufficient cause for delay).",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_61"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any person aggrieved by an order of the National Company Law Appellate Tribunal (NCLAT)."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "An order passed by the National Company Law Appellate Tribunal under the Code.",
+        "Formulation and existence of a question of law arising out of such NCLAT order.",
+        "Filing the appeal within forty-five days from the date of receipt of the NCLAT order."
+      ],
+      "statutory_bars": [
+        "Appeals filed beyond sixty days from the date of receipt of the order (45 days base limitation + 15 days maximum condonable period).",
+        "Appeals brought solely on questions of fact or re-appreciation of evidence without presenting a question of law."
+      ],
+      "saving_exceptions": [
+        "Discretionary power of the Supreme Court to allow filing within a further period not exceeding fifteen days if satisfied that the appellant was prevented by sufficient cause from filing within forty-five days."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": 15
+    },
+    "audit_error_codes": [
+      "ERR_APPEAL_BARRED_BY_LIMITATION",
+      "ERR_NO_QUESTION_OF_LAW",
+      "ERR_NO_SUFFICIENT_CAUSE_FOR_DELAY"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_65",
+    "statute_id": "IBC_2016_SEC_65",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "65",
+    "section_title": "Fraudulent or malicious initiation of proceedings",
+    "jurisdiction_type": "PENALTY_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Adjudicating Authority to impose a monetary penalty ranging from one lakh rupees up to one crore rupees on any person who fraudulently or maliciously initiates corporate insolvency, liquidation, voluntary liquidation, or pre-packaged insolvency resolution proceedings for collateral purposes or to defraud any person.",
+    "core_judicial_inquiry": "Whether the initiation of CIRP, liquidation, voluntary liquidation, or PPIRP proceedings was driven by fraudulent, malicious intent, or an intent to defraud rather than a bona fide pursuit of insolvency resolution or liquidation.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10",
+      "IBC_2016_SEC_54C",
+      "IBC_2016_SEC_59",
+      "IBC_2016_SEC_60",
+      "IBC_2016_SEC_66",
+      "IBC_2016_SEC_75"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Adjudicating Authority acting suo motu or upon an application filed by an aggrieved party, corporate debtor, creditor, or insolvency professional alleging fraudulent or malicious initiation."
+      ],
+      "financial_threshold": {
+        "minimum_amount": 100000,
+        "currency": "INR"
+      },
+      "mandatory_prerequisites": [
+        "Filing or initiation of insolvency resolution, liquidation, voluntary liquidation, or pre-packaged insolvency resolution proceedings under the Code.",
+        "Evidentiary establishment that the proceedings were initiated fraudulently, with malicious intent, or with intent to defraud any person.",
+        "Proof that the purpose of initiation was distinct from the genuine statutory purpose of insolvency resolution or liquidation."
+      ],
+      "statutory_bars": [
+        "Failure to establish clear fraudulent or malicious intent (mere dismissal or rejection of an initiation application without evidence of mala fide purpose does not automatically trigger Section 65 penalties)."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_FRAUDULENT_INITIATION_OF_PROCEEDINGS",
+      "ERR_MALICIOUS_INTENT_INSOLVENCY_FILING",
+      "ERR_INTENT_TO_DEFRAUD_VOLUNTARY_LIQUIDATION",
+      "ERR_FRAUDULENT_PPIRP_INITIATION"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_66",
+    "statute_id": "IBC_2016_SEC_66",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "66",
+    "section_title": "Fraudulent or wrongful trading",
+    "jurisdiction_type": "CIVIL_RECOVERY",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Empowers the Adjudicating Authority, upon application by the resolution professional or liquidator, to direct persons knowingly involved in carrying on business with intent to defraud creditors (fraudulent trading) or directors/partners who failed to exercise due diligence despite knowing of imminent insolvency (wrongful trading) to make personal contributions to the corporate debtor's assets.",
+    "core_judicial_inquiry": "Whether business was carried on with intent to defraud creditors or for a fraudulent purpose with knowledge of the parties (sub-section 1), or whether a director or partner knew or ought to have known before the insolvency commencement date that CIRP was unavoidable and failed to exercise reasonable due diligence to minimize creditor losses (sub-section 2).",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_10A",
+      "IBC_2016_SEC_43",
+      "IBC_2016_SEC_45",
+      "IBC_2016_SEC_50",
+      "IBC_2016_SEC_54F",
+      "IBC_2016_SEC_60",
+      "IBC_2016_SEC_65",
+      "IBC_2016_SEC_67A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Resolution Professional during corporate insolvency resolution process or pre-packaged insolvency resolution process.",
+        "Liquidator during liquidation process."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Application filed exclusively by the resolution professional or liquidator before the Adjudicating Authority.",
+        "For fraudulent trading under sub-section (1): Proof of carrying on business with intent to defraud creditors or for a fraudulent purpose, with knowledge of the targeted parties.",
+        "For wrongful trading under sub-section (2): Proof that the director or partner knew or ought to have known before the insolvency commencement date that CIRP was unavoidable, and failed to exercise due diligence to minimize potential loss to creditors."
+      ],
+      "statutory_bars": [
+        "Bar on filing wrongful trading applications under sub-section (2) in respect of defaults for which initiation of CIRP was suspended under Section 10A.",
+        "Applications filed directly by individual creditors, operational creditors, or third parties lacking standing under Section 66."
+      ],
+      "saving_exceptions": [
+        "Statutory due diligence defense for directors or partners under sub-section (2) if they exercised such diligence as was reasonably expected of a person carrying out identical functions in relation to the corporate debtor."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_FRAUDULENT_TRADING_INTENT_ESTABLISHED",
+      "ERR_WRONGFUL_TRADING_DUE_DILIGENCE_FAILURE",
+      "ERR_SECTION_10A_WRONGFUL_TRADING_BAR",
+      "ERR_UNAUTHORIZED_APPLICANT_SECTION_66"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_238",
+    "statute_id": "IBC_2016_SEC_238",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "238",
+    "section_title": "Provisions of this Code to override other laws",
+    "jurisdiction_type": "OVERRIDING_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Establishes the supreme overriding effect (non-obstante clause) of the Insolvency and Bankruptcy Code, 2016, ensuring that its provisions prevail over any inconsistent provisions contained in any other law for the time being in force or any instrument having effect by virtue of any such law.",
+    "core_judicial_inquiry": "Whether there exists an inconsistency between a provision of the Insolvency and Bankruptcy Code, 2016 and any other law or legal instrument, requiring the provisions of the Code to supersede such conflicting law or instrument.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_14",
+      "IBC_2016_SEC_60",
+      "COMPANIES_ACT_2013",
+      "SARFAESI_ACT_2002",
+      "ARBITRATION_AND_CONCILIATION_ACT_1996"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "Any party, resolution professional, liquidator, corporate debtor, or creditor invoking the overriding applicability of the Insolvency and Bankruptcy Code, 2016 over conflicting statutes, regulations, or instruments."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Demonstrating an operational inconsistency or conflict between a provision of the Insolvency and Bankruptcy Code, 2016 and another statute or contractual/statutory instrument."
+      ],
+      "statutory_bars": [
+        "Attempting to invoke other statutory remedies or contractual rights that conflict with or subvert the insolvency resolution, moratorium, or liquidation framework under the Code."
+      ],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_INCONSISTENT_LAW_APPLIED",
+      "ERR_FAILURE_TO_GIVE_OVERRIDING_EFFECT",
+      "ERR_CONFLICT_WITH_OTHER_STATUTE"
+    ]
+  }
+]

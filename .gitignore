@@ -1,7 +1,21 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
 __pycache__/
 *.pyc
+.venv/
+.mypy_cache/
+.ruff_cache/
 .pytest_cache/
-.env
+*.egg-info/
+
+# local caches and service data
+.cache/
+qdrant_data/
+
 # runtime state (job queue, usage ledger, agent cache, empty agent sandbox) and run outputs
 data/state/
 data/cache/
@@ -12,5 +26,4 @@ runs/
 data/canonical/
 data/index/
 data/reports/dense_build.log
-*.egg-info/
 data/silver/

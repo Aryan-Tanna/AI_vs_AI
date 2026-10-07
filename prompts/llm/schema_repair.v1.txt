@@ -1,0 +1,6 @@
+Your previous reply could not be accepted because it did not match the required JSON schema.
+
+Validation errors:
+$errors
+
+Reply again with only a single JSON object that satisfies the schema. Do not add any text outside the JSON.
