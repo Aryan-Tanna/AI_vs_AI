@@ -107,6 +107,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     for action, text in (("validate", "validation report only"), ("load", "validate, then load into MongoDB")):
         cmd = law_cmd.add_parser(action, help=text)
         cmd.add_argument("--source", type=Path, default=REPO_ROOT / "data" / "law_db", help="folder of Law DB files")
+    from lexarena import cli_review
+
+    cli_review.add_parsers(sub)
     args = parser.parse_args(argv)
 
     path = _config_path(args.config)
@@ -114,6 +117,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _config_show(path)
     if args.group == "law":
         return _law(args.action, args.source)
+    if args.group in ("sources", "draft", "review"):
+        return cli_review.run(args, path)
     return _llm_smoke(path, args.role)
 
 

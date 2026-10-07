@@ -12,7 +12,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
   - Build: Pydantic models for every format in DATA_FORMATS.md and SPEC H; role-scoped repositories in `lexarena/storage/`.
   - Done when: tests show lawyers, THEMIS-LOCAL, THEMIS-GLOBAL and judges cannot read `case_ground_truth` or the other agent's private data, and the evaluator can read ground truth only after `VERDICT_RECORDED`. Ground truth lives in a separate database whose credentials are absent from agent, THEMIS and judge processes, and a test proves the shared credentials are refused by MongoDB itself (D-024).
 
-- [ ] **Step 2: Law DB loading**
+- [x] **Step 2: Law DB loading**
   - Build: loader that validates every Law DB record, plus integrity checks (dangling `intersecting_statute_ids`, missing error codes); `get_statute(id, as_of)` honouring approved `temporal_overlay` rows.
   - Done when: a validation report lists every malformed or dangling record; `get_statute` hides sections not in force on a given date (tested with an approved sample row).
 

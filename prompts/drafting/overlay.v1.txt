@@ -1,0 +1,28 @@
+You are extracting date-dependent legal parameters from an official legal document, for review by a person. You are not giving legal advice and you must not use anything you remember about the law. Use only the excerpts below.
+
+The provision these parameters attach to (a record from our Law DB; its text is a paraphrase, not the law itself):
+$statute
+
+The official document (the only source you may use): $source_title
+Excerpts from it:
+<<<
+$excerpts
+>>>
+
+Task: list every row that this document, read on its own, establishes for the provision above. A row says: for cases whose relevant date falls in a window, a parameter has a value.
+
+Allowed parameter names (use exactly one per row): $parameters
+- section_in_force: value_kind "boolean"; true if the document brings the provision into force (inserts it, substitutes it) from a date, false if it omits or suspends it from a date.
+- a threshold amount: value_kind "number", in rupees as digits.
+- a window of dates (for example a bar or an excluded period): value_kind "date_range", with value_from and value_to.
+Allowed keyed_on labels (the case date that decides whether the row applies): $date_labels
+
+Rules, all mandatory:
+1. Quotes must be copied character for character from the excerpts: source_text (the sentence or clause that establishes the row), value_quote (the words that state the value), effective_from_quote and effective_to_quote (the words that state each date). A quote that is not verbatim will be rejected.
+2. Never infer a date. If the document does not itself state when the provision takes effect (for example it says "from such date as the Central Government may, by notification, appoint"), leave effective_from null and explain this in commencement_note. Do not use the date of assent, publication or the document's own date unless the text says the provision takes effect on it.
+3. Dates are YYYY-MM-DD. Leave effective_to null when the text gives no end.
+4. Fill only the value field that matches value_kind; set the other value fields to null.
+5. If the document establishes nothing for this provision, return no rows and say why in no_rows_reason.
+6. Do not decide contested questions of interpretation. Extract only what the words fix.
+
+Return a single JSON object with keys "rows" and "no_rows_reason". Each row has exactly these keys: parameter, value_kind, value_boolean, value_number, value_from, value_to, value_text, keyed_on, effective_from, effective_to, source_text, value_quote, effective_from_quote, effective_to_quote, commencement_note.

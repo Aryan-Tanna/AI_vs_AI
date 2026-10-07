@@ -40,10 +40,15 @@ models:
   clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api}
   clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API4}
   reflection:      {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
+  # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
+  drafter_primary:   {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0, max_output_tokens: 8192, api_key_env: gemini_api}
+  drafter_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0, max_output_tokens: 4096, api_key_env: Groq_API2}
 
 prompts:
   schema_repair: {id: llm/schema_repair, version: 1}
   smoke: {id: smoke/dummy, version: 1}
+  draft_overlay: {id: drafting/overlay, version: 1}
+  draft_predicate: {id: drafting/predicate, version: 1}
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -91,5 +96,15 @@ memory:
 splits:
   test_count: 100                        # [INTENT]
   validation_count: 50                   # [SPEC G1] reporting only, no tuning [D-023]
+
+vocabulary:
+  # key_dates labels [SPEC H1 examples]; DECISION = simulation_date [D-039]. The clerk (Step 6) uses this list.
+  case_date_labels: [DEFAULT, DEMAND_NOTICE, NOTICE_OF_DISPUTE, FILING, ADMISSION, CIRP_COMMENCEMENT, LIQUIDATION_ORDER, PLAN_SUBMISSION, PLAN_APPROVAL, DECISION]
+  # temporal_overlay parameters [DATA_FORMATS §3 examples]; section_in_force drives get_statute [D-039].
+  overlay_parameters: [section_in_force, minimum_default_inr, bar_window, excluded_period, precedent_overruled]
+
+drafting:
+  excerpt_chars: 2500                    # [PLACEHOLDER] characters around each search hit; Groq rejects >7k input tokens [MEASURED]
+  max_excerpts: 3                        # [PLACEHOLDER]
 
 seed: 7                                  # [PLACEHOLDER]

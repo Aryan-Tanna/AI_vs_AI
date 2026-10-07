@@ -12,6 +12,7 @@ dependencies = [
     "pymongo>=4.16,<5",
     "qdrant-client>=1.19,<1.20",
     "redis>=5.2",
+    "pymupdf>=1.28.2",
 ]
 
 [project.scripts]
@@ -55,3 +56,9 @@ plugins = ["pydantic.mypy"]
 [[tool.mypy.overrides]]
 module = ["qdrant_client.*", "redis.*"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Tests build synthetic PDFs with pymupdf, which ships no type hints; lexarena wraps it in drafting/pdf.py.
+module = ["tests.test_drafting_sources"]
+disallow_untyped_calls = false
+warn_return_any = false

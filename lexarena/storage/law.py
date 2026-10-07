@@ -13,15 +13,20 @@ from pydantic import Field
 
 from lexarena.ingest.law_db import LoadableRecord, snapshot_id
 from lexarena.schemas.base import NonEmptyStr, StoredModel
-from lexarena.schemas.law import LawRecord
+from lexarena.schemas.law import LawRecord, locate_item
 from lexarena.schemas.overlay import TemporalOverlayRow
-from lexarena.storage.mongo import LAW_DB, ROOT_NAMESPACE, TEMPORAL_OVERLAY, MongoDb, Namespace
+from lexarena.schemas.predicate import PredicateEntry
+from lexarena.storage.mongo import LAW_DB, PREDICATE_REGISTRY, ROOT_NAMESPACE, TEMPORAL_OVERLAY, MongoDb, Namespace
 from lexarena.storage.policy import Op, Principal, Store, require
 from lexarena.storage.temporal import AsOf, StatuteView, resolve_statute, windows_overlap
 
 
 class OverlayRejectedError(ValueError):
     """An overlay row that may not be stored (not APPROVED, unknown statute, overlapping window)."""
+
+
+class PredicateRejectedError(ValueError):
+    """A predicate that may not be stored (not APPROVED, unknown statute, Law DB item changed)."""
 
 
 class StoredLawDoc(StoredModel):
@@ -38,6 +43,7 @@ class LoadResult:
     unchanged: int
     removed: int
     snapshot: str
+    stale_predicates: list[str]
 
 
 class LawRepository:
@@ -45,6 +51,7 @@ class LawRepository:
         self._principal = principal
         self._law = ns.collection(db, LAW_DB)
         self._overlay = ns.collection(db, TEMPORAL_OVERLAY)
+        self._predicates = ns.collection(db, PREDICATE_REGISTRY)
 
     # ------------------------------------------------------------ writes (ingestion only)
 
@@ -68,7 +75,8 @@ class LawRepository:
         gone = sorted(set(stored) - set(records))
         if gone:
             self._law.delete_many({"_id": {"$in": gone}})
-        return LoadResult(inserted, updated, unchanged, len(gone), self.snapshot())
+        stale = self._refresh_predicates()
+        return LoadResult(inserted, updated, unchanged, len(gone), self.snapshot(), stale)
 
     def put_overlay(self, row: TemporalOverlayRow) -> None:
         """Store one overlay row. Only APPROVED rows are stored (non-negotiable 8); drafts live in review/."""
@@ -90,7 +98,51 @@ class LawRepository:
                 )
         self._overlay.replace_one({"overlay_id": row.overlay_id}, row.to_document(), upsert=True)
 
+    def put_predicate(self, entry: PredicateEntry) -> None:
+        """Store one predicate. Only APPROVED entries whose Law DB item is unchanged since drafting are stored."""
+        require(self._principal, Store.PREDICATE_REGISTRY, Op.WRITE)
+        if entry.status != "APPROVED":
+            raise PredicateRejectedError(f"{entry.predicate_id}: only APPROVED predicates load (status {entry.status})")
+        record = self.get_record(entry.statute_id)
+        if record is None:
+            raise PredicateRejectedError(f"{entry.predicate_id}: statute {entry.statute_id} is not in the Law DB")
+        where = locate_item(record, entry.field, entry.item_index, entry.item_hash)
+        if where == "MISSING":
+            raise PredicateRejectedError(
+                f"{entry.predicate_id}: the Law DB item it encodes has changed since drafting; re-draft it"
+            )
+        stored = entry.model_copy(update={"item_index": where})
+        self._predicates.replace_one({"predicate_id": entry.predicate_id}, stored.to_document(), upsert=True)
+
+    def _refresh_predicates(self) -> list[str]:
+        """After a Law DB change: follow moved items, mark changed ones STALE, restore ones whose text is back."""
+        stale: list[str] = []
+        for doc in self._predicates.find({"status": {"$in": ["APPROVED", "STALE"]}}, projection={"_id": False}):
+            entry = PredicateEntry.model_validate(doc)
+            record = self.get_record(entry.statute_id)
+            where = "MISSING" if record is None else locate_item(record, entry.field, entry.item_index, entry.item_hash)
+            update: dict[str, object]
+            if where == "MISSING":
+                update = {"status": "STALE"}
+                stale.append(entry.predicate_id)
+            else:
+                update = {"status": "APPROVED", "item_index": where}
+            self._predicates.update_one({"predicate_id": entry.predicate_id}, {"$set": update})
+        return sorted(stale)
+
     # ------------------------------------------------------------ reads
+
+    def get_record(self, statute_id: str) -> LawRecord | None:
+        """The stored Law DB record, unchanged. Ingestion and drafting use it; session roles use get_statute."""
+        require(self._principal, Store.LAW_DB, Op.READ)
+        doc = self._law.find_one({"_id": statute_id})
+        return None if doc is None else StoredLawDoc.model_validate(doc).record
+
+    def predicates(self, statute_id: str) -> list[PredicateEntry]:
+        """APPROVED predicates for a statute; STALE and other statuses are never served."""
+        require(self._principal, Store.PREDICATE_REGISTRY, Op.READ)
+        found = self._predicates.find({"statute_id": statute_id, "status": "APPROVED"}, projection={"_id": False})
+        return sorted(map(PredicateEntry.model_validate, found), key=lambda e: e.predicate_id)
 
     def snapshot(self) -> str:
         require(self._principal, Store.LAW_DB, Op.READ)

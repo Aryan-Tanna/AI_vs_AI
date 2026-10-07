@@ -18,6 +18,7 @@ TURN_PRIVATE = "turn_private"
 SESSIONS = "sessions"
 LAW_DB = "law_db"
 TEMPORAL_OVERLAY = "temporal_overlay"
+PREDICATE_REGISTRY = "predicate_registry"
 
 
 @dataclass(frozen=True)

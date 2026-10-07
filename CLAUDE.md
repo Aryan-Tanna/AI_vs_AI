@@ -226,6 +226,10 @@ Run from the repo root. Secrets live only in three git-ignored files (template i
 | One real call per model role | `.venv/Scripts/lexarena llm smoke [--role ROLE]` |
 | Raw data audit | `python scripts/audit_raw.py` |
 | Validate the Law DB, or validate and load it into MongoDB | `.venv/Scripts/lexarena law validate`, `.venv/Scripts/lexarena law load` |
+| Register an official legal document (PDF) | `.venv/Scripts/lexarena sources add --source-id ID --url URL --title T --issuer I --reference R --issued-on YYYY-MM-DD` |
+| Draft overlay rows or predicates into `review/` (spends quota) | `.venv/Scripts/lexarena draft overlay\|predicate --statute ID --source ID --find TERM` |
+| Review drafts (you approve; Claude never does) | `.venv/Scripts/lexarena review list\|show ID\|approve ID --by NAME\|reject ID --by NAME --reason R` |
+| Load approved drafts into MongoDB (re-verified) | `.venv/Scripts/lexarena review load` |
 | Check Law DB and precedents against the frozen formats | `.venv/Scripts/python scripts/check_formats.py` |
 | Quarantine dev-case precedents | `python scripts/quarantine_dev_overlap.py [--dry-run]` |
 

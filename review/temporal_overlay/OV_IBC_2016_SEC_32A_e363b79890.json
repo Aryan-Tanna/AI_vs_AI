@@ -1,0 +1,64 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_32A_e363b79890",
+  "statute_id": "IBC_2016_SEC_32A",
+  "source_id": "IBC_AMENDMENT_ACT_2020",
+  "source_text_sha256": "7aaa46bad3c336eb06153d6552da5b1c9f7872dc4a1f765fd393a4d101cdfb13",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "AGREED",
+  "conflicts_with": [],
+  "proposed_by": [
+    "drafter_primary:gemini-2.5-flash",
+    "drafter_secondary:openai/gpt-oss-120b"
+  ],
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 7077-7169"
+    },
+    {
+      "name": "value_quote",
+      "status": "NOT_FOUND",
+      "detail": "the following section shall be inserted, namely:— \"32A.\""
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 385-415"
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2019-12-28"
+    }
+  ],
+  "blocking_problems": [
+    "value_quote: quote not found verbatim in the source"
+  ],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is PLAN_APPROVAL the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T09:07:54.514904Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "section_in_force",
+    "value_kind": "boolean",
+    "value_boolean": true,
+    "value_number": null,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "PLAN_APPROVAL",
+    "effective_from": "2019-12-28",
+    "effective_to": null,
+    "source_text": "10. After section 32 of the principal Act, the following section shall be inserted, namely:—",
+    "value_quote": "the following section shall be inserted, namely:— \"32A.\"",
+    "effective_from_quote": "the 28th day of December, 2019",
+    "effective_to_quote": null,
+    "commencement_note": ""
+  }
+}

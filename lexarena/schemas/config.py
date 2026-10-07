@@ -58,6 +58,9 @@ class ModelsConfig(Strict):
     clerk_primary: ModelConfig
     clerk_secondary: ModelConfig
     reflection: ModelConfig
+    # Step 3: two independent extractors draft side-collection items for human review (D-041).
+    drafter_primary: ModelConfig
+    drafter_secondary: ModelConfig
 
     def by_role(self) -> dict[str, ModelConfig]:
         return {name: getattr(self, name) for name in type(self).model_fields}
@@ -71,8 +74,10 @@ class ModelsConfig(Strict):
         # Two-model agreement in the clerk (ARCHITECTURE §3) needs independent families.
         if self.clerk_primary.family == self.clerk_secondary.family:
             raise ValueError("models.clerk_primary.family must differ from models.clerk_secondary.family")
+        if self.drafter_primary.family == self.drafter_secondary.family:
+            raise ValueError("models.drafter_primary.family must differ from models.drafter_secondary.family")
         # CLAUDE.md: verifiers and extractors run at temperature 0.
-        for role in ("verifier", "auditor", "clerk_primary", "clerk_secondary"):
+        for role in ("verifier", "auditor", "clerk_primary", "clerk_secondary", "drafter_primary", "drafter_secondary"):
             if getattr(self, role).temperature != 0:
                 raise ValueError(f"models.{role}.temperature must be 0 (verifiers and extractors are deterministic)")
         return self
@@ -86,6 +91,33 @@ class PromptRef(Strict):
 class PromptsConfig(Strict):
     schema_repair: PromptRef
     smoke: PromptRef
+    draft_overlay: PromptRef
+    draft_predicate: PromptRef
+
+
+class VocabularyConfig(Strict):
+    """Names shared across components, so a label one writes is a label another can read (D-041).
+
+    `case_date_labels`: the key_dates labels the clerk may emit and overlay rows may key on; DECISION is
+    the simulation_date. `overlay_parameters`: the temporal_overlay parameter names consumers understand.
+    """
+
+    case_date_labels: list[Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]*$")]]
+    overlay_parameters: list[Annotated[str, Field(pattern=r"^[a-z][a-z0-9_]*$")]]
+
+    @model_validator(mode="after")
+    def _required_names(self) -> VocabularyConfig:
+        # Names the code gives meaning to (lexarena.storage.temporal); without them get_statute cannot work.
+        if "DECISION" not in self.case_date_labels:
+            raise ValueError("vocabulary.case_date_labels must include DECISION (the simulation_date)")
+        if "section_in_force" not in self.overlay_parameters:
+            raise ValueError("vocabulary.overlay_parameters must include section_in_force")
+        return self
+
+
+class DraftingConfig(Strict):
+    excerpt_chars: PositiveInt
+    max_excerpts: PositiveInt
 
 
 class LLMConfig(Strict):
@@ -181,6 +213,8 @@ class AppConfig(Strict):
     judging: JudgingConfig
     memory: MemoryConfig
     splits: SplitsConfig
+    vocabulary: VocabularyConfig
+    drafting: DraftingConfig
     seed: int
 
     @model_validator(mode="after")

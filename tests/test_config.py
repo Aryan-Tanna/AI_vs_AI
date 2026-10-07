@@ -129,7 +129,24 @@ def test_clerk_models_must_differ_in_family(tmp_path: Path) -> None:
         load_config(_write(tmp_path, raw))
 
 
-@pytest.mark.parametrize("role", ["verifier", "auditor", "clerk_primary", "clerk_secondary"])
+def test_drafter_models_must_differ_in_family(tmp_path: Path) -> None:
+    raw = copy.deepcopy(RAW_V1)
+    raw["models"]["drafter_secondary"]["family"] = raw["models"]["drafter_primary"]["family"]
+    with pytest.raises(ValidationError, match="drafter"):
+        load_config(_write(tmp_path, raw))
+
+
+def test_vocabulary_must_include_the_decision_date_and_in_force_parameter(tmp_path: Path) -> None:
+    for key, required in (("case_date_labels", "DECISION"), ("overlay_parameters", "section_in_force")):
+        raw = copy.deepcopy(RAW_V1)
+        raw["vocabulary"][key] = [v for v in raw["vocabulary"][key] if v != required]
+        with pytest.raises(ValidationError, match=required):
+            load_config(_write(tmp_path, raw))
+
+
+@pytest.mark.parametrize(
+    "role", ["verifier", "auditor", "clerk_primary", "clerk_secondary", "drafter_primary", "drafter_secondary"]
+)
 def test_verifiers_and_extractors_run_at_temperature_zero(tmp_path: Path, role: str) -> None:
     raw = copy.deepcopy(RAW_V1)
     raw["models"][role]["temperature"] = RAW_V1["models"]["lawyer"]["temperature"] + 0.1

@@ -1,0 +1,24 @@
+You are drafting machine-checkable rules from an official legal document, for review by a person. You are not giving legal advice and you must not use anything you remember about the law. Use only the excerpts below.
+
+Provision: $statute_id ($section_title)
+Its checklist items in our Law DB (paraphrases; refer to them by field and index):
+$checklist
+
+The official document (the only source you may use): $source_title
+Excerpts from it:
+<<<
+$excerpts
+>>>
+
+Task: for checklist items whose numbers or dates are fixed literally by the words of this document (a number of days, an amount, an order of dates), write a predicate that checks what an advocate CLAIMED against the law and the case record. Items that need judgement (whether a debt is a financial debt, whether a dispute is genuine) get no predicate.
+
+A predicate:
+- field and item_index: which checklist item it encodes (item_index null for financial_threshold, adjudication_window_days, rectification_window_days).
+- kind: one of THRESHOLD, DAY_COUNT, DATE_ORDER, DATE_WINDOW.
+- inputs: named values, each with a source of the form record.amounts:<LABEL>, record.key_dates:<LABEL>, law:<json path>, overlay:<parameter> or claim:<field>. At least one input must be claim:<field>: a predicate checks what the argument said, never whether a side should win. Case date labels: $date_labels
+- open_parameters: readings the words leave open, each with a name, at least two options and a note. Never pick one reading yourself.
+- expression_json: the expression tree as a JSON string. A leaf is {"var": "<input name>"} or {"const": <value>}. A node is {"op": "<op>", "args": [...]} with op one of and, or, not, implies, ==, !=, <, <=, >, >=, +, -, days_between, add_years, add_days, if. An open reading is {"op": "choose", "param": "<open parameter>", "cases": {"<option>": <expression>, ...}}.
+- error_code: one of $error_codes
+- source_text: the words of the document that fix the number or date, copied character for character from the excerpts. Every constant you use must appear in it.
+
+Return a single JSON object with keys "predicates" and "no_predicate_reason". If nothing in the document fixes a number or date for this provision, return no predicates and say why.
