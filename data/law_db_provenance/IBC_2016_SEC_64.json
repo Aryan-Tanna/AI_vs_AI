@@ -7,7 +7,11 @@
   "later_amendments_checked": [
     {
       "source_id": "IBC_AMENDMENT_ACT_2026",
-      "result": "not among the sections this Act amends, substitutes or omits (margin notes read 2026-10-07); the Act comes into force only on dates the Central Government notifies"
+      "result": "not amended by this Act: none of its operative sections names this section (read 2026-10-07). Most of the Act is in force from 26.05.2026 by the notification registered as IBC_AMENDMENT_ACT_2026_COMMENCEMENT."
+    },
+    {
+      "source_id": "IBC_AMENDMENT_ACT_2026_COMMENCEMENT",
+      "result": "read 2026-10-07; lists the Act's provisions in force from 26.05.2026"
     }
   ],
   "section_starts_with": "64. Expeditious disposal of applications. - (1) Where an application",
