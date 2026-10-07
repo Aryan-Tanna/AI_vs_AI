@@ -3,9 +3,10 @@
 `CaseScope` is fixed by the orchestrator from the full case and bound into the repository and the tools; no tool
 argument can change it, so an agent cannot widen its own search (D-052).
 
-`PrecedentView` is what an agent sees of a precedent: an allow-list of the record's fields plus `precedent_uid`,
-the unique ID agents cite (precedent_id values collide across different cases, D-024). `is_overruled` is left
-out: it states the status today, which would leak a later overruling into an earlier case (SPEC B8, D-052).
+`PrecedentView` is what an agent sees of a whole precedent (`get_precedent(..., part="all")`): an allow-list of
+the record's fields plus `precedent_uid`, the unique ID agents cite (precedent_id values collide across different
+cases, D-024). `is_overruled` is left out: it states the status today, which would leak a later overruling into
+an earlier case (SPEC B8, D-052). Searches return compact `PrecedentCard`s instead (D-055).
 """
 
 from __future__ import annotations
@@ -74,8 +75,39 @@ class PrecedentView(StoredModel):
         return cls(**{k: payload[k] for k in AGENT_PRECEDENT_FIELDS}, score=score)
 
 
+PrecedentPart = Literal["ratio", "facts", "issues", "order", "summary", "all"]
+
+
+class PrecedentCard(StoredModel):
+    """One search hit, compact (D-055): who, when, which statutes, the precedent's rule and the passage that
+    matched the query, each capped at `retrieval.card_text_tokens`. The full text is fetched by ID, part by part."""
+
+    precedent_uid: NonEmptyStr
+    precedent_id: NonEmptyStr
+    case_title: str
+    forum: str
+    decision_date: str
+    final_order: str
+    statutes: list[str] = Field(description="Law DB IDs the precedent cites (statutes_normalized)")
+    rule: str = Field(description="ratio part 1, the abstract legal rule")
+    matched: str = Field(description="the passage that best matched the query")
+    score: float
+    score_kind: Literal["RERANKER", "VECTOR"]
+
+
+class PrecedentExcerpt(StoredModel):
+    """One part of a precedent, fetched by ID (D-055)."""
+
+    precedent_uid: NonEmptyStr
+    precedent_id: NonEmptyStr
+    case_title: str
+    decision_date: str
+    part: PrecedentPart
+    text: str
+
+
 class SearchResult(StoredModel):
-    hits: list[PrecedentView]
+    hits: list[PrecedentCard]
     statute_filter: list[str] = Field(description="Law DB IDs the search was restricted to (empty: no filter)")
     ignored_statutes: list[str] = Field(description="statutes given by the caller that match no Law DB ID")
 

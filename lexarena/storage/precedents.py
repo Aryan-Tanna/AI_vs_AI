@@ -100,10 +100,11 @@ class PrecedentRepository:
             for p in self._scroll(["content_hash", "derived_hash"])
         }
 
-    def all_payloads(self) -> list[dict[str, Any]]:
-        """Every stored payload, ignoring any case's cut-off: ingestion, clerk and orchestrator only (D-052)."""
+    def all_payloads(self, fields: list[str] | None = None) -> list[dict[str, Any]]:
+        """Every stored payload (or only `fields` of it, to keep memory small), ignoring any case's cut-off:
+        ingestion, clerk and orchestrator only (D-052)."""
         require(self._principal, Store.PRECEDENTS_UNSCOPED, Op.READ)
-        return [dict(p.payload or {}) for p in self._scroll(True)]
+        return [dict(p.payload or {}) for p in self._scroll(fields if fields is not None else True)]
 
 
 class ScopedPrecedentReader:

@@ -32,15 +32,12 @@ from qdrant_client import models
 
 from lexarena.embedding import Embedder, token_windows
 from lexarena.ingest.json_files import read_json_values
+from lexarena.precedent_text import facts_sections, ratio_text, sections
 from lexarena.schemas.precedent import PrecedentRecord
 from lexarena.schemas.statute_alias import StatuteAliasTable
 from lexarena.statute_ids import normalize_statutes, resolve_statute_id
 from lexarena.storage.precedents import FACTS, RATIO, PrecedentRepository
 
-# DATA_FORMATS §2: "Numbered labelled sections: 1. PARTY IDENTITIES: ... 2. COMMERCIAL TRANSACTION: ..."
-SECTION = re.compile(r"(?:^|\s)(?P<number>\d+)\.\s+(?P<label>[A-Z][A-Z /&\-]*[A-Z]):\s*")
-EXCLUDED_FACT_SECTIONS = frozenset({"PARTY IDENTITIES"})  # documented: names, not facts to search on
-RATIO_PARTS_EMBEDDED = 3  # literal-ok: DATA_FORMATS §2 embeds ratio parts 1 to 3; part 4 is case-specific
 INGEST_BATCH = 64  # literal-ok: records embedded and upserted per batch (memory, not behaviour)
 DERIVED_FIELDS = frozenset(
     {"precedent_uid", "statutes_normalized", "decision_date_ts", "source_file", "content_hash", "derived_hash"}
@@ -101,29 +98,6 @@ class PreparedPrecedents:
     points: list[PreparedPoint]
     report: PrecedentPrepReport
     ids_by_uid: dict[str, str] = field(default_factory=dict)
-
-
-def _sections(text: str) -> list[tuple[str, str]]:
-    found = list(SECTION.finditer(text))
-    return [
-        (m.group("label").strip(), text[m.end() : found[i + 1].start() if i + 1 < len(found) else len(text)].strip())
-        for i, m in enumerate(found)
-    ]
-
-
-def facts_sections(material_facts: str) -> list[str]:
-    """`LABEL: text` for each labelled section except the excluded ones; the whole text if there are none."""
-    sections = _sections(material_facts)
-    if not sections:
-        return [material_facts.strip()] if material_facts.strip() else []
-    return [f"{label}: {body}" for label, body in sections if label not in EXCLUDED_FACT_SECTIONS and body]
-
-
-def ratio_text(ratio_decidendi: str) -> str:
-    sections = _sections(ratio_decidendi)
-    if not sections:
-        return ratio_decidendi.strip()
-    return " ".join(f"{label}: {body}" for label, body in sections[:RATIO_PARTS_EMBEDDED])
 
 
 def content_hash(raw: Any) -> str:
@@ -202,7 +176,7 @@ def prepare_precedents(
         for cited in record.statutes_cited:
             resolution[resolve_statute_id(cited, known_statutes, aliases)[1]] += 1
         unresolved_counts.update(unresolved)
-        if not _sections(record.material_facts):
+        if not sections(record.material_facts):
             no_headings += 1
         facts: list[str] = []
         for section in facts_sections(record.material_facts):

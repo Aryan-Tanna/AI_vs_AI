@@ -184,6 +184,13 @@ def test_a_single_judge_can_never_decide_a_case(tmp_path: Path) -> None:
         load_config(_write(tmp_path, raw))
 
 
+def test_candidate_pool_must_cover_top_k(tmp_path: Path) -> None:
+    raw = copy.deepcopy(RAW_V1)
+    raw["retrieval"]["candidate_pool"] = raw["retrieval"]["top_k"] - 1
+    with pytest.raises(ValidationError, match="candidate_pool"):
+        load_config(_write(tmp_path, raw))
+
+
 def test_api_key_env_must_be_a_variable_name(tmp_path: Path) -> None:
     raw = copy.deepcopy(RAW_V1)
     raw["models"]["lawyer"]["api_key_env"] = "not a variable name!"

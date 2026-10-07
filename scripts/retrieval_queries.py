@@ -9,6 +9,7 @@ reports/step5_queries.md and prints a summary.
 
 from __future__ import annotations
 
+import json
 import sys
 from datetime import date
 from pathlib import Path
@@ -18,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lexarena.app import DEFAULT_ENV_FILE, REPO_ROOT
 from lexarena.config import load_config
 from lexarena.embedding import FastEmbedder
+from lexarena.rerank import FastReranker
 from lexarena.retrieval.tools import RetrievalTools
 from lexarena.schemas.retrieval import CaseScope, SearchResult
 from lexarena.statute_ids import load_statute_aliases
@@ -66,6 +68,10 @@ QUERIES: list[tuple[str, str, str, list[str] | None]] = [
 def main() -> None:
     cfg = load_config(REPO_ROOT / "config" / "config.v1.yaml")
     embedder = FastEmbedder(cfg.embedding.model, REPO_ROOT / cfg.embedding.cache_dir, cfg.embedding.batch_size)
+    rr = cfg.retrieval.reranker
+    reranker = (
+        FastReranker(rr.model, REPO_ROOT / cfg.embedding.cache_dir, cfg.embedding.batch_size) if rr.enabled else None
+    )
     aliases = load_statute_aliases(REPO_ROOT / "data" / "statute_aliases.json")
     out = ["# Step 5: hand-written retrieval queries", ""]
     with SessionProcess.from_env_files([DEFAULT_ENV_FILE]) as proc:
@@ -78,7 +84,10 @@ def main() -> None:
                 embedder=embedder,
                 known_statutes=stores.law.statute_ids(),
                 aliases=aliases,
+                reranker=reranker,
                 top_k=cfg.retrieval.top_k,
+                candidate_pool=cfg.retrieval.candidate_pool,
+                card_text_tokens=cfg.retrieval.card_text_tokens,
                 query_instruction=cfg.embedding.query_instruction,
             )
             tool_name = "find_authority" if kind == "authority" else "find_similar_cases"
@@ -100,18 +109,21 @@ def main() -> None:
             for i, h in enumerate(result.hits, 1):
                 out.append(
                     f"| {i} | {h.score:.3f} | {h.decision_date} | {h.precedent_id} | {h.case_title[:70]} | "
-                    f"{', '.join(h.statutes_normalized[:4])} |"
+                    f"{', '.join(h.statutes[:4])} |"
                 )
             out.append("")
             for i, h in enumerate(result.hits, 1):
-                field = h.ratio_decidendi if kind == "authority" else h.material_facts
-                out.append(f"{i}. {field[:400]}...")
+                out.append(f"{i}. rule: {h.rule}")
+                out.append(f"   matched: {h.matched}")
             out.append("")
             late = [h.decision_date for h in result.hits if h.decision_date >= cutoff]
+            tokens = embedder.count_tokens(json.dumps(result.model_dump(mode="json")))
+            out.append(f"Result size: {tokens} tokens (bge tokenizer)")
+            out.append("")
             print(
                 f"Q{n} {kind:9} before {cutoff}: {len(result.hits)} hits, scores "
                 f"{[round(h.score or 0, 3) for h in result.hits]}, dates {[h.decision_date for h in result.hits]}, "
-                f"late={late}"
+                f"late={late}, tokens={tokens}"
             )
     report = REPO_ROOT / "reports" / "step5_queries.md"
     report.parent.mkdir(exist_ok=True)

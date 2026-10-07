@@ -139,10 +139,24 @@ class EmbeddingConfig(Strict):
     query_instruction: str  # prefixed to asymmetric (proposition -> ratio) queries only [SPEC B5]
 
 
+class RerankerConfig(Strict):
+    enabled: bool
+    model: str
+
+
 class RetrievalConfig(Strict):
     facts_threshold: UnitInterval
     ratio_threshold: UnitInterval
     top_k: PositiveInt
+    candidate_pool: PositiveInt
+    card_text_tokens: PositiveInt
+    reranker: RerankerConfig
+
+    @model_validator(mode="after")
+    def _pool_covers_top_k(self) -> RetrievalConfig:
+        if self.candidate_pool < self.top_k:
+            raise ValueError("retrieval.candidate_pool must be at least retrieval.top_k")
+        return self
 
 
 class SessionConfig(Strict):

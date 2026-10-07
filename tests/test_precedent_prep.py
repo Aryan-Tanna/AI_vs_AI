@@ -7,13 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from lexarena.ingest.precedents import (
-    DERIVED_FIELDS,
-    facts_sections,
-    prepare_precedents,
-    ratio_text,
-    read_precedent_sources,
-)
+from lexarena.ingest.precedents import DERIVED_FIELDS, prepare_precedents, read_precedent_sources
+from lexarena.precedent_text import facts_sections, ratio_text
 from lexarena.statute_ids import normalize_statutes
 from tests.fakes import WordEmbedder
 

@@ -71,6 +71,11 @@ retrieval:
   facts_threshold: 0.75                  # [SPEC B6] uncalibrated
   ratio_threshold: 0.75                  # [PLACEHOLDER] SPEC B6 expects a separate value
   top_k: 5                               # [SPEC B7]
+  candidate_pool: 30                     # [PLACEHOLDER] vector hits fetched before reranking to top_k [D-055]
+  card_text_tokens: 80                   # [PLACEHOLDER] cap on each card's rule and matched passage [D-055]
+  reranker:
+    enabled: false                       # [D-055] measured worse and 9-11x slower; see reports/step5b_rerank.md
+    model: Xenova/ms-marco-MiniLM-L-6-v2 # [D-055] chosen on speed and held-out quality, see reports/step5b_rerank.md
 
 session:
   alternating_turns: 8                   # [D-011]

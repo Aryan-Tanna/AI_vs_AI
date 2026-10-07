@@ -122,8 +122,11 @@ def test_tools_end_to_end_through_the_scoped_reader(loaded: tuple[QdrantClient, 
         case=agent_view(),
         embedder=WordEmbedder(),
         known_statutes=KNOWN,
+        reranker=None,
         aliases=StatuteAliasTable(aliases=[]),
         top_k=10,
+        candidate_pool=10,
+        card_text_tokens=50,
         query_instruction="<instruction> ",
     )
     for result in (tools.find_similar_cases("<deal>"), tools.find_authority("<rule>")):
