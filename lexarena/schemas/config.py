@@ -134,6 +134,8 @@ class EmbeddingConfig(Strict):
     model: str
     max_tokens: PositiveInt
     window_tokens: PositiveInt
+    batch_size: PositiveInt
+    cache_dir: str
 
 
 class RetrievalConfig(Strict):

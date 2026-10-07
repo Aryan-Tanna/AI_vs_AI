@@ -28,3 +28,22 @@ class FakeProvider:
 
 def text_response(text: str) -> LLMResponse:
     return LLMResponse(text=text, input_tokens=10, output_tokens=5, finish_reason="stop")
+
+
+class WordEmbedder:
+    """Deterministic stand-in for the embedding model: one token per word, a small hashed vector per text."""
+
+    dim = 8
+
+    def count_tokens(self, text: str) -> int:
+        return len(text.split())
+
+    def embed(self, texts: list[str]) -> list[list[float]]:
+        import hashlib
+
+        out = []
+        for text in texts:
+            digest = hashlib.sha256(text.encode("utf-8")).digest()
+            vector = [b / 255 + 0.01 for b in digest[: self.dim]]
+            out.append(vector)
+        return out

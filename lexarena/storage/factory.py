@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Self
 
 from pymongo import MongoClient
+from qdrant_client import QdrantClient
 
 from lexarena.schemas.base import Side
 from lexarena.secrets import SecretStore
@@ -31,6 +32,7 @@ from lexarena.storage.ground_truth import GroundTruthRepository
 from lexarena.storage.law import LawRepository
 from lexarena.storage.mongo import ROOT_NAMESPACE, Doc, Namespace
 from lexarena.storage.policy import Principal, Role
+from lexarena.storage.precedents import PrecedentRepository
 from lexarena.storage.session_memory import InProcessSessionMemory, SessionMemoryHandle
 from lexarena.storage.sessions import SessionRepository
 from lexarena.storage.transcript import PrivateTurnRepository, TranscriptRepository
@@ -38,6 +40,9 @@ from lexarena.storage.transcript import PrivateTurnRepository, TranscriptReposit
 APP_URI = "LEXARENA_MONGO_APP_URI"
 APP_DB = "LEXARENA_MONGO_APP_DB"
 SEALED_URI = "LEXARENA_MONGO_SEALED_URI"
+QDRANT_URL = "LEXARENA_QDRANT_URL"
+QDRANT_READ_KEY = "LEXARENA_QDRANT_READ_ONLY_API_KEY"
+QDRANT_WRITE_KEY = "LEXARENA_QDRANT_WRITE_API_KEY"
 
 # Everything scripts/make_env.py writes to .env.sealed or .env.docker. A session process must see none of it.
 SESSION_FORBIDDEN_SECRETS = frozenset(
@@ -64,6 +69,17 @@ def check_session_secrets(secrets: SecretStore) -> None:
         raise CredentialLeakError(f"a session process must not see these credentials: {visible}")
 
 
+def open_qdrant(url: str, api_key: str) -> QdrantClient:
+    """A Qdrant client. On a loopback URL the key travels over plain HTTP by design (compose binds 127.0.0.1)."""
+    import warnings
+    from urllib.parse import urlparse
+
+    with warnings.catch_warnings():
+        if urlparse(url).hostname in ("127.0.0.1", "localhost"):
+            warnings.filterwarnings("ignore", message="Api key is used with an insecure connection")
+        return QdrantClient(url=url, api_key=api_key, https=url.startswith("https"))
+
+
 # ---------------------------------------------------------------- bundles
 
 
@@ -71,6 +87,7 @@ def check_session_secrets(secrets: SecretStore) -> None:
 class LawyerStores:
     case: CaseRepository
     law: LawRepository
+    precedents: PrecedentRepository
     transcript: TranscriptRepository
     memory: SessionMemoryHandle
 
@@ -79,6 +96,7 @@ class LawyerStores:
 class ThemisLocalStores:
     case: CaseRepository
     law: LawRepository
+    precedents: PrecedentRepository
     transcript: TranscriptRepository
     private_turns: PrivateTurnRepository
     agent_memory: SessionMemoryHandle  # its own agent's memory, read-only by policy
@@ -90,6 +108,7 @@ class ObserverStores:
 
     case: CaseRepository
     law: LawRepository
+    precedents: PrecedentRepository
     transcript: TranscriptRepository
 
 
@@ -97,6 +116,7 @@ class ObserverStores:
 class OrchestratorStores:
     cases: CaseRepository
     law: LawRepository
+    precedents: PrecedentRepository
     transcript: TranscriptRepository
     sessions: SessionRepository
     session_memory: InProcessSessionMemory
@@ -121,14 +141,16 @@ class ReflectionStores:
 
 @dataclass(frozen=True)
 class IngestStores:
-    """Offline ingestion: writes the Law DB and approved overlay rows (precedents join in Step 4)."""
+    """Offline ingestion: writes the Law DB, approved side-collection items and the precedent DB."""
 
     law: LawRepository
+    precedents: PrecedentRepository
 
 
 @dataclass(frozen=True)
 class ClerkStores:
     cases: CaseRepository
+    precedents: PrecedentRepository  # overlap check (SPEC B1)
     ground_truth: GroundTruthRepository
 
 
@@ -136,8 +158,9 @@ class ClerkStores:
 
 
 class _Process:
-    def __init__(self, secrets: SecretStore, ns: Namespace) -> None:
+    def __init__(self, secrets: SecretStore, ns: Namespace, qdrant_key: str) -> None:
         self._ns = ns
+        self._qdrant = open_qdrant(secrets.get(QDRANT_URL), secrets.get(qdrant_key))
         self._clients: list[MongoClient[Doc]] = []
         self._app_db = self._open(secrets.get(APP_URI))[secrets.get(APP_DB)]
 
@@ -149,6 +172,7 @@ class _Process:
     def close(self) -> None:
         for client in self._clients:
             client.close()
+        self._qdrant.close()
 
     def __enter__(self) -> Self:
         return self
@@ -160,7 +184,7 @@ class _Process:
 class SessionProcess(_Process):
     def __init__(self, secrets: SecretStore, ns: Namespace = ROOT_NAMESPACE) -> None:
         check_session_secrets(secrets)
-        super().__init__(secrets, ns)
+        super().__init__(secrets, ns, QDRANT_READ_KEY)
         self._memory = InProcessSessionMemory()
 
     @classmethod
@@ -172,6 +196,7 @@ class SessionProcess(_Process):
         return LawyerStores(
             case=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
+            precedents=PrecedentRepository(p, self._qdrant),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             memory=self._memory.handle(p, session_id),
         )
@@ -181,6 +206,7 @@ class SessionProcess(_Process):
         return ThemisLocalStores(
             case=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
+            precedents=PrecedentRepository(p, self._qdrant),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
             agent_memory=self._memory.handle(p, session_id),
@@ -197,6 +223,7 @@ class SessionProcess(_Process):
         return OrchestratorStores(
             cases=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
+            precedents=PrecedentRepository(p, self._qdrant),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             sessions=SessionRepository(p, self._app_db, self._ns),
             session_memory=self._memory,
@@ -206,13 +233,14 @@ class SessionProcess(_Process):
         return ObserverStores(
             case=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
+            precedents=PrecedentRepository(p, self._qdrant),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
         )
 
 
 class SealedProcess(_Process):
     def __init__(self, secrets: SecretStore, ns: Namespace = ROOT_NAMESPACE) -> None:
-        super().__init__(secrets, ns)
+        super().__init__(secrets, ns, QDRANT_WRITE_KEY)
         self._sealed_db = self._open(secrets.get(SEALED_URI)).get_default_database()
 
     @classmethod
@@ -239,11 +267,15 @@ class SealedProcess(_Process):
         )
 
     def ingest(self) -> IngestStores:
-        return IngestStores(law=LawRepository(Principal(Role.INGEST), self._app_db, self._ns))
+        p = Principal(Role.INGEST)
+        return IngestStores(
+            law=LawRepository(p, self._app_db, self._ns), precedents=PrecedentRepository(p, self._qdrant)
+        )
 
     def clerk(self) -> ClerkStores:
         p = Principal(Role.CLERK)
         return ClerkStores(
             cases=CaseRepository(p, self._app_db, self._ns),
+            precedents=PrecedentRepository(p, self._qdrant),
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
         )

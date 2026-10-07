@@ -43,5 +43,5 @@ def test_session_process_refuses_forbidden_names_from_the_environment(name: str)
 
 def test_session_secrets_cannot_open_the_sealed_database() -> None:
     _names(ENV_FILE)
-    with pytest.raises(KeyError, match="LEXARENA_MONGO_SEALED_URI"):
+    with pytest.raises(KeyError, match=r"LEXARENA_(MONGO_SEALED_URI|QDRANT_WRITE_API_KEY)"):
         SealedProcess(SecretStore(env_file=[ENV_FILE], environ={}))

@@ -230,8 +230,11 @@ Run from the repo root. Secrets live only in three git-ignored files (template i
 | Draft overlay rows or predicates into `review/` (spends quota) | `.venv/Scripts/lexarena draft overlay\|predicate --statute ID --source ID --find TERM` |
 | Review drafts (you approve; Claude never does) | `.venv/Scripts/lexarena review list\|show ID\|approve ID --by NAME\|reject ID --by NAME --reason R` |
 | Load approved drafts into MongoDB (re-verified) | `.venv/Scripts/lexarena review load` |
+| Validate precedents, or embed and load them into Qdrant (incremental) | `.venv/Scripts/lexarena precedents validate`, `.venv/Scripts/lexarena precedents load` |
 | Check Law DB and precedents against the frozen formats | `.venv/Scripts/python scripts/check_formats.py` |
 | Quarantine dev-case precedents | `python scripts/quarantine_dev_overlap.py [--dry-run]` |
+
+**On a new machine:** clone, `uv sync --python 3.12`, `.venv/Scripts/python scripts/make_env.py`, copy your API keys into `.env.local`, `docker compose --env-file .env.docker up -d`, then `lexarena law load`, `lexarena review load` and `lexarena precedents load`. MongoDB and Qdrant are rebuilt from the files in git; nothing else needs copying.
 
 LLM call log (IDs and hashes only, no prompt text): `.cache/logs/llm_calls.jsonl`. Response cache: `.cache/llm_cache.sqlite`.
 

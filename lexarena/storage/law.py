@@ -138,6 +138,10 @@ class LawRepository:
         doc = self._law.find_one({"_id": statute_id})
         return None if doc is None else StoredLawDoc.model_validate(doc).record
 
+    def statute_ids(self) -> set[str]:
+        require(self._principal, Store.LAW_DB, Op.READ)
+        return {d["_id"] for d in self._law.find({}, projection={"_id": True})}
+
     def predicates(self, statute_id: str) -> list[PredicateEntry]:
         """APPROVED predicates for a statute; STALE and other statuses are never served."""
         require(self._principal, Store.PREDICATE_REGISTRY, Op.READ)

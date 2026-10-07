@@ -94,6 +94,28 @@ def _law(action: str, source: Path) -> int:
     return 0 if report.loadable else 1
 
 
+def _precedents(action: str, source: Path, config_path: Path) -> int:
+    from lexarena.embedding import FastEmbedder
+    from lexarena.ingest.precedents import ingest_precedents, prepare_precedents, read_precedent_sources
+    from lexarena.storage.factory import SealedProcess
+
+    cfg = load_config(config_path).embedding
+    embedder = FastEmbedder(cfg.model, REPO_ROOT / cfg.cache_dir, cfg.batch_size)
+    with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+        stores = proc.ingest()
+        known = stores.law.statute_ids()
+        if not known:
+            raise SystemExit("the Law DB is empty; run lexarena law load first")
+        prepared = prepare_precedents(
+            *read_precedent_sources(source), known, embedder, cfg.window_tokens, cfg.max_tokens
+        )
+        out: dict[str, object] = {"report": prepared.report.model_dump(mode="json")}
+        if action == "load":
+            out["loaded"] = vars(ingest_precedents(stores.precedents, prepared, embedder))
+    print(json.dumps(out, indent=2, ensure_ascii=False))  # literal-ok: display indentation
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="lexarena")
     parser.add_argument("--config", help="config file (default: LEXARENA_CONFIG_PATH)")
@@ -107,6 +129,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     for action, text in (("validate", "validation report only"), ("load", "validate, then load into MongoDB")):
         cmd = law_cmd.add_parser(action, help=text)
         cmd.add_argument("--source", type=Path, default=REPO_ROOT / "data" / "law_db", help="folder of Law DB files")
+    prec_cmd = sub.add_parser("precedents").add_subparsers(dest="action", required=True)
+    for action, text in (("validate", "report only"), ("load", "validate, embed and load into Qdrant (incremental)")):
+        cmd = prec_cmd.add_parser(action, help=text)
+        cmd.add_argument("--source", type=Path, default=REPO_ROOT / "data" / "precedents", help="precedent folder")
     from lexarena import cli_review
 
     cli_review.add_parsers(sub)
@@ -117,6 +143,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _config_show(path)
     if args.group == "law":
         return _law(args.action, args.source)
+    if args.group == "precedents":
+        return _precedents(args.action, args.source, path)
     if args.group in ("sources", "draft", "review"):
         return cli_review.run(args, path)
     return _llm_smoke(path, args.role)
