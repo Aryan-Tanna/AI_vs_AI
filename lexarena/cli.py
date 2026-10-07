@@ -96,13 +96,8 @@ def _law(action: str, source: Path) -> int:
 
 def _precedents(action: str, source: Path, aliases_path: Path, config_path: Path) -> int:
     from lexarena.embedding import FastEmbedder
-    from lexarena.ingest.precedents import (
-        ingest_precedents,
-        load_statute_aliases,
-        missing_alias_targets,
-        prepare_precedents,
-        read_precedent_sources,
-    )
+    from lexarena.ingest.precedents import ingest_precedents, prepare_precedents, read_precedent_sources
+    from lexarena.statute_ids import load_statute_aliases, missing_alias_targets
     from lexarena.storage.factory import SealedProcess
 
     cfg = load_config(config_path).embedding

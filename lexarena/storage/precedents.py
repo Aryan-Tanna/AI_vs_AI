@@ -8,11 +8,11 @@ or excluded precedent never reaches the caller.
 
 from __future__ import annotations
 
-from datetime import date
 from typing import Any
 
 from qdrant_client import QdrantClient, models
 
+from lexarena.schemas.retrieval import CaseScope
 from lexarena.storage.policy import Op, Principal, Store, require
 
 COLLECTION = "precedents"
@@ -92,7 +92,7 @@ class PrecedentRepository:
     def stored_hashes(self) -> dict[str, tuple[str, str | None]]:
         """point ID -> (content_hash, derived_hash), for incremental ingestion. Points stored before derived_hash
         existed return None for it, so their payload is refreshed once."""
-        require(self._principal, Store.PRECEDENTS, Op.READ)
+        require(self._principal, Store.PRECEDENTS_UNSCOPED, Op.READ)
         if not self._client.collection_exists(self._collection):
             return {}
         return {
@@ -101,29 +101,70 @@ class PrecedentRepository:
         }
 
     def all_payloads(self) -> list[dict[str, Any]]:
-        require(self._principal, Store.PRECEDENTS, Op.READ)
+        """Every stored payload, ignoring any case's cut-off: ingestion, clerk and orchestrator only (D-052)."""
+        require(self._principal, Store.PRECEDENTS_UNSCOPED, Op.READ)
         return [dict(p.payload or {}) for p in self._scroll(True)]
 
-    def search_ratio(
-        self, vector: list[float], *, decided_before: date, exclude_ids: list[str], limit: int
-    ) -> list[dict[str, Any]]:
-        """Nearest precedents by legal rule, decided strictly before the cut-off and not excluded (SPEC B1, B2)."""
+
+class ScopedPrecedentReader:
+    """The only precedent read path for session roles: bound at construction to one case's `CaseScope`, it applies
+    the cut-off (strictly before the case's decision date) and the exclusion list inside Qdrant on every call
+    (SPEC B1, B2; D-052). Nothing a caller passes can widen the scope."""
+
+    def __init__(
+        self, principal: Principal, client: QdrantClient, scope: CaseScope, collection: str = COLLECTION
+    ) -> None:
+        require(principal, Store.PRECEDENTS, Op.READ)
+        self._principal = principal
+        self._client = client
+        self._scope = scope
+        self._collection = collection
+
+    def _filter(self, extra: list[models.Condition]) -> models.Filter:
+        excluded = self._scope.excluded_precedent_ids
+        return models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="decision_date_ts", range=models.DatetimeRange(lt=self._scope.decided_before.isoformat())
+                ),
+                *extra,
+            ],
+            must_not=[models.FieldCondition(key="precedent_id", match=models.MatchAny(any=excluded))]
+            if excluded
+            else [],
+        )
+
+    def search(
+        self, using: str, query: list[float] | list[list[float]], statutes: list[str], limit: int
+    ) -> list[tuple[dict[str, Any], float]]:
+        """Nearest precedents on the named vector (`facts` takes a list of vectors, `ratio` one vector), optionally
+        restricted to precedents citing any of `statutes` (Law DB IDs, SPEC B7)."""
         require(self._principal, Store.PRECEDENTS, Op.READ)
+        if using not in (FACTS, RATIO):
+            raise ValueError(f"unknown vector {using!r}")
+        extra: list[models.Condition] = (
+            [models.FieldCondition(key="statutes_normalized", match=models.MatchAny(any=statutes))] if statutes else []
+        )
         found = self._client.query_points(
             self._collection,
-            query=vector,
-            using=RATIO,
-            query_filter=cutoff_filter(decided_before, exclude_ids),
+            query=query,
+            using=using,
+            query_filter=self._filter(extra),
             limit=limit,
             with_payload=True,
         )
-        return [dict(p.payload or {}) for p in found.points]
+        return [(dict(p.payload or {}), float(p.score)) for p in found.points]
 
-
-def cutoff_filter(decided_before: date, exclude_ids: list[str]) -> models.Filter:
-    return models.Filter(
-        must=[models.FieldCondition(key="decision_date_ts", range=models.DatetimeRange(lt=decided_before.isoformat()))],
-        must_not=[models.FieldCondition(key="precedent_id", match=models.MatchAny(any=exclude_ids))]
-        if exclude_ids
-        else [],
-    )
+    def get(self, precedent_uid: str) -> dict[str, Any] | None:
+        """One precedent by its unique ID, or None if it does not exist or lies outside the scope."""
+        require(self._principal, Store.PRECEDENTS, Op.READ)
+        page, _ = self._client.scroll(
+            self._collection,
+            scroll_filter=self._filter(
+                [models.FieldCondition(key="precedent_uid", match=models.MatchValue(value=precedent_uid))]
+            ),
+            limit=1,
+            with_payload=True,
+            with_vectors=False,
+        )
+        return dict(page[0].payload or {}) if page else None

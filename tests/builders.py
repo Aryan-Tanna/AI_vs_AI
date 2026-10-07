@@ -12,10 +12,12 @@ from typing import Any
 from lexarena.schemas.base import Side
 from lexarena.schemas.case import Case
 from lexarena.schemas.ground_truth import CaseGroundTruth
+from lexarena.schemas.retrieval import CaseScope
 from lexarena.schemas.session import Session
 from lexarena.schemas.transcript import PrivateTurnData, PublishedTurn, turn_document_id
 
 PLACEHOLDER_DATE = "2000-01-01"  # literal-ok: arbitrary placeholder, not a case date
+SCOPE = CaseScope.model_validate({"decided_before": PLACEHOLDER_DATE, "excluded_precedent_ids": ["<excluded>"]})
 
 
 def case_doc(case_id: str, *, build_marker: str = "<build>", date_marker: str = PLACEHOLDER_DATE) -> dict[str, Any]:

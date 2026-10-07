@@ -13,15 +13,9 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from lexarena.ingest.precedents import (
-    load_statute_aliases,
-    missing_alias_targets,
-    normalize_statutes,
-    prepare_precedents,
-    read_precedent_sources,
-    resolve_statute_id,
-)
+from lexarena.ingest.precedents import prepare_precedents, read_precedent_sources
 from lexarena.schemas.statute_alias import StatuteAliasTable
+from lexarena.statute_ids import load_statute_aliases, missing_alias_targets, normalize_statutes, resolve_statute_id
 from tests.fakes import WordEmbedder
 from tests.test_precedent_prep import KNOWN, precedent, write_jsonl
 

@@ -21,6 +21,7 @@ NEVER_READ_BY: dict[Store, set[Role]] = {
     Store.JUDGE_MEMORY: {R.LAWYER, R.THEMIS_LOCAL, R.THEMIS_GLOBAL},
     Store.SESSIONS: SESSION_ROLES,
     Store.CASE_FULL: SESSION_ROLES,  # D-035: build, split and simulation_date never reach a prompt
+    Store.PRECEDENTS_UNSCOPED: SESSION_ROLES,  # D-052: session roles read precedents only through a CaseScope
 }
 
 # SPEC I1 "Written by".
@@ -29,6 +30,7 @@ ONLY_WRITTEN_BY: dict[Store, set[Role]] = {
     Store.TEMPORAL_OVERLAY: {R.INGEST},
     Store.PREDICATE_REGISTRY: {R.INGEST},
     Store.PRECEDENTS: {R.INGEST},
+    Store.PRECEDENTS_UNSCOPED: set(),  # a read-only view; writes go through PRECEDENTS
     Store.CASE_FULL: {R.CLERK},
     Store.CASE_AGENT_VIEW: {R.CLERK},
     Store.CASE_GROUND_TRUTH: {R.CLERK},

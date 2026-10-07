@@ -29,6 +29,7 @@ from lexarena.storage.errors import AccessDeniedError
 from lexarena.storage.law import LawRepository, PredicateRejectedError
 from lexarena.storage.policy import Principal, Role
 from lexarena.storage.temporal import AsOf
+from tests.builders import SCOPE
 from tests.conftest import CONFIG_V1, PROMPTS_ROOT
 from tests.test_drafting import IN_FORCE, STATUTE, client, predicate_proposal, proposal
 from tests.test_drafting_sources import TEST_TEXT, make_pdf, meta
@@ -95,7 +96,7 @@ class World:
         return load_approved(self.store, self.registry, self.ingest, self.cfg.vocabulary)
 
     def lawyer(self) -> LawRepository:
-        return self.procs.session.lawyer("PETITIONER", "S").law
+        return self.procs.session.lawyer("PETITIONER", "S", SCOPE).law
 
 
 @pytest.fixture

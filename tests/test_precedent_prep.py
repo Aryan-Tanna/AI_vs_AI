@@ -10,11 +10,11 @@ from typing import Any
 from lexarena.ingest.precedents import (
     DERIVED_FIELDS,
     facts_sections,
-    normalize_statutes,
     prepare_precedents,
     ratio_text,
     read_precedent_sources,
 )
+from lexarena.statute_ids import normalize_statutes
 from tests.fakes import WordEmbedder
 
 

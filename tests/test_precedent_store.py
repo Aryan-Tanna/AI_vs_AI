@@ -15,10 +15,11 @@ import pytest
 from qdrant_client import QdrantClient
 
 from lexarena.ingest.precedents import DERIVED_FIELDS, ingest_precedents, prepare_precedents, read_precedent_sources
+from lexarena.schemas.retrieval import CaseScope
 from lexarena.secrets import SecretStore
 from lexarena.storage.errors import AccessDeniedError
 from lexarena.storage.policy import Principal, Role
-from lexarena.storage.precedents import PrecedentRepository
+from lexarena.storage.precedents import PrecedentRepository, ScopedPrecedentReader
 from tests.conftest import ENV_FILE, SEALED_ENV_FILE
 from tests.fakes import WordEmbedder
 from tests.test_precedent_prep import KNOWN, precedent, write_jsonl
@@ -57,22 +58,24 @@ def test_count_payloads_dates_and_rerun(tmp_path: Path, clients: tuple[QdrantCli
     first = load(tmp_path, ingest_repo)
     assert (first.inserted, first.updated, first.removed) == (8, 0, 0)  # type: ignore[attr-defined]
 
-    lawyer = PrecedentRepository(Principal(Role.LAWYER, "PETITIONER"), reader, name)
-    assert lawyer.count() == 8  # P0 collides with another case: two points, not one
+    orchestrator = PrecedentRepository(Principal(Role.ORCHESTRATOR), reader, name)
+    assert orchestrator.count() == 8  # P0 collides with another case: two points, not one
 
     by_uid = {r["precedent_id"] + r["case_title"]: r for r in records()}  # type: ignore[operator]
-    for payload in random.Random(0).sample(lawyer.all_payloads(), 5):
+    for payload in random.Random(0).sample(orchestrator.all_payloads(), 5):
         source = by_uid[payload["precedent_id"] + payload["case_title"]]
         assert {k: v for k, v in payload.items() if k in source} == source
         assert set(payload) - set(source) == DERIVED_FIELDS
 
     cutoff = date(2008, 1, 1)
-    found = lawyer.search_ratio(WordEmbedder().embed(["<rule>"])[0], decided_before=cutoff, exclude_ids=[], limit=20)
-    assert found and all(p["decision_date"] < cutoff.isoformat() for p in found)
-    excluded = lawyer.search_ratio(
-        WordEmbedder().embed(["<rule>"])[0], decided_before=cutoff, exclude_ids=["P1"], limit=20
-    )
-    assert "P1" not in {p["precedent_id"] for p in excluded} and len(excluded) == len(found) - 1
+    query = WordEmbedder().embed(["<rule>"])[0]
+    lawyer = Principal(Role.LAWYER, "PETITIONER")
+    open_scope = CaseScope(decided_before=cutoff, excluded_precedent_ids=[])
+    found = ScopedPrecedentReader(lawyer, reader, open_scope, name).search("ratio", query, [], 20)
+    assert found and all(p["decision_date"] < cutoff.isoformat() for p, _ in found)
+    p1_out = CaseScope(decided_before=cutoff, excluded_precedent_ids=["P1"])
+    excluded = ScopedPrecedentReader(lawyer, reader, p1_out, name).search("ratio", query, [], 20)
+    assert "P1" not in {p["precedent_id"] for p, _ in excluded} and len(excluded) == len(found) - 1
 
     again = load(tmp_path, ingest_repo)
     assert (again.inserted, again.updated, again.removed, again.unchanged) == (0, 0, 0, 8)  # type: ignore[attr-defined]

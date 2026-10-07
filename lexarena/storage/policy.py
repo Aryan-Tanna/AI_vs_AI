@@ -59,7 +59,8 @@ class Store(StrEnum):
     LAW_DB = "LAW_DB"
     TEMPORAL_OVERLAY = "TEMPORAL_OVERLAY"
     PREDICATE_REGISTRY = "PREDICATE_REGISTRY"
-    PRECEDENTS = "PRECEDENTS"
+    PRECEDENTS = "PRECEDENTS"  # session roles: only through a ScopedPrecedentReader bound to one case (D-052)
+    PRECEDENTS_UNSCOPED = "PRECEDENTS_UNSCOPED"  # reads that ignore any case's cut-off and exclusions
     CASE_AGENT_VIEW = "CASE_AGENT_VIEW"  # agent_view without simulation_date
     CASE_FULL = "CASE_FULL"  # whole cases document: build, split, simulation_date
     CASE_GROUND_TRUTH = "CASE_GROUND_TRUTH"
@@ -92,6 +93,10 @@ POLICY: dict[Store, dict[Op, dict[Role, Scope]]] = {
     Store.TEMPORAL_OVERLAY: {Op.READ: _KNOWLEDGE_READERS, Op.WRITE: {R.INGEST: Scope.ANY}},
     Store.PREDICATE_REGISTRY: {Op.READ: _KNOWLEDGE_READERS, Op.WRITE: {R.INGEST: Scope.ANY}},
     Store.PRECEDENTS: {Op.READ: _KNOWLEDGE_READERS, Op.WRITE: {R.INGEST: Scope.ANY}},
+    Store.PRECEDENTS_UNSCOPED: {
+        Op.READ: {r: Scope.ANY for r in (R.INGEST, R.ORCHESTRATOR, R.CLERK)},
+        Op.WRITE: {},
+    },
     Store.CASE_AGENT_VIEW: {
         Op.READ: {r: Scope.ANY for r in (*_SESSION_READERS, R.ORCHESTRATOR, R.CLERK, R.EVALUATOR, R.REFLECTION)},
         Op.WRITE: {R.CLERK: Scope.ANY},

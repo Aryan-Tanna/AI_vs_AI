@@ -25,6 +25,7 @@ from pymongo import MongoClient
 from qdrant_client import QdrantClient
 
 from lexarena.schemas.base import Side
+from lexarena.schemas.retrieval import CaseScope
 from lexarena.secrets import SecretStore
 from lexarena.storage.cases import CaseRepository
 from lexarena.storage.errors import CredentialLeakError
@@ -32,7 +33,7 @@ from lexarena.storage.ground_truth import GroundTruthRepository
 from lexarena.storage.law import LawRepository
 from lexarena.storage.mongo import ROOT_NAMESPACE, Doc, Namespace
 from lexarena.storage.policy import Principal, Role
-from lexarena.storage.precedents import PrecedentRepository
+from lexarena.storage.precedents import PrecedentRepository, ScopedPrecedentReader
 from lexarena.storage.session_memory import InProcessSessionMemory, SessionMemoryHandle
 from lexarena.storage.sessions import SessionRepository
 from lexarena.storage.transcript import PrivateTurnRepository, TranscriptRepository
@@ -87,7 +88,7 @@ def open_qdrant(url: str, api_key: str) -> QdrantClient:
 class LawyerStores:
     case: CaseRepository
     law: LawRepository
-    precedents: PrecedentRepository
+    precedents: ScopedPrecedentReader
     transcript: TranscriptRepository
     memory: SessionMemoryHandle
 
@@ -96,7 +97,7 @@ class LawyerStores:
 class ThemisLocalStores:
     case: CaseRepository
     law: LawRepository
-    precedents: PrecedentRepository
+    precedents: ScopedPrecedentReader
     transcript: TranscriptRepository
     private_turns: PrivateTurnRepository
     agent_memory: SessionMemoryHandle  # its own agent's memory, read-only by policy
@@ -108,7 +109,7 @@ class ObserverStores:
 
     case: CaseRepository
     law: LawRepository
-    precedents: PrecedentRepository
+    precedents: ScopedPrecedentReader
     transcript: TranscriptRepository
 
 
@@ -191,32 +192,35 @@ class SessionProcess(_Process):
     def from_env_files(cls, env_files: Sequence[Path], ns: Namespace = ROOT_NAMESPACE) -> SessionProcess:
         return cls(SecretStore(env_file=env_files), ns)
 
-    def lawyer(self, side: Side, session_id: str) -> LawyerStores:
+    # Session roles get precedents only through a reader bound to the case's scope, which the orchestrator
+    # builds from the full case (CaseScope.from_case); no session bundle holds an unscoped repository (D-052).
+
+    def lawyer(self, side: Side, session_id: str, scope: CaseScope) -> LawyerStores:
         p = Principal(Role.LAWYER, side)
         return LawyerStores(
             case=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
-            precedents=PrecedentRepository(p, self._qdrant),
+            precedents=ScopedPrecedentReader(p, self._qdrant, scope),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             memory=self._memory.handle(p, session_id),
         )
 
-    def themis_local(self, side: Side, session_id: str) -> ThemisLocalStores:
+    def themis_local(self, side: Side, session_id: str, scope: CaseScope) -> ThemisLocalStores:
         p = Principal(Role.THEMIS_LOCAL, side)
         return ThemisLocalStores(
             case=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
-            precedents=PrecedentRepository(p, self._qdrant),
+            precedents=ScopedPrecedentReader(p, self._qdrant, scope),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
             agent_memory=self._memory.handle(p, session_id),
         )
 
-    def themis_global(self) -> ObserverStores:
-        return self._observer(Principal(Role.THEMIS_GLOBAL))
+    def themis_global(self, scope: CaseScope) -> ObserverStores:
+        return self._observer(Principal(Role.THEMIS_GLOBAL), scope)
 
-    def judge(self) -> ObserverStores:
-        return self._observer(Principal(Role.JUDGE))
+    def judge(self, scope: CaseScope) -> ObserverStores:
+        return self._observer(Principal(Role.JUDGE), scope)
 
     def orchestrator(self) -> OrchestratorStores:
         p = Principal(Role.ORCHESTRATOR)
@@ -229,11 +233,11 @@ class SessionProcess(_Process):
             session_memory=self._memory,
         )
 
-    def _observer(self, p: Principal) -> ObserverStores:
+    def _observer(self, p: Principal, scope: CaseScope) -> ObserverStores:
         return ObserverStores(
             case=CaseRepository(p, self._app_db, self._ns),
             law=LawRepository(p, self._app_db, self._ns),
-            precedents=PrecedentRepository(p, self._qdrant),
+            precedents=ScopedPrecedentReader(p, self._qdrant, scope),
             transcript=TranscriptRepository(p, self._app_db, self._ns),
         )
 

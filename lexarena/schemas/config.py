@@ -136,6 +136,7 @@ class EmbeddingConfig(Strict):
     window_tokens: PositiveInt
     batch_size: PositiveInt
     cache_dir: str
+    query_instruction: str  # prefixed to asymmetric (proposition -> ratio) queries only [SPEC B5]
 
 
 class RetrievalConfig(Strict):

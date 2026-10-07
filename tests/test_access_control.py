@@ -23,9 +23,11 @@ from lexarena.storage.factory import SealedProcess, SessionProcess
 from lexarena.storage.ground_truth import GroundTruthRepository
 from lexarena.storage.mongo import Namespace
 from lexarena.storage.policy import Principal, Role
+from lexarena.storage.precedents import PrecedentRepository, ScopedPrecedentReader
 from lexarena.storage.sessions import SessionRepository
 from lexarena.storage.transcript import PrivateTurnRepository
 from tests import builders
+from tests.builders import SCOPE
 from tests.conftest import ENV_FILE, SEALED_ENV_FILE
 
 pytestmark = pytest.mark.integration
@@ -120,12 +122,12 @@ def _gt_repo(world: World, principal: Principal) -> GroundTruthRepository:
 def _session_bundles(world: World, sid: str) -> dict[str, Any]:
     s = world.session
     return {
-        "lawyer_P": s.lawyer(P, sid),
-        "lawyer_D": s.lawyer(D, sid),
-        "themis_local_P": s.themis_local(P, sid),
-        "themis_local_D": s.themis_local(D, sid),
-        "themis_global": s.themis_global(),
-        "judge": s.judge(),
+        "lawyer_P": s.lawyer(P, sid, SCOPE),
+        "lawyer_D": s.lawyer(D, sid, SCOPE),
+        "themis_local_P": s.themis_local(P, sid, SCOPE),
+        "themis_local_D": s.themis_local(D, sid, SCOPE),
+        "themis_global": s.themis_global(SCOPE),
+        "judge": s.judge(SCOPE),
         "orchestrator": s.orchestrator(),
     }
 
@@ -139,6 +141,19 @@ def test_session_process_has_no_sealed_handle_and_no_ground_truth_repository(wor
     for name, bundle in _session_bundles(world, sid).items():
         held = [getattr(bundle, f.name) for f in fields(bundle)]
         assert not any(isinstance(r, GroundTruthRepository) for r in held), name
+
+
+def test_session_roles_read_precedents_only_through_the_case_scope(world: World) -> None:
+    """D-052: each session-role bundle holds a reader bound to the scope it was given, never the open repository."""
+    sid = world.new_session()
+    for name, bundle in _session_bundles(world, sid).items():
+        if name == "orchestrator":
+            assert isinstance(bundle.precedents, PrecedentRepository)
+            continue
+        held = [getattr(bundle, f.name) for f in fields(bundle)]
+        assert not any(isinstance(r, PrecedentRepository) for r in held), name
+        assert isinstance(bundle.precedents, ScopedPrecedentReader), name
+        assert bundle.precedents._scope == SCOPE, name
 
 
 # ---------------------------------------------------------------- ground truth: role layer
@@ -185,7 +200,9 @@ def test_verdict_in_another_case_does_not_unseal(world: World) -> None:
 def test_session_reads_contain_no_sealed_or_build_values(world: World) -> None:
     sid = world.new_session(state=SessionState.IN_PROGRESS)
     world.session.orchestrator().transcript.publish(builders.published_turn(sid, CASE, 1, P))
-    world.session.themis_local(P, sid).private_turns.put(builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL))
+    world.session.themis_local(P, sid, SCOPE).private_turns.put(
+        builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL)
+    )
     for name, bundle in _session_bundles(world, sid).items():
         if name == "orchestrator":
             continue  # reads the full case by design (date cut-off, exclusions); never prompts an LLM
@@ -231,7 +248,9 @@ ALL_BUT_OWN_REFLECTION = [
 @pytest.fixture(scope="module")
 def private_session(world: World) -> str:
     sid = world.new_session(state=SessionState.IN_PROGRESS)
-    world.session.themis_local(P, sid).private_turns.put(builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL))
+    world.session.themis_local(P, sid, SCOPE).private_turns.put(
+        builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL)
+    )
     world.session.orchestrator().sessions.record_verdict(
         sid,
         scorecards=[],
@@ -256,7 +275,9 @@ def test_own_reflection_reads_private_turns_after_verdict_only(world: World, pri
     assert data[0].themis_local.warnings[0].detail == PRIVATE_SENTINEL
 
     sid = world.new_session(state=SessionState.IN_PROGRESS)
-    world.session.themis_local(P, sid).private_turns.put(builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL))
+    world.session.themis_local(P, sid, SCOPE).private_turns.put(
+        builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL)
+    )
     with pytest.raises(SealedError):
         world.sealed.reflection(P).private_turns.for_side(sid, P)
 
@@ -264,25 +285,27 @@ def test_own_reflection_reads_private_turns_after_verdict_only(world: World, pri
 def test_themis_local_cannot_write_the_other_sides_private_data(world: World) -> None:
     sid = world.new_session(state=SessionState.IN_PROGRESS)
     with pytest.raises(AccessDeniedError):
-        world.session.themis_local(D, sid).private_turns.put(builders.private_turn(sid, CASE, 1, P, "<x>"))
+        world.session.themis_local(D, sid, SCOPE).private_turns.put(builders.private_turn(sid, CASE, 1, P, "<x>"))
 
 
 def test_private_write_cannot_overwrite_the_other_sides_document(world: World) -> None:
     sid = world.new_session(state=SessionState.IN_PROGRESS)
-    world.session.themis_local(P, sid).private_turns.put(builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL))
+    world.session.themis_local(P, sid, SCOPE).private_turns.put(
+        builders.private_turn(sid, CASE, 1, P, PRIVATE_SENTINEL)
+    )
     with pytest.raises(DuplicateKeyError):
-        world.session.themis_local(D, sid).private_turns.put(builders.private_turn(sid, CASE, 1, D, "<x>"))
+        world.session.themis_local(D, sid, SCOPE).private_turns.put(builders.private_turn(sid, CASE, 1, D, "<x>"))
 
 
 def test_session_memory_is_per_side(world: World) -> None:
     sid = world.new_session()
-    lawyer_p, lawyer_d = world.session.lawyer(P, sid), world.session.lawyer(D, sid)
+    lawyer_p, lawyer_d = world.session.lawyer(P, sid, SCOPE), world.session.lawyer(D, sid, SCOPE)
     lawyer_p.memory.append(PRIVATE_SENTINEL)
     assert lawyer_d.memory.items() == []
-    assert world.session.themis_local(D, sid).agent_memory.items() == []
-    assert world.session.themis_local(P, sid).agent_memory.items() == [PRIVATE_SENTINEL]
+    assert world.session.themis_local(D, sid, SCOPE).agent_memory.items() == []
+    assert world.session.themis_local(P, sid, SCOPE).agent_memory.items() == [PRIVATE_SENTINEL]
     with pytest.raises(AccessDeniedError):
-        world.session.themis_local(P, sid).agent_memory.append("<x>")
+        world.session.themis_local(P, sid, SCOPE).agent_memory.append("<x>")
 
 
 # ---------------------------------------------------------------- session state machine
@@ -330,4 +353,4 @@ def test_published_turns_are_immutable_and_orchestrator_only(world: World) -> No
     with pytest.raises(DuplicateKeyError):
         world.session.orchestrator().transcript.publish(turn)
     with pytest.raises(AccessDeniedError):
-        world.session.lawyer(P, sid).transcript.publish(builders.published_turn(sid, CASE, 2, P))
+        world.session.lawyer(P, sid, SCOPE).transcript.publish(builders.published_turn(sid, CASE, 2, P))

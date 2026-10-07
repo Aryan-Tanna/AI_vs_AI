@@ -29,6 +29,8 @@ from lexarena.storage.law import LawRepository, OverlayRejectedError
 from lexarena.storage.mongo import Namespace
 from lexarena.storage.policy import Principal, Role
 from lexarena.storage.temporal import AsOf
+from tests import builders
+from tests.builders import SCOPE
 from tests.conftest import ENV_FILE, REPO_ROOT, SEALED_ENV_FILE
 from tests.test_law_validation import law_record
 
@@ -114,7 +116,7 @@ def test_reload_applies_edits_and_removals(procs: Procs, tmp_path: Path) -> None
     after = load_law_db(ingest.law, validate_law_db(*read_law_sources(source)))
     assert (after.updated, after.removed, after.inserted) == (1, 1, 0)
     assert after.snapshot != before.snapshot
-    assert procs.session.lawyer("PETITIONER", "S").law.get_statute(removed_id, AsOf(key_dates={})) is None
+    assert procs.session.lawyer("PETITIONER", "S", SCOPE).law.get_statute(removed_id, AsOf(key_dates={})) is None
 
 
 def test_unloadable_source_is_refused_and_leaves_the_db_unchanged(procs: Procs, tmp_path: Path) -> None:
@@ -148,7 +150,7 @@ def test_only_ingestion_writes_the_law_db(procs: Procs, tmp_path: Path, role: Ro
 def test_get_statute_hides_a_section_before_it_is_in_force(procs: Procs, tmp_path: Path) -> None:
     ingest = procs.offline.ingest()
     load_law_db(ingest.law, validate_law_db(*read_law_sources(synthetic_source(tmp_path))))
-    lawyer = procs.session.lawyer("PETITIONER", "S").law
+    lawyer = procs.session.lawyer("PETITIONER", "S", SCOPE).law
 
     unverified = lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"DECISION": date(2000, 6, 1)}))
     assert unverified is not None and unverified.in_force == "UNVERIFIED"
@@ -164,7 +166,7 @@ def test_hidden_and_unknown_statutes_look_the_same(procs: Procs, tmp_path: Path)
     ingest = procs.offline.ingest()
     load_law_db(ingest.law, validate_law_db(*read_law_sources(synthetic_source(tmp_path))))
     ingest.law.put_overlay(overlay("ov", True, "2001-01-01", None))
-    lawyer = procs.session.lawyer("PETITIONER", "S").law
+    lawyer = procs.session.lawyer("PETITIONER", "S", SCOPE).law
     as_of = AsOf(key_dates={"DECISION": date(2000, 1, 1)})
     assert lawyer.get_statute(SYNTHETIC, as_of) is None
     assert lawyer.get_statute("TEST_NO_SUCH_SECTION", as_of) is None
@@ -194,20 +196,19 @@ def test_overlapping_overlay_rows_are_rejected(procs: Procs, tmp_path: Path) -> 
         ingest.law.put_overlay(overlay("b", False, "2005-01-01", None))
     ingest.law.put_overlay(overlay("a", True, "2001-01-01", "2004-12-31", version=2))  # replacing by ID is allowed
     ingest.law.put_overlay(overlay("b", False, "2005-01-01", None))
-    lawyer = procs.session.lawyer("PETITIONER", "S").law
+    lawyer = procs.session.lawyer("PETITIONER", "S", SCOPE).law
     assert lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"DECISION": date(2006, 1, 1)})) is None
 
 
 def test_decision_keyed_rows_never_reveal_the_simulation_date(procs: Procs, tmp_path: Path) -> None:
     """D-035: no session-role read returns the decision date, even through an overlay keyed on it."""
-    from tests import builders
 
     sentinel_date = "1999-12-31"  # literal-ok: sentinel simulation_date
     ingest = procs.offline.ingest()
     load_law_db(ingest.law, validate_law_db(*read_law_sources(synthetic_source(tmp_path))))
     ingest.law.put_overlay(overlay("ov-decision", True, "1990-01-01", None, keyed_on="DECISION"))
     as_of = AsOf.for_case(builders.case("TESTCASE_0001", date_marker=sentinel_date))
-    view = procs.session.lawyer("PETITIONER", "S").law.get_statute(SYNTHETIC, as_of)
+    view = procs.session.lawyer("PETITIONER", "S", SCOPE).law.get_statute(SYNTHETIC, as_of)
     assert view is not None and view.in_force == "CONFIRMED"  # positive control: the row was applied
     assert sentinel_date not in view.model_dump_json()
 
@@ -221,7 +222,7 @@ def test_related_sections_show_only_what_exists_and_reconnect_when_added(procs: 
     source.write_text(json.dumps([law_record(SYNTHETIC, intersecting_statute_ids=refs), law_record("TEST_ACT_SEC_2")]))
     ingest = procs.offline.ingest()
     load_law_db(ingest.law, validate_law_db(*read_law_sources(folder)))
-    lawyer = procs.session.lawyer("PETITIONER", "S").law
+    lawyer = procs.session.lawyer("PETITIONER", "S", SCOPE).law
     as_of = AsOf(key_dates={})
 
     view = lawyer.get_statute(SYNTHETIC, as_of)

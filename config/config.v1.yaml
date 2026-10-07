@@ -65,6 +65,7 @@ embedding:
   window_tokens: 480                     # [SPEC B5]
   batch_size: 32                         # [PLACEHOLDER] texts per embedding call (memory, not behaviour)
   cache_dir: .cache/models               # downloaded model files, git-ignored [D-047]
+  query_instruction: "Represent this sentence for searching relevant passages: "   # [SPEC B5] bge-v1.5 retrieval prefix, ratio queries only
 
 retrieval:
   facts_threshold: 0.75                  # [SPEC B6] uncalibrated
