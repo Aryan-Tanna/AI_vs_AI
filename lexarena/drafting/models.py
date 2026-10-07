@@ -16,7 +16,8 @@ from lexarena.schemas.base import NonEmptyStr, StoredModel
 from lexarena.schemas.predicate import PredicateEntry
 
 ReviewStatus = Literal["DRAFT", "APPROVED", "REJECTED"]
-Agreement = Literal["AGREED", "DISAGREED", "PRIMARY_ONLY", "SECONDARY_ONLY"]
+# MANUAL: written by a person or by Claude Code from the document, checked exactly like model drafts (D-046).
+Agreement = Literal["AGREED", "DISAGREED", "PRIMARY_ONLY", "SECONDARY_ONLY", "MANUAL"]
 CheckStatus = Literal["VERIFIED", "NOT_FOUND", "MISSING", "MATCHED", "NOT_MATCHED", "NOT_CHECKABLE", "OK", "FAILED"]
 
 

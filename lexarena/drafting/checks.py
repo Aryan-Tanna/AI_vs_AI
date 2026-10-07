@@ -38,6 +38,10 @@ FOOTNOTE = re.compile(r"^\s*(\d+)\s+\D")
 CONTEXT_CHARS = 80  # literal-ok: characters of context shown to the reviewer around each quote
 
 
+def _shown(value: float) -> str:
+    return f"{value:,.0f}" if float(value).is_integer() else f"{value:g}"
+
+
 class Findings:
     def __init__(self) -> None:
         self.checks: list[Check] = []
@@ -114,7 +118,9 @@ def _check_footnote_attachment(row: ProposedOverlayRow, source_text: str, f: Fin
             )
 
 
-def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: VocabularyConfig) -> Findings:
+def check_overlay_row(
+    row: ProposedOverlayRow, source_text: str, vocab: VocabularyConfig, issued_on: date | None = None
+) -> Findings:
     f = Findings()
     if row.parameter not in vocab.overlay_parameters:
         f.blocking.append(f"parameter {row.parameter!r} is not in vocabulary.overlay_parameters")
@@ -149,7 +155,7 @@ def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: Vocabula
         else:
             f.checks.append(Check(name="value", status="NOT_CHECKABLE", detail=str(row.value_number)))
             f.judge.append(
-                f"value {row.value_number:g} is not written in digits in its quote; check it against the words"
+                f"value {_shown(row.value_number)} is not written in digits in its quote; check it against the words"
             )
     elif kind == "date_range":
         for name, value in (("value_from", row.value_from), ("value_to", row.value_to)):
@@ -164,6 +170,11 @@ def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: Vocabula
             f.quote(f"{name}_quote", quote, source_text, required=True)
             _date_in_quote(day, quote, name, f)
     _check_footnote_attachment(row, source_text, f)
+    if issued_on is not None and row.effective_from == issued_on.isoformat():
+        f.judge.append(
+            f"effective_from is the document's own date ({issued_on.isoformat()}); confirm the document took effect "
+            "on that date and not on another commencement date"
+        )
     if row.effective_from is None and row.effective_to is None:
         f.judge.append(f"No commencement date is given in the text. Model's note: {row.commencement_note}")
     f.judge.append(
@@ -217,7 +228,7 @@ def build_predicate(
         constants = [n.const for n in walk(entry.expression) if isinstance(n, ConstLeaf)]
         for const in constants:
             if isinstance(const, int | float) and not isinstance(const, bool) and const not in written:
-                f.judge.append(f"constant {const:g} is not written in digits in the quoted text; check the words")
+                f.judge.append(f"constant {_shown(const)} is not written in digits in the quoted text; check the words")
     f.judge.append(
         "Is this rule fixed literally by the text, rather than a reading a court had to settle (SPEC I3-12, D2)?"
     )

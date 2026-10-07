@@ -20,6 +20,70 @@
     ]
   },
   {
+    "source_id": "IBC_NOTIFICATION_SO_1205E_2020",
+    "title": "Notification under section 4 of the Insolvency and Bankrutpcy Code, 2016",
+    "issuer": "Ministry of Corporate Affairs, Gazette of India via IBBI",
+    "reference": "S.O. 1205(E), Ministry of Corporate Affairs, 24.03.2020",
+    "issued_on": "2020-03-24",
+    "url": "https://ibbi.gov.in/uploads/legalframwork/48bf32150f5d6b30477b74f652964edc.pdf",
+    "retrieved_on": "2026-10-07",
+    "file": "files/IBC_NOTIFICATION_SO_1205E_2020.pdf",
+    "file_sha256": "e142c83a22a07291f9beda60263b184a878341e9bcb7c452be27ada1b9790ecc",
+    "text_file": "files/IBC_NOTIFICATION_SO_1205E_2020.txt",
+    "text_sha256": "7e6365d99304eeabdccaae046d4ae7b344147c6949d5d67cfc6daedc83e3ba66",
+    "page_chars": [
+      1496
+    ]
+  },
+  {
+    "source_id": "IBC_NOTIFICATION_SO_3265E_2020",
+    "title": "Notification under section 10A of the Insolvency and Bankruptcy Code, 2016",
+    "issuer": "Ministry of Corporate Affairs, Gazette of India via IBBI",
+    "reference": "S.O. 3265(E), Ministry of Corporate Affairs, notified under section 10A",
+    "issued_on": "2020-09-24",
+    "url": "https://ibbi.gov.in/uploads/legalframwork/2987e1e33d62d2e1781c700ee16baa36.pdf",
+    "retrieved_on": "2026-10-07",
+    "file": "files/IBC_NOTIFICATION_SO_3265E_2020.pdf",
+    "file_sha256": "01a8aba8164ff9136515e24308be83e00884508e322238e71e542bd371b2a88e",
+    "text_file": "files/IBC_NOTIFICATION_SO_3265E_2020.txt",
+    "text_sha256": "0299f38b6905656066dc9ab2d002a883cd5fd518d8b4595fc8223ebe6051e565",
+    "page_chars": [
+      1705
+    ]
+  },
+  {
+    "source_id": "IBC_NOTIFICATION_SO_4638E_2020",
+    "title": "Notification under section 10A of the Insolvency and Bankruptcy Code, 2016",
+    "issuer": "Ministry of Corporate Affairs, Gazette of India via IBBI",
+    "reference": "S.O. 4638(E), Ministry of Corporate Affairs, notified under section 10A",
+    "issued_on": "2020-12-22",
+    "url": "https://ibbi.gov.in/uploads/legalframwork/df55d4f612f270d6c637ee4b3c8131c8.pdf",
+    "retrieved_on": "2026-10-07",
+    "file": "files/IBC_NOTIFICATION_SO_4638E_2020.pdf",
+    "file_sha256": "b850ff52a584365d2da93c6eb802f85b0efea682ce2e8bab9afe054179386f0f",
+    "text_file": "files/IBC_NOTIFICATION_SO_4638E_2020.txt",
+    "text_sha256": "36898d089234e6d1f57e5f9cb8b3c38659b3078931983041827a3fffa53de63a",
+    "page_chars": [
+      1478
+    ]
+  },
+  {
+    "source_id": "IBC_NOTIFICATION_SO_1543E_2021",
+    "title": "Notification under section 4 of the Insolvency and Bankrutpcy Code, 2016 for Chapter III-A",
+    "issuer": "Ministry of Corporate Affairs, Gazette of India via IBBI",
+    "reference": "S.O. 1543(E), Ministry of Corporate Affairs, minimum default for Chapter III-A",
+    "issued_on": "2021-04-09",
+    "url": "https://ibbi.gov.in/uploads/legalframwork/e9b1c4b3489e51213db701b27222b474.pdf",
+    "retrieved_on": "2026-10-07",
+    "file": "files/IBC_NOTIFICATION_SO_1543E_2021.pdf",
+    "file_sha256": "4a04074334047968811efc6fb3d59624a16da78dc76ccb2d34070faef222f999",
+    "text_file": "files/IBC_NOTIFICATION_SO_1543E_2021.txt",
+    "text_sha256": "fdb401bd22186acef324064f85256ff32149568462cb57d4c4c1bf2bb6c1f483",
+    "page_chars": [
+      1831
+    ]
+  },
+  {
     "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
     "title": "The Insolvency and Bankruptcy Code, 2016 (Upto 12.08.2021)",
     "issuer": "Insolvency and Bankruptcy Board of India (consolidated text)",
@@ -221,6 +285,75 @@
       2237,
       1450,
       939
+    ]
+  },
+  {
+    "source_id": "IBC_AMENDMENT_ACT_2026",
+    "title": "The Insolvency and Bankruptcy Code (Amendment) Act, 2026",
+    "issuer": "Ministry of Law and Justice (Legislative Department), Gazette of India via IBBI",
+    "reference": "IBC (Amendment) Act, 2026, Gazette of India Extraordinary No. 11 dated 06.04.2026",
+    "issued_on": "2026-04-06",
+    "url": "https://ibbi.gov.in/uploads/legalframwork/2026-04-07-115842-i5nsk-7ed69ef2a4d23a8b0d472cc0fcd55e79.pdf",
+    "retrieved_on": "2026-10-07",
+    "file": "files/IBC_AMENDMENT_ACT_2026.pdf",
+    "file_sha256": "cb68d468bb78d8be08c3158eb67dc91316985857af98d2d11e57f4a7850685d5",
+    "text_file": "files/IBC_AMENDMENT_ACT_2026.txt",
+    "text_sha256": "3a7f8baab2b53f975c0757a8b025df08410ba4f818195788f0e68f91ea011a10",
+    "page_chars": [
+      1590,
+      2909,
+      2883,
+      2996,
+      2662,
+      3830,
+      3107,
+      2763,
+      3117,
+      2724,
+      2748,
+      3430,
+      2833,
+      3267,
+      2884,
+      3022,
+      3009,
+      2947,
+      3260,
+      3196,
+      3436,
+      3406,
+      3402,
+      3134,
+      2884,
+      3031,
+      3241,
+      2808,
+      3256,
+      2903,
+      2362,
+      3055,
+      1791,
+      2709,
+      1995,
+      2128,
+      2946
+    ]
+  },
+  {
+    "source_id": "IBC_AMENDMENT_ACT_2026_COMMENCEMENT",
+    "title": "Notification under sub-section (2) of section 1 of the Insolvency and Bankruptcy Code (Amendment) Act, 2026.",
+    "issuer": "Ministry of Corporate Affairs, Gazette of India via IBBI",
+    "reference": "Commencement notification under section 1(2) of the IBC (Amendment) Act, 2026",
+    "issued_on": "2026-05-25",
+    "url": "https://ibbi.gov.in/uploads/legalframwork/d31669ba7f826ee9ebefe58e85d652ec.pdf",
+    "retrieved_on": "2026-10-07",
+    "file": "files/IBC_AMENDMENT_ACT_2026_COMMENCEMENT.pdf",
+    "file_sha256": "555845b6e8d068544fff4996d99945bf86b35b7dd95929cc1afc64258ed93bdc",
+    "text_file": "files/IBC_AMENDMENT_ACT_2026_COMMENCEMENT.txt",
+    "text_sha256": "411042f4eccbb0669ecd13524ceef012ff4ae5e32e871ad410e89069c5037176",
+    "page_chars": [
+      1027,
+      1702
     ]
   }
 ]

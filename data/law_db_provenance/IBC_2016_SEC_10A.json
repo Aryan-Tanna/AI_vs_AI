@@ -1,0 +1,52 @@
+{
+  "statute_id": "IBC_2016_SEC_10A",
+  "record_file": "data/law_db/ibc_additions.json",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "text_as_of": "2021-08-12",
+  "later_amendments_checked": [
+    {
+      "source_id": "IBC_AMENDMENT_ACT_2026",
+      "result": "not among the sections this Act amends, substitutes or omits (margin notes read 2026-10-07); the Act comes into force only on dates the Central Government notifies"
+    }
+  ],
+  "section_starts_with": "3[10A. Suspension of initiation of corporate insolvency resolution process.",
+  "section_ends_with": "before 25th March, 2020.]",
+  "authored_by": "Claude Code, on your instruction of 2026-10-07 (D-045); not reviewed by a lawyer",
+  "notes": [
+    "The end of the suspension period ('such further period ... as may be notified') is fixed by later notifications, so it is not in this record; it belongs in a temporal_overlay row sourced from them.",
+    "forum_level NCLT_ORIGINAL: applications under sections 7, 9 and 10 are filed before the National Company Law Tribunal."
+  ],
+  "evidence": {
+    "section_title": [
+      "Suspension of initiation of corporate insolvency resolution process"
+    ],
+    "statutory_summary": [
+      "Notwithstanding anything contained in sections 7, 9 and 10, no application for initiation of corporate insolvency resolution process of a corporate debtor shall be filed, for any default arising on or after 25th March, 2020 for a period of six months or such further period, not exceeding one year from such date, as may be notified in this behalf",
+      "Provided that no application shall ever be filed for initiation of corporate insolvency resolution process of a corporate debtor for the said default occurring during the said period",
+      "the provisions of this section shall not apply to any default committed under the said sections before 25th March, 2020"
+    ],
+    "core_judicial_inquiry": [
+      "Notwithstanding anything contained in sections 7, 9 and 10, no application for initiation of corporate insolvency resolution process of a corporate debtor shall be filed, for any default arising on or after 25th March, 2020 for a period of six months or such further period, not exceeding one year from such date, as may be notified in this behalf",
+      "Provided that no application shall ever be filed for initiation of corporate insolvency resolution process of a corporate debtor for the said default occurring during the said period"
+    ],
+    "intersecting_statute_ids[0]": [
+      "Notwithstanding anything contained in sections 7, 9 and 10"
+    ],
+    "intersecting_statute_ids[1]": [
+      "Notwithstanding anything contained in sections 7, 9 and 10"
+    ],
+    "intersecting_statute_ids[2]": [
+      "Notwithstanding anything contained in sections 7, 9 and 10"
+    ],
+    "diagnostic_checklist.statutory_bars[0]": [
+      "Notwithstanding anything contained in sections 7, 9 and 10, no application for initiation of corporate insolvency resolution process of a corporate debtor shall be filed, for any default arising on or after 25th March, 2020 for a period of six months or such further period, not exceeding one year from such date, as may be notified in this behalf"
+    ],
+    "diagnostic_checklist.statutory_bars[1]": [
+      "Provided that no application shall ever be filed for initiation of corporate insolvency resolution process of a corporate debtor for the said default occurring during the said period"
+    ],
+    "diagnostic_checklist.saving_exceptions[0]": [
+      "the provisions of this section shall not apply to any default committed under the said sections before 25th March, 2020"
+    ]
+  }
+}

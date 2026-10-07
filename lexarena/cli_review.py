@@ -3,6 +3,7 @@
     lexarena sources add --source-id ID --url URL --title T --issuer I --reference R --issued-on YYYY-MM-DD
     lexarena sources list
     lexarena draft overlay|predicate --statute STATUTE_ID --source SOURCE_ID --find TERM [--find TERM]
+    lexarena draft import --file ROWS.json   (hand-written rows: same checks, labelled MANUAL)
     lexarena review list [--status DRAFT|APPROVED|REJECTED]
     lexarena review show ID
     lexarena review approve ID --by NAME [--note TEXT]   (re-runs the checks first)
@@ -25,8 +26,9 @@ import httpx
 
 from lexarena.app import DEFAULT_ENV_FILE, PROMPTS_ROOT, REPO_ROOT, SEALED_ENV_FILE, build_llm_client
 from lexarena.config import load_config
-from lexarena.drafting.draft import draft_overlay, draft_predicate
+from lexarena.drafting.draft import draft_overlay, draft_predicate, import_overlay
 from lexarena.drafting.loader import load_approved, recheck
+from lexarena.drafting.models import ProposedOverlayRow
 from lexarena.drafting.review import ReviewStore
 from lexarena.drafting.sources import SourceMeta, SourceRegistry
 from lexarena.prompts import PromptStore
@@ -54,6 +56,9 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
         cmd.add_argument("--statute", required=True)
         cmd.add_argument("--source", required=True)
         cmd.add_argument("--find", action="append", required=True, help="search term locating the provision")
+
+    imp = draft.add_parser("import", help="hand-written overlay rows from a JSON file; same checks, labelled MANUAL")
+    imp.add_argument("--file", type=Path, required=True)
 
     review = sub.add_parser("review").add_subparsers(dest="action", required=True)
     listing = review.add_parser("list")
@@ -88,6 +93,20 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
             url=args.url,
         )
         _print(registry.register(pdf, meta).to_document())
+        return 0
+
+    if args.group == "draft" and args.action == "import":
+        # {"statute_id": ..., "source_id": ..., "author": ..., "rows": [ProposedOverlayRow, ...]}
+        spec = json.loads(args.file.read_text(encoding="utf-8"))
+        cfg = load_config(config_path)
+        with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+            record = proc.ingest().law.get_record(spec["statute_id"])
+        if record is None:
+            raise SystemExit(f"{spec['statute_id']} is not in the loaded Law DB (run lexarena law load)")
+        rows = [ProposedOverlayRow.model_validate(r) for r in spec["rows"]]
+        imported = import_overlay(cfg, record, registry, spec["source_id"], rows, spec["author"])
+        _print([{"draft_id": d.draft_id, "new": store.save(d), "blocking_problems": d.blocking_problems,
+                 "reviewer_must_judge": d.reviewer_must_judge} for d in imported])  # fmt: skip
         return 0
 
     if args.group == "draft":

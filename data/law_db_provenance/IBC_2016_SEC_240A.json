@@ -1,0 +1,56 @@
+{
+  "statute_id": "IBC_2016_SEC_240A",
+  "record_file": "data/law_db/ibc_additions.json",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "text_as_of": "2021-08-12",
+  "later_amendments_checked": [
+    {
+      "source_id": "IBC_AMENDMENT_ACT_2026",
+      "result": "not among the sections this Act amends, substitutes or omits (margin notes read 2026-10-07); the Act comes into force only on dates the Central Government notifies"
+    }
+  ],
+  "section_starts_with": "1[240A. Application of this Code to micro, small and medium enterprises.",
+  "section_ends_with": "Small and Medium Enterprises Development Act, 2006 (27 of 2006).]",
+  "authored_by": "Claude Code, on your instruction of 2026-10-07 (D-045); not reviewed by a lawyer",
+  "notes": [
+    "The words 'or pre-packaged insolvency resolution process' were inserted w.e.f. 04-04-2021 (footnote 2 on the same page); for earlier hearing dates that belongs in a temporal_overlay row, not in this record.",
+    "Which date decides MSME status for this section is contested in case law (SPEC D2); the record states only the statutory definition and leaves that reading open."
+  ],
+  "evidence": {
+    "section_title": [
+      "Application of this Code to micro, small and medium enterprises"
+    ],
+    "statutory_summary": [
+      "Notwithstanding anything to the contrary contained in this Code, the provisions of clauses (c) and (h) of section 29A shall not apply to the resolution applicant in respect of corporate insolvency resolution process",
+      "or pre-packaged insolvency resolution process] of any micro, small and medium enterprises",
+      "the Central Government may, in the public interest, by notification, direct that any of the provisions of this Code shall",
+      "not apply to micro, small and medium enterprises",
+      "apply to micro, small and medium enterprises, with such modifications as may be",
+      "shall be laid before each House of Parliament",
+      "means any class or classes of enterprises classified as such under sub-section (1) of section 7 of the Micro, Small and Medium Enterprises Development Act, 2006"
+    ],
+    "core_judicial_inquiry": [
+      "Notwithstanding anything to the contrary contained in this Code, the provisions of clauses (c) and (h) of section 29A shall not apply to the resolution applicant in respect of corporate insolvency resolution process",
+      "means any class or classes of enterprises classified as such under sub-section (1) of section 7 of the Micro, Small and Medium Enterprises Development Act, 2006"
+    ],
+    "intersecting_statute_ids[0]": [
+      "Notwithstanding anything to the contrary contained in this Code, the provisions of clauses (c) and (h) of section 29A shall not apply to the resolution applicant in respect of corporate insolvency resolution process"
+    ],
+    "diagnostic_checklist.applicant_eligibility[0]": [
+      "Notwithstanding anything to the contrary contained in this Code, the provisions of clauses (c) and (h) of section 29A shall not apply to the resolution applicant in respect of corporate insolvency resolution process",
+      "or pre-packaged insolvency resolution process] of any micro, small and medium enterprises"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[0]": [
+      "means any class or classes of enterprises classified as such under sub-section (1) of section 7 of the Micro, Small and Medium Enterprises Development Act, 2006"
+    ],
+    "diagnostic_checklist.saving_exceptions[0]": [
+      "Notwithstanding anything to the contrary contained in this Code, the provisions of clauses (c) and (h) of section 29A shall not apply to the resolution applicant in respect of corporate insolvency resolution process"
+    ],
+    "diagnostic_checklist.saving_exceptions[1]": [
+      "the Central Government may, in the public interest, by notification, direct that any of the provisions of this Code shall",
+      "not apply to micro, small and medium enterprises",
+      "apply to micro, small and medium enterprises, with such modifications as may be"
+    ]
+  }
+}

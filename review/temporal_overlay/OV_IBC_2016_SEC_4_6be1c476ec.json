@@ -1,0 +1,69 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_4_6be1c476ec",
+  "statute_id": "IBC_2016_SEC_4",
+  "source_id": "IBC_NOTIFICATION_SO_1205E_2020",
+  "source_text_sha256": "7e6365d99304eeabdccaae046d4ae7b344147c6949d5d67cfc6daedc83e3ba66",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-07)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 788-914: ... proviso to section 4 of the Insolvency and Bankruptcy Code, 2016 (31 of 2016), the Central Government hereby specifies one crore rupees as the minimum amount of default for the purposes of the said section. [F. No. 30/9/2020-Insolvency] GYANESHWAR KUMAR SINGH, Jt. Secy. 1593 GI/2020 U..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 828-877: ...and Bankruptcy Code, 2016 (31 of 2016), the Central Government hereby specifies one crore rupees as the minimum amount of default for the purposes of the said section. [F. No. 30/9/2020-Insolvency] GYANESHWAR ..."
+    },
+    {
+      "name": "value",
+      "status": "NOT_CHECKABLE",
+      "detail": "10000000.0"
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 620-651: ...ानेश् वर कुमार िंसंि, संर्ुक् त सजचव MINISTRY OF CORPORATE AFFAIRS NOTIFICATION New Delhi, the 24th March, 2020 S.O. 1205(E).-In exercise of the powers conferred by the proviso to section 4 o..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2020-03-24"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "value 10,000,000 is not written in digits in its quote; check it against the words",
+    "effective_from is the document's own date (2020-03-24); confirm the document took effect on that date and not on another commencement date",
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is FILING the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T10:11:11.492647Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "minimum_default_inr",
+    "value_kind": "number",
+    "value_boolean": null,
+    "value_number": 10000000.0,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "FILING",
+    "effective_from": "2020-03-24",
+    "effective_to": null,
+    "source_text": "the Central Government hereby specifies one crore rupees as the minimum amount of default for the purposes of the said section",
+    "value_quote": "one crore rupees as the minimum amount of default",
+    "effective_from_quote": "New Delhi, the 24th March, 2020",
+    "effective_to_quote": null,
+    "commencement_note": "The notification states no commencement date other than its own date; keyed on FILING as SPEC C2 proposes. Both are for the reviewer."
+  }
+}

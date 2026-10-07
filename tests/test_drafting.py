@@ -14,6 +14,7 @@ import pytest
 
 from lexarena.config import load_config
 from lexarena.drafting.draft import DraftingError, draft_overlay, draft_predicate
+from lexarena.drafting.models import ProposedOverlayRow
 from lexarena.drafting.review import ReviewError, ReviewStore
 from lexarena.drafting.sources import SourceRegistry
 from lexarena.llm.client import LLMClient
@@ -321,3 +322,29 @@ def test_a_footnote_number_must_match_the_marker(cfg: AppConfig, tmp_path: Path,
     llm, _, _ = client(cfg, proposal(row), proposal(row))
     [draft] = draft_overlay(llm, cfg, PromptStore(PROMPTS_ROOT), record, reg, "TEST_ACT_2001", ["99X"])
     assert any("footnote 1 does not match the provision's marker 2" in p for p in draft.blocking_problems)
+
+
+def test_manual_drafts_face_the_same_checks_and_are_labelled(
+    cfg: AppConfig, registry: SourceRegistry, record: LawRecord
+) -> None:
+    from lexarena.drafting.draft import import_overlay
+
+    rows = [IN_FORCE, {**IN_FORCE, "source_text": "<not in the source>"}]
+    drafts = import_overlay(
+        cfg, record, registry, "TEST_ACT_2001", [ProposedOverlayRow.model_validate(r) for r in rows], "<author>"
+    )
+    good, bad = drafts
+    assert {d.agreement for d in drafts} == {"MANUAL"} and good.proposed_by == ["manual:<author>"]
+    assert good.prompt_ref == "manual" and good.blocking_problems == []
+    assert any("not found verbatim" in p for p in bad.blocking_problems)
+
+
+def test_a_date_equal_to_the_instruments_own_date_is_flagged(
+    cfg: AppConfig, registry: SourceRegistry, record: LawRecord
+) -> None:
+    from lexarena.drafting.draft import import_overlay
+
+    issued = registry.get("TEST_ACT_2001").issued_on.isoformat()  # 2001-01-01 in the fixture
+    row = {**IN_FORCE, "effective_from": issued, "effective_from_quote": "THE TEST ACT, 2001"}
+    [draft] = import_overlay(cfg, record, registry, "TEST_ACT_2001", [ProposedOverlayRow.model_validate(row)], "<a>")
+    assert any("the document's own date" in j for j in draft.reviewer_must_judge)

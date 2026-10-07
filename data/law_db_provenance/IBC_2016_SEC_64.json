@@ -1,0 +1,45 @@
+{
+  "statute_id": "IBC_2016_SEC_64",
+  "record_file": "data/law_db/ibc_additions.json",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "text_as_of": "2021-08-12",
+  "later_amendments_checked": [
+    {
+      "source_id": "IBC_AMENDMENT_ACT_2026",
+      "result": "not among the sections this Act amends, substitutes or omits (margin notes read 2026-10-07); the Act comes into force only on dates the Central Government notifies"
+    }
+  ],
+  "section_starts_with": "64. Expeditious disposal of applications. - (1) Where an application",
+  "section_ends_with": "Appellate Tribunal under this Code.",
+  "authored_by": "Claude Code, on your instruction of 2026-10-07 (D-045); not reviewed by a lawyer",
+  "notes": [
+    "The section binds both the NCLT and the NCLAT; the frozen format holds one forum_level, so NCLT_ORIGINAL is used. Reviewer: confirm or change."
+  ],
+  "evidence": {
+    "section_title": [
+      "Expeditious disposal of applications"
+    ],
+    "statutory_summary": [
+      "Where an application is not disposed of or an order is not passed within the period specified in this Code",
+      "shall record the reasons for not doing so within the period so specified",
+      "may, after taking into account the reasons so recorded, extend the period specified in the Act but not exceeding ten days",
+      "No injunction shall be granted by any court, tribunal or authority in respect of any action taken, or to be taken, in pursuance of any power conferred on the National Company Law Tribunal or the National Company Law Appellate Tribunal under this Code"
+    ],
+    "core_judicial_inquiry": [
+      "shall record the reasons for not doing so within the period so specified",
+      "may, after taking into account the reasons so recorded, extend the period specified in the Act but not exceeding ten days",
+      "No injunction shall be granted by any court, tribunal or authority in respect of any action taken, or to be taken, in pursuance of any power conferred on the National Company Law Tribunal or the National Company Law Appellate Tribunal under this Code"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[0]": [
+      "Where an application is not disposed of or an order is not passed within the period specified in this Code",
+      "shall record the reasons for not doing so within the period so specified"
+    ],
+    "diagnostic_checklist.statutory_bars[0]": [
+      "No injunction shall be granted by any court, tribunal or authority in respect of any action taken, or to be taken, in pursuance of any power conferred on the National Company Law Tribunal or the National Company Law Appellate Tribunal under this Code"
+    ],
+    "diagnostic_checklist.saving_exceptions[0]": [
+      "may, after taking into account the reasons so recorded, extend the period specified in the Act but not exceeding ten days"
+    ]
+  }
+}

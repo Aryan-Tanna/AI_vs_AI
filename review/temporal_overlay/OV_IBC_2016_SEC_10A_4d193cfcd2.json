@@ -1,0 +1,62 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_10A_4d193cfcd2",
+  "statute_id": "IBC_2016_SEC_10A",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-07)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 40822-40897: ...the date of admission of the application under sub-section (4) of this section. 3[10A. Suspension of initiation of corporate insolvency resolution process. Notwithstanding anything contained in sections 7, 9 and 10, no application for ..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 42440-42497: ...e.f. 6-6-2018). 2 Ins. by Act No. 26 of 2018, sec. 7(b) (ii) (w.e.f. 6-6-2018). 3 Ins. by Act No. 17 of 2020, sec. 2 (w.e.f. 05-06-2020). 4 Ins. by Act No. 26 of 2021, sec.4(i) (w.e.f. 04-04-2021). 5 Ins. by Act No. 2..."
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 42440-42497: ...e.f. 6-6-2018). 2 Ins. by Act No. 26 of 2018, sec. 7(b) (ii) (w.e.f. 6-6-2018). 3 Ins. by Act No. 17 of 2020, sec. 2 (w.e.f. 05-06-2020). 4 Ins. by Act No. 26 of 2021, sec.4(i) (w.e.f. 04-04-2021). 5 Ins. by Act No. 2..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2020-06-05"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is DECISION the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T10:11:10.369109Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "section_in_force",
+    "value_kind": "boolean",
+    "value_boolean": true,
+    "value_number": null,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "DECISION",
+    "effective_from": "2020-06-05",
+    "effective_to": null,
+    "source_text": "3[10A. Suspension of initiation of corporate insolvency resolution process.",
+    "value_quote": "3 Ins. by Act No. 17 of 2020, sec. 2 (w.e.f. 05-06-2020).",
+    "effective_from_quote": "3 Ins. by Act No. 17 of 2020, sec. 2 (w.e.f. 05-06-2020).",
+    "effective_to_quote": null,
+    "commencement_note": "footnote 3 on the same page as the marker 3[10A."
+  }
+}

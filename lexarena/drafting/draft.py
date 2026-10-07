@@ -26,7 +26,7 @@ from lexarena.drafting.models import (
     ProposedOverlayRow,
     ProposedPredicate,
 )
-from lexarena.drafting.sources import SourceRegistry, excerpts
+from lexarena.drafting.sources import LegalSource, SourceRegistry, excerpts
 from lexarena.llm.client import LLMClient
 from lexarena.prompts import PromptStore, RenderedPrompt
 from lexarena.schemas.codes import HARD_ERROR_CODES
@@ -113,6 +113,52 @@ def _overlay_quotes(row: ProposedOverlayRow) -> Hashable:
     return (row.source_text, row.value_quote, row.effective_from_quote, row.effective_to_quote)
 
 
+def _overlay_draft(
+    cfg: AppConfig,
+    record: LawRecord,
+    source: LegalSource,
+    source_text: str,
+    row: ProposedOverlayRow,
+    agreement: Agreement,
+    proposed_by: list[str],
+    prompt_ref: str,
+) -> OverlayDraft:
+    found = check_overlay_row(row, source_text, cfg.vocabulary, source.issued_on)
+    return OverlayDraft(
+        kind="temporal_overlay",
+        draft_id=f"OV_{record.statute_id}_{_short_hash(source.source_id, _overlay_key(row), _overlay_quotes(row))}",
+        statute_id=record.statute_id,
+        source_id=source.source_id,
+        source_text_sha256=source.text_sha256,
+        status="DRAFT",
+        decided_by=None,
+        decided_on=None,
+        decision_note=None,
+        agreement=agreement,
+        conflicts_with=[],
+        proposed_by=proposed_by,
+        prompt_ref=prompt_ref,
+        row=row,
+        checks=found.checks,
+        blocking_problems=found.blocking,
+        reviewer_must_judge=found.judge,
+        created_at=datetime.now(UTC),
+    )
+
+
+def import_overlay(
+    cfg: AppConfig,
+    record: LawRecord,
+    registry: SourceRegistry,
+    source_id: str,
+    rows: list[ProposedOverlayRow],
+    author: str,
+) -> list[OverlayDraft]:
+    """Rows written by hand from the document (a person, or Claude Code): the same checks, labelled MANUAL."""
+    source, source_text = registry.get(source_id), registry.text(source_id)
+    return [_overlay_draft(cfg, record, source, source_text, r, "MANUAL", [f"manual:{author}"], "manual") for r in rows]
+
+
 def draft_overlay(
     llm: LLMClient,
     cfg: AppConfig,
@@ -138,31 +184,11 @@ def draft_overlay(
         {role: list(a.rows) for role, a in answers.items()}, _overlay_key, lambda r: (r.parameter, r.keyed_on)
     )
     models = _models(cfg)
-    drafts = []
-    for row, agreement, roles in paired:
-        found = check_overlay_row(row, source_text, cfg.vocabulary)
-        drafts.append(
-            OverlayDraft(
-                kind="temporal_overlay",
-                draft_id=f"OV_{record.statute_id}_{_short_hash(source_id, _overlay_key(row), _overlay_quotes(row))}",
-                statute_id=record.statute_id,
-                source_id=source_id,
-                source_text_sha256=source.text_sha256,
-                status="DRAFT",
-                decided_by=None,
-                decided_on=None,
-                decision_note=None,
-                agreement=agreement,
-                conflicts_with=[],
-                proposed_by=[models[r] for r in roles],
-                prompt_ref=f"{cfg.prompts.draft_overlay.id}.v{cfg.prompts.draft_overlay.version}",
-                row=row,
-                checks=found.checks,
-                blocking_problems=found.blocking,
-                reviewer_must_judge=found.judge,
-                created_at=datetime.now(UTC),
-            )
-        )
+    prompt_ref = f"{cfg.prompts.draft_overlay.id}.v{cfg.prompts.draft_overlay.version}"
+    drafts = [
+        _overlay_draft(cfg, record, source, source_text, row, agreement, [models[r] for r in roles], prompt_ref)
+        for row, agreement, roles in paired
+    ]
     _link_conflicts(drafts, lambda d: (d.row.parameter, d.row.keyed_on) if isinstance(d, OverlayDraft) else None)
     return drafts
 

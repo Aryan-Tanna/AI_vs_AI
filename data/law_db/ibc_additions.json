@@ -1,0 +1,158 @@
+[
+  {
+    "_id": "IBC_2016_SEC_10A",
+    "statute_id": "IBC_2016_SEC_10A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "10A",
+    "section_title": "Suspension of initiation of corporate insolvency resolution process",
+    "jurisdiction_type": "PROHIBITORY_SHIELD",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Notwithstanding sections 7, 9 and 10, no application for initiation of corporate insolvency resolution process of a corporate debtor shall be filed for any default arising on or after 25th March, 2020 for a period of six months or such further period, not exceeding one year from that date, as may be notified; no such application shall ever be filed for a default occurring during that period. The section does not apply to any default committed before 25th March, 2020.",
+    "core_judicial_inquiry": "Whether the default on which the application under section 7, 9 or 10 is founded arose on or after 25th March, 2020 and within the period of six months or such further notified period, in which case no application for initiation of corporate insolvency resolution process shall ever be filed for that default.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_7",
+      "IBC_2016_SEC_9",
+      "IBC_2016_SEC_10"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [],
+      "statutory_bars": [
+        "No application for initiation of corporate insolvency resolution process of a corporate debtor shall be filed for any default arising on or after 25th March, 2020 for a period of six months or such further period, not exceeding one year from such date, as may be notified.",
+        "No application shall ever be filed for initiation of corporate insolvency resolution process of a corporate debtor for a default occurring during the said period."
+      ],
+      "saving_exceptions": [
+        "The section does not apply to any default committed under sections 7, 9 and 10 before 25th March, 2020."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_DEFAULT_IN_SUSPENSION_PERIOD",
+      "ERR_SUSPENSION_PERIOD_MISSTATED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_64",
+    "statute_id": "IBC_2016_SEC_64",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "64",
+    "section_title": "Expeditious disposal of applications",
+    "jurisdiction_type": "PROCEDURAL_TIMELINE",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Where an application is not disposed of or an order is not passed within the period specified in the Code, the National Company Law Tribunal or the National Company Law Appellate Tribunal must record its reasons, and its President or Chairperson may, after taking those reasons into account, extend the period by not more than ten days. No court, tribunal or authority may grant an injunction in respect of any action taken, or to be taken, under a power conferred on the National Company Law Tribunal or the National Company Law Appellate Tribunal by the Code.",
+    "core_judicial_inquiry": "Whether, for an application not disposed of within the period specified in the Code, reasons were recorded and any extension granted did not exceed ten days; and whether an injunction is sought in respect of action taken or to be taken under a power conferred on the National Company Law Tribunal or the National Company Law Appellate Tribunal by the Code.",
+    "intersecting_statute_ids": [],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "The National Company Law Tribunal or the National Company Law Appellate Tribunal records the reasons for not disposing of an application or passing an order within the period specified in the Code."
+      ],
+      "statutory_bars": [
+        "No injunction shall be granted by any court, tribunal or authority in respect of any action taken, or to be taken, in pursuance of any power conferred on the National Company Law Tribunal or the National Company Law Appellate Tribunal under the Code."
+      ],
+      "saving_exceptions": [
+        "The President of the National Company Law Tribunal or the Chairperson of the National Company Law Appellate Tribunal may, after taking into account the reasons recorded, extend the specified period by not more than ten days."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_REASONS_FOR_DELAY_NOT_RECORDED",
+      "ERR_EXTENSION_EXCEEDS_TEN_DAYS",
+      "ERR_INJUNCTION_BARRED"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_95",
+    "statute_id": "IBC_2016_SEC_95",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "95",
+    "section_title": "Application by creditor to initiate insolvency resolution process",
+    "jurisdiction_type": "INITIATING_CLAIM",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "A creditor may apply, by himself, jointly with other creditors, or through a resolution professional, to the Adjudicating Authority to initiate an insolvency resolution process, including, for a partnership debt, against one or more partners of the firm or the firm. The application must be accompanied by details and documents relating to the debts owed as on the date of application, the debtor's failure to pay within fourteen days of service of the notice of demand, and relevant evidence of default, and a copy must be provided to the debtor.",
+    "core_judicial_inquiry": "Whether the application is made by a creditor (by himself, jointly with other creditors, or through a resolution professional) and is accompanied by details and documents relating to the debts owed as on the date of application, the failure by the debtor to pay the debt within fourteen days of service of the notice of demand, and relevant evidence of default, with a copy provided to the debtor.",
+    "intersecting_statute_ids": [],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "A creditor applying by himself.",
+        "A creditor applying jointly with other creditors.",
+        "A creditor applying through a resolution professional."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "Details and documents relating to the debts owed by the debtor to the creditor or creditors submitting the application as on the date of application.",
+        "Details and documents relating to the failure by the debtor to pay the debt within a period of fourteen days of the service of the notice of demand.",
+        "Relevant evidence of such default or non-repayment of debt.",
+        "A copy of the application provided to the debtor.",
+        "Application in such form and manner and accompanied by such fee as may be prescribed."
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": []
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_DEMAND_NOTICE_PERIOD_NOT_ELAPSED",
+      "ERR_MISSING_DEBT_DOCUMENTS",
+      "ERR_APPLICATION_NOT_PROVIDED_TO_DEBTOR"
+    ]
+  },
+  {
+    "_id": "IBC_2016_SEC_240A",
+    "statute_id": "IBC_2016_SEC_240A",
+    "act_name": "The Insolvency and Bankruptcy Code, 2016",
+    "section_number": "240A",
+    "section_title": "Application of this Code to micro, small and medium enterprises",
+    "jurisdiction_type": "SAVING_PROVISION",
+    "forum_level": "NCLT_ORIGINAL",
+    "statutory_summary": "Notwithstanding anything to the contrary in the Code, clauses (c) and (h) of section 29A do not apply to the resolution applicant in respect of the corporate insolvency resolution process or pre-packaged insolvency resolution process of any micro, small and medium enterprise. The Central Government may, in the public interest, by notification laid before Parliament, direct that any provision of the Code shall not apply, or shall apply with modifications, to such enterprises. Micro, small and medium enterprises are those classified as such under sub-section (1) of section 7 of the Micro, Small and Medium Enterprises Development Act, 2006.",
+    "core_judicial_inquiry": "Whether the corporate debtor is a micro, small or medium enterprise, being an enterprise classified as such under sub-section (1) of section 7 of the Micro, Small and Medium Enterprises Development Act, 2006, so that clauses (c) and (h) of section 29A do not apply to the resolution applicant.",
+    "intersecting_statute_ids": [
+      "IBC_2016_SEC_29A"
+    ],
+    "diagnostic_checklist": {
+      "applicant_eligibility": [
+        "A resolution applicant in respect of the corporate insolvency resolution process or pre-packaged insolvency resolution process of a micro, small or medium enterprise."
+      ],
+      "financial_threshold": {
+        "minimum_amount": null,
+        "currency": null
+      },
+      "mandatory_prerequisites": [
+        "The corporate debtor is an enterprise classified as a micro, small or medium enterprise under sub-section (1) of section 7 of the Micro, Small and Medium Enterprises Development Act, 2006."
+      ],
+      "statutory_bars": [],
+      "saving_exceptions": [
+        "Clauses (c) and (h) of section 29A shall not apply to the resolution applicant.",
+        "The Central Government may, in the public interest, by notification direct that any provision of the Code shall not apply, or shall apply with such modifications as may be specified in the notification, to micro, small and medium enterprises."
+      ]
+    },
+    "procedural_timelines": {
+      "adjudication_window_days": null,
+      "rectification_window_days": null
+    },
+    "audit_error_codes": [
+      "ERR_MSME_STATUS_UNSUPPORTED",
+      "ERR_SEC29A_EXEMPTION_MISAPPLIED"
+    ]
+  }
+]

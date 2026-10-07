@@ -1,0 +1,63 @@
+{
+  "statute_id": "IBC_2016_SEC_95",
+  "record_file": "data/law_db/ibc_additions.json",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "text_as_of": "2021-08-12",
+  "later_amendments_checked": [
+    {
+      "source_id": "IBC_AMENDMENT_ACT_2026",
+      "result": "not among the sections this Act amends, substitutes or omits (margin notes read 2026-10-07); the Act comes into force only on dates the Central Government notifies"
+    }
+  ],
+  "section_starts_with": "95. Application by creditor to initiate insolvency resolution process. - (1) A creditor may apply",
+  "section_ends_with": "required to be submitted under sub-section (4) shall be such as may be specified.",
+  "authored_by": "Claude Code, on your instruction of 2026-10-07 (D-045); not reviewed by a lawyer",
+  "notes": [
+    "forum_level NCLT_ORIGINAL is not stated in section 95 ('Adjudicating Authority'); it reflects section 60(1) for personal guarantors of corporate debtors, the use in NCLT/NCLAT cases. Reviewer: confirm."
+  ],
+  "evidence": {
+    "section_title": [
+      "Application by creditor to initiate insolvency resolution process"
+    ],
+    "statutory_summary": [
+      "A creditor may apply either by himself, or jointly with other creditors, or through a resolution professional to the Adjudicating Authority for initiating an insolvency resolution process",
+      "in relation to any partnership debt owed to him for initiating an insolvency resolution process",
+      "the debts owed by the debtor to the creditor or creditors submitting the application for insolvency resolution process as on the date of application",
+      "the failure by the debtor to pay the debt within a period of fourteen days of the service of the notice of demand",
+      "relevant evidence of such default or non-repayment of debt",
+      "The creditor shall also provide a copy of the application made under sub-section (1) to the debtor"
+    ],
+    "core_judicial_inquiry": [
+      "A creditor may apply either by himself, or jointly with other creditors, or through a resolution professional to the Adjudicating Authority for initiating an insolvency resolution process",
+      "the debts owed by the debtor to the creditor or creditors submitting the application for insolvency resolution process as on the date of application",
+      "the failure by the debtor to pay the debt within a period of fourteen days of the service of the notice of demand",
+      "relevant evidence of such default or non-repayment of debt",
+      "The creditor shall also provide a copy of the application made under sub-section (1) to the debtor"
+    ],
+    "diagnostic_checklist.applicant_eligibility[0]": [
+      "A creditor may apply either by himself, or jointly with other creditors, or through a resolution professional to the Adjudicating Authority for initiating an insolvency resolution process"
+    ],
+    "diagnostic_checklist.applicant_eligibility[1]": [
+      "A creditor may apply either by himself, or jointly with other creditors, or through a resolution professional to the Adjudicating Authority for initiating an insolvency resolution process"
+    ],
+    "diagnostic_checklist.applicant_eligibility[2]": [
+      "A creditor may apply either by himself, or jointly with other creditors, or through a resolution professional to the Adjudicating Authority for initiating an insolvency resolution process"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[0]": [
+      "the debts owed by the debtor to the creditor or creditors submitting the application for insolvency resolution process as on the date of application"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[1]": [
+      "the failure by the debtor to pay the debt within a period of fourteen days of the service of the notice of demand"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[2]": [
+      "relevant evidence of such default or non-repayment of debt"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[3]": [
+      "The creditor shall also provide a copy of the application made under sub-section (1) to the debtor"
+    ],
+    "diagnostic_checklist.mandatory_prerequisites[4]": [
+      "shall be in such form and manner and accompanied by such fee as may be prescribed"
+    ]
+  }
+}

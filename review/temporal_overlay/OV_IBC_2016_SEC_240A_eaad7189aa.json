@@ -1,0 +1,62 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_240A_eaad7189aa",
+  "statute_id": "IBC_2016_SEC_240A",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-07)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 390255-390326: ...on 220; (zzzc) the other funds of clause (c) of sub-section (1) of section 222. 1[240A. Application of this Code to micro, small and medium enterprises. - (1) Notwithstanding anything to the contrary contained in this Code, the pro..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 391718-391774: ... sub-section (4) is prorogued or adjourned for more than four consecutive days. 1 Ins. by Act No. 26 of 2018, sec. 37 (w.e.f. 6-6-2018). 2 Ins. by Act No. 26 of 2021, sec.17 (w.e.f. 04-04-2021). 170 (6) Every notific..."
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 391718-391774: ... sub-section (4) is prorogued or adjourned for more than four consecutive days. 1 Ins. by Act No. 26 of 2018, sec. 37 (w.e.f. 6-6-2018). 2 Ins. by Act No. 26 of 2021, sec.17 (w.e.f. 04-04-2021). 170 (6) Every notific..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2018-06-06"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is DECISION the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T10:11:08.424392Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "section_in_force",
+    "value_kind": "boolean",
+    "value_boolean": true,
+    "value_number": null,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "DECISION",
+    "effective_from": "2018-06-06",
+    "effective_to": null,
+    "source_text": "1[240A. Application of this Code to micro, small and medium enterprises",
+    "value_quote": "1 Ins. by Act No. 26 of 2018, sec. 37 (w.e.f. 6-6-2018).",
+    "effective_from_quote": "1 Ins. by Act No. 26 of 2018, sec. 37 (w.e.f. 6-6-2018).",
+    "effective_to_quote": null,
+    "commencement_note": "footnote 1 on the same page as the marker 1[240A."
+  }
+}

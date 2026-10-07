@@ -54,7 +54,7 @@ def _source(registry: SourceRegistry, draft: OverlayDraft | PredicateDraft) -> t
 
 def _load_overlay(draft: OverlayDraft, registry: SourceRegistry, law: LawRepository, vocab: VocabularyConfig) -> None:
     source, text = _source(registry, draft)
-    found = check_overlay_row(draft.row, text, vocab)
+    found = check_overlay_row(draft.row, text, vocab, source.issued_on)
     if found.blocking:
         raise _SkipError("; ".join(found.blocking))
     row = draft.row
@@ -104,11 +104,11 @@ def recheck(
 ) -> OverlayDraft | PredicateDraft:
     """The draft with its checks recomputed now (approval and loading never rely on stored results)."""
     try:
-        _, text = _source(registry, draft)
+        source, text = _source(registry, draft)
     except _SkipError as exc:
         return draft.model_copy(update={"blocking_problems": [str(exc)]})
     if isinstance(draft, OverlayDraft):
-        found = check_overlay_row(draft.row, text, vocab)
+        found = check_overlay_row(draft.row, text, vocab, source.issued_on)
         return draft.model_copy(
             update={"checks": found.checks, "blocking_problems": found.blocking, "reviewer_must_judge": found.judge}
         )
