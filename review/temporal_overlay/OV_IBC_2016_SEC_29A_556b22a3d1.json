@@ -1,0 +1,64 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_29A_556b22a3d1",
+  "statute_id": "IBC_2016_SEC_29A",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "REJECTED",
+  "decided_by": "Claude Code (triage on your instruction of 2026-10-07)",
+  "decided_on": "2026-10-07",
+  "decision_note": "blocked by mechanical checks: effective_from_quote: quote occurs 81 times in the document; quote enough to identify the passage (for a footnote, the whole footnote with its number)",
+  "agreement": "SECONDARY_ONLY",
+  "conflicts_with": [],
+  "proposed_by": [
+    "drafter_secondary:openai/gpt-oss-120b"
+  ],
+  "prompt_ref": "drafting/overlay.v4",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 83582-83637: ...or and any other matter pertaining to the corporate debtor as may be specified. 1[29A. Persons not eligible to be resolution applicant. A person shall not be eligible to submit a resolution plan, if such person, or ..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 84997-85057: ...26 of 2018, sec 22(i) (A), for the words \"has an account\" (w.e.f. 6-6-2018.). 3 Ins. by Act No. 26 of 2018, sec 22(i) (B) (w.e.f. 6-6-2018). 37 1[Provided further that nothing in this clause shall apply to a resolution a..."
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 5998-6013: ...tification specify 1 Subs. by Act No. 26 of 2018, sec. 2 for the word 'repaid' (w.e.f. 6-6-2018). 4 as a financial institution; (15) \"financial product\" means securities, cont..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2018-06-06"
+    }
+  ],
+  "blocking_problems": [
+    "effective_from_quote: quote occurs 81 times in the document; quote enough to identify the passage (for a footnote, the whole footnote with its number)"
+  ],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is DECISION the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T09:49:03.497202Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "precedent_overruled",
+    "value_kind": "boolean",
+    "value_boolean": true,
+    "value_number": null,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "DECISION",
+    "effective_from": "2018-06-06",
+    "effective_to": null,
+    "source_text": "1[29A. Persons not eligible to be resolution applicant.",
+    "value_quote": "Ins. by Act No. 26 of 2018, sec 22(i) (B) (w.e.f. 6-6-2018).",
+    "effective_from_quote": "w.e.f. 6-6-2018",
+    "effective_to_quote": null,
+    "commencement_note": null
+  }
+}

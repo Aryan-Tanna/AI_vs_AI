@@ -122,6 +122,7 @@ def test_disagreement_is_recorded_side_by_side(cfg: AppConfig, registry: SourceR
         ({"effective_from_quote": None}, "needs a quote"),
         ({"keyed_on": "SOMETHING_ELSE"}, "not in vocabulary.case_date_labels"),
         ({"keyed_on": "FILING"}, "section_in_force must key on DECISION"),
+        ({"effective_from": None, "effective_from_quote": None}, "needs an effective_from"),
         ({"parameter": "made_up_parameter"}, "not in vocabulary.overlay_parameters"),
         ({"value_kind": "number", "value_boolean": None, "value_number": 1.0}, "section_in_force needs a boolean"),
     ],
@@ -238,3 +239,85 @@ def test_review_store_approve_reject_and_guards(
         store.approve(bad.draft_id, by="<reviewer>")
     reopened = ReviewStore(tmp_path / "review").get(good.draft_id)
     assert reopened.decided_by == "<reviewer>" and reopened.decided_on is not None
+
+
+def test_a_quote_that_occurs_more_than_once_proves_nothing(cfg: AppConfig, tmp_path: Path, record: LawRecord) -> None:
+    """A bare date such as '5th day of June, 2001' may belong to another provision's footnote (D-043)."""
+    reg = SourceRegistry(tmp_path / "dup")
+    reg.register(
+        make_pdf(TEST_TEXT + "\n100Y. Other provision.-Comes into force on the 5th day of June, 2001."), meta()
+    )
+    llm, _, _ = client(cfg, proposal(IN_FORCE), proposal(IN_FORCE))
+    [draft] = draft_overlay(llm, cfg, PromptStore(PROMPTS_ROOT), record, reg, "TEST_ACT_2001", ["99X"])
+    assert any("effective_from_quote: quote occurs 2 times" in p for p in draft.blocking_problems)
+    found = {c.name: c for c in draft.checks}
+    assert found["source_text"].status == "VERIFIED" and "99X" in found["source_text"].detail  # context shown
+
+
+def test_approve_re_runs_the_checks(
+    cfg: AppConfig, registry: SourceRegistry, record: LawRecord, tmp_path: Path
+) -> None:
+    from lexarena.drafting.loader import recheck
+
+    store = ReviewStore(tmp_path / "review")
+    [good] = run(cfg, registry, record, proposal(IN_FORCE), proposal(IN_FORCE))
+    store.save(good)
+    stale = good.model_copy(update={"row": good.row.model_copy(update={"source_text": "<not in the source>"})})
+    rechecked = recheck(stale, registry, cfg.vocabulary, record)
+    assert any("not found verbatim" in p for p in rechecked.blocking_problems)
+
+
+def two_page_pdf() -> bytes:
+    import pymupdf
+
+    doc = pymupdf.open()  # type: ignore[no-untyped-call]
+    for text in (
+        "1[88Z. Another provision.\n1 Ins. by Act 7 of 2000, s. 2 (w.e.f. 1-1-2000).",
+        "1[99X. Placeholder provision.-(1) Text.\n1 Ins. by Act 9 of 2001, s. 4 (w.e.f. 5-6-2001).",
+    ):
+        page = doc.new_page()
+        page.insert_textbox(pymupdf.Rect(36, 36, 560, 800), text, fontsize=10)  # type: ignore[no-untyped-call]
+    return bytes(doc.tobytes())  # type: ignore[no-untyped-call]
+
+
+@pytest.mark.parametrize(
+    ("footnote", "problem"),
+    [
+        ("1 Ins. by Act 7 of 2000, s. 2 (w.e.f. 1-1-2000).", "not on the same page"),  # number matches, wrong page
+        ("1 Ins. by Act 9 of 2001, s. 4 (w.e.f. 5-6-2001).", None),  # the provision's own footnote
+    ],
+)
+def test_a_footnote_must_sit_on_the_markers_page(
+    cfg: AppConfig, tmp_path: Path, record: LawRecord, footnote: str, problem: str | None
+) -> None:
+    reg = SourceRegistry(tmp_path / "pages")
+    reg.register(two_page_pdf(), meta())
+    day = "2000-01-01" if "2000" in footnote else "2001-06-05"
+    row = {
+        **IN_FORCE,
+        "source_text": "1[99X. Placeholder provision",
+        "value_quote": footnote,
+        "effective_from": day,
+        "effective_from_quote": footnote,
+    }
+    llm, _, _ = client(cfg, proposal(row), proposal(row))
+    [draft] = draft_overlay(llm, cfg, PromptStore(PROMPTS_ROOT), record, reg, "TEST_ACT_2001", ["99X"])
+    if problem is None:
+        assert draft.blocking_problems == []
+    else:
+        assert any(problem in p for p in draft.blocking_problems), draft.blocking_problems
+
+
+def test_a_footnote_number_must_match_the_marker(cfg: AppConfig, tmp_path: Path, record: LawRecord) -> None:
+    reg = SourceRegistry(tmp_path / "num")
+    reg.register(make_pdf("2[99X. Placeholder provision.\n1 Ins. by Act 9 of 2001, s. 4 (w.e.f. 5-6-2001)."), meta())
+    footnote = "1 Ins. by Act 9 of 2001, s. 4 (w.e.f. 5-6-2001)."
+    row = {
+        **IN_FORCE,
+        "source_text": "2[99X. Placeholder provision",
+        "value_quote": footnote,
+        "effective_from_quote": footnote,
+    }
+    llm, _, _ = client(cfg, proposal(row), proposal(row))
+    [draft] = draft_overlay(llm, cfg, PromptStore(PROMPTS_ROOT), record, reg, "TEST_ACT_2001", ["99X"])
+    assert any("footnote 1 does not match the provision's marker 2" in p for p in draft.blocking_problems)

@@ -39,7 +39,7 @@ class ProposedOverlayRow(_Proposal):
     value_quote: str
     effective_from_quote: str | None
     effective_to_quote: str | None
-    commencement_note: str
+    commencement_note: str | None
 
 
 class OverlayProposal(_Proposal):
@@ -92,6 +92,7 @@ class _Draft(StoredModel):
     agreement: Agreement
     conflicts_with: list[str]
     proposed_by: list[str]
+    prompt_ref: NonEmptyStr  # e.g. drafting/overlay.v3: which instructions produced this draft
     checks: list[Check]
     blocking_problems: list[str]
     reviewer_must_judge: list[str]

@@ -60,6 +60,12 @@ class ReviewStore:
                 return _ADAPTER.validate_json(path.read_text(encoding="utf-8"))
         raise ReviewError(f"no draft {draft_id} in {self._root}")
 
+    def update_checks(self, draft: OverlayDraft | PredicateDraft) -> None:
+        """Rewrite an undecided draft with freshly computed checks."""
+        if self.get(draft.draft_id).status != "DRAFT":
+            raise ReviewError(f"{draft.draft_id} is already decided")
+        self._write(draft)
+
     def approve(self, draft_id: str, *, by: str, note: str | None = None) -> OverlayDraft | PredicateDraft:
         draft = self._undecided(draft_id, by)
         if draft.blocking_problems:

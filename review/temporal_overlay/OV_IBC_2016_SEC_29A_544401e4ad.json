@@ -1,0 +1,63 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_29A_544401e4ad",
+  "statute_id": "IBC_2016_SEC_29A",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "AGREED",
+  "conflicts_with": [],
+  "proposed_by": [
+    "drafter_primary:gemini-2.5-flash",
+    "drafter_secondary:openai/gpt-oss-120b"
+  ],
+  "prompt_ref": "drafting/overlay.v4",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 83664-83721: ...or and any other matter pertaining to the corporate debtor as may be specified. 1[29A. Persons not eligible to be resolution applicant. - A person shall not be eligible to submit a resolution plan, if such person, or ..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 84843-84897: ... relating to nonperforming asset accounts before submission of resolution plan: 1 Ins. by Act 8 of 2018, sec. 5 (w.r.e.f. 23-11-2017). 2 Subs. by Act No. 26 of 2018, sec 22(i) (A), for the words \"has an account\" (w..."
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 84843-84897: ... relating to nonperforming asset accounts before submission of resolution plan: 1 Ins. by Act 8 of 2018, sec. 5 (w.r.e.f. 23-11-2017). 2 Subs. by Act No. 26 of 2018, sec 22(i) (A), for the words \"has an account\" (w..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2017-11-23"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is DECISION the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T09:49:01.159277Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "section_in_force",
+    "value_kind": "boolean",
+    "value_boolean": true,
+    "value_number": null,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "DECISION",
+    "effective_from": "2017-11-23",
+    "effective_to": null,
+    "source_text": "1[29A. Persons not eligible to be resolution applicant. -",
+    "value_quote": "1 Ins. by Act 8 of 2018, sec. 5 (w.r.e.f. 23-11-2017).",
+    "effective_from_quote": "1 Ins. by Act 8 of 2018, sec. 5 (w.r.e.f. 23-11-2017).",
+    "effective_to_quote": null,
+    "commencement_note": null
+  }
+}

@@ -12,16 +12,30 @@ no code can answer (which version of the law applies; whether a rule is fixed li
 from __future__ import annotations
 
 import json
+import re
 from datetime import date
 
 from pydantic import ValidationError
 
 from lexarena.drafting.models import Check, ProposedOverlayRow, ProposedPredicate
-from lexarena.drafting.sources import dates_mentioned, find_quote, numbers_mentioned
+from lexarena.drafting.sources import (
+    dates_mentioned,
+    find_quote,
+    numbers_mentioned,
+    quote_context,
+    quote_occurrences,
+    quote_pages,
+)
 from lexarena.schemas.config import VocabularyConfig
 from lexarena.schemas.law import LawRecord, checklist_item, item_hash
 from lexarena.schemas.overlay import DECISION_LABEL, IN_FORCE_PARAMETER
 from lexarena.schemas.predicate import ConstLeaf, PredicateEntry, walk
+
+# A consolidated text marks an inserted provision "N[..." and explains it in footnote "N ..." on the same page;
+# footnote numbers restart on every page (D-043). These patterns read only that layout, never any statute.
+MARKER = re.compile(r"^\s*(\d+)\s*\[")
+FOOTNOTE = re.compile(r"^\s*(\d+)\s+\D")
+CONTEXT_CHARS = 80  # literal-ok: characters of context shown to the reviewer around each quote
 
 
 class Findings:
@@ -41,7 +55,18 @@ class Findings:
             self.checks.append(Check(name=name, status="NOT_FOUND", detail=quote))
             self.blocking.append(f"{name}: quote not found verbatim in the source")
         else:
-            self.checks.append(Check(name=name, status="VERIFIED", detail=f"chars {span[0]}-{span[1]}"))
+            context = quote_context(quote, source_text, CONTEXT_CHARS)
+            self.checks.append(
+                Check(name=name, status="VERIFIED", detail=f"chars {span[0]}-{span[1]}: ...{context}...")
+            )
+            count = quote_occurrences(quote, source_text)
+            if count > 1:
+                # A string that occurs several times (a bare date, a stock phrase) does not identify the passage
+                # it came from, e.g. which footnote a date belongs to (D-043).
+                self.blocking.append(
+                    f"{name}: quote occurs {count} times in the document; quote enough to identify the passage "
+                    "(for a footnote, the whole footnote with its number)"
+                )
 
 
 def _parse_date(value: str | None, name: str, f: Findings) -> date | None:
@@ -64,6 +89,31 @@ def _date_in_quote(day: date | None, quote: str | None, name: str, f: Findings) 
         f.blocking.append(f"{name} {day.isoformat()} is not written in its quote; dates are never inferred")
 
 
+def _check_footnote_attachment(row: ProposedOverlayRow, source_text: str, f: Findings) -> None:
+    """A footnote quoted as evidence must carry the provision's marker number and sit on the marker's page."""
+    marker = MARKER.match(row.source_text)
+    if marker is None:
+        return
+    marker_pages = quote_pages(row.source_text, source_text)
+    for name, quote in (
+        ("value_quote", row.value_quote),
+        ("effective_from_quote", row.effective_from_quote),
+        ("effective_to_quote", row.effective_to_quote),
+    ):
+        footnote = FOOTNOTE.match(quote or "")
+        if quote is None or footnote is None:
+            continue
+        if footnote.group(1) != marker.group(1):
+            f.blocking.append(
+                f"{name}: footnote {footnote.group(1)} does not match the provision's marker {marker.group(1)}"
+            )
+        elif not marker_pages & quote_pages(quote, source_text):
+            f.blocking.append(
+                f"{name}: the footnote is not on the same page as the provision's marker "
+                f"(marker on page {sorted(marker_pages)}, footnote on page {sorted(quote_pages(quote, source_text))})"
+            )
+
+
 def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: VocabularyConfig) -> Findings:
     f = Findings()
     if row.parameter not in vocab.overlay_parameters:
@@ -79,6 +129,10 @@ def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: Vocabula
             f"{IN_FORCE_PARAMETER} must key on {DECISION_LABEL} (D-042): visibility is whether the provision "
             "exists at the hearing, never whether it reaches earlier facts"
         )
+    if row.parameter == IN_FORCE_PARAMETER and row.effective_from is None:
+        # Without a start date the row would confirm the provision for every date, including years before it
+        # existed; it adds nothing true (D-043).
+        f.blocking.append(f"{IN_FORCE_PARAMETER} needs an effective_from date stated in the document")
     if row.parameter == IN_FORCE_PARAMETER and kind != "boolean":
         f.blocking.append(f"{IN_FORCE_PARAMETER} needs a boolean value")
     populated = {
@@ -109,6 +163,7 @@ def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: Vocabula
         if day is not None:
             f.quote(f"{name}_quote", quote, source_text, required=True)
             _date_in_quote(day, quote, name, f)
+    _check_footnote_attachment(row, source_text, f)
     if row.effective_from is None and row.effective_to is None:
         f.judge.append(f"No commencement date is given in the text. Model's note: {row.commencement_note}")
     f.judge.append(

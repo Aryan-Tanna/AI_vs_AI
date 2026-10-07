@@ -104,6 +104,39 @@ def find_quote(quote: str, source_text: str) -> tuple[int, int] | None:
     return None
 
 
+def quote_occurrences(quote: str, source_text: str) -> int:
+    """How many times the normalised quote occurs in the reading where it occurs most."""
+    needle = normalize(quote)
+    if not needle:
+        return 0
+    return max(reading.count(needle) for reading in source_readings(source_text))
+
+
+PAGE_BREAK = "\f"  # registered texts join pages with a form feed (SourceRegistry.register)
+
+
+def quote_pages(quote: str, source_text: str) -> set[int]:
+    """1-based numbers of the pages whose text contains the normalised quote."""
+    needle = normalize(quote)
+    if not needle:
+        return set()
+    return {
+        number
+        for number, page in enumerate(source_text.split(PAGE_BREAK), start=1)
+        if any(needle in reading for reading in source_readings(page))
+    }
+
+
+def quote_context(quote: str, source_text: str, chars: int) -> str:
+    """The quote with `chars` characters either side, from the first reading that contains it."""
+    needle = normalize(quote)
+    for reading in source_readings(source_text):
+        start = reading.find(needle)
+        if needle and start >= 0:
+            return reading[max(0, start - chars) : start + len(needle) + chars]
+    return ""
+
+
 def dates_mentioned(text: str) -> set[date]:
     """Calendar dates written in common Indian legal styles; impossible dates are ignored, never repaired."""
     found: set[date] = set()
@@ -178,7 +211,7 @@ class SourceRegistry:
         pages = pdf_pages_text(pdf)
         if not any(p.strip() for p in pages):
             raise SourceError(f"{meta.source_id}: the PDF has no text layer (scanned image); it cannot be quoted")
-        text = "\f".join(pages).encode("utf-8")
+        text = PAGE_BREAK.join(pages).encode("utf-8")
         files = self._root / FILES_DIR
         files.mkdir(parents=True, exist_ok=True)
         (files / f"{meta.source_id}.pdf").write_bytes(pdf)

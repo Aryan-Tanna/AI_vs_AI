@@ -5,7 +5,8 @@
     lexarena draft overlay|predicate --statute STATUTE_ID --source SOURCE_ID --find TERM [--find TERM]
     lexarena review list [--status DRAFT|APPROVED|REJECTED]
     lexarena review show ID
-    lexarena review approve ID --by NAME [--note TEXT]
+    lexarena review approve ID --by NAME [--note TEXT]   (re-runs the checks first)
+    lexarena review recheck
     lexarena review reject ID --by NAME --reason TEXT
     lexarena review load
 
@@ -25,7 +26,7 @@ import httpx
 from lexarena.app import DEFAULT_ENV_FILE, PROMPTS_ROOT, REPO_ROOT, SEALED_ENV_FILE, build_llm_client
 from lexarena.config import load_config
 from lexarena.drafting.draft import draft_overlay, draft_predicate
-from lexarena.drafting.loader import load_approved
+from lexarena.drafting.loader import load_approved, recheck
 from lexarena.drafting.review import ReviewStore
 from lexarena.drafting.sources import SourceMeta, SourceRegistry
 from lexarena.prompts import PromptStore
@@ -66,6 +67,7 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     reject.add_argument("draft_id")
     reject.add_argument("--by", required=True)
     reject.add_argument("--reason", required=True)
+    review.add_parser("recheck", help="recompute the checks of every undecided draft")
     review.add_parser("load", help="load APPROVED items into MongoDB after re-verifying them")
 
 
@@ -111,7 +113,17 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
     if args.action == "show":
         _print(store.get(args.draft_id).to_document())
         return 0
-    if args.action == "approve":
+    if args.action in ("approve", "recheck"):
+        cfg = load_config(config_path)
+        targets = [store.get(args.draft_id)] if args.action == "approve" else store.all()
+        with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+            law = proc.ingest().law
+            for draft in targets:
+                if draft.status == "DRAFT":
+                    store.update_checks(recheck(draft, registry, cfg.vocabulary, law.get_record(draft.statute_id)))
+        if args.action == "recheck":
+            _print([{"draft_id": d.draft_id, "status": d.status, "blocking": d.blocking_problems} for d in store.all()])
+            return 0
         _print(store.approve(args.draft_id, by=args.by, note=args.note).to_document())
         return 0
     if args.action == "reject":

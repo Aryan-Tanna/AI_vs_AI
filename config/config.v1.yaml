@@ -33,21 +33,21 @@ models:
   lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 2048, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]
   # THEMIS-LOCAL layer 2 and entailment: different family from the lawyers [SPEC I3-7].
   verifier:        {provider: groq,   family: qwen,    name: qwen/qwen3.8-27b,    temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API3}
-  judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}  # temperature [PLACEHOLDER]
+  judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0.3, max_output_tokens: 8192, api_key_env: gemini_api}  # temperature 0.3 [PLACEHOLDER, your request 2026-10-07 D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
   auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
   clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api}
   clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API4}
-  reflection:      {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
+  reflection:      {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
-  drafter_primary:   {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0, max_output_tokens: 8192, api_key_env: gemini_api}
+  drafter_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0, max_output_tokens: 8192, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
   drafter_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0, max_output_tokens: 4096, api_key_env: Groq_API2}
 
 prompts:
   schema_repair: {id: llm/schema_repair, version: 1}
   smoke: {id: smoke/dummy, version: 1}
-  draft_overlay: {id: drafting/overlay, version: 2}     # v2 [D-042]: DECISION-keyed in-force rows, shortest exact quotes
+  draft_overlay: {id: drafting/overlay, version: 4}     # v4 [D-043]: unique quotes, whole matching footnote, start date required
   draft_predicate: {id: drafting/predicate, version: 1}
 
 llm:

@@ -1,0 +1,66 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_29A_532ee8bd63",
+  "statute_id": "IBC_2016_SEC_29A",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "REJECTED",
+  "decided_by": "Claude Code (triage on your instruction of 2026-10-07)",
+  "decided_on": "2026-10-07",
+  "decision_note": "blocked by mechanical checks: value_from 'date of such classification' is not a YYYY-MM-DD date",
+  "agreement": "PRIMARY_ONLY",
+  "conflicts_with": [],
+  "proposed_by": [
+    "drafter_primary:gemini-2.5-flash"
+  ],
+  "prompt_ref": "drafting/overlay.v4",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 84427-84606: ...l sector regulator issued under any other law for the time being in force,] and at least a period of one year has lapsed from the date of such classification till the date of commencement of the corporate insolvency resolution process of the corporate debtor: Provided that the person shall be eligible to submit a resolution plan if such ..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 84427-84467: ...l sector regulator issued under any other law for the time being in force,] and at least a period of one year has lapsed from the date of such classification till the date of commencement of the corpo..."
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 3843-3862: ...nancial service provider; 1 The word \"and\" omitted by Act 8 of 2018, sec. 2(i) (w.r.e.f. 23-11-2017). 2 Subs. by Act No. 8 of 2018, sec. 2 (ii), for clause (e) (w.r.e.f. 23-11-201..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2017-11-23"
+    }
+  ],
+  "blocking_problems": [
+    "value_from 'date of such classification' is not a YYYY-MM-DD date",
+    "value_to 'date of commencement of the corporate insolvency resolution process of the corporate debtor' is not a YYYY-MM-DD date",
+    "effective_from_quote: quote occurs 11 times in the document; quote enough to identify the passage (for a footnote, the whole footnote with its number)"
+  ],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is PLAN_SUBMISSION the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T09:49:01.999177Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "bar_window",
+    "value_kind": "date_range",
+    "value_boolean": null,
+    "value_number": null,
+    "value_from": "date of such classification",
+    "value_to": "date of commencement of the corporate insolvency resolution process of the corporate debtor",
+    "value_text": null,
+    "keyed_on": "PLAN_SUBMISSION",
+    "effective_from": "2017-11-23",
+    "effective_to": null,
+    "source_text": "at least a period of one year has lapsed from the date of such classification till the date of commencement of the corporate insolvency resolution process of the corporate debtor:",
+    "value_quote": "at least a period of one year has lapsed",
+    "effective_from_quote": "w.r.e.f. 23-11-2017",
+    "effective_to_quote": null,
+    "commencement_note": null
+  }
+}

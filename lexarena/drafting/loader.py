@@ -15,6 +15,7 @@ from lexarena.drafting.models import OverlayDraft, PredicateDraft, ProposedOverl
 from lexarena.drafting.review import ReviewStore
 from lexarena.drafting.sources import LegalSource, SourceError, SourceIntegrityError, SourceRegistry
 from lexarena.schemas.config import VocabularyConfig
+from lexarena.schemas.law import LawRecord
 from lexarena.schemas.overlay import DateRange, TemporalOverlayRow
 from lexarena.storage.law import LawRepository, OverlayRejectedError, PredicateRejectedError
 
@@ -93,6 +94,31 @@ def _load_predicate(draft: PredicateDraft, registry: SourceRegistry, law: LawRep
         law.put_predicate(entry.model_copy(update={"status": "APPROVED", "approved_by": draft.decided_by}))
     except PredicateRejectedError as exc:
         raise _SkipError(str(exc)) from exc
+
+
+def recheck(
+    draft: OverlayDraft | PredicateDraft,
+    registry: SourceRegistry,
+    vocab: VocabularyConfig,
+    record: LawRecord | None,
+) -> OverlayDraft | PredicateDraft:
+    """The draft with its checks recomputed now (approval and loading never rely on stored results)."""
+    try:
+        _, text = _source(registry, draft)
+    except _SkipError as exc:
+        return draft.model_copy(update={"blocking_problems": [str(exc)]})
+    if isinstance(draft, OverlayDraft):
+        found = check_overlay_row(draft.row, text, vocab)
+        return draft.model_copy(
+            update={"checks": found.checks, "blocking_problems": found.blocking, "reviewer_must_judge": found.judge}
+        )
+    if record is None:
+        return draft.model_copy(update={"blocking_problems": [f"statute {draft.statute_id} is not in the Law DB"]})
+    _entry, hashed, found = build_predicate(draft.proposal, record, draft.draft_id, text)
+    blocking = found.blocking + ([] if hashed == draft.item_hash else ["the Law DB item has changed since drafting"])
+    return draft.model_copy(
+        update={"checks": found.checks, "blocking_problems": blocking, "reviewer_must_judge": found.judge}
+    )
 
 
 def load_approved(

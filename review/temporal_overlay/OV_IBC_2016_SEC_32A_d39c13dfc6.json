@@ -1,0 +1,65 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_32A_d39c13dfc6",
+  "statute_id": "IBC_2016_SEC_32A",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "REJECTED",
+  "decided_by": "Claude Code (triage on your instruction of 2026-10-07)",
+  "decided_on": "2026-10-07",
+  "decision_note": "blocked by mechanical checks: value_quote: the footnote is not on the same page as the provision's marker (marker on page [43], footnote on page [42])",
+  "agreement": "PRIMARY_ONLY",
+  "conflicts_with": [],
+  "proposed_by": [
+    "drafter_primary:gemini-2.5-flash"
+  ],
+  "prompt_ref": "drafting/overlay.v4",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 101433-101474: ...(w.e.f. 6-6-2018). 3 Ins. by Act. No. 26 of 2018, sec. 24 (w.e.f. 6-6-2018). 43 1[32A. Liability for prior offences, etc. (1) Notwithstanding anything to the contrary contained in this Code or any othe..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 101257-101313: ...be in the manner and on the grounds laid down in sub-section (3) of section 61. 1 Ins. by Act No. 26 of 2019, sec. 7 (w.e.f. 16-8-2019). 2 Ins. by Act. No. 26 of 2018, sec. 24 (w.e.f. 6-6-2018). 3 Ins. by Act. No. 26..."
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 101257-101313: ...be in the manner and on the grounds laid down in sub-section (3) of section 61. 1 Ins. by Act No. 26 of 2019, sec. 7 (w.e.f. 16-8-2019). 2 Ins. by Act. No. 26 of 2018, sec. 24 (w.e.f. 6-6-2018). 3 Ins. by Act. No. 26..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2019-08-16"
+    }
+  ],
+  "blocking_problems": [
+    "value_quote: the footnote is not on the same page as the provision's marker (marker on page [43], footnote on page [42])",
+    "effective_from_quote: the footnote is not on the same page as the provision's marker (marker on page [43], footnote on page [42])"
+  ],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is DECISION the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-07T09:49:39.866807Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "section_in_force",
+    "value_kind": "boolean",
+    "value_boolean": true,
+    "value_number": null,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "DECISION",
+    "effective_from": "2019-08-16",
+    "effective_to": null,
+    "source_text": "1[32A. Liability for prior offences, etc.",
+    "value_quote": "1 Ins. by Act No. 26 of 2019, sec. 7 (w.e.f. 16-8-2019).",
+    "effective_from_quote": "1 Ins. by Act No. 26 of 2019, sec. 7 (w.e.f. 16-8-2019).",
+    "effective_to_quote": null,
+    "commencement_note": null
+  }
+}
