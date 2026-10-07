@@ -29,7 +29,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
     - a date-filtered query never returns later decisions;
     - re-running ingestion changes nothing.
 
-- [ ] **Step 5: Retrieval tools**
+- [x] **Step 5: Retrieval tools**
   - Build: `find_similar_cases`, `find_authority`, `get_precedent`, `get_record_item`, all enforcing the date cut-off and exclusion list server-side.
   - Done when: 5 hand-written queries return sensible results, which I review; exclusion and cut-off are covered by tests.
 

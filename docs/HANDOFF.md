@@ -29,7 +29,7 @@ Read this first in a new session, then CLAUDE.md, docs/DECISIONS.md (D-001 to D-
 | 2 Law DB loading | ticked |
 | 3 Drafting tools for side collections | ticked |
 | 4 Precedent DB to Qdrant | built, all acceptance checks passed on real data; **not ticked, waiting for the user's review** |
-| 5 Retrieval tools | built 2026-10-08 (D-052); 5 hand-written queries in `reports/step5_queries.md` (`scripts/retrieval_queries.py`); **not ticked, waiting for the user's review** |
+| 5 Retrieval tools | built 2026-10-08 (D-052); 5 hand-written queries in `reports/step5_queries.md` (`scripts/retrieval_queries.py`); ticked 2026-10-08 (D-054) |
 
 Reports per step: `reports/step1.md`, `step2.md`, `step3.md` (untracked; Step 4 summary is in this file).
 
