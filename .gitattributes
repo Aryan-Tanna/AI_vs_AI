@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Pinned legal sources: byte-exact, their sha256 is recorded in registry.json (D-041)
+data/legal_sources/files/** -text
