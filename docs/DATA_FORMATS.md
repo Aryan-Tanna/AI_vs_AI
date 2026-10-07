@@ -72,7 +72,7 @@ How it goes into Qdrant (the stored record is never modified):
 | Point ID | uuid5 of `precedent_id`, so re-ingestion overwrites instead of duplicating |
 | `facts` vector | Multivector with MAX_SIM: one vector per labelled section of `material_facts` except PARTY IDENTITIES; sections over the embedding model's token limit are split into windows |
 | `ratio` vector | Ratio parts 1 to 3 only; part 4 is case-specific |
-| Payload | The full record, plus derived fields: `statutes_normalized` (section-level Law DB IDs), `decision_date` in RFC 3339, `content_hash` |
+| Payload | The full record, untouched, plus derived fields beside it: `precedent_uid` (D-024), `statutes_normalized` (section-level Law DB IDs, via the alias table, D-050), `decision_date_ts` in RFC 3339 (Q-012), `source_file`, `content_hash` (of the record; decides re-embedding) and `derived_hash` (of the derived fields; refreshes the payload alone, D-050) |
 | Indexes | `precedent_id` keyword, `statutes_normalized` keyword, `decision_date` datetime, full-text index on `material_facts` |
 | Integrity | Every `statutes_cited` value must resolve to a Law DB `_id` after normalization; unresolved IDs are reported, not dropped |
 

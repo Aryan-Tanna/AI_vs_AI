@@ -86,7 +86,11 @@ themis_local:
 judging:
   weights: {accuracy: 0.35, consistency: 0.25, rebuttal: 0.20, grounding: 0.20}   # [SPEC E1]
   order_swap_max_gap: 0.15               # [SPEC E1] fixed before measuring [D-024]
-  tie_margin: 0.02                       # [SPEC E1]
+  tie_margin: 0.02                       # [SPEC E1] now applies to the secondary advocacy score [D-048]
+  verdict_rule: BENCH_MAJORITY           # [D-048] supersedes SPEC E1 "higher aggregate wins"
+  tie_break: ADVOCACY_SCORE              # [D-048] only when deciding judges split evenly
+  abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
+  min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
 
 memory:
   pinned_token_budget: 250               # [SPEC E6]

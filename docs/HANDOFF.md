@@ -1,5 +1,23 @@
 # Handoff: state of LexArena at the end of the 2026-10-06/07 session
 
+## Update 2026-10-08: Parth's repo merged, verdict rule changed
+
+- **Repositories:**
+  - `origin` is github.com/Aryan-Tanna/AI_vs_AI;
+  - `parth` (github.com/ParthShahgg/lex-arena) is fetch-only, with its push URL disabled;
+  - branch `lexarena-v2-aryan` is the snapshot taken before the merge;
+  - commit e0e979c records Parth's history with the `ours` strategy (credit only; no files taken).
+- **Porting plan:** D-049 lists what is taken from Parth's code, at which step, and what is not. Read it before porting anything.
+- **Git trap (R-023):** Parth must not pull this `main` into his branch; git would fast-forward and drop his files from his working tree. One canonical repository still needs agreeing with him.
+- **Verdict (D-048, D-051):** the bench's reasoned, order-swapped majority decides. The advocacy score is secondary and breaks an even split only. Fewer than `min_deciding_judges` deciding judges gives an UNSTABLE verdict. INTENT, ARCHITECTURE §5, BUILD_PLAN Step 11 and the config are updated; SPEC E1 is superseded but unedited.
+- **Step 4 changed while under review (D-050):**
+  - the alias table `data/statute_aliases.json` lifts statute resolution to 63.4% (12,292 of 19,381; was 55%);
+  - payloads gain `derived_hash`, and the snapshot is now `03f5dd40...` (was `b5a13215...`);
+  - the real load refreshed 2,773 payloads with 0 re-embedded, and a re-run changed nothing.
+- **Do not port Parth's limitation engine as code.** Its counting conventions (trigger day, s.14 end days, acknowledgment on the last day, the COVID floor) are legal rules. They go to `review/` in Step 7; Q-027 blocks COVID.
+- **Tests at the end of the session:** see the latest commit message.
+
+
 Read this first in a new session, then CLAUDE.md, docs/DECISIONS.md (D-001 to D-047) and docs/OPEN_QUESTIONS.md.
 
 ## Where the build plan stands

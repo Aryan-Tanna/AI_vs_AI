@@ -180,6 +180,16 @@ class JudgingConfig(Strict):
     weights: JudgingWeights
     order_swap_max_gap: UnitInterval
     tie_margin: UnitInterval
+    verdict_rule: Literal["BENCH_MAJORITY"]  # D-048
+    tie_break: Literal["ADVOCACY_SCORE"]  # D-048: the score decides only an equal split of deciding judges
+    abstain_on_order_swap_disagreement: bool  # D-051
+    min_deciding_judges: int  # D-051: fewer deciding judges -> UNSTABLE verdict, reported apart, never decided
+
+    @model_validator(mode="after")
+    def _no_lone_judge(self) -> JudgingConfig:
+        if self.min_deciding_judges <= 1:
+            raise ValueError("judging.min_deciding_judges must be more than one: a lone judge never decides a case")
+        return self
 
     @model_validator(mode="after")
     def _weights_sum(self) -> JudgingConfig:

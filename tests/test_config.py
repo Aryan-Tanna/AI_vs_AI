@@ -168,6 +168,22 @@ def test_judging_weights_must_sum_to_one(tmp_path: Path) -> None:
         load_config(_write(tmp_path, raw))
 
 
+def test_verdict_is_the_bench_majority_with_the_score_as_tie_break() -> None:
+    """D-048, D-051: the bench's reasoned majority decides; the advocacy score only breaks a tie."""
+    judging = load_config(CONFIG_V1).judging
+    assert judging.verdict_rule == "BENCH_MAJORITY"
+    assert judging.tie_break == "ADVOCACY_SCORE"
+    assert judging.abstain_on_order_swap_disagreement is True
+    assert judging.min_deciding_judges > 1
+
+
+def test_a_single_judge_can_never_decide_a_case(tmp_path: Path) -> None:
+    raw = copy.deepcopy(RAW_V1)
+    raw["judging"]["min_deciding_judges"] = 1
+    with pytest.raises(ValidationError, match="min_deciding_judges"):
+        load_config(_write(tmp_path, raw))
+
+
 def test_api_key_env_must_be_a_variable_name(tmp_path: Path) -> None:
     raw = copy.deepcopy(RAW_V1)
     raw["models"]["lawyer"]["api_key_env"] = "not a variable name!"
