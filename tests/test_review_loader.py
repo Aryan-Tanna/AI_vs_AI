@@ -114,8 +114,8 @@ def test_only_approved_drafts_load(world: World) -> None:
     assert report.loaded == [approved] and report.skipped == {}
     assert report.not_approved == 2 and pending not in report.loaded
 
-    before = world.lawyer().get_statute(STATUTE, AsOf(key_dates={"FILING": date(2001, 6, 4)}))
-    after = world.lawyer().get_statute(STATUTE, AsOf(key_dates={"FILING": date(2001, 6, 5)}))
+    before = world.lawyer().get_statute(STATUTE, AsOf(key_dates={"DECISION": date(2001, 6, 4)}))
+    after = world.lawyer().get_statute(STATUTE, AsOf(key_dates={"DECISION": date(2001, 6, 5)}))
     assert before is None
     assert after is not None and after.in_force == "CONFIRMED" and after.applied[0].overlay_id == approved
 

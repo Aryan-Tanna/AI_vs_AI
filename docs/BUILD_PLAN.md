@@ -16,7 +16,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
   - Build: loader that validates every Law DB record, plus integrity checks (dangling `intersecting_statute_ids`, missing error codes); `get_statute(id, as_of)` honouring approved `temporal_overlay` rows.
   - Done when: a validation report lists every malformed or dangling record; `get_statute` hides sections not in force on a given date (tested with an approved sample row).
 
-- [ ] **Step 3: Drafting tools for side collections**
+- [x] **Step 3: Drafting tools for side collections**
   - Build: tooling that drafts `temporal_overlay` rows and `predicate_registry` entries into `review/` with source text, using two models and recording disagreements; a loader that accepts only APPROVED items; hash-based STALE detection.
   - Done when: I can approve or reject drafts in `review/`; a changed Law DB item marks its predicate STALE.
 

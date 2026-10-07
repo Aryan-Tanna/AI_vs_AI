@@ -20,8 +20,8 @@ from lexarena.drafting.models import Check, ProposedOverlayRow, ProposedPredicat
 from lexarena.drafting.sources import dates_mentioned, find_quote, numbers_mentioned
 from lexarena.schemas.config import VocabularyConfig
 from lexarena.schemas.law import LawRecord, checklist_item, item_hash
+from lexarena.schemas.overlay import DECISION_LABEL, IN_FORCE_PARAMETER
 from lexarena.schemas.predicate import ConstLeaf, PredicateEntry, walk
-from lexarena.storage.temporal import IN_FORCE_PARAMETER
 
 
 class Findings:
@@ -74,6 +74,11 @@ def check_overlay_row(row: ProposedOverlayRow, source_text: str, vocab: Vocabula
     f.quote("value_quote", row.value_quote, source_text, required=True)
 
     kind = row.value_kind
+    if row.parameter == IN_FORCE_PARAMETER and row.keyed_on != DECISION_LABEL:
+        f.blocking.append(
+            f"{IN_FORCE_PARAMETER} must key on {DECISION_LABEL} (D-042): visibility is whether the provision "
+            "exists at the hearing, never whether it reaches earlier facts"
+        )
     if row.parameter == IN_FORCE_PARAMETER and kind != "boolean":
         f.blocking.append(f"{IN_FORCE_PARAMETER} needs a boolean value")
     populated = {

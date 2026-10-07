@@ -47,7 +47,7 @@ models:
 prompts:
   schema_repair: {id: llm/schema_repair, version: 1}
   smoke: {id: smoke/dummy, version: 1}
-  draft_overlay: {id: drafting/overlay, version: 1}
+  draft_overlay: {id: drafting/overlay, version: 2}     # v2 [D-042]: DECISION-keyed in-force rows, shortest exact quotes
   draft_predicate: {id: drafting/predicate, version: 1}
 
 llm:

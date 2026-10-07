@@ -197,7 +197,7 @@ def _overlay(**overrides: Any) -> dict[str, Any]:
         "statute_id": "<statute>",
         "parameter": "section_in_force",
         "value": True,
-        "keyed_on": "FILING",
+        "keyed_on": "DECISION",
         "effective_from": builders.PLACEHOLDER_DATE,
         "effective_to": None,
         "source_ref": "<ref>",
@@ -222,6 +222,7 @@ def test_overlay_keeps_booleans_and_date_ranges() -> None:
         ({"effective_to": "1990-01-01"}, "after effective_to"),
         ({"value": {"from": "2000-02-01", "to": "2000-01-01"}}, "after 'to'"),
         ({"source_text": ""}, "at least 1"),
+        ({"keyed_on": "FILING"}, "section_in_force must key on DECISION"),
     ],
 )
 def test_overlay_rules(overrides: dict[str, Any], message: str) -> None:

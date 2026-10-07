@@ -11,6 +11,11 @@ from lexarena.schemas.base import NonEmptyStr, StoredModel, UpperCode
 
 ReviewStatus = Literal["DRAFT", "APPROVED", "RETIRED"]
 
+# Names the code gives meaning to (D-039, D-042). Whether a provision exists is decided on the hearing date
+# (DECISION = simulation_date); whether it reaches earlier facts is a separate, fact-keyed or open question.
+IN_FORCE_PARAMETER = "section_in_force"
+DECISION_LABEL = "DECISION"
+
 
 class DateRange(StoredModel):
     from_: date = Field(alias="from")
@@ -44,4 +49,9 @@ class TemporalOverlayRow(StoredModel):
             raise ValueError("effective_from is after effective_to")
         if self.status == "APPROVED" and not self.approved_by:
             raise ValueError("an APPROVED row must name approved_by")
+        if self.parameter == IN_FORCE_PARAMETER and self.keyed_on != DECISION_LABEL:
+            raise ValueError(
+                f"{IN_FORCE_PARAMETER} must key on {DECISION_LABEL} (D-042): it says whether the provision exists "
+                "at the hearing; whether it reaches earlier facts belongs in another parameter or stays open"
+            )
         return self

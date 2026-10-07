@@ -23,13 +23,10 @@ from typing import TYPE_CHECKING, Literal
 
 from lexarena.schemas.base import StoredModel
 from lexarena.schemas.law import LawRecord
-from lexarena.schemas.overlay import DateRange, TemporalOverlayRow
+from lexarena.schemas.overlay import DECISION_LABEL, IN_FORCE_PARAMETER, DateRange, TemporalOverlayRow
 
 if TYPE_CHECKING:
     from lexarena.schemas.case import Case
-
-IN_FORCE_PARAMETER = "section_in_force"
-DECISION_LABEL = "DECISION"  # the case's simulation_date, for rows keyed on the decision date
 
 
 class OverlayConflictError(ValueError):

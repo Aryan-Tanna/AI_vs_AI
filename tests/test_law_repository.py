@@ -65,7 +65,7 @@ def overlay(overlay_id: str, value: Any, start: str | None, end: str | None, **k
         "statute_id": SYNTHETIC,
         "parameter": "section_in_force",
         "value": value,
-        "keyed_on": "FILING",
+        "keyed_on": "DECISION",
         "effective_from": start,
         "effective_to": end,
         "source_ref": "<ref>",
@@ -150,12 +150,12 @@ def test_get_statute_hides_a_section_before_it_is_in_force(procs: Procs, tmp_pat
     load_law_db(ingest.law, validate_law_db(*read_law_sources(synthetic_source(tmp_path))))
     lawyer = procs.session.lawyer("PETITIONER", "S").law
 
-    unverified = lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"FILING": date(2000, 6, 1)}))
+    unverified = lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"DECISION": date(2000, 6, 1)}))
     assert unverified is not None and unverified.in_force == "UNVERIFIED"
 
     ingest.law.put_overlay(overlay("ov-in-force", True, "2001-01-01", None))
-    assert lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"FILING": date(2000, 12, 31)})) is None
-    confirmed = lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"FILING": date(2001, 1, 1)}))
+    assert lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"DECISION": date(2000, 12, 31)})) is None
+    confirmed = lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"DECISION": date(2001, 1, 1)}))
     assert confirmed is not None and confirmed.in_force == "CONFIRMED"
     assert [a.overlay_id for a in confirmed.applied] == ["ov-in-force"]
 
@@ -165,7 +165,7 @@ def test_hidden_and_unknown_statutes_look_the_same(procs: Procs, tmp_path: Path)
     load_law_db(ingest.law, validate_law_db(*read_law_sources(synthetic_source(tmp_path))))
     ingest.law.put_overlay(overlay("ov", True, "2001-01-01", None))
     lawyer = procs.session.lawyer("PETITIONER", "S").law
-    as_of = AsOf(key_dates={"FILING": date(2000, 1, 1)})
+    as_of = AsOf(key_dates={"DECISION": date(2000, 1, 1)})
     assert lawyer.get_statute(SYNTHETIC, as_of) is None
     assert lawyer.get_statute("TEST_NO_SUCH_SECTION", as_of) is None
 
@@ -195,7 +195,7 @@ def test_overlapping_overlay_rows_are_rejected(procs: Procs, tmp_path: Path) -> 
     ingest.law.put_overlay(overlay("a", True, "2001-01-01", "2004-12-31", version=2))  # replacing by ID is allowed
     ingest.law.put_overlay(overlay("b", False, "2005-01-01", None))
     lawyer = procs.session.lawyer("PETITIONER", "S").law
-    assert lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"FILING": date(2006, 1, 1)})) is None
+    assert lawyer.get_statute(SYNTHETIC, AsOf(key_dates={"DECISION": date(2006, 1, 1)})) is None
 
 
 def test_decision_keyed_rows_never_reveal_the_simulation_date(procs: Procs, tmp_path: Path) -> None:

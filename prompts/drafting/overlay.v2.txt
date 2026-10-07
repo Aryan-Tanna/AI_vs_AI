@@ -1,0 +1,36 @@
+You are extracting date-dependent legal parameters from an official legal document, for review by a person. You are not giving legal advice and you must not use anything you remember about the law. Use only the excerpts below.
+
+The provision these parameters attach to (a record from our Law DB; its text is a paraphrase, not the law itself):
+$statute
+
+The official document (the only source you may use): $source_title
+Excerpts from it:
+<<<
+$excerpts
+>>>
+
+Task: list every row that this document, read on its own, establishes for the provision above. A row says: for cases whose relevant date falls in a window, a parameter has a value.
+
+Allowed parameter names (use exactly one per row): $parameters
+- section_in_force: value_kind "boolean". true if the document brings the provision into force (inserts or substitutes it) from a date; false if it omits it from a date. keyed_on MUST be "DECISION": this row only says whether the provision exists in law on the date of the hearing. Never key it on a fact date such as default, filing or plan approval; whether a provision reaches earlier facts is not decided here.
+- a threshold amount: value_kind "number", in rupees as digits.
+- a window of dates (for example a bar or an excluded period): value_kind "date_range", with value_from and value_to.
+Allowed keyed_on labels (the case date that decides whether the row applies): $date_labels
+
+Rules, all mandatory:
+1. Every quote is the SHORTEST exact span of the excerpts that proves its point, copied character for character. Do not add, remove or change any character: no added quotation marks, no closing punctuation, no ellipsis, no joined lines. A quote that is not verbatim is rejected.
+   - source_text: the clause that establishes the row.
+   - value_quote: the few words that state the value.
+   - effective_from_quote / effective_to_quote: the few words that state each date, including the date itself.
+2. Never infer a date. Use a date only if the excerpt states that the provision takes effect on it. If the document leaves commencement to a later notification, leave effective_from null and explain in commencement_note. Do not use the date of assent, publication or the document's own date unless the text says the provision takes effect on it.
+3. A consolidated text may carry footnotes such as "Ins. by Act 1 of 2020, s. 10 (w.e.f. 28-12-2019)." or "Subs. by Act 26 of 2018, s. 3 (w.e.f. 6-6-2018)." Such a footnote is a valid source for when the provision as now worded came into force: quote the footnote exactly, and use it only if it is clearly attached to this provision.
+4. Dates in your answer are YYYY-MM-DD. Leave effective_to null when the text gives no end.
+5. Fill only the value field that matches value_kind; set the other value fields to null.
+6. If the document establishes nothing for this provision, return no rows and say why in no_rows_reason.
+7. Do not decide contested questions of interpretation. Extract only what the words fix.
+
+Worked example with a fictional document (not real law):
+Excerpt: "99X. Placeholder provision.-(1) This section shall come into force on the 5th day of June, 2001."
+Row: {"parameter": "section_in_force", "value_kind": "boolean", "value_boolean": true, "value_number": null, "value_from": null, "value_to": null, "value_text": null, "keyed_on": "DECISION", "effective_from": "2001-06-05", "effective_to": null, "source_text": "This section shall come into force on the 5th day of June, 2001", "value_quote": "shall come into force", "effective_from_quote": "the 5th day of June, 2001", "effective_to_quote": null, "commencement_note": "commencement date stated in sub-section (1)"}
+
+Return a single JSON object with keys "rows" and "no_rows_reason". Each row has exactly these keys: parameter, value_kind, value_boolean, value_number, value_from, value_to, value_text, keyed_on, effective_from, effective_to, source_text, value_quote, effective_from_quote, effective_to_quote, commencement_note.

@@ -35,7 +35,7 @@ IN_FORCE = {
     "value_from": None,
     "value_to": None,
     "value_text": None,
-    "keyed_on": "FILING",
+    "keyed_on": "DECISION",
     "effective_from": "2001-06-05",
     "effective_to": None,
     "source_text": "This section shall come into force on the 5th day of June, 2001.",
@@ -121,6 +121,7 @@ def test_disagreement_is_recorded_side_by_side(cfg: AppConfig, registry: SourceR
         ({"effective_from": "2001-07-01"}, "not written in its quote"),
         ({"effective_from_quote": None}, "needs a quote"),
         ({"keyed_on": "SOMETHING_ELSE"}, "not in vocabulary.case_date_labels"),
+        ({"keyed_on": "FILING"}, "section_in_force must key on DECISION"),
         ({"parameter": "made_up_parameter"}, "not in vocabulary.overlay_parameters"),
         ({"value_kind": "number", "value_boolean": None, "value_number": 1.0}, "section_in_force needs a boolean"),
     ],
@@ -143,6 +144,7 @@ def test_number_written_in_words_goes_to_the_reviewer(
         "value_boolean": None,
         "value_number": 100000,
         "value_quote": "one lakh rupees",
+        "keyed_on": "FILING",
     }
     [draft] = run(cfg, registry, record, proposal(row), proposal(row))
     assert draft.blocking_problems == []
@@ -165,7 +167,7 @@ def test_models_see_only_the_excerpt_and_the_record(
         [request] = fake.requests
         text = request.messages[-1].content
         assert "99X" in text and STATUTE in text
-        assert "FILING" in text and "section_in_force" in text  # the vocabulary is shown, not guessed
+        assert "DECISION" in text and "section_in_force" in text  # the vocabulary is shown, not guessed
 
 
 # ---------------------------------------------------------------- predicate drafting

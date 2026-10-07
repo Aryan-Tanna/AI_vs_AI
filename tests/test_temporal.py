@@ -31,7 +31,7 @@ def row(
         "statute_id": STATUTE,
         "parameter": parameter,
         "value": value,
-        "keyed_on": "FILING",
+        "keyed_on": "DECISION",
         "effective_from": start,
         "effective_to": end,
         "source_ref": "<ref>",
@@ -43,7 +43,7 @@ def row(
     return TemporalOverlayRow.model_validate({**base, **kw})
 
 
-def on(day: str, label: str = "FILING") -> AsOf:
+def on(day: str, label: str = "DECISION") -> AsOf:
     return AsOf(key_dates={label: date.fromisoformat(day)})
 
 
@@ -75,9 +75,9 @@ def test_section_omitted_is_hidden_after_omission() -> None:
 
 
 def test_missing_key_date_is_reported_never_guessed() -> None:
-    rows = [row("ov1", "section_in_force", True, "2001-01-01", None, keyed_on="DEFAULT")]
+    rows = [row("ov1", "minimum_default_inr", 1, "2001-01-01", None, keyed_on="DEFAULT")]
     view = resolve_statute(record(), rows, on("2000-01-01", label="FILING"))
-    assert view is not None and view.in_force == "UNVERIFIED"
+    assert view is not None and view.in_force == "UNVERIFIED" and view.applied == []
     assert [(u.overlay_id, u.keyed_on) for u in view.unresolved] == [("ov1", "DEFAULT")]
 
 
@@ -99,7 +99,7 @@ def test_other_parameters_apply_for_the_keyed_date() -> None:
     view = resolve_statute(record(), rows, on("2010-06-01"))
     assert view is not None
     [applied] = view.applied
-    assert (applied.overlay_id, applied.value, applied.keyed_on) == ("new", 2, "FILING")
+    assert (applied.overlay_id, applied.value, applied.keyed_on) == ("new", 2, "DECISION")
 
 
 def test_overlapping_rows_for_one_parameter_are_a_data_error() -> None:
