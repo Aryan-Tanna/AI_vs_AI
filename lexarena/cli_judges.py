@@ -24,6 +24,7 @@ from lexarena.app import DEFAULT_ENV_FILE, PROMPTS_ROOT, REPO_ROOT, build_llm_cl
 from lexarena.config import load_config
 from lexarena.embedding import FastEmbedder
 from lexarena.judges.personas import PersonaRegistry
+from lexarena.judges.report import bench_report
 from lexarena.judges.run import Bench, BenchInputs, law_for_bench
 from lexarena.prompts import PromptStore
 from lexarena.retrieval.tools import RetrievalTools, tools_for
@@ -105,6 +106,7 @@ def _trial(case_id: str, cfg: AppConfig, allow_draft: bool) -> int:
         "statutes_shown": sorted(law.views),
         "notes": result.notes,
         "verdict": result.verdict.to_document(),
+        "diagnostics": bench_report([(result.decisions, result.verdict)], cfg.judging).to_document(),
         "decisions": [d.to_document() for d in result.decisions],
     }
     BENCH_REPORTS.mkdir(parents=True, exist_ok=True)
@@ -121,6 +123,8 @@ def _trial(case_id: str, cfg: AppConfig, allow_draft: bool) -> int:
             "votes": v.votes,
             "abstaining": v.abstaining_judges,
             "issues": {f.issue_id: f.upholds or f.status for f in v.issue_findings},
+            "order_swap_gaps": {d.judge: d.order_swap_gap for d in result.decisions},
+            "gap_limit": cfg.judging.order_swap_max_gap,
             "report": path.relative_to(REPO_ROOT).as_posix(),
         }
     )

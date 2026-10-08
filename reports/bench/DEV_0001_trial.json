@@ -1,0 +1,684 @@
+{
+  "kind": "PLEADINGS_ONLY_TRIAL",
+  "case_id": "DEV_0001",
+  "note": "No debate: the bench decided on the pleaded grounds alone. Not a session; not a verdict.",
+  "statutes_shown": [
+    "IBC_2016_SEC_61",
+    "IBC_2016_SEC_7",
+    "LIMITATION_ACT_1963_SEC_18"
+  ],
+  "notes": [
+    "persona TEXTUALIST ran on an UNAPPROVED prompt (judges/persona_textualist.v1)",
+    "persona PURPOSIVIST ran on an UNAPPROVED prompt (judges/persona_purposivist.v1)",
+    "persona PROCEDURALIST ran on an UNAPPROVED prompt (judges/persona_proceduralist.v1)"
+  ],
+  "verdict": {
+    "status": "DECIDED",
+    "winner": "PETITIONER",
+    "decided_by": "MAJORITY",
+    "unstable_reason": null,
+    "votes": {
+      "PETITIONER": 3,
+      "RESPONDENT": 0
+    },
+    "deciding_judges": [
+      "TEXTUALIST",
+      "PURPOSIVIST",
+      "PROCEDURALIST"
+    ],
+    "abstaining_judges": [],
+    "dissenting_judges": [],
+    "issue_findings": [
+      {
+        "issue_id": "I1",
+        "status": "DECIDED",
+        "upholds": "PETITIONER",
+        "votes": {
+          "PETITIONER": 3,
+          "RESPONDENT": 0,
+          "NEITHER": 0
+        },
+        "deciding_judges": [
+          "TEXTUALIST",
+          "PURPOSIVIST",
+          "PROCEDURALIST"
+        ],
+        "dissenting_judges": []
+      },
+      {
+        "issue_id": "I2",
+        "status": "DECIDED",
+        "upholds": "PETITIONER",
+        "votes": {
+          "PETITIONER": 3,
+          "RESPONDENT": 0,
+          "NEITHER": 0
+        },
+        "deciding_judges": [
+          "TEXTUALIST",
+          "PURPOSIVIST",
+          "PROCEDURALIST"
+        ],
+        "dissenting_judges": []
+      }
+    ],
+    "advocacy": {
+      "PETITIONER": 0.9725,
+      "RESPONDENT": 0.40791666666666665
+    }
+  },
+  "diagnostics": {
+    "sessions": 1,
+    "verdicts": {
+      "PETITIONER": 1
+    },
+    "personas": [
+      {
+        "persona": "TEXTUALIST",
+        "cases": 1,
+        "decided": 1,
+        "abstained": {},
+        "order_swap_disagreement_rate": 0.0,
+        "disagreement_over_limit": false,
+        "issue_disagreement_rate": 0.0,
+        "gap": {
+          "count": 1,
+          "minimum": 0.29500000000000004,
+          "median": 0.29500000000000004,
+          "maximum": 0.29500000000000004,
+          "over_limit": 1
+        },
+        "revised_opinions": 0,
+        "invalid_opinions": 0,
+        "unapproved_runs": 1,
+        "wins": {
+          "PETITIONER": 1,
+          "RESPONDENT": 0
+        },
+        "role_bias_flag": null
+      },
+      {
+        "persona": "PURPOSIVIST",
+        "cases": 1,
+        "decided": 1,
+        "abstained": {},
+        "order_swap_disagreement_rate": 0.0,
+        "disagreement_over_limit": false,
+        "issue_disagreement_rate": 0.0,
+        "gap": {
+          "count": 1,
+          "minimum": 0.275,
+          "median": 0.275,
+          "maximum": 0.275,
+          "over_limit": 1
+        },
+        "revised_opinions": 0,
+        "invalid_opinions": 0,
+        "unapproved_runs": 1,
+        "wins": {
+          "PETITIONER": 1,
+          "RESPONDENT": 0
+        },
+        "role_bias_flag": null
+      },
+      {
+        "persona": "PROCEDURALIST",
+        "cases": 1,
+        "decided": 1,
+        "abstained": {},
+        "order_swap_disagreement_rate": 0.0,
+        "disagreement_over_limit": false,
+        "issue_disagreement_rate": 0.0,
+        "gap": {
+          "count": 1,
+          "minimum": 0.09499999999999997,
+          "median": 0.09499999999999997,
+          "maximum": 0.09499999999999997,
+          "over_limit": 0
+        },
+        "revised_opinions": 0,
+        "invalid_opinions": 0,
+        "unapproved_runs": 1,
+        "wins": {
+          "PETITIONER": 1,
+          "RESPONDENT": 0
+        },
+        "role_bias_flag": null
+      }
+    ],
+    "limits": {
+      "order_swap_max_gap": 0.15,
+      "max_order_swap_disagreement_rate": 0.2,
+      "persona_role_max_win_rate": 0.65,
+      "persona_role_min_cases": 50.0
+    }
+  },
+  "decisions": [
+    {
+      "judge": "TEXTUALIST",
+      "persona_prompt": "judges/persona_textualist.v1",
+      "persona_sha256": "a0919841ae70b4588e05d687d358d23b41ea2b38a4028b43951ce1dc70dc487a",
+      "persona_approved": false,
+      "opinions": [
+        {
+          "order": "PETITIONER_FIRST",
+          "issue_decisions": [
+            {
+              "issue_id": "I1",
+              "finding": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute a valid acknowledgment of liability under Section 18 of the Limitation Act, 1963, as they were in writing, signed by the Corporate Debtor, and made before the expiration of the original limitation period.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F5",
+                "F6",
+                "EX-1",
+                "EX-2"
+              ],
+              "application": "Section 18 of the Limitation Act, 1963, states that an acknowledgment of liability in writing, signed by the party against whom the right is claimed, and made before the expiration of the prescribed period, computes a fresh period of limitation. The default occurred on 10th June, 2014 [F1], making the original three-year limitation period expire on 9th June, 2017. The One Time Settlement proposal dated 13th June, 2015 [F5, EX-1] and its reiteration on 6th November, 2015 [F6, EX-2] both occurred before this date. The content of EX-1, where the Corporate Debtor proposed 'settlement of its liabilities towards the lenders/financial creditors,' plainly indicates an acknowledgment of existing liabilities. Section 18 explicitly states that an acknowledgment is valid even if it 'omits to specify the exact nature of property/right' or 'is coupled with a claim to set off,' which covers the nature of a settlement proposal.",
+              "conclusion": "The One Time Settlement proposals effectively extended the period of limitation.",
+              "upholds": "PETITIONER"
+            },
+            {
+              "issue_id": "I2",
+              "finding": "The application under Section 7 of the Insolvency and Bankruptcy Code, 2016, filed on 19th September, 2018, is within the prescribed period of limitation due to the acknowledgment of liability.",
+              "governing_rule_ids": [
+                "IBC_2016_SEC_7",
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F2",
+                "F6"
+              ],
+              "application": "Given the finding on Issue I1, the latest acknowledgment of liability was made on 6th November, 2015 [F6]. According to Section 18 of the Limitation Act, 1963, a fresh period of limitation of three years is computed from this date. Therefore, the limitation period for filing the Section 7 application would expire on 5th November, 2018. The application under Section 7 was filed by Bank-Y on 19th September, 2018 [F2], which falls within this extended limitation period. The Adjudicating Authority's rejection based on the initial default date without considering the acknowledgment was therefore incorrect.",
+              "conclusion": "The Section 7 application is not barred by limitation.",
+              "upholds": "PETITIONER"
+            }
+          ],
+          "overall_result": "PETITIONER",
+          "overall_reasons": "The Corporate Debtor's One Time Settlement proposals, dated 13th June, 2015 and 6th November, 2015, constitute a clear acknowledgment of liability under Section 18 of the Limitation Act, 1963. These acknowledgments were made in writing and before the expiry of the original limitation period, thereby extending the period of limitation. The latest acknowledgment on 6th November, 2015, reset the limitation clock, making the Section 7 application filed on 19th September, 2018, well within the three-year statutory period. Consequently, the Adjudicating Authority erred in rejecting the application as time-barred.",
+          "advocacy": [
+            {
+              "issue_id": "I1",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 0.8,
+                "grounding": 0.9
+              },
+              "RESPONDENT": {
+                "accuracy": 0.0,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.0
+              }
+            },
+            {
+              "issue_id": "I2",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 0.9,
+                "grounding": 0.9
+              },
+              "RESPONDENT": {
+                "accuracy": 0.5,
+                "consistency": 1.0,
+                "rebuttal": 0.3,
+                "grounding": 0.8
+              }
+            }
+          ],
+          "revised": false
+        },
+        {
+          "order": "RESPONDENT_FIRST",
+          "issue_decisions": [
+            {
+              "issue_id": "I1",
+              "finding": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute an acknowledgment of liability under Section 18 of the Limitation Act, 1963, as they explicitly refer to the settlement of the Corporate Debtor's liabilities towards financial creditors. These acknowledgments were made in writing and before the expiration of the original limitation period.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F5",
+                "F6",
+                "EX-1",
+                "EX-2"
+              ],
+              "application": "Section 18 of the Limitation Act, 1963, states that a fresh period of limitation is computed from the time an acknowledgment of liability is made in writing and signed before the expiration of the prescribed period. The Corporate Debtor's One Time Settlement proposals [F5, F6, EX-1, EX-2] explicitly mention \"settlement of its liabilities towards the lenders/financial creditors,\" which plainly signifies an acknowledgment of existing debt. Both proposals were made on 13th June, 2015 and 6th November, 2015, respectively, which is before the original limitation period expiring on 10th June, 2017 (three years from the default date of 10th June, 2014 [F1]).",
+              "conclusion": "Therefore, the One Time Settlement proposals effectively extended the period of limitation.",
+              "upholds": "PETITIONER"
+            },
+            {
+              "issue_id": "I2",
+              "finding": "The application under Section 7 of the Insolvency and Bankruptcy Code, 2016, filed on 19th September, 2018, is within the prescribed period of limitation due to the extension provided by the acknowledgment of liability.",
+              "governing_rule_ids": [
+                "IBC_2016_SEC_7",
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F2",
+                "F6"
+              ],
+              "application": "The original default occurred on 10th June, 2014 [F1]. As established in I1, the Corporate Debtor's reiterated One Time Settlement proposal on 6th November, 2015 [F6] constituted an acknowledgment of liability under Section 18 of the Limitation Act, 1963. This acknowledgment caused a fresh three-year period of limitation to commence from 6th November, 2015. This fresh period would expire on 6th November, 2018. The Section 7 application was filed on 19th September, 2018 [F2], which falls within this extended limitation period.",
+              "conclusion": "Consequently, the Section 7 application is not barred by limitation.",
+              "upholds": "PETITIONER"
+            }
+          ],
+          "overall_result": "PETITIONER",
+          "overall_reasons": "The Adjudicating Authority erred in rejecting the Section 7 application as time-barred. The Corporate Debtor's One Time Settlement proposals constituted valid acknowledgments of liability under Section 18 of the Limitation Act, 1963, thereby extending the limitation period. The application filed on 19th September, 2018, was well within the fresh limitation period computed from the last acknowledgment on 6th November, 2015.",
+          "advocacy": [
+            {
+              "issue_id": "I1",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.0,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.0
+              }
+            },
+            {
+              "issue_id": "I2",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.0,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.5
+              }
+            }
+          ],
+          "revised": false
+        }
+      ],
+      "status": "DECIDED",
+      "result": "PETITIONER",
+      "abstain_reason": null,
+      "issue_results": [
+        {
+          "issue_id": "I1",
+          "status": "DECIDED",
+          "upholds": "PETITIONER"
+        },
+        {
+          "issue_id": "I2",
+          "status": "DECIDED",
+          "upholds": "PETITIONER"
+        }
+      ],
+      "order_swap_gap": 0.29500000000000004,
+      "advocacy": {
+        "PETITIONER": 0.9750000000000001,
+        "RESPONDENT": 0.37375
+      }
+    },
+    {
+      "judge": "PURPOSIVIST",
+      "persona_prompt": "judges/persona_purposivist.v1",
+      "persona_sha256": "8490aedabd38d430573a0679b87311d4412bc99839b67975c5c7cfb97c8edb7c",
+      "persona_approved": false,
+      "opinions": [
+        {
+          "order": "PETITIONER_FIRST",
+          "issue_decisions": [
+            {
+              "issue_id": "I1",
+              "finding": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute valid acknowledgments of liability under Section 18 of the Limitation Act, 1963, thereby extending the period of limitation.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F5",
+                "F6",
+                "EX-1",
+                "EX-2"
+              ],
+              "application": "Section 18 of the Limitation Act, 1963, allows for a fresh period of limitation to be computed from the time a written acknowledgment of liability is signed before the expiration of the original limitation period. The default occurred on 10th June, 2014 [F1], meaning the original limitation period would expire on 9th June, 2017. The Corporate Debtor's One Time Settlement proposal dated 13th June, 2015 [F5, EX-1] and its reiteration on 6th November, 2015 [F6, EX-2] both occurred before this date. The content of the proposals, expressing inability to revive and proposing to settle liabilities towards lenders/financial creditors, clearly indicates an acknowledgment of existing debt. As per Section 18, such acknowledgments, made in writing and signed by the debtor, are sufficient to extend the limitation period.",
+              "conclusion": "The One Time Settlement proposals effectively extended the limitation period.",
+              "upholds": "PETITIONER"
+            },
+            {
+              "issue_id": "I2",
+              "finding": "The application under Section 7 of the Insolvency and Bankruptcy Code, 2016, filed on 19th September, 2018, is within the prescribed period of limitation.",
+              "governing_rule_ids": [
+                "IBC_2016_SEC_7",
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F2",
+                "F6"
+              ],
+              "application": "Given the finding on Issue I1, the last valid acknowledgment of liability was made on 6th November, 2015 [F6]. According to Section 18 of the Limitation Act, 1963, a fresh period of three years for filing an application under Section 7 of the IBC [IBC_2016_SEC_7] began from this date. Therefore, the limitation period for Bank-Y's application would expire on 5th November, 2018. The Section 7 application was filed on 19th September, 2018 [F2], which is prior to the extended limitation expiry date.",
+              "conclusion": "The Section 7 application is not barred by limitation.",
+              "upholds": "PETITIONER"
+            }
+          ],
+          "overall_result": "PETITIONER",
+          "overall_reasons": "The Adjudicating Authority erred in rejecting the Section 7 application as time-barred. The Corporate Debtor's One Time Settlement proposals constituted valid acknowledgments of liability under Section 18 of the Limitation Act, 1963, which extended the limitation period. The application filed on 19th September, 2018, was therefore within the extended three-year limitation period, which ran from the last acknowledgment on 6th November, 2015. The object of the IBC, favoring timely resolution, is best served by allowing a financial creditor's claim to proceed when the corporate debtor has acknowledged its debt, provided the acknowledgment meets the statutory requirements.",
+          "advocacy": [
+            {
+              "issue_id": "I1",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.0,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.0
+              }
+            },
+            {
+              "issue_id": "I2",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.0,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.5
+              }
+            }
+          ],
+          "revised": false
+        },
+        {
+          "order": "RESPONDENT_FIRST",
+          "issue_decisions": [
+            {
+              "issue_id": "I1",
+              "finding": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute a clear acknowledgment of liability under Section 18 of the Limitation Act, 1963.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F5",
+                "F6",
+                "EX-1",
+                "EX-2"
+              ],
+              "application": "The Corporate Debtor's One Time Settlement proposal dated 13th June, 2015 [F5, EX-1] and its reiteration on 6th November, 2015 [F6, EX-2] explicitly expressed an inability to revive and proposed to settle 'its liabilities towards the lenders/financial creditors'. This language constitutes an admission of a subsisting liability. Both proposals were made before the expiration of the original three-year limitation period, which commenced on the default date of 10th June, 2014 [F1] and would have ended on 9th June, 2017. As per Section 18 of the Limitation Act, 1963, such a written and signed acknowledgment of liability, made before the expiry of the limitation period, establishes a fresh period of limitation.",
+              "conclusion": "The One Time Settlement proposals effectively extended the period of limitation.",
+              "upholds": "PETITIONER"
+            },
+            {
+              "issue_id": "I2",
+              "finding": "The application under Section 7 of the Insolvency and Bankruptcy Code, 2016, filed on 19th September, 2018, is within the prescribed period of limitation.",
+              "governing_rule_ids": [
+                "IBC_2016_SEC_7",
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F2",
+                "F6"
+              ],
+              "application": "The original default occurred on 10th June, 2014 [F1]. The latest valid acknowledgment of liability was made on 6th November, 2015 [F6]. In accordance with Section 18 of the Limitation Act, 1963, a fresh period of three years for filing the application commenced from this date. Therefore, the limitation period for filing the Section 7 application would expire on 5th November, 2018. The application was filed by Bank-Y on 19th September, 2018 [F2], which is prior to the extended limitation expiry date. Thus, the application is not barred by limitation.",
+              "conclusion": "The Section 7 application was timely filed.",
+              "upholds": "PETITIONER"
+            }
+          ],
+          "overall_result": "PETITIONER",
+          "overall_reasons": "The Adjudicating Authority erred in rejecting the Section 7 application as time-barred. The Corporate Debtor's One Time Settlement proposals constituted valid acknowledgments of liability under Section 18 of the Limitation Act, 1963. These acknowledgments extended the limitation period, making the application filed on 19th September, 2018, well within the legally prescribed time frame. The object of the IBC, which favors timely resolution of insolvency, is served by recognizing such acknowledgments, ensuring that genuine debts can be addressed through the insolvency process.",
+          "advocacy": [
+            {
+              "issue_id": "I1",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.5,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.5
+              }
+            },
+            {
+              "issue_id": "I2",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.0,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.5
+              }
+            }
+          ],
+          "revised": false
+        }
+      ],
+      "status": "DECIDED",
+      "result": "PETITIONER",
+      "abstain_reason": null,
+      "issue_results": [
+        {
+          "issue_id": "I1",
+          "status": "DECIDED",
+          "upholds": "PETITIONER"
+        },
+        {
+          "issue_id": "I2",
+          "status": "DECIDED",
+          "upholds": "PETITIONER"
+        }
+      ],
+      "order_swap_gap": 0.275,
+      "advocacy": {
+        "PETITIONER": 1.0,
+        "RESPONDENT": 0.36875
+      }
+    },
+    {
+      "judge": "PROCEDURALIST",
+      "persona_prompt": "judges/persona_proceduralist.v1",
+      "persona_sha256": "1bfc8c4bc075fd5cff612431597f1065139464e021d5ffceccb7b0f5ffca4636",
+      "persona_approved": false,
+      "opinions": [
+        {
+          "order": "PETITIONER_FIRST",
+          "issue_decisions": [
+            {
+              "issue_id": "I1",
+              "finding": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute valid acknowledgments of liability under Section 18 of the Limitation Act, 1963.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F5",
+                "EX-1",
+                "F6",
+                "EX-2",
+                "F1"
+              ],
+              "application": "Section 18 of the Limitation Act, 1963, provides that a written acknowledgment of liability made before the expiration of the prescribed period computes a fresh period of limitation. The Corporate Debtor's OTS proposals [F5, EX-1, F6, EX-2] expressed an inability to revive and proposed to settle \"liabilities towards the lenders/financial creditors,\" which clearly acknowledges existing financial obligations. Both proposals were made on 13th June 2015 and 6th November 2015, respectively, which are before the original limitation period expiry of 10th June 2017 (three years from the default on 10th June 2014 [F1]).",
+              "conclusion": "The One Time Settlement proposals effectively extended the period of limitation.",
+              "upholds": "PETITIONER"
+            },
+            {
+              "issue_id": "I2",
+              "finding": "The Section 7 application filed on 19th September, 2018, is within the extended period of limitation.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18",
+                "IBC_2016_SEC_7"
+              ],
+              "record_ids": [
+                "F1",
+                "F2",
+                "F5",
+                "F6",
+                "EX-1",
+                "EX-2"
+              ],
+              "application": "The original date of default was 10th June, 2014 [F1]. Applying a three-year limitation period, the original expiry would be 10th June, 2017. However, the Corporate Debtor's One Time Settlement proposal on 13th June, 2015 [F5, EX-1] and its reiteration on 6th November, 2015 [F6, EX-2] constituted valid acknowledgments of liability under Section 18 of the Limitation Act, 1963. The last valid acknowledgment on 6th November, 2015, initiated a fresh three-year limitation period, extending the deadline to 6th November, 2018. The Section 7 application was filed on 19th September, 2018 [F2], which falls within this extended period.",
+              "conclusion": "The application under Section 7 of the IBC is not barred by limitation.",
+              "upholds": "PETITIONER"
+            }
+          ],
+          "overall_result": "PETITIONER",
+          "overall_reasons": "The Adjudicating Authority erred in rejecting the Section 7 application as barred by limitation. The Corporate Debtor's One Time Settlement proposals constituted valid acknowledgments of liability under Section 18 of the Limitation Act, 1963, thereby extending the limitation period. The application, filed on 19th September, 2018, was well within the fresh limitation period that commenced from the last acknowledgment on 6th November, 2015.",
+          "advocacy": [
+            {
+              "issue_id": "I1",
+              "PETITIONER": {
+                "accuracy": 0.9,
+                "consistency": 1.0,
+                "rebuttal": 0.8,
+                "grounding": 0.9
+              },
+              "RESPONDENT": {
+                "accuracy": 0.2,
+                "consistency": 1.0,
+                "rebuttal": 0.1,
+                "grounding": 0.2
+              }
+            },
+            {
+              "issue_id": "I2",
+              "PETITIONER": {
+                "accuracy": 0.9,
+                "consistency": 1.0,
+                "rebuttal": 0.8,
+                "grounding": 0.9
+              },
+              "RESPONDENT": {
+                "accuracy": 0.3,
+                "consistency": 1.0,
+                "rebuttal": 0.2,
+                "grounding": 0.7
+              }
+            }
+          ],
+          "revised": false
+        },
+        {
+          "order": "RESPONDENT_FIRST",
+          "issue_decisions": [
+            {
+              "issue_id": "I1",
+              "finding": "The One Time Settlement proposals dated 13th June, 2015, and 6th November, 2015, constitute a valid acknowledgment of liability under Section 18 of the Limitation Act, 1963, as they were in writing, made by the Corporate Debtor, and executed before the expiration of the original limitation period.",
+              "governing_rule_ids": [
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F5",
+                "F6",
+                "EX-1",
+                "EX-2"
+              ],
+              "application": "Section 18 of the Limitation Act, 1963, establishes that a written and signed acknowledgment of liability made before the expiration of the prescribed period computes a fresh period of limitation. The original date of default was 10th June, 2014 [F1], meaning the initial three-year limitation period would have expired on 9th June, 2017. The Corporate Debtor's One Time Settlement proposals dated 13th June, 2015 [F5, EX-1] and 6th November, 2015 [F6, EX-2] were both made in writing and before the original limitation period expired. The content of EX-1, where the Corporate Debtor expressed inability to revive the company and proposed to settle its liabilities towards lenders/financial creditors, clearly indicates an acknowledgment of an existing debt, satisfying the requirements of Section 18.",
+              "conclusion": "The One Time Settlement proposals effectively extended the limitation period.",
+              "upholds": "PETITIONER"
+            },
+            {
+              "issue_id": "I2",
+              "finding": "The application under Section 7 of the Insolvency and Bankruptcy Code, 2016, filed on 19th September, 2018, is within the prescribed period of limitation due to the extension provided by the acknowledgments of liability.",
+              "governing_rule_ids": [
+                "IBC_2016_SEC_7",
+                "LIMITATION_ACT_1963_SEC_18"
+              ],
+              "record_ids": [
+                "F1",
+                "F2",
+                "F6",
+                "EX-2"
+              ],
+              "application": "Given the finding in Issue I1, the Corporate Debtor's acknowledgment of liability on 6th November, 2015 [F6, EX-2] initiated a fresh three-year period of limitation from that date. This new limitation period would expire on 5th November, 2018. The Section 7 application was filed by Bank-Y on 19th September, 2018 [F2], which falls within this extended limitation period. Therefore, the application is not barred by limitation.",
+              "conclusion": "The application under Section 7 of the IBC is not barred by limitation.",
+              "upholds": "PETITIONER"
+            }
+          ],
+          "overall_result": "PETITIONER",
+          "overall_reasons": "The Adjudicating Authority erred in rejecting the Section 7 application as barred by limitation. The Corporate Debtor's One Time Settlement proposals dated 13th June, 2015, and 6th November, 2015, constituted valid acknowledgments of liability under Section 18 of the Limitation Act, 1963. The latest acknowledgment on 6th November, 2015, extended the limitation period to 5th November, 2018. As the Section 7 application was filed on 19th September, 2018, it was well within this extended period.",
+          "advocacy": [
+            {
+              "issue_id": "I1",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 0.8,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.3,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 0.5
+              }
+            },
+            {
+              "issue_id": "I2",
+              "PETITIONER": {
+                "accuracy": 1.0,
+                "consistency": 1.0,
+                "rebuttal": 1.0,
+                "grounding": 1.0
+              },
+              "RESPONDENT": {
+                "accuracy": 0.3,
+                "consistency": 1.0,
+                "rebuttal": 0.0,
+                "grounding": 1.0
+              }
+            }
+          ],
+          "revised": false
+        }
+      ],
+      "status": "DECIDED",
+      "result": "PETITIONER",
+      "abstain_reason": null,
+      "issue_results": [
+        {
+          "issue_id": "I1",
+          "status": "DECIDED",
+          "upholds": "PETITIONER"
+        },
+        {
+          "issue_id": "I2",
+          "status": "DECIDED",
+          "upholds": "PETITIONER"
+        }
+      ],
+      "order_swap_gap": 0.09499999999999997,
+      "advocacy": {
+        "PETITIONER": 0.9425,
+        "RESPONDENT": 0.48124999999999996
+      }
+    }
+  ]
+}
