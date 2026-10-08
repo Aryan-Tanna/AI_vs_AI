@@ -209,3 +209,26 @@ You have built all of these once before; port the ideas into this codebase's rul
   `# literal-ok: <reason>`.
 - **Open questions** waiting on Aryan are in `docs/OPEN_QUESTIONS.md`: Q-025 to Q-027 and the older ones listed in
   `docs/HANDOFF.md`.
+
+## 6. Status of Parth's work (2026-10-08, end of the first build session)
+
+Four stacked branches, each a pull request in this order (later ones contain the earlier ones):
+
+| Branch | What | Decisions |
+| --- | --- | --- |
+| `parth/step-11-judges` | Shared schema change for the bench (agree it first, Q-031), then `lexarena/judges/`, persona prompts (DRAFT), `lexarena judges ...` | D-070, D-071 |
+| `parth/step-12-evaluator` | `lexarena/evaluator/`, `lexarena/baselines/`, `lexarena evaluate ...`, `lexarena baseline single` | D-072 |
+| `parth/step-13-runner` | `lexarena/runner/`, `lexarena run ...`, quota exit code 75 | D-073 |
+| `parth/review-viewer` | `lexarena/ui/` Streamlit viewer, `ui` dependency group | D-074 |
+
+**For Aryan's Step 9 orchestrator:** after the session, resolve the bench's law with
+`judges.run.law_for_bench(case, turns, law_repo, AsOf.for_case(full_case), cfg)`, build
+`BenchInputs(case, turns, law, fetch_precedent=tools_for(Role.JUDGE, tools)["get_precedent"])`, call
+`Bench(...).decide(inputs, session_id=...)` and record with
+`SessionRepository.record_bench_verdict(sid, decisions=..., bench=..., themis_global=...)`. The session CLI the run
+manager will call must print a final JSON line with `session_id` and exit 75 on a rate limit
+(`lexarena.cli` already does this for every command).
+
+**Waiting on Aryan:** Q-031 (schema change, persona approval), Q-032 (who builds reflection).
+**Risks found:** R-030 (advocacy score is order-sensitive), R-031 (pleadings-only trials are not verdicts),
+R-032 (quota buckets per key variable).

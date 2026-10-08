@@ -57,14 +57,17 @@ One step per session. Tick a step only when every "done when" item holds and I h
 - [ ] **Step 11: Judges**
   - Build: persona prompts (drafted into `review/` for my approval); issue-wise reasoned decisions, each decided twice in swapped order; abstention on disagreement; majority verdict with dissent; advocacy scores as the secondary measure and tie-breaker; THEMIS layer 1 check of judge references with one revision; validator with ID checks (D-048).
   - Done when: on dev sessions, the order-swap disagreement rate per judge and the score gap distribution (SPEC E1: 0.15) are reported against limits fixed in config before measuring; every reason cites valid IDs (D-024); each judge's overall result follows from its issue findings.
+  - Status 2026-10-08 (Parth, branch `parth/step-11-judges`): built (D-070, D-071). Live pleadings-only trial on DEV_0001: 3-0, every order agreed, no revision, all IDs valid; advocacy-score order gaps 0.295 / 0.275 / 0.095 against 0.15 (R-030). Not met as written: no dev *sessions* exist until Step 9; persona prompts await your approval (Q-031).
 
 - [ ] **Step 12: Evaluator and reflection**
   - Build: post-verdict unseal, per-issue alignment, lesson extraction with provenance, rejection of base-rate lessons and lessons containing names, three-step dedup, weighting with decay.
   - Done when: lessons from 3 dev cases are general, typed and sourced, and contain no names; evidence-driven mismatches produce none.
+  - Status 2026-10-08 (Parth, branch `parth/step-12-evaluator`): evaluator, baselines and statistics built (D-072); reflection unassigned (Q-032). Evaluated only on test data: no real session exists yet.
 
 - [ ] **Step 13: Run manager and reports**
   - Build: sequential runner in date order, dispute grouping for splits, memory snapshots, frozen-memory test mode, empty-memory baseline mode, ablation switches, metrics report.
   - Done when: a dry run over the dev set produces the full report, and test mode provably writes nothing to memory.
+  - Status 2026-10-08 (Parth, branch `parth/step-13-runner`): built (D-073). Dry run and a real FROZEN run over the clerked dev set (`reports/step13_*.md`); memory proof holds; SESSION and REFLECT are NOT_BUILT stages until Steps 9 and 12 (reflection) exist.
 
 - [ ] **Step 14: Calibrate and freeze**
   - Build: calibration of thresholds and weights on the dev set only; `config.v1` frozen; tag `v1.0`; clear memory.

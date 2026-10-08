@@ -233,6 +233,11 @@ Run from the repo root. Secrets live only in three git-ignored files (template i
 | Validate precedents, or embed and load them into Qdrant (incremental) | `.venv/Scripts/lexarena precedents validate`, `.venv/Scripts/lexarena precedents load` |
 | Check Law DB and precedents against the frozen formats | `.venv/Scripts/python scripts/check_formats.py` |
 | Quarantine dev-case precedents | `python scripts/quarantine_dev_overlap.py [--dry-run]` |
+| Judge persona prompts: status, drafts, approval (you approve; Claude never does) | `.venv/Scripts/lexarena judges personas\|draft-personas\|approve PERSONA --by NAME\|reject PERSONA --by NAME --reason R` |
+| The bench on a clerked case's pleaded grounds (spends quota; not a verdict) | `.venv/Scripts/lexarena judges trial --case-id ID [--allow-draft-personas]` |
+| Single-LLM baseline; evaluate a session; metrics over outcomes | `.venv/Scripts/lexarena baseline single --case-id ID --out F`, `lexarena evaluate session SID`, `lexarena evaluate report --outcomes F...` |
+| Runs: plan, execute or resume, status, report | `.venv/Scripts/lexarena run plan RUN --mode LEARN\|FROZEN\|EMPTY [--dry-run]`, `run go RUN [--max-cases N]`, `run status RUN`, `run report RUN` |
+| Clerk-review viewer (needs `uv sync --group ui`) | `.venv/Scripts/streamlit run lexarena/ui/app.py` |
 
 **On a new machine:** clone, `uv sync --python 3.12`, `.venv/Scripts/python scripts/make_env.py`, copy your API keys into `.env.local`, `docker compose --env-file .env.docker up -d`, then `lexarena law load`, `lexarena review load` and `lexarena precedents load`. MongoDB and Qdrant are rebuilt from the files in git; nothing else needs copying.
 
