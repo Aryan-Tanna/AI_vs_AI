@@ -1,14 +1,83 @@
 {
   "purpose": "Precedent records that ARE a dev-set judgment (exact same case). Moved out of data/precedents/ so no agent, THEMIS or judge tool can retrieve them. Matched on precedent_id AND decision_date AND title text, because 157 precedent_ids collide. Decision D-019 (amended by D-020): only exact cases are moved; connected disputes stay in the precedent DB and are excluded per case by excluded_precedent_ids (SPEC B1).",
   "entries": [
-    {"precedent_id": "2020_NCLAT_DEL_502", "decision_date": "2020-10-07", "title_contains": "Anup Sushil Dubey", "dev_case": "Anup_Dubey_vs_National_Agricultural_Co_Operative_on_7_October_2020", "relation": "SAME_CASE"},
-    {"precedent_id": "2022_NCLAT_DEL_240", "decision_date": "2022-09-16", "title_contains": "Citi Securities", "dev_case": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022", "relation": "SAME_CASE"},
-    {"precedent_id": "2024_NCLAT_DEL_63", "decision_date": "2024-07-01", "title_contains": "Deepak Sakharam Kulkarni", "dev_case": "Dsk_Global_Education_And_Research_vs_Mr_Manoj_Kumar_Agarwal_And_Ors_on_1_July_2024", "relation": "SAME_CASE"},
-    {"precedent_id": "2020_NCLAT_DEL_384", "decision_date": "2020-12-09", "title_contains": "Muhamad Yavar Dhala", "dev_case": "Muhamad_Yavar_Dhala_vs_Kavita_Surana_Liquidator_Of_Forward_on_9_December_2020", "relation": "SAME_CASE"},
-    {"precedent_id": "2018_NCLAT_DEL_590", "decision_date": "2018-09-05", "title_contains": "Ananthapadmanaban", "dev_case": "O_A_A_Ananthapadmanaban_Chettiar_vs_Sri_Mahalakshmi_Textiles_on_5_September_2018", "relation": "SAME_CASE"},
-    {"precedent_id": "2024_NCLAT_DEL_1016", "decision_date": "2024-07-08", "title_contains": "Paras Builders", "dev_case": "Paras_Builders_And_Promoters_vs_Asrec_India_Limited_And_Ors_on_8_July_2024", "relation": "SAME_CASE"},
-    {"precedent_id": "2022_NCLAT_DEL_312", "decision_date": "2022-12-12", "title_contains": "Pramod Kumar Pathak", "dev_case": "Pramod_Kumar_Pathak_vs_Arfat_Petrochemicals_Private_Limited_on_12_December_2022", "relation": "SAME_CASE"},
-    {"precedent_id": "2020_NCLAT_DEL_972", "decision_date": "2020-11-17", "title_contains": "Krishidhan Seeds", "dev_case": "State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020", "relation": "SAME_CASE"}
+    {
+      "precedent_id": "2020_NCLAT_DEL_502",
+      "decision_date": "2020-10-07",
+      "title_contains": "Anup Sushil Dubey",
+      "dev_case": "Anup_Dubey_vs_National_Agricultural_Co_Operative_on_7_October_2020",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2022_NCLAT_DEL_240",
+      "decision_date": "2022-09-16",
+      "title_contains": "Citi Securities",
+      "dev_case": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2024_NCLAT_DEL_63",
+      "decision_date": "2024-07-01",
+      "title_contains": "Deepak Sakharam Kulkarni",
+      "dev_case": "Dsk_Global_Education_And_Research_vs_Mr_Manoj_Kumar_Agarwal_And_Ors_on_1_July_2024",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2020_NCLAT_DEL_384",
+      "decision_date": "2020-12-09",
+      "title_contains": "Muhamad Yavar Dhala",
+      "dev_case": "Muhamad_Yavar_Dhala_vs_Kavita_Surana_Liquidator_Of_Forward_on_9_December_2020",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2018_NCLAT_DEL_590",
+      "decision_date": "2018-09-05",
+      "title_contains": "Ananthapadmanaban",
+      "dev_case": "O_A_A_Ananthapadmanaban_Chettiar_vs_Sri_Mahalakshmi_Textiles_on_5_September_2018",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2024_NCLAT_DEL_1016",
+      "decision_date": "2024-07-08",
+      "title_contains": "Paras Builders",
+      "dev_case": "Paras_Builders_And_Promoters_vs_Asrec_India_Limited_And_Ors_on_8_July_2024",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2022_NCLAT_DEL_312",
+      "decision_date": "2022-12-12",
+      "title_contains": "Pramod Kumar Pathak",
+      "dev_case": "Pramod_Kumar_Pathak_vs_Arfat_Petrochemicals_Private_Limited_on_12_December_2022",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2020_NCLAT_DEL_972",
+      "decision_date": "2020-11-17",
+      "title_contains": "Krishidhan Seeds",
+      "dev_case": "State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2026_NCLAT_DEL_2319",
+      "decision_date": "2026-01-09",
+      "title_contains": "Syonira Invecast",
+      "dev_case": "Employees_Provident_Fund_Organisation_vs_Consortium_Led_By_Syonira_Invecast_on_9_January_2026",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2026_NCLAT_DEL_500",
+      "decision_date": "2026-01-07",
+      "title_contains": "Pranav Ansal",
+      "dev_case": "Gagan_Tondon_vs_Il_Fs_Financial_Services_Limited_on_7_January_2026",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2026_NCLAT_DEL_1231",
+      "decision_date": "2026-06-30",
+      "title_contains": "Ayyagari Viswanadha Sarma",
+      "dev_case": "New_Okhla_Industrial_Development_vs_Ayyagari_Viswanadha_Sarma_Resolution_on_30_June_2026",
+      "relation": "SAME_CASE"
+    }
   ],
   "connected_not_moved": {
     "note": "Same dispute, corporate debtor or company as a dev case. Left in the precedent DB. The clerk's overlap check (Step 6) must put these in that dev case's excluded_precedent_ids; this list is the expected answer for that test.",
@@ -19,23 +88,103 @@
       "GROUP_COMPANY": "A group company of the dev corporate debtor"
     },
     "entries": [
-      {"precedent_id": "2021_NCLAT_DEL_335", "decision_date": "2021-09-21", "title_contains": "UCO Bank vs Sudip Bhattacharya", "dev_case": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022", "relation": "SAME_CD"},
-      {"precedent_id": "2021_NCLAT_DEL_88", "decision_date": "2021-12-08", "title_contains": "Reliance Naval", "dev_case": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022", "relation": "SAME_CD"},
-      {"precedent_id": "2024_NCLAT_DEL_614", "decision_date": "2024-08-14", "title_contains": "Delhi Gymkhana", "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024", "relation": "SAME_DISPUTE"},
-      {"precedent_id": "2021_NCLAT_DEL_94", "decision_date": "2021-02-15", "title_contains": "Delhi Gymkhana", "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024", "relation": "SAME_COMPANY"},
-      {"precedent_id": "2024_NCLAT_DEL_93", "decision_date": "2024-10-21", "title_contains": "Atul Dev", "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024", "relation": "SAME_COMPANY"},
-      {"precedent_id": "2024_NCLAT_DEL_141", "decision_date": "2024-10-21", "title_contains": "Rajeev Sabharwal", "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024", "relation": "SAME_COMPANY"},
-      {"precedent_id": "2025_NCLAT_DEL_59", "decision_date": "2025-04-08", "title_contains": "Delhi Gymkhana", "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024", "relation": "SAME_COMPANY"},
-      {"precedent_id": "2018_NCLAT_DEL_59", "decision_date": "2018-03-05", "title_contains": "Amar Remedies", "dev_case": "Pkh_Ventures_Limited_vs_Monitoring_Agency_Of_Amar_Remedies_on_1_July_2024", "relation": "SAME_CD"},
-      {"precedent_id": "2021_NCLAT_DEL_93", "decision_date": "2021-02-16", "title_contains": "Arfat Petrochemicals", "dev_case": "Pramod_Kumar_Pathak_vs_Arfat_Petrochemicals_Private_Limited_on_12_December_2022", "relation": "SAME_CD"},
-      {"precedent_id": "2017_NCLAT_DEL_361", "decision_date": "2017-12-21", "title_contains": "Karwa", "dev_case": "State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020", "relation": "SAME_COMPANY"},
-      {"precedent_id": "2022_NCLAT_DEL_690", "decision_date": "2022-07-15", "title_contains": "Prashant Agarwal", "dev_case": "public db trial (Satish Kumar Gupta vs EPFO, 11 September 2024)", "relation": "SAME_CD"},
-      {"precedent_id": "2025_NCLAT_DEL_698", "decision_date": "2025-07-09", "title_contains": "Gangadhar A. Kotian", "dev_case": "public db trial (Satish Kumar Gupta vs EPFO, 11 September 2024)", "relation": "GROUP_COMPANY"}
+      {
+        "precedent_id": "2021_NCLAT_DEL_335",
+        "decision_date": "2021-09-21",
+        "title_contains": "UCO Bank vs Sudip Bhattacharya",
+        "dev_case": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022",
+        "relation": "SAME_CD"
+      },
+      {
+        "precedent_id": "2021_NCLAT_DEL_88",
+        "decision_date": "2021-12-08",
+        "title_contains": "Reliance Naval",
+        "dev_case": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022",
+        "relation": "SAME_CD"
+      },
+      {
+        "precedent_id": "2024_NCLAT_DEL_614",
+        "decision_date": "2024-08-14",
+        "title_contains": "Delhi Gymkhana",
+        "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024",
+        "relation": "SAME_DISPUTE"
+      },
+      {
+        "precedent_id": "2021_NCLAT_DEL_94",
+        "decision_date": "2021-02-15",
+        "title_contains": "Delhi Gymkhana",
+        "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024",
+        "relation": "SAME_COMPANY"
+      },
+      {
+        "precedent_id": "2024_NCLAT_DEL_93",
+        "decision_date": "2024-10-21",
+        "title_contains": "Atul Dev",
+        "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024",
+        "relation": "SAME_COMPANY"
+      },
+      {
+        "precedent_id": "2024_NCLAT_DEL_141",
+        "decision_date": "2024-10-21",
+        "title_contains": "Rajeev Sabharwal",
+        "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024",
+        "relation": "SAME_COMPANY"
+      },
+      {
+        "precedent_id": "2025_NCLAT_DEL_59",
+        "decision_date": "2025-04-08",
+        "title_contains": "Delhi Gymkhana",
+        "dev_case": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024",
+        "relation": "SAME_COMPANY"
+      },
+      {
+        "precedent_id": "2018_NCLAT_DEL_59",
+        "decision_date": "2018-03-05",
+        "title_contains": "Amar Remedies",
+        "dev_case": "Pkh_Ventures_Limited_vs_Monitoring_Agency_Of_Amar_Remedies_on_1_July_2024",
+        "relation": "SAME_CD"
+      },
+      {
+        "precedent_id": "2021_NCLAT_DEL_93",
+        "decision_date": "2021-02-16",
+        "title_contains": "Arfat Petrochemicals",
+        "dev_case": "Pramod_Kumar_Pathak_vs_Arfat_Petrochemicals_Private_Limited_on_12_December_2022",
+        "relation": "SAME_CD"
+      },
+      {
+        "precedent_id": "2017_NCLAT_DEL_361",
+        "decision_date": "2017-12-21",
+        "title_contains": "Karwa",
+        "dev_case": "State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020",
+        "relation": "SAME_COMPANY"
+      },
+      {
+        "precedent_id": "2022_NCLAT_DEL_690",
+        "decision_date": "2022-07-15",
+        "title_contains": "Prashant Agarwal",
+        "dev_case": "public db trial (Satish Kumar Gupta vs EPFO, 11 September 2024)",
+        "relation": "SAME_CD"
+      },
+      {
+        "precedent_id": "2025_NCLAT_DEL_698",
+        "decision_date": "2025-07-09",
+        "title_contains": "Gangadhar A. Kotian",
+        "dev_case": "public db trial (Satish Kumar Gupta vs EPFO, 11 September 2024)",
+        "relation": "GROUP_COMPANY"
+      },
+      {
+        "precedent_id": "2021_NCLAT_DEL_2440",
+        "decision_date": "2021-09-17",
+        "title_contains": "Rama Investment Company",
+        "dev_case": "Ankit_Mittal_vs_Ankita_Pratisthan_Ltd_Ors_on_29_November_2019",
+        "relation": "SAME_DISPUTE"
+      }
     ]
   },
   "reviewed_not_relevant": [
     "Authorities cited inside dev judgments (matched only by appeal number): different disputes, legitimately citable.",
-    "2026_NCLAT_DEL_110 and 2026_NCLAT_DEL_187 (Truvisory Insolvency Professionals): other matters of the appellant IPE; not the same dispute or corporate debtor."
+    "2026_NCLAT_DEL_110 and 2026_NCLAT_DEL_187 (Truvisory Insolvency Professionals): other matters of the appellant IPE; not the same dispute or corporate debtor.",
+    "2025_NCLAT_DEL_2373 and 2025_NCLAT_DEL_1103_1084 (Divyesh Desai as RP of other corporate debtors): not the dev case's corporate debtor (Trend Electronics)."
   ],
   "no_match_found": [
     "Armour Security vs Ambience (corporate debtor Ambience Pvt Ltd)",
@@ -43,6 +192,8 @@
     "G. Balasubramaniam vs Mahalingam Suresh Kumar (corporate debtor GBJ Hotels Pvt Ltd)",
     "Rajat Metaal Polychem vs Neeraj Bhatia (corporate debtor name not yet extracted)",
     "Col A. Khanna vs Delhi Gymkhana (the order itself is not in the DB; its connected records are listed above)",
-    "Satish Kumar Gupta vs EPFO (the order itself is not in the DB; its connected records are listed above)"
+    "Satish Kumar Gupta vs EPFO (the order itself is not in the DB; its connected records are listed above)",
+    "Encote Energy vs V. Venkatachalam",
+    "Vinod Kumar Jain vs Siddha Domicile"
   ]
 }

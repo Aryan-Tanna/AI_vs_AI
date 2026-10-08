@@ -1,0 +1,42 @@
+{
+  "purpose": "What each PDF in data/dev is, so the clerk and the dev runs use only in-scope cases (D-001: NCLT and NCLAT proceedings). Files are never moved or edited; this list classifies them. Precedent-DB overlap for each dev case is in data/sealed/dev_overlap_manifest.json.",
+  "statuses": {
+    "DEV_CASE": "NCLAT appeal in scope; may be clerked and simulated",
+    "SHORT_ORDER": "In scope but 2-3 pages; probably too thin for a 10-turn session (R-005)",
+    "SC_AUTHORITY": "Supreme Court judgment: out of simulation scope (D-001); kept as a verified source for the SC side collection (Q-026)",
+    "DUPLICATE": "Same judgment as another file"
+  },
+  "files": [
+    {"file": "Anup_Dubey_vs_National_Agricultural_Co_Operative_on_7_October_2020.PDF", "forum": "NCLAT", "decided": "2020-10-07", "status": "DEV_CASE"},
+    {"file": "Armour_Security_India_Private_Limited_vs_Ambience_Private_Limited_on_17_September_2024.PDF", "forum": "NCLAT", "decided": "2024-09-17", "status": "DEV_CASE"},
+    {"file": "Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022.PDF", "forum": "NCLAT", "decided": "2022-09-16", "status": "DEV_CASE"},
+    {"file": "Col_A_Khanna_Sm_Retd_vs_Delhi_Gymkhana_Club_Limited_Anr_on_13_September_2024.PDF", "forum": "NCLAT", "decided": "2024-09-13", "status": "SHORT_ORDER"},
+    {"file": "Department_Of_State_Tax_vs_Siddheshwar_Industries_Pvt_Ltd_Anr_on_12_July_2024.PDF", "forum": "NCLAT", "decided": "2024-07-12", "status": "SHORT_ORDER"},
+    {"file": "Dsk_Global_Education_And_Research_vs_Mr_Manoj_Kumar_Agarwal_And_Ors_on_1_July_2024.PDF", "forum": "NCLAT", "decided": "2024-07-01", "status": "DEV_CASE"},
+    {"file": "Mr_G_Balasubramaniam_vs_Ca_Mahalingam_Suresh_Kumar_on_10_October_2023.PDF", "forum": "NCLAT", "decided": "2023-10-10", "status": "DEV_CASE"},
+    {"file": "Muhamad_Yavar_Dhala_vs_Kavita_Surana_Liquidator_Of_Forward_on_9_December_2020.PDF", "forum": "NCLAT", "decided": "2020-12-09", "status": "DEV_CASE"},
+    {"file": "O_A_A_Ananthapadmanaban_Chettiar_vs_Sri_Mahalakshmi_Textiles_on_5_September_2018.PDF", "forum": "NCLAT", "decided": "2018-09-05", "status": "DEV_CASE"},
+    {"file": "Paras_Builders_And_Promoters_vs_Asrec_India_Limited_And_Ors_on_8_July_2024.PDF", "forum": "NCLAT", "decided": "2024-07-08", "status": "SHORT_ORDER"},
+    {"file": "Pkh_Ventures_Limited_vs_Monitoring_Agency_Of_Amar_Remedies_on_1_July_2024.PDF", "forum": "NCLAT", "decided": "2024-07-01", "status": "DEV_CASE"},
+    {"file": "Pramod_Kumar_Pathak_vs_Arfat_Petrochemicals_Private_Limited_on_12_December_2022.PDF", "forum": "NCLAT", "decided": "2022-12-12", "status": "DEV_CASE"},
+    {"file": "public db trial.pdf", "forum": "NCLAT", "decided": "2024-09-11", "status": "DEV_CASE", "note": "Satish Kumar Gupta v. EPFO, Company Appeal (AT) (Ins.) No. 580 of 2023"},
+    {"file": "Rajat_Metaal_Polychem_Pvt_Ltd_vs_Neeraj_Bhatia_And_Anr_on_4_September_2024.PDF", "forum": "NCLAT", "decided": "2024-09-04", "status": "DEV_CASE"},
+    {"file": "State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020.PDF", "forum": "NCLAT", "decided": "2020-11-17", "status": "SHORT_ORDER", "note": "3 pages, but a complete s.7 limitation and acknowledgment dispute; used as the short-order clerk test"},
+    {"file": "New dev cases/Ankit_Mittal_vs_Ankita_Pratisthan_Ltd_Ors_on_29_November_2019.PDF", "forum": "NCLAT", "decided": "2019-11-29", "status": "DEV_CASE"},
+    {"file": "New dev cases/Employees_Provident_Fund_Organisation_vs_Consortium_Led_By_Syonira_Invecast_on_9_January_2026.PDF", "forum": "NCLAT", "decided": "2026-01-09", "status": "DEV_CASE"},
+    {"file": "New dev cases/Encote_Energy_India_Pvt_Ltd_vs_V_Venkatachalam_on_13_November_2019.PDF", "forum": "NCLAT", "decided": "2019-11-13", "status": "SHORT_ORDER"},
+    {"file": "New dev cases/Gagan_Tondon_vs_Il_Fs_Financial_Services_Limited_on_7_January_2026.PDF", "forum": "NCLAT", "decided": "2026-01-07", "status": "DEV_CASE"},
+    {"file": "New dev cases/Pranav_Ansal_vs_Il_Fs_Financial_Services_Limited_on_7_January_2026.PDF", "forum": "NCLAT", "decided": "2026-01-07", "status": "DUPLICATE", "note": "Same judgment as Gagan_Tondon_vs_Il_Fs_Financial_Services_Limited_on_7_January_2026 (Company Appeal (AT) (Insolvency) No. 500 of 2025; identical text length)"},
+    {"file": "New dev cases/Mr_Divyesh_Desai_vs_Life_Insurance_Corporation_Of_India_on_6_May_2026.PDF", "forum": "NCLAT", "decided": "2026-05-06", "status": "DEV_CASE"},
+    {"file": "New dev cases/New_Okhla_Industrial_Development_vs_Ayyagari_Viswanadha_Sarma_Resolution_on_30_June_2026.PDF", "forum": "NCLAT", "decided": "2026-06-30", "status": "DEV_CASE", "note": "Decides Company Appeals (AT) (Ins.) Nos. 949 and 1231 of 2023 together"},
+    {"file": "New dev cases/Vinod_Kumar_Jain_vs_Siddha_Domicile_Company_Pvt_Ltd_Ors_on_11_November_2019.PDF", "forum": "NCLAT", "decided": "2019-11-11", "status": "SHORT_ORDER"},
+    {"file": "New dev cases/Alpha Corp Development Private Limited.pdf", "forum": "SC", "decided": "2026-05-05", "status": "SC_AUTHORITY"},
+    {"file": "New dev cases/ANJANI TECHNOPLAST LTD. …APPELLANT(S).pdf", "forum": "SC", "decided": null, "status": "SC_AUTHORITY", "note": "2026 INSC 410; decision date to be read from the judgment"},
+    {"file": "New dev cases/CA RAMCHANDRA DALLARAM CHOUDHARY …APPELLANT.pdf", "forum": "SC", "decided": null, "status": "SC_AUTHORITY", "note": "2026 INSC 629"},
+    {"file": "New dev cases/Committee of Creditors of Essar Steel India Limited.pdf", "forum": "SC", "decided": null, "status": "SC_AUTHORITY", "note": "Landmark; models will have memorised it"},
+    {"file": "New dev cases/Elegna Co-op. Housing and Commercial Society Ltd..pdf", "forum": "SC", "decided": "2026-01-15", "status": "SC_AUTHORITY"},
+    {"file": "New dev cases/INNOVENTIVE INDUSTRIES LTD. …APPELLANT.pdf", "forum": "SC", "decided": null, "status": "SC_AUTHORITY", "note": "Landmark; models will have memorised it"},
+    {"file": "New dev cases/Pioneer Urban Land and Infrastructure …Petitioners.pdf", "forum": "SC", "decided": null, "status": "SC_AUTHORITY", "note": "Landmark; models will have memorised it"},
+    {"file": "New dev cases/Srinivasa Reddy Velagala.pdf", "forum": "SC", "decided": "2026-08-12", "status": "SC_AUTHORITY"}
+  ]
+}

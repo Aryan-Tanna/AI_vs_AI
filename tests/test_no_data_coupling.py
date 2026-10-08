@@ -45,10 +45,13 @@ def _precedent_ids() -> set[str]:
 def _dev_party_names() -> set[str]:
     """Two-word name fragments from the dev judgment file names (e.g. 'Anup Dubey')."""
     names: set[str] = set()
-    for path in (REPO_ROOT / "data" / "dev").glob("*.PDF"):
+    for path in (REPO_ROOT / "data" / "dev").rglob("*"):
+        if path.suffix.lower() != ".pdf":
+            continue
         title = re.split(r"_on_\d", path.stem)[0]
-        for side in title.split("_vs_"):
-            words = [w for w in side.split("_") if w.lower() not in NAME_STOPWORDS and len(w) > 2]
+        for side in re.split(r"_vs_|\s+v(?:s)?\.?\s+", title):
+            words = [w for w in re.split(r"[_\s]+", re.sub(r"[^\w\s]", " ", side)) if w]
+            words = [w for w in words if w.lower() not in NAME_STOPWORDS and len(w) > 2]
             names.update(f"{a} {b}".lower() for a, b in pairwise(words))
     return names
 
