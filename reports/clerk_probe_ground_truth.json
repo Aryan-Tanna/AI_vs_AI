@@ -1,0 +1,176 @@
+{
+ "_id": "DEV_PROBE",
+ "access": "SEALED_UNTIL_VERDICT",
+ "citation": {
+  "case_number": "Company Appeal (AT) (Insolvency) No. 972 of 2020",
+  "arising_from": "impugned order dated 16.09.2020 passed by the Adjudicating Authority (National Company Law Tribunal), Indore Bench at Ahmedabad, Court-1",
+  "bench": [
+   "Justice Bansi Lal Bhat, Acting Chairperson",
+   "Justice Anant Bijay Singh, Member (Judicial)",
+   "Dr. Ashok Kumar Mishra, Member (Technical)"
+  ],
+  "decision_date": "2020-11-17",
+  "source_title": "State Bank Of India vs Krishidhan Seeds Pvt Ltd on 17 November, 2020"
+ },
+ "anonymization_map": {
+  "Bank-H": "State Bank of India",
+  "Company-B": "Krishidhan Seeds Pvt. Ltd.",
+  "Person-P": "Arun Kathpalia",
+  "Person-O": "Pallavi Kumar",
+  "Person-K": "Varghese Thomas",
+  "Person-W": "Fatema Kachwalla",
+  "Person-Y": "Justice Bansi Lal Bhat",
+  "Person-X": "Justice AnantBijay Singh",
+  "Person-N": "Dr. Ashok Kumar Mishra"
+ },
+ "real_submissions": {
+  "PETITIONER": [
+   {
+    "issue_id": "I1",
+    "contention": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute an acknowledgment of liability under Section 18 of the Limitation Act, 1963, thereby extending the limitation period and making the Section 7 application filed on 19.09.2018 within time.",
+    "statutes_cited": [
+     "IBC_2016_SEC_7",
+     "LIMITATION_ACT_1963_SEC_18",
+     "IBC_2016_SEC_238"
+    ],
+    "authorities_cited": [
+     {
+      "name": "B.K. Educational Services Private Limited Vs. Parag Gupta and Associates",
+      "precedent_id": null,
+      "forum": "SC",
+      "proposition": "The provisions of the Limitation Act, 1963 apply to proceedings under the IBC, and Section 238A is clarificatory in nature."
+     }
+    ],
+    "source_paras": [
+     "P1",
+     "P2"
+    ]
+   }
+  ],
+  "RESPONDENT": []
+ },
+ "statutory_analysis": [
+  {
+   "statute_id": "LIMITATION_ACT_1963_ART_137",
+   "interpretation": "Prescribes a three-year limitation period for applications under Section 7 of the IBC, commencing from the date of default, which is extendable only under Section 5 of the Limitation Act.",
+   "interacts_with": [
+    "IBC_2016_SEC_7",
+    "LIMITATION_ACT_1963_SEC_5"
+   ],
+   "source_paras": [
+    "P3"
+   ]
+  },
+  {
+   "statute_id": "LIMITATION_ACT_1963_SEC_18",
+   "interpretation": "Cannot be utilized to extend the limitation period for triggering CIRP under Section 7 of the IBC based on subsequent OTS proposals when the date of default is already fixed.",
+   "interacts_with": [
+    "IBC_2016_SEC_7"
+   ],
+   "source_paras": [
+    "P4"
+   ]
+  },
+  {
+   "statute_id": "IBC_2016_SEC_7",
+   "interpretation": "An application under Section 7 must be filed within three years from the date of default, and this period is not extended by subsequent OTS proposals or acknowledgments under Section 18 of the Limitation Act.",
+   "interacts_with": [
+    "LIMITATION_ACT_1963_ART_137",
+    "LIMITATION_ACT_1963_SEC_18"
+   ],
+   "source_paras": [
+    "P3",
+    "P4"
+   ]
+  }
+ ],
+ "precedent_analysis": [
+  {
+   "name": "B.K. Educational Services Private Limited Vs. Parag Gupta and Associates",
+   "precedent_id": null,
+   "forum": "SC",
+   "bench_strength": null,
+   "cited_by": "PETITIONER",
+   "treatment": "FOLLOWED",
+   "proposition": "The limitation period for an application under Section 7 of the IBC is three years as provided by Article 137 of the Limitation Act, which commences from the date of default and is extendable only by application of Section 5 of the Limitation Act.",
+   "later_history": null,
+   "source_paras": [
+    "P2",
+    "P3"
+   ]
+  },
+  {
+   "name": "Jignesh Shah & Anr. Vs. Union of India & Anr.",
+   "precedent_id": null,
+   "forum": "SC",
+   "bench_strength": null,
+   "cited_by": "COURT",
+   "treatment": "APPLIED",
+   "proposition": "A winding up petition filed beyond three years from the date of default is barred by limitation.",
+   "later_history": null,
+   "source_paras": [
+    "P3"
+   ]
+  },
+  {
+   "name": "Gaurav Hargovindbhai Dave Vs. Asset Reconstruction Company (India) Ltd & Anr.",
+   "precedent_id": null,
+   "forum": "SC",
+   "bench_strength": null,
+   "cited_by": "COURT",
+   "treatment": "APPLIED",
+   "proposition": "Limitation begins to run from the date of NPA and an application filed beyond three years from that date is barred by limitation.",
+   "later_history": null,
+   "source_paras": [
+    "P3"
+   ]
+  }
+ ],
+ "issue_findings": [
+  {
+   "issue_id": "I1",
+   "favours": "RESPONDENT",
+   "driver": "MIXED",
+   "finding": "The One Time Settlement proposals do not extend the period of limitation under Section 18 of the Limitation Act, 1963 for filing a Section 7 application.",
+   "reasoning": "The date of default was recorded as 10th June, 2014, and the Section 7 application was filed on 19th September, 2018, which is more than three years later. The limitation period of three years under Article 137 of the Limitation Act commences from the date of default and cannot be shifted or extended by subsequent OTS proposals or acknowledgments under Section 18 of the Limitation Act for the purpose of triggering CIRP.",
+   "test_applied": "Whether Section 18 of the Limitation Act can be invoked to extend the limitation period for a Section 7 application based on an OTS proposal when the application is filed beyond three years from the date of default.",
+   "decisive_points": [
+    "The date of default was recorded as 10th June, 2014.",
+    "The Section 7 application was filed on 19th September, 2018.",
+    "Section 18 of the Limitation Act cannot be used to extend the limitation period for triggering CIRP under Section 7 of the IBC."
+   ],
+   "authorities_relied_on": [
+    "B.K. Educational Services Private Limited Vs. Parag Gupta and Associates",
+    "Jignesh Shah & Anr. Vs. Union of India & Anr.",
+    "Gaurav Hargovindbhai Dave Vs. Asset Reconstruction Company (India) Ltd & Anr."
+   ],
+   "source_paras": [
+    "P3",
+    "P4"
+   ]
+  }
+ ],
+ "conclusion": {
+  "disposition": "DISMISSED",
+  "reliefs": [
+   {
+    "relief": "Set aside the impugned order dated 16.09.2020 passed by the Adjudicating Authority",
+    "sought_by": "PETITIONER",
+    "outcome": "REFUSED"
+   },
+   {
+    "relief": "Admit the application under Section 7 of the Insolvency and Bankruptcy Code, 2016",
+    "sought_by": "PETITIONER",
+    "outcome": "REFUSED"
+   },
+   {
+    "relief": "Dismiss the appeal",
+    "sought_by": "RESPONDENT",
+    "outcome": "GRANTED"
+   }
+  ],
+  "directions": [],
+  "costs": "No costs",
+  "overall_favours": "RESPONDENT"
+ }
+}

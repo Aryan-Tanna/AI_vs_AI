@@ -1,0 +1,195 @@
+{
+ "parties": [
+  {
+   "party_id": "A1",
+   "pseudonym": "Bank-H",
+   "status": "FINANCIAL_CREDITOR",
+   "simulation_side": "PETITIONER",
+   "appeal_position": "APPELLANT",
+   "represented_by_agent": "LEX_P",
+   "substituted_from": null
+  },
+  {
+   "party_id": "R1",
+   "pseudonym": "Company-B",
+   "status": "CORPORATE_DEBTOR",
+   "simulation_side": "RESPONDENT",
+   "appeal_position": "RESPONDENT_1",
+   "represented_by_agent": "LEX_D",
+   "substituted_from": null
+  }
+ ],
+ "factual_background": "The default in respect of the financial debt occurred on 10th June, 2014 [F1]. The Corporate Debtor sent a One Time Settlement proposal on 13th June, 2015 [F4] [EX-1]. The Financial Creditor approached the Debts Recovery Tribunal on 20th October, 2015 [F3]. The Corporate Debtor reiterated its One Time Settlement proposal on 6th November, 2015 [F5] [EX-2]. The Financial Creditor filed an application under Section 7 of the Insolvency and Bankruptcy Code, 2016 on 19th September, 2018 [F2]. The Adjudicating Authority rejected the application on 16th September, 2020 [F6].",
+ "record": {
+  "stipulated_facts": [
+   {
+    "fact_id": "F1",
+    "text": "The date of default is recorded as 10th June, 2014.",
+    "source_paras": [
+     "P4.S1"
+    ]
+   },
+   {
+    "fact_id": "F2",
+    "text": "The Appellant filed an application under Section 7 of the Insolvency and Bankruptcy Code, 2016 on 19th September, 2018.",
+    "source_paras": [
+     "P2",
+     "P4.S1"
+    ]
+   },
+   {
+    "fact_id": "F3",
+    "text": "The Financial Creditor approached the Debts Recovery Tribunal on 20th October, 2015.",
+    "source_paras": [
+     "P4.S3"
+    ]
+   },
+   {
+    "fact_id": "F4",
+    "text": "The Corporate Debtor sent a One Time Settlement proposal dated 13th June, 2015.",
+    "source_paras": [
+     "P2"
+    ]
+   },
+   {
+    "fact_id": "F5",
+    "text": "The Corporate Debtor reiterated its One Time Settlement proposal on 6th November, 2015.",
+    "source_paras": [
+     "P2"
+    ]
+   },
+   {
+    "fact_id": "F6",
+    "text": "The Adjudicating Authority rejected the Section 7 application on 16th September, 2020.",
+    "source_paras": [
+     "P1"
+    ]
+   }
+  ],
+  "contested_facts": [],
+  "exhibits": [
+   {
+    "exhibit_id": "EX-1",
+    "title": "Annexure A-14",
+    "filed_by": "A1",
+    "known_contents": [
+     "One Time Settlement proposal from the Corporate Debtor expressing inability to revive the company and proposing to raise funds from various investors for taking over of its business subject to settlement of its liabilities towards the lenders/ financial creditors"
+    ],
+    "contents_beyond_known": "UNKNOWN",
+    "authenticity": "PRESUMED",
+    "source_paras": [
+     "P2"
+    ]
+   },
+   {
+    "exhibit_id": "EX-2",
+    "title": "Annexure A-16",
+    "filed_by": "A1",
+    "known_contents": [
+     "Reiteration of the One Time Settlement proposal by the Corporate Debtor"
+    ],
+    "contents_beyond_known": "UNKNOWN",
+    "authenticity": "PRESUMED",
+    "source_paras": [
+     "P2"
+    ]
+   }
+  ],
+  "amounts": []
+ },
+ "procedural_history": [
+  {
+   "step": 1,
+   "date": "2018-09-19",
+   "forum": "National Company Law Tribunal, Indore Bench at Ahmedabad, Court-1",
+   "event": "Filing of application under Section 7 of the Insolvency and Bankruptcy Code, 2016",
+   "fact_id": "F2"
+  },
+  {
+   "step": 2,
+   "date": "2020-09-16",
+   "forum": "National Company Law Tribunal, Indore Bench at Ahmedabad, Court-1",
+   "event": "Rejection of the Section 7 application as being barred by limitation",
+   "fact_id": "F6"
+  }
+ ],
+ "lower_forum_order": {
+  "exists": true,
+  "forum": "National Company Law Tribunal, Indore Bench at Ahmedabad, Court-1",
+  "result": "REJECTED",
+  "directions": [
+   "The application under Section 7 of the Insolvency and Bankruptcy Code, 2016 is rejected."
+  ],
+  "reasons_summary": "The application was rejected for being hit by limitation, as it was filed more than three years after the date of default without considering the OTS proposals as valid acknowledgments of liability.",
+  "ex_parte": null
+ },
+ "framed_issues": [
+  {
+   "issue_id": "I1",
+   "question": "Whether the One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute an acknowledgment of liability under Section 18 of the Limitation Act, 1963 so as to extend the period of limitation for filing the Section 7 application.",
+   "statutes": [
+    "IBC_2016_SEC_7",
+    "LIMITATION_ACT_1963_SEC_18"
+   ],
+   "raised_by": "PETITIONER"
+  }
+ ],
+ "reliefs_sought": {
+  "PETITIONER": [
+   "Set aside the impugned order dated 16.09.2020 passed by the Adjudicating Authority",
+   "Admit the application under Section 7 of the Insolvency and Bankruptcy Code, 2016"
+  ],
+  "RESPONDENT": [
+   "Dismiss the appeal"
+  ]
+ },
+ "opening_positions": {
+  "PETITIONER": [
+   {
+    "issue_id": "I1",
+    "ground": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute a valid acknowledgment of liability, extending the limitation period.",
+    "source_paras": [
+     "P1",
+     "P2"
+    ]
+   }
+  ],
+  "RESPONDENT": [
+   {
+    "issue_id": "I1",
+    "ground": "The application under Section 7 is barred by limitation as it was filed more than three years after the date of default.",
+    "source_paras": [
+     "P1",
+     "P4.S1"
+    ]
+   }
+  ]
+ },
+ "presumptions": [
+  "Exhibits are presumed genuine and duly executed; do not object that a document was not produced.",
+  "Facts marked CONTESTED remain disputed.",
+  "Nothing is known about an exhibit beyond its known_contents."
+ ],
+ "metadata": {
+  "forum": "NCLAT",
+  "proceeding_type": "APPEAL_UNDER_SEC_61",
+  "statutes_invoked": [
+   "IBC_2016_SEC_7",
+   "IBC_2016_SEC_61",
+   "LIMITATION_ACT_1963_SEC_18"
+  ],
+  "key_dates": [
+   {
+    "label": "DEFAULT",
+    "date": "2014-06-10",
+    "fact_id": "F1"
+   },
+   {
+    "label": "FILING",
+    "date": "2018-09-19",
+    "fact_id": "F2"
+   }
+  ],
+  "simulation_date": "2020-11-17"
+ }
+}

@@ -1,0 +1,1181 @@
+{
+  "report": {
+    "source": "C:\\IPD_AIvsAI\\data\\law_db",
+    "files": 5,
+    "records_read": 139,
+    "valid": 139,
+    "parse_errors": [],
+    "malformed": [],
+    "duplicates": [],
+    "dangling_intersecting": [
+      {
+        "missing_id": "ARBITRATION_ACT_1996_SEC_17",
+        "referenced_by": [
+          "ARBITRATION_ACT_1996_SEC_9"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "ARBITRATION_ACT_1996_SEC_36",
+        "referenced_by": [
+          "ARBITRATION_ACT_1996_SEC_9"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "ARBITRATION_ACT_1996_SEC_5",
+        "referenced_by": [
+          "ARBITRATION_ACT_1996_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "ARBITRATION_ACT_1996_SEC_7",
+        "referenced_by": [
+          "ARBITRATION_ACT_1996_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "ARBITRATION_AND_CONCILIATION_ACT_1996",
+        "referenced_by": [
+          "IBC_2016_SEC_238"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "BANKERS_BOOKS_EVIDENCE_ACT_1891_SEC_2_CLAUSE_3",
+        "referenced_by": [
+          "IBBI_CIRP_REG_2A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "BANKING_REGULATION_ACT1949",
+        "referenced_by": [
+          "CA2013_SEC245"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA1956_SEC10E",
+        "referenced_by": [
+          "CA2013_SEC434"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA1956_SEC485",
+        "referenced_by": [
+          "CA2013_SEC434"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC133",
+        "referenced_by": [
+          "CA2013_SEC230",
+          "CA2013_SEC232"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC147",
+        "referenced_by": [
+          "CA2013_SEC245"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC212",
+        "referenced_by": [
+          "CA2013_SEC447"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC233",
+        "referenced_by": [
+          "CA2013_SEC230"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC234",
+        "referenced_by": [
+          "CA2013_SEC230"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC273",
+        "referenced_by": [
+          "CA2013_SEC231",
+          "CA2013_SEC232",
+          "CA2013_SEC242",
+          "CA2013_SEC271",
+          "CA2013_SEC272"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC409",
+        "referenced_by": [
+          "CA2013_SEC408"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC410",
+        "referenced_by": [
+          "CA2013_SEC408"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC411",
+        "referenced_by": [
+          "CA2013_SEC408"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC419",
+        "referenced_by": [
+          "NCLAT_RULES2016_R92",
+          "NCLAT_RULES2016_R93"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC423",
+        "referenced_by": [
+          "CA2013_SEC421"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC432",
+        "referenced_by": [
+          "NCLAT_RULES2016_R22",
+          "NCLAT_RULES2016_R63_AMD2017",
+          "NCLAT_RULES2016_R65"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC48",
+        "referenced_by": [
+          "CA2013_SEC230"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC66",
+        "referenced_by": [
+          "CA2013_SEC230"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CA2013_SEC68",
+        "referenced_by": [
+          "CA2013_SEC230"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CGST_ACT_2017",
+        "referenced_by": [
+          "IBBI_CIRP_REG_7"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CGST_ACT_2017_SEC_78",
+        "referenced_by": [
+          "CGST_ACT_2017_SEC_82"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CGST_ACT_2017_SEC_79",
+        "referenced_by": [
+          "CGST_ACT_2017_SEC_82"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CGST_ACT_2017_SEC_81",
+        "referenced_by": [
+          "CGST_ACT_2017_SEC_82"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "COMPANIES_ACT_2013",
+        "referenced_by": [
+          "IBBI_CIRP_REG_37",
+          "IBC_2016_SEC_238",
+          "IBC_2016_SEC_61"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "COMPANIES_COURT_RULES1959",
+        "referenced_by": [
+          "CA2013_SEC434"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "COMPANIES_REGISTERED_VALUERS_AND_VALUATION_RULES_2017",
+        "referenced_by": [
+          "IBBI_CIRP_REG_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "COMPETITION_ACT2002_SEC7",
+        "referenced_by": [
+          "CA2013_SEC230"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CONTEMPT_OF_COURTS_ACT1971",
+        "referenced_by": [
+          "CA2013_SEC425"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CONTRACT_ACT_1872_SEC_127",
+        "referenced_by": [
+          "CONTRACT_ACT_1872_SEC_126"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CONTRACT_ACT_1872_SEC_128",
+        "referenced_by": [
+          "CONTRACT_ACT_1872_SEC_126"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CONTRACT_ACT_1872_SEC_140",
+        "referenced_by": [
+          "CONTRACT_ACT_1872_SEC_126"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CONTRACT_ACT_1872_SEC_142",
+        "referenced_by": [
+          "CONTRACT_ACT_1872_SEC_126"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CONTRACT_ACT_1872_SEC_143",
+        "referenced_by": [
+          "CONTRACT_ACT_1872_SEC_126"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC1908",
+        "referenced_by": [
+          "CA2013_SEC241",
+          "CA2013_SEC424"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_ORDER_XXI",
+        "referenced_by": [
+          "LIMITATION_ACT_1963_SEC_5"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_SEC_10",
+        "referenced_by": [
+          "CPC_1908_SEC_11"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_SEC_12",
+        "referenced_by": [
+          "CPC_1908_SEC_11"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_SEC_47",
+        "referenced_by": [
+          "CPC_1908_SEC_11"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_SEC_9",
+        "referenced_by": [
+          "CPC_1908_SEC_11"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_SEC_94",
+        "referenced_by": [
+          "CPC_1908_ORDER_XXXIX"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CPC_1908_SEC_95",
+        "referenced_by": [
+          "CPC_1908_ORDER_XXXIX"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CRPC1973_SEC195_CH26",
+        "referenced_by": [
+          "CA2013_SEC424"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "CRPC_1973_SEC_173",
+        "referenced_by": [
+          "PMLA_2002_SEC_5"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "FEMA_FDI_NORMS",
+        "referenced_by": [
+          "CA2013_SEC232"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_14",
+        "referenced_by": [
+          "IBBI_CIRP_REG_10",
+          "IBBI_CIRP_REG_12A",
+          "IBBI_CIRP_REG_13"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_16",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A",
+          "IBBI_CIRP_REG_9"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_16B",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A",
+          "IBBI_CIRP_REG_8A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_16C",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_17",
+        "referenced_by": [
+          "IBBI_CIRP_REG_13"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_18",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_25",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_25A",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_27",
+        "referenced_by": [
+          "IBBI_CIRP_REG_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_28A",
+        "referenced_by": [
+          "IBBI_CIRP_REG_36"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_2B",
+        "referenced_by": [
+          "IBBI_CIRP_REG_2D",
+          "IBBI_CIRP_REG_7"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_2_CLAUSE_AA",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A",
+          "IBBI_CIRP_REG_8A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_2_CLAUSE_HB",
+        "referenced_by": [
+          "IBBI_CIRP_REG_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_2_CLAUSE_K",
+        "referenced_by": [
+          "IBBI_CIRP_REG_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_31",
+        "referenced_by": [
+          "IBBI_CIRP_REG_11",
+          "IBBI_CIRP_REG_16A",
+          "IBBI_CIRP_REG_30A",
+          "IBBI_CIRP_REG_31A",
+          "IBBI_CIRP_REG_32",
+          "IBBI_CIRP_REG_33"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_34",
+        "referenced_by": [
+          "IBBI_CIRP_REG_30A",
+          "IBBI_CIRP_REG_33"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_34B",
+        "referenced_by": [
+          "IBBI_CIRP_REG_33"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_36B",
+        "referenced_by": [
+          "IBBI_CIRP_REG_12",
+          "IBBI_CIRP_REG_13",
+          "IBBI_CIRP_REG_35A",
+          "IBBI_CIRP_REG_36",
+          "IBBI_CIRP_REG_36A",
+          "IBBI_CIRP_REG_39"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_36C",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A",
+          "IBBI_CIRP_REG_36A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_4A",
+        "referenced_by": [
+          "IBBI_CIRP_REG_16A",
+          "IBBI_CIRP_REG_6",
+          "IBBI_CIRP_REG_8A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_CIRP_REG_6A",
+        "referenced_by": [
+          "IBBI_CIRP_REG_6"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBBI_IP_REGULATIONS_2016_REG_7_SUB_2_CLAUSE_CB",
+        "referenced_by": [
+          "IBBI_CIRP_REG_31A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC2016_GENERAL",
+        "referenced_by": [
+          "CA2013_SEC230",
+          "CA2013_SEC424",
+          "CA2013_SEC434"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_10A",
+        "referenced_by": [
+          "IBC_2016_SEC_66"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_188",
+        "referenced_by": [
+          "IBC_2016_SEC_3"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_2",
+        "referenced_by": [
+          "IBC_2016_SEC_3"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_201",
+        "referenced_by": [
+          "IBC_2016_SEC_3"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_206",
+        "referenced_by": [
+          "IBC_2016_SEC_3"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_210",
+        "referenced_by": [
+          "IBC_2016_SEC_3"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_220",
+        "referenced_by": [
+          "IBC_2016_SEC_28"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_224",
+        "referenced_by": [
+          "IBC_2016_SEC_54"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_26",
+        "referenced_by": [
+          "IBC_2016_SEC_25",
+          "IBC_2016_SEC_54P"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_29",
+        "referenced_by": [
+          "IBC_2016_SEC_25",
+          "IBC_2016_SEC_54K"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_34A",
+        "referenced_by": [
+          "IBC_2016_SEC_21",
+          "IBC_2016_SEC_34"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_38",
+        "referenced_by": [
+          "IBC_2016_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_39",
+        "referenced_by": [
+          "IBC_2016_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_40",
+        "referenced_by": [
+          "IBC_2016_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_41",
+        "referenced_by": [
+          "IBC_2016_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_42",
+        "referenced_by": [
+          "IBC_2016_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_44",
+        "referenced_by": [
+          "IBC_2016_SEC_43"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_46",
+        "referenced_by": [
+          "IBC_2016_SEC_45",
+          "IBC_2016_SEC_54O"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_47",
+        "referenced_by": [
+          "IBC_2016_SEC_45",
+          "IBC_2016_SEC_54"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_48",
+        "referenced_by": [
+          "IBC_2016_SEC_45"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_49",
+        "referenced_by": [
+          "IBC_2016_SEC_25",
+          "IBC_2016_SEC_5"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_51",
+        "referenced_by": [
+          "IBC_2016_SEC_50",
+          "IBC_2016_SEC_54P"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_59",
+        "referenced_by": [
+          "IBC_2016_SEC_65"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_67A",
+        "referenced_by": [
+          "IBC_2016_SEC_54N",
+          "IBC_2016_SEC_54O",
+          "IBC_2016_SEC_66"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_70",
+        "referenced_by": [
+          "IBC_2016_SEC_19"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_74",
+        "referenced_by": [
+          "IBC_2016_SEC_54P"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_75",
+        "referenced_by": [
+          "IBC_2016_SEC_65"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_2016_SEC_77A",
+        "referenced_by": [
+          "IBC_2016_SEC_54G"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_PART_II_CHAPTER_III",
+        "referenced_by": [
+          "IBBI_CIRP_REG_38"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_PART_II_CHAPTER_VI",
+        "referenced_by": [
+          "IBBI_CIRP_REG_38"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_SEC_29",
+        "referenced_by": [
+          "IBBI_CIRP_REG_35",
+          "IBBI_CIRP_REG_36",
+          "IBBI_CIRP_REG_36A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IBC_SEC_29_SUB_2",
+        "referenced_by": [
+          "IBBI_CIRP_REG_35",
+          "IBBI_CIRP_REG_36",
+          "IBBI_CIRP_REG_36A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IEPF_PROVISIONS",
+        "referenced_by": [
+          "CA2013_SEC242"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "INDIAN_EVIDENCE_ACT1872_SEC123_124",
+        "referenced_by": [
+          "CA2013_SEC424"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IPC1860_FRAUD_PROVISIONS",
+        "referenced_by": [
+          "CA2013_SEC447"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "IPC1860_SEC193_196_228",
+        "referenced_by": [
+          "CA2013_SEC424"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "LIMITATION_ACT_1963",
+        "referenced_by": [
+          "IBC_2016_SEC_60"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "LIMITATION_ACT_1963_SEC_12",
+        "referenced_by": [
+          "LIMITATION_ACT_1963_ART_137"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "LIMITATION_ACT_1963_SEC_14",
+        "referenced_by": [
+          "LIMITATION_ACT_1963_ART_137"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "LIMITATION_ACT_1963_SEC_19",
+        "referenced_by": [
+          "LIMITATION_ACT_1963_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "LIMITATION_ACT_1963_SEC_20",
+        "referenced_by": [
+          "LIMITATION_ACT_1963_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "LIMITATION_ACT_1963_SEC_3",
+        "referenced_by": [
+          "LIMITATION_ACT_1963_ART_137",
+          "LIMITATION_ACT_1963_SEC_18",
+          "LIMITATION_ACT_1963_SEC_5"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "MSMED_ACT_2006",
+        "referenced_by": [
+          "IBBI_CIRP_REG_36A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "MSMED_ACT_2006_SEC_7",
+        "referenced_by": [
+          "IBC_2016_SEC_54A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R104",
+        "referenced_by": [
+          "NCLAT_RULES2016_R11",
+          "NCLAT_RULES2016_R14"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R27",
+        "referenced_by": [
+          "NCLAT_RULES2016_R26"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R60",
+        "referenced_by": [
+          "NCLAT_RULES2016_R55"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R63",
+        "referenced_by": [
+          "NCLAT_RULES2016_R65"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R64",
+        "referenced_by": [
+          "NCLAT_RULES2016_R63_AMD2017",
+          "NCLAT_RULES2016_R65"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R66",
+        "referenced_by": [
+          "NCLAT_RULES2016_R63_AMD2017",
+          "NCLAT_RULES2016_R65"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R89",
+        "referenced_by": [
+          "NCLAT_RULES2016_R91"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R94",
+        "referenced_by": [
+          "NCLAT_RULES2016_R91",
+          "NCLAT_RULES2016_R92",
+          "NCLAT_RULES2016_R93"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NCLAT_RULES2016_R95",
+        "referenced_by": [
+          "NCLAT_RULES2016_R91",
+          "NCLAT_RULES2016_R92",
+          "NCLAT_RULES2016_R93"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NI_ACT_1881_SEC_139",
+        "referenced_by": [
+          "NI_ACT_1881_SEC_138"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NI_ACT_1881_SEC_140",
+        "referenced_by": [
+          "NI_ACT_1881_SEC_138"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NI_ACT_1881_SEC_141",
+        "referenced_by": [
+          "NI_ACT_1881_SEC_138"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "NI_ACT_1881_SEC_142",
+        "referenced_by": [
+          "NI_ACT_1881_SEC_138"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "PMLA_2002_SEC_17",
+        "referenced_by": [
+          "PMLA_2002_SEC_5",
+          "PMLA_2002_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "PMLA_2002_SEC_18",
+        "referenced_by": [
+          "PMLA_2002_SEC_5",
+          "PMLA_2002_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "PMLA_2002_SEC_3",
+        "referenced_by": [
+          "PMLA_2002_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "PMLA_2002_SEC_58B",
+        "referenced_by": [
+          "PMLA_2002_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "PMLA_2002_SEC_60",
+        "referenced_by": [
+          "PMLA_2002_SEC_8"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "REAL_ESTATE_REGULATION_AND_DEVELOPMENT_ACT_2016",
+        "referenced_by": [
+          "IBBI_CIRP_REG_36",
+          "IBBI_CIRP_REG_36A",
+          "IBBI_CIRP_REG_8A"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_12",
+        "referenced_by": [
+          "RERA_2016_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_13",
+        "referenced_by": [
+          "RERA_2016_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_19",
+        "referenced_by": [
+          "RERA_2016_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_4",
+        "referenced_by": [
+          "RERA_2016_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_7",
+        "referenced_by": [
+          "RERA_2016_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_71",
+        "referenced_by": [
+          "RERA_2016_SEC_18"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_79",
+        "referenced_by": [
+          "RERA_2016_SEC_89"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "RERA_2016_SEC_88",
+        "referenced_by": [
+          "RERA_2016_SEC_89"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SARFAESI_ACT_2002",
+        "referenced_by": [
+          "IBC_2016_SEC_238"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SARFAESI_ACT_2002_SEC_13_3A",
+        "referenced_by": [
+          "SARFAESI_ACT_2002_SEC_13_2"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SARFAESI_ACT_2002_SEC_13_4",
+        "referenced_by": [
+          "SARFAESI_ACT_2002_SEC_13_2"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SARFAESI_ACT_2002_SEC_14",
+        "referenced_by": [
+          "SARFAESI_ACT_2002_SEC_13_2"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SARFAESI_ACT_2002_SEC_17",
+        "referenced_by": [
+          "SARFAESI_ACT_2002_SEC_13_2"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SEBI_REGULATIONS",
+        "referenced_by": [
+          "CA2013_SEC232"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SPECIFIC_RELIEF_ACT_1963_SEC_37",
+        "referenced_by": [
+          "CPC_1908_ORDER_XXXIX"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SPECIFIC_RELIEF_ACT_1963_SEC_38",
+        "referenced_by": [
+          "CPC_1908_ORDER_XXXIX"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "SPECIFIC_RELIEF_ACT_1963_SEC_41",
+        "referenced_by": [
+          "CPC_1908_ORDER_XXXIX"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "STAMP_ACT_1899_SEC_32",
+        "referenced_by": [
+          "STAMP_ACT_1899_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "STAMP_ACT_1899_SEC_36",
+        "referenced_by": [
+          "STAMP_ACT_1899_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "STAMP_ACT_1899_SEC_38",
+        "referenced_by": [
+          "STAMP_ACT_1899_SEC_33",
+          "STAMP_ACT_1899_SEC_35"
+        ],
+        "suggestions": []
+      },
+      {
+        "missing_id": "STAMP_ACT_1899_SEC_40",
+        "referenced_by": [
+          "STAMP_ACT_1899_SEC_33",
+          "STAMP_ACT_1899_SEC_35"
+        ],
+        "suggestions": []
+      }
+    ],
+    "record_issues": [],
+    "undocumented_fields": {
+      "diagnostic_checklist.expense_provision": [
+        "IBBI_CIRP_REG_6"
+      ]
+    },
+    "snapshot": "262dd3fda927674043ddb4d62d4bebe3468dd8f8b6554d0e0b8eec9069b233d7",
+    "loadable": true
+  },
+  "loaded": {
+    "inserted": 0,
+    "updated": 20,
+    "unchanged": 119,
+    "removed": 0,
+    "snapshot": "262dd3fda927674043ddb4d62d4bebe3468dd8f8b6554d0e0b8eec9069b233d7"
+  }
+}
