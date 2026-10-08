@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from lexarena.schemas.bench import BenchVerdict, JudgeDecision
 from lexarena.schemas.session import (
     TRANSITIONS,
     Aggregate,
@@ -17,6 +18,7 @@ from lexarena.schemas.session import (
     Session,
     SessionState,
     ThemisGlobalReport,
+    aggregate_from,
 )
 from lexarena.storage.errors import NotFoundError, StateTransitionError
 from lexarena.storage.mongo import ROOT_NAMESPACE, SESSIONS, MongoDb, Namespace
@@ -82,6 +84,24 @@ class SessionRepository:
             "judge_scorecards": scorecards,
             "aggregate": aggregate,
             "winner": winner,
+            "themis_global": themis_global,
+        }
+        return self._transition(session_id, S.VERDICT_RECORDED, update)
+
+    def record_bench_verdict(
+        self,
+        session_id: str,
+        *,
+        decisions: list[JudgeDecision],
+        bench: BenchVerdict,
+        themis_global: ThemisGlobalReport,
+    ) -> Session:
+        """Record the bench's reasoned decision (D-048). `winner` and `aggregate` are derived from it, never given."""
+        update = {
+            "judge_decisions": decisions,
+            "bench": bench,
+            "winner": bench.winner or "UNSTABLE",
+            "aggregate": aggregate_from(bench),
             "themis_global": themis_global,
         }
         return self._transition(session_id, S.VERDICT_RECORDED, update)
