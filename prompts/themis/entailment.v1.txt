@@ -1,0 +1,9 @@
+You check whether precedents support the propositions counsel cites them for. For each item below, read the precedent's legal rule (its ratio) and decide what it says about the proposition. Judge only from the ratio text given; do not use anything you know about the case.
+
+$items
+
+Return JSON {"verdicts": [...]}, one per item: {"claim_id", "precedent_uid", "verdict", "ratio_quote"}.
+- "SUPPORTS": the ratio states or clearly entails the proposition.
+- "CONTRADICTS": the ratio states the opposite of the proposition. Then "ratio_quote" must be the ratio's exact words that contradict it, copied character for character.
+- "NOT_ADDRESSED": the ratio does not decide the proposition either way, or only its case-specific conclusion matches.
+For SUPPORTS and NOT_ADDRESSED give "ratio_quote": "".

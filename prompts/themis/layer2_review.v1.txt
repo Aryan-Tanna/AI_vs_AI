@@ -1,0 +1,24 @@
+You check one argument by counsel in an insolvency case against the case record. You do not judge whether the argument is right in law or likely to win.
+
+THE RECORD (the only facts in this case; nothing else is known)
+$record
+
+THE OPPONENT'S LAST SUBMISSION (empty if counsel speaks first)
+<<<
+$opponent
+>>>
+
+THE ARGUMENT
+<<<
+$argument
+>>>
+
+Return JSON {"fidelity_issues": [...], "opponent_points": [...]}.
+
+fidelity_issues: each place where the argument states as fact something the record does not contain or contradicts.
+- "NOT_IN_RECORD": a factual statement (an event, date, amount, act of a party) that no record item states or that contradicts a record item.
+- "EXHIBIT_CONTENT_FABRICATED": a statement about what a document says or contains that goes beyond the exhibit's listed contents.
+Each issue: {"kind", "quote": the argument's exact words, copied character for character, "record_ids": the record items concerned, "explanation", "confidence": 0 to 1}.
+Do NOT report: legal argument, inferences counsel draws from recorded facts, characterisations ("this was an acknowledgment"), arguments about what the record does not show, or the other side's version of a contested fact stated as that side's version. When unsure, do not report it or give a low confidence.
+
+opponent_points: the distinct points the opponent's last submission made (empty if there is none). For each: {"point": a short neutral summary, "addressed": true if the argument answers, rebuts or concedes it}.

@@ -104,6 +104,8 @@ class PromptsConfig(Strict):
     clerk_probe: PromptRef
     clerk_agent_view_repair: PromptRef
     themis_extract: PromptRef
+    themis_layer2: PromptRef
+    themis_entailment: PromptRef
     judge_decide: PromptRef
     judge_revise: PromptRef
     single_llm: PromptRef
@@ -215,6 +217,7 @@ class ThemisLocalConfig(Strict):
     retry_cap: PositiveInt
     extraction_min_confidence: UnitInterval
     repetition_hard_threshold: UnitInterval
+    repetition_warn_threshold: UnitInterval
     score_weights: ScoreWeights
     penalty_cap: UnitInterval
     threshold_overlay_parameter: NonEmptyStr
@@ -222,6 +225,12 @@ class ThemisLocalConfig(Strict):
     amount_unit_words: list[UnitWord]
     threshold_date_readings: list[DateReading]
     limitation: LimitationConfig
+
+    @model_validator(mode="after")
+    def _repetition_order(self) -> ThemisLocalConfig:
+        if self.repetition_warn_threshold > self.repetition_hard_threshold:
+            raise ValueError("themis_local.repetition_warn_threshold must not exceed repetition_hard_threshold")
+        return self
 
     @model_validator(mode="after")
     def _weights_sum(self) -> ThemisLocalConfig:

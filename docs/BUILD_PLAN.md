@@ -45,6 +45,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
 - [ ] **Step 8: THEMIS-LOCAL layer 2 and outcome policy**
   - Build: citation tiers plus entailment, record fidelity, responsiveness, repetition (Redis), and the D8 outcome policy with retries.
   - Done when: a fabricated exhibit claim and an inverted holding are both caught; UNVERIFIABLE citations warn rather than reject; the first-attempt pass rate on honest test arguments is reported.
+  - Status 2026-10-09 (Parth, branch `parth/step-08-themis-layer2`): built (D-075). DEV_0001: 6/6 honest first-attempt passes, 3/3 mutations caught, unverifiable citation warns (`reports/step8_acceptance.md`). One case only; more after more dev cases are clerked.
 
 - [ ] **Step 9: Agents and session orchestration**
   - Build: LEX-P and LEX-D on one prompt template; a private strategy phase per lawyer before turn 1, with equal budgets (D-053); a per-call context budget from each model's real input limit in config, assembled in a fixed order (stable prefix first, so provider prompt caching applies), with older turns condensed into the THEMIS claim ledger rather than an LLM summary, identical for both sides (D-055); the LangGraph session (8 alternating turns plus parallel closings); lesson retrieval for pinning; version stamping.

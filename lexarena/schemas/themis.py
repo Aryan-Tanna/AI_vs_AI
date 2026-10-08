@@ -7,6 +7,7 @@ refuse (free-form maps, optional keys): readings are a list of pairs and every f
 from __future__ import annotations
 
 from datetime import date
+from typing import Literal
 
 from lexarena.schemas.base import NonEmptyStr, StoredModel
 from lexarena.schemas.transcript import ClaimedChecklist, ClaimedTimelines, ExtractedChecklist, Stance
@@ -50,3 +51,37 @@ class ChecklistDraft(StoredModel):
 
 class ArgumentExtraction(StoredModel):
     checklists: list[ChecklistDraft]
+
+
+# ---------------------------------------------------------------- layer 2 (SPEC D4, D5, A2; D-075)
+
+
+class FidelityIssue(StoredModel):
+    kind: Literal["NOT_IN_RECORD", "EXHIBIT_CONTENT_FABRICATED"]
+    quote: str  # the argument's own words, copied exactly; code checks they are in the argument
+    record_ids: list[str]  # the items the words claim to describe, or the nearest items they contradict
+    explanation: str
+    confidence: float
+
+
+class OpponentPoint(StoredModel):
+    point: str
+    addressed: bool
+
+
+class Layer2Review(StoredModel):
+    """One verifier call per draft: record fidelity (A2) and responsiveness to the opponent's last turn (D5)."""
+
+    fidelity_issues: list[FidelityIssue]
+    opponent_points: list[OpponentPoint]
+
+
+class EntailmentVerdict(StoredModel):
+    claim_id: str
+    precedent_uid: str
+    verdict: Literal["SUPPORTS", "CONTRADICTS", "NOT_ADDRESSED"]
+    ratio_quote: str  # for CONTRADICTS: the ratio's own words that contradict the claim, copied exactly
+
+
+class EntailmentBatch(StoredModel):
+    verdicts: list[EntailmentVerdict]

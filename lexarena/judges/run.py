@@ -55,6 +55,7 @@ from lexarena.schemas.transcript import PublishedTurn
 from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_local.extract import extract_checklists
 from lexarena.themis_local.layer1 import CaseFacts, alternative_readings, run_layer1
+from lexarena.themis_local.verify import LawContext
 
 ROLE = "judge"
 JSON_INDENT = 2  # literal-ok: readability of the previous answer shown in the revision prompt
@@ -66,13 +67,7 @@ class StatuteSource(Protocol):
     def predicates(self, statute_id: str) -> list[PredicateEntry]: ...
 
 
-@dataclass(frozen=True)
-class BenchLaw:
-    views: dict[str, StatuteView]
-    # `views` re-resolved under each alternative date reading (None where the case lacks that date), for layer 1's
-    # threshold check (D-069). None means "not resolved": layer 1 then never checks a threshold.
-    alternatives: list[dict[str, StatuteView] | None] | None
-    predicates: dict[str, list[PredicateEntry]]
+BenchLaw = LawContext  # the bench decides on the same resolved law THEMIS checked (D-075)
 
 
 def law_for_bench(

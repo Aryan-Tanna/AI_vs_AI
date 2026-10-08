@@ -58,6 +58,8 @@ prompts:
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
   themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
+  themis_layer2: {id: themis/layer2_review, version: 1}   # [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
+  themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
   judge_decide: {id: judges/decide, version: 1}         # [D-071] one opinion per persona and presentation order
   judge_revise: {id: judges/revise, version: 1}         # [D-071] the one revision (ARCHITECTURE §5)
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
@@ -102,6 +104,7 @@ themis_local:
   retry_cap: 3                           # [SPEC D8]
   extraction_min_confidence: 0.7         # [SPEC D1]
   repetition_hard_threshold: 0.95        # [SPEC D8]
+  repetition_warn_threshold: 0.85        # [PLACEHOLDER, D-075] similarity to own earlier turn that warns (SPEC D8: below the hard threshold is a warning)
   score_weights: {rule: 0.5, llm: 0.5}   # [PLACEHOLDER]
   penalty_cap: 0.30                      # [SPEC D6]
   threshold_overlay_parameter: minimum_default_inr   # overlay parameter holding the dated minimum default [D-062]
