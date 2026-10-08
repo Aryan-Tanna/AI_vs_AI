@@ -271,3 +271,24 @@ def test_gemini_blocked_prompt_is_not_retryable() -> None:
     body = {"promptFeedback": {"blockReason": "SAFETY"}}
     with pytest.raises(ContentBlockedError):
         _gemini(lambda req: httpx.Response(200, json=body)).complete(_request("g"), api_key="k")
+
+
+def test_a_rejected_generation_is_retryable_but_other_bad_requests_are_not() -> None:
+    from lexarena.llm.errors import GenerationRejectedError, ProviderRequestError
+
+    def rejected(req: httpx.Request) -> httpx.Response:
+        body = {
+            "error": {"message": "Generated JSON does not match the expected schema.", "code": "json_validate_failed"}
+        }
+        return httpx.Response(400, json=body)
+
+    with pytest.raises(GenerationRejectedError) as caught:
+        _openai(rejected).complete(_request("p"), api_key="k")
+    assert caught.value.retryable
+
+    def bad(req: httpx.Request) -> httpx.Response:
+        return httpx.Response(400, json={"error": {"message": "invalid model"}})
+
+    with pytest.raises(ProviderRequestError) as other:
+        _openai(bad).complete(_request("p"), api_key="k")
+    assert not other.value.retryable

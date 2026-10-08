@@ -21,6 +21,14 @@ class ProviderUnavailableError(LLMError):
     retryable = True
 
 
+class GenerationRejectedError(LLMError):
+    """The provider rejected its own sample (e.g. Groq's server-side check that the JSON matches the schema). A new
+    sample can pass, so it is retried like an overload; a model that never conforms still fails after
+    `llm.max_attempts` (D-083)."""
+
+    retryable = True
+
+
 class ContextBudgetExceededError(LLMError):
     """The request is larger than the model or tier accepts. Never retried and never silently truncated."""
 

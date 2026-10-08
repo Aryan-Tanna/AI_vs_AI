@@ -8,6 +8,7 @@ import httpx
 
 from lexarena.llm.errors import (
     ContextBudgetExceededError,
+    GenerationRejectedError,
     ProviderRequestError,
     ProviderUnavailableError,
     RateLimitedError,
@@ -38,11 +39,13 @@ def post_json(
     timeout_s: float,
     context_markers: tuple[str, ...],
     retry_after: Callable[[httpx.Response], float | None],
+    generation_markers: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """POST and map transport and HTTP failures onto the typed errors the client understands.
 
     context_markers: lowercase substrings that identify a 400 caused by an oversized request.
     retry_after: reads the provider-specific retry hint (seconds) from a 429 response.
+    generation_markers: lowercase substrings that identify a 400 rejecting the model's own sample (retryable).
     """
     try:
         response = client.post(url, headers=headers, json=payload, timeout=timeout_s)
@@ -68,4 +71,8 @@ def post_json(
         m in message.lower() or m in response.text.lower() for m in context_markers
     ):
         raise ContextBudgetExceededError(message)
+    if status == HTTPStatus.BAD_REQUEST and any(
+        m in message.lower() or m in response.text.lower() for m in generation_markers
+    ):
+        raise GenerationRejectedError(f"HTTP {status}: {message}")
     raise ProviderRequestError(f"HTTP {status}: {message}")

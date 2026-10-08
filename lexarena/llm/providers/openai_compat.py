@@ -13,6 +13,8 @@ from lexarena.schemas.config import OpenAICompatProviderConfig
 
 TRUNCATED = "length"
 CONTEXT_MARKERS = ("context_length_exceeded", "context length", "maximum context")
+# A 400 that rejects the model's own sample, not the request: Groq's strict json_schema check (D-083).
+GENERATION_MARKERS = ("json_validate_failed", "does not match the expected schema")
 
 
 def _retry_after(response: httpx.Response) -> float | None:
@@ -54,6 +56,7 @@ class OpenAICompatProvider:
             self._config.timeout_s,
             CONTEXT_MARKERS,
             _retry_after,
+            GENERATION_MARKERS,
         )
         choice = data["choices"][0]
         if choice.get("finish_reason") == TRUNCATED:
