@@ -1,4 +1,6 @@
-# Handoff: state of LexArena at the end of the 2026-10-06/07 session
+# Handoff: state of LexArena (updated 2026-10-08)
+
+Parth: read `docs/HANDOFF_PARTH.md` first.
 
 ## Update 2026-10-08: Parth's repo merged, verdict rule changed
 
@@ -30,6 +32,7 @@ Read this first in a new session, then CLAUDE.md, docs/DECISIONS.md (D-001 to D-
 | 3 Drafting tools for side collections | ticked |
 | 4 Precedent DB to Qdrant | built, all acceptance checks passed on real data; **not ticked, waiting for the user's review** |
 | 5 Retrieval tools | built 2026-10-08 (D-052); 5 hand-written queries in `reports/step5_queries.md` (`scripts/retrieval_queries.py`); ticked 2026-10-08 (D-054) |
+| 6 Clerk | built 2026-10-08 (D-056 to D-061). `lexarena clerk run --file <pdf> --case-id DEV_000N`; review files in `reports/review/`; sealed record via `lexarena clerk show`; approve via `lexarena clerk approve`. Stored dev cases: DEV_0001 SBI v. Krishidhan (`data/dev/State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020.PDF`), DEV_0002 Rajat Metaal (`data/dev/Rajat_Metaal_Polychem_Pvt_Ltd_vs_Neeraj_Bhatia_And_Anr_on_4_September_2024.PDF`), DEV_0003 Citi Securities (`data/dev/Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022.PDF`). **Not ticked: waiting for the owner's review** of the three cases; then a held-out run on unseen NCLAT and SC judgments on frozen clerk code (the owner asked whether the clerk generalises) |
 
 Reports per step: `reports/step1.md`, `step2.md`, `step3.md` (untracked; Step 4 summary is in this file).
 
