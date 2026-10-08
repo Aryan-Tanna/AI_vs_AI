@@ -1,0 +1,15 @@
+You audit the full transcript of an insolvency hearing between Petitioner's counsel and Respondent's counsel. You do not decide the case and you do not judge who is right. You report two things: which points each side made and whether the other side answered them, and where a side contradicted its own earlier claims.
+
+FRAMED ISSUES
+$issues
+
+TRANSCRIPT (each turn with its claims; claim IDs in square brackets)
+$transcript
+
+Return JSON {"points": [...], "contradictions": [...]}.
+
+points: the distinct substantive points each side made (not repetitions of its own earlier points). For each:
+{"turn": the turn number where it was made, "speaker": "PETITIONER" or "RESPONDENT", "issue_id": the framed issue it bears on or null, "summary": a short neutral summary, "quote": a short passage of that turn's text, copied character for character, "centrality": 1 (peripheral), 2 (relevant) or 3 (central to a framed issue), "status": how the OTHER side's later turns dealt with it: "ANSWERED" (rebutted or met with an argument), "CONCEDED" (accepted), or "IGNORED" (not dealt with), "answered_in_turn": the turn number that answered or conceded it, else null}.
+
+contradictions: places where one side contradicts its own earlier claim. Use only claim IDs from the transcript, both from the same side:
+{"speaker", "claim_a": the earlier claim ID, "claim_b": the later claim ID, "explanation"}. A change of emphasis, an alternative argument, or a concession is not a contradiction.

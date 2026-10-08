@@ -106,6 +106,7 @@ class PromptsConfig(Strict):
     themis_extract: PromptRef
     themis_layer2: PromptRef
     themis_entailment: PromptRef
+    themis_global_audit: PromptRef
     judge_decide: PromptRef
     judge_revise: PromptRef
     single_llm: PromptRef

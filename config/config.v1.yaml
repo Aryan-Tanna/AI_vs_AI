@@ -60,6 +60,7 @@ prompts:
   themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
   themis_layer2: {id: themis/layer2_review, version: 1}   # [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
   themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
+  themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   judge_decide: {id: judges/decide, version: 1}         # [D-071] one opinion per persona and presentation order
   judge_revise: {id: judges/revise, version: 1}         # [D-071] the one revision (ARCHITECTURE §5)
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
