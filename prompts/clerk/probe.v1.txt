@@ -1,0 +1,9 @@
+Below are the facts and issues of a real case decided by an Indian insolvency tribunal. The parties' names have been replaced by pseudonyms. Do you recognise the case?
+
+If you do, give its real name (the parties), its appeal or case number, and how it was decided. If you do not, say so; do not guess.
+
+<<<
+$case
+>>>
+
+Return a single JSON object with the keys "recognised" (true or false), "case_name" (or null), "appeal_number" (or null) and "outcome" (or null).

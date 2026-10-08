@@ -99,6 +99,9 @@ class PromptsConfig(Strict):
     clerk_route: PromptRef
     clerk_record_facts: PromptRef
     clerk_agent_view: PromptRef
+    clerk_ground_truth: PromptRef
+    clerk_entailment: PromptRef
+    clerk_probe: PromptRef
 
 
 class VocabularyConfig(Strict):
@@ -240,6 +243,9 @@ class ClerkConfig(Strict):
     body_start_headings: list[NonEmptyStr] = Field(min_length=1)
     max_paragraph_number_jump: PositiveInt
     running_text_min_chars: PositiveInt
+    entailment_batch_chars: PositiveInt
+    leakage_ngram: PositiveInt
+    grounds_max_ratio: float = Field(gt=1)
     presumptions: list[NonEmptyStr] = Field(min_length=1)
     evaluative_words: list[NonEmptyStr] = Field(min_length=1)
     route_chars_per_paragraph: PositiveInt

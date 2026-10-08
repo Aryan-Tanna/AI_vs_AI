@@ -141,9 +141,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         cmd.add_argument(
             "--aliases", type=Path, default=REPO_ROOT / "data" / "statute_aliases.json", help="statute alias table"
         )
-    from lexarena import cli_review
+    from lexarena import cli_clerk, cli_review
 
     cli_review.add_parsers(sub)
+    cli_clerk.add_parsers(sub)
     args = parser.parse_args(argv)
 
     path = _config_path(args.config)
@@ -155,6 +156,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _precedents(args.action, args.source, args.aliases, path)
     if args.group in ("sources", "draft", "review"):
         return cli_review.run(args, path)
+    if args.group == "clerk":
+        return cli_clerk.run(args, path)
     return _llm_smoke(path, args.role)
 
 

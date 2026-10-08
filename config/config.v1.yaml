@@ -52,6 +52,9 @@ prompts:
   clerk_entities: {id: clerk/entities, version: 2}      # [D-056] v2: cause-title role [D-059]
   clerk_route: {id: clerk/route, version: 1}            # [D-056]
   clerk_record_facts: {id: clerk/record_facts, version: 1}   # [D-056 amendment, D-058]
+  clerk_ground_truth: {id: clerk/ground_truth, version: 1}   # [D-056]
+  clerk_entailment: {id: clerk/entailment, version: 1}  # [D-056] second family
+  clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
 
 llm:
@@ -132,6 +135,9 @@ clerk:
   max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
   # SPEC A1: the presumption is narrowed to exhibits; contested facts stay contested.
   presumptions: ["Exhibits are presumed genuine and duly executed; do not object that a document was not produced.", "Facts marked CONTESTED remain disputed.", "Nothing is known about an exhibit beyond its known_contents."]
+  entailment_batch_chars: 12000         # [PLACEHOLDER] items + sources per entailment request; fits Groq's ~7k-token input limit [R-011, D-056]
+  leakage_ngram: 8                       # [PLACEHOLDER] a run of this many words shared with the reasoning (and not with agent-visible text) is leakage
+  grounds_max_ratio: 3.0                 # [PLACEHOLDER] flag when one side's opening grounds outnumber or outweigh the other's by more
   running_text_min_chars: 25             # [PLACEHOLDER] a header line this long recurring in the body is merged running text [D-056]
   # SPEC A3 evaluative words: a court-stated sentence with one is reasoning, never a record fact [D-056].
   evaluative_words: [erred, merely, satisfies, satisfied, failed, rightly, wrongly, correctly, incorrectly, hopelessly, clearly, admittedly, manifestly, untenable, unsustainable, misconceived, no merit, devoid of merit, cannot lie]

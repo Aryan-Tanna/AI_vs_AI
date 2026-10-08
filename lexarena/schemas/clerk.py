@@ -17,6 +17,14 @@ from lexarena.schemas.case import (
     Record,
     ReliefsSought,
 )
+from lexarena.schemas.ground_truth import (
+    Citation,
+    Conclusion,
+    IssueFinding,
+    PrecedentAnalysis,
+    RealSubmissions,
+    StatutoryAnalysis,
+)
 from lexarena.schemas.judgment import JudgmentPart
 
 EntityKind = Literal["PERSON", "COMPANY", "BANK", "AUTHORITY", "OTHER"]
@@ -86,3 +94,34 @@ class AgentViewDraft(StoredModel):
     framed_issues: list[FramedIssue] = Field(min_length=1)
     reliefs_sought: ReliefsSought
     opening_positions: OpeningPositions
+
+
+class GroundTruthDraft(StoredModel):
+    """What the ground-truth extractor returns: SPEC H2 without the fields code sets (case ID, access, anonymisation
+    map). Code checks it against the agent view before sealing it (D-056)."""
+
+    citation: Citation
+    real_submissions: RealSubmissions
+    statutory_analysis: list[StatutoryAnalysis]
+    precedent_analysis: list[PrecedentAnalysis]
+    issue_findings: list[IssueFinding] = Field(min_length=1)
+    conclusion: Conclusion
+
+
+class EntailmentVerdict(StoredModel):
+    item_id: NonEmptyStr
+    verdict: Literal["SUPPORTED", "PARTLY", "NOT_SUPPORTED"]
+    reason: str
+
+
+class EntailmentResult(StoredModel):
+    verdicts: list[EntailmentVerdict]
+
+
+class ProbeAnswer(StoredModel):
+    """The memorisation probe's answer (SPEC A4): does the lawyer model recognise the pseudonymised case?"""
+
+    recognised: bool
+    case_name: str | None
+    appeal_number: str | None
+    outcome: str | None

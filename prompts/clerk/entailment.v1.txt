@@ -1,0 +1,12 @@
+You check a case file against the text it was built from. For each item below, decide whether its sources state it. Judge only what the sources say; ignore whatever you know about any case.
+
+- SUPPORTED: the sources state everything the item says (rewording is fine; for a party's version or ground, the sources must show that this party says it, or, for a respondent defending the order under appeal, that the order says it).
+- PARTLY: the sources state part of it, but the item adds a detail, a date, a figure or an inference they do not state.
+- NOT_SUPPORTED: the sources do not state it, or contradict it.
+
+Items, each with its sources:
+<<<
+$items
+>>>
+
+Return a single JSON object with the key "verdicts": a list of {"item_id": ..., "verdict": "SUPPORTED" | "PARTLY" | "NOT_SUPPORTED", "reason": a short reason, at most twenty words}, one for every item, in order.

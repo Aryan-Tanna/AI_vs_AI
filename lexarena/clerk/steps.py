@@ -16,12 +16,13 @@ from lexarena.clerk.assemble import DECISION_LABEL
 from lexarena.clerk.scan import court_voice_hits
 from lexarena.llm.client import LLMClient
 from lexarena.prompts import PromptStore
-from lexarena.schemas.case import ExtractionFlag
+from lexarena.schemas.case import ExtractionFlag, FramedIssue, ReliefsSought
 from lexarena.schemas.clerk import (
     AgentViewDraft,
     AssignedPseudonym,
     CourtSentence,
     EntityList,
+    GroundTruthDraft,
     NamedEntity,
     RecordFactIds,
     RouteResult,
@@ -227,3 +228,32 @@ def extract_agent_view(
         text=text,
     )
     return llm.complete_json(role=ROLE, user=prompt, schema=AgentViewDraft, session_id=session_id).value
+
+
+# ---------------------------------------------------------------- sealed ground truth (SPEC H2)
+
+
+def extract_ground_truth(
+    llm: LLMClient,
+    prompts: PromptStore,
+    cfg: AppConfig,
+    header: str,
+    paragraphs: list[JudgmentParagraph],
+    *,
+    issues: list[FramedIssue],
+    reliefs: ReliefsSought,
+    statute_ids: list[str],
+    session_id: str,
+) -> GroundTruthDraft:
+    """Reads the whole judgment with real names: it runs in the sealed process and its output is sealed."""
+    ref = cfg.prompts.clerk_ground_truth
+    prompt = prompts.render(
+        ref.id,
+        ref.version,
+        issues="\n".join(f"- {i.issue_id}: {i.question}" for i in issues),
+        reliefs="\n".join(f"- {side}: {r}" for side in ("PETITIONER", "RESPONDENT") for r in getattr(reliefs, side)),
+        statute_ids=", ".join(sorted(statute_ids)),
+        header=header,
+        body=render_paragraphs(paragraphs),
+    )
+    return llm.complete_json(role=ROLE, user=prompt, schema=GroundTruthDraft, session_id=session_id).value

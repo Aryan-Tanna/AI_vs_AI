@@ -1,0 +1,32 @@
+You record how an Indian tribunal actually decided a case, for evaluation after a simulation has finished. The record is sealed: no advocate or judge in the simulation will see it. Use only the judgment below; never add anything it does not say. Paraphrase; do not copy long quotations.
+
+The simulation framed these issues (names in them are pseudonyms; the judgment uses real names):
+$issues
+
+The reliefs the two sides were shown as sought (copy a relief's text exactly from this list when you record its outcome):
+$reliefs
+
+Record:
+- citation: case_number as the judgment states it; arising_from (the order and case below, or null); bench (each member's name and designation); decision_date (YYYY-MM-DD); source_title (the title line at the top).
+- real_submissions: for PETITIONER (the appellant or applicant) and RESPONDENT, each contention paraphrased, tied to one of the issue IDs above; statutes_cited as statute IDs from the list below; authorities_cited (name as cited, precedent_id null, forum SC, NCLAT, NCLT or HC, the proposition counsel cited it for); source_paras.
+- statutory_analysis: each provision the tribunal interpreted: statute_id from the list below, how it read the provision, other statute IDs it read it with, source_paras.
+- precedent_analysis: each precedent the tribunal dealt with: name, precedent_id null, forum, bench_strength (number of judges, or null), cited_by (PETITIONER, RESPONDENT or COURT), treatment (FOLLOWED, APPLIED, DISTINGUISHED, NOT_FOLLOWED, DOUBTED or NOTED), the proposition the tribunal took from it, later_history (null unless the judgment says), source_paras.
+- issue_findings: exactly one for each issue ID above: favours (PETITIONER, RESPONDENT or NEITHER), driver (LAW if the tribunal decided it on law, EVIDENCE if on a finding about the evidence, MIXED if both), finding (one sentence), reasoning (the chain, paraphrased), test_applied, decisive_points, authorities_relied_on (names from precedent_analysis), source_paras.
+- conclusion: disposition (ALLOWED, DISMISSED, PARTLY_ALLOWED, DISPOSED_WITH_DIRECTIONS, REMANDED or SET_ASIDE), the outcome of each relief from the list above (GRANTED, REFUSED, PARTLY_GRANTED or MODIFIED), each direction, costs (or null), overall_favours (PETITIONER, RESPONDENT or MIXED).
+
+source_paras are the paragraph IDs shown in brackets ([P4]).
+
+Statute IDs you may use (use none that is not listed):
+$statute_ids
+
+Judgment header:
+<<<
+$header
+>>>
+
+Judgment:
+<<<
+$body
+>>>
+
+Return a single JSON object with the keys of the schema.

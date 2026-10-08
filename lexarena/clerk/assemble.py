@@ -15,14 +15,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date
+from typing import Literal
 
 from pydantic import ValidationError
 
 from lexarena.schemas.case import AGENT_FOR_SIDE, AgentView, ExtractionFlag
-from lexarena.schemas.clerk import AgentViewDraft
+from lexarena.schemas.clerk import AgentViewDraft, GroundTruthDraft
+from lexarena.schemas.ground_truth import CaseGroundTruth
 from lexarena.schemas.statute_alias import StatuteAliasTable
 from lexarena.statute_ids import resolve_statute_id
 
+EvidenceDependency = Literal["LAW_ONLY", "MIXED", "EVIDENCE_DECIDED"]
 DECISION_LABEL = "DECISION"  # the simulation_date's label (vocabulary.case_date_labels, D-039)
 
 
@@ -137,3 +140,96 @@ def build_agent_view(
         problems += [f"{'.'.join(map(str, e['loc'])) or '<view>'}: {e['msg']}" for e in exc.errors()]
         return AssembledView(view=None, problems=problems, flags=flags)
     return AssembledView(view=view, problems=problems, flags=flags)
+
+
+# ---------------------------------------------------------------- sealed ground truth (SPEC H2)
+
+
+@dataclass
+class AssembledTruth:
+    truth: CaseGroundTruth | None
+    problems: list[str] = field(default_factory=list)
+    flags: list[ExtractionFlag] = field(default_factory=list)
+
+
+def evidence_dependency(drivers: list[str]) -> EvidenceDependency:
+    """SPEC A7: every issue decided on law -> LAW_ONLY; every issue on evidence -> EVIDENCE_DECIDED; else MIXED."""
+    kinds = set(drivers)
+    if kinds == {"LAW"}:
+        return "LAW_ONLY"
+    if kinds == {"EVIDENCE"}:
+        return "EVIDENCE_DECIDED"
+    return "MIXED"
+
+
+def build_ground_truth(
+    draft: GroundTruthDraft,
+    *,
+    case_id: str,
+    anonymization_map: dict[str, str],
+    issue_ids: set[str],
+    reliefs: dict[str, list[str]],
+    paragraph_ids: set[str],
+    known_statutes: set[str],
+    aliases: StatuteAliasTable,
+    expected_decision_date: date,
+) -> AssembledTruth:
+    """Seal the ground truth only if it lines up with the agent view: the same issues (each with a finding), only
+    reliefs the agents were shown, only real paragraphs, and the decision date of the dev manifest."""
+    problems: list[str] = []
+    found = [f.issue_id for f in draft.issue_findings]
+    problems += [f"finding for issue {i}, which the agent view does not frame" for i in found if i not in issue_ids]
+    problems += [f"issue {i} has no finding" for i in sorted(issue_ids) if i not in found]
+    shown = {r for side in reliefs.values() for r in side}
+    problems += [
+        f"relief {r.relief!r} was never shown to the agents" for r in draft.conclusion.reliefs if r.relief not in shown
+    ]
+    if draft.citation.decision_date != expected_decision_date:
+        problems.append(
+            f"decision date {draft.citation.decision_date} differs from the dev manifest's {expected_decision_date}"
+        )
+    cited: list[tuple[str, str]] = []
+    for side in ("PETITIONER", "RESPONDENT"):
+        subs = draft.real_submissions.PETITIONER if side == "PETITIONER" else draft.real_submissions.RESPONDENT
+        cited += [(f"{side} submission {i}", s) for i, sub in enumerate(subs, 1) for s in sub.source_paras]
+    cited += [(f"statutory analysis {a.statute_id}", s) for a in draft.statutory_analysis for s in a.source_paras]
+    cited += [(f"precedent {a.name}", s) for a in draft.precedent_analysis for s in a.source_paras]
+    cited += [(f"finding {f.issue_id}", s) for f in draft.issue_findings for s in f.source_paras]
+    problems += [
+        f"{item} cites {src}, which is not a paragraph of this judgment"
+        for item, src in cited
+        if src.split(".")[0] not in paragraph_ids
+    ]
+
+    dropped: list[str] = []
+    data = draft.model_dump(mode="json")
+    for side in ("PETITIONER", "RESPONDENT"):
+        for sub in data["real_submissions"][side]:
+            sub["statutes_cited"], lost = _resolve(sub["statutes_cited"], known_statutes, aliases)
+            dropped += lost
+    kept_analysis = []
+    for a in data["statutory_analysis"]:
+        ids, lost = _resolve([a["statute_id"], *a["interacts_with"]], known_statutes, aliases)
+        dropped += lost
+        if a["statute_id"] in lost:
+            continue  # its subject has no Law DB record: reported, not stored under an invented ID
+        a["statute_id"], a["interacts_with"] = ids[0], ids[1:]
+        kept_analysis.append(a)
+    data["statutory_analysis"] = kept_analysis
+    flags = []
+    if dropped:
+        flags.append(
+            ExtractionFlag(
+                code="STATUTE_NOT_IN_LAW_DB",
+                detail=f"ground-truth statute references with no Law DB ID: {sorted(set(dropped))}",
+                resolution="left out of the sealed record's statute lists",
+            )
+        )
+    try:
+        truth = CaseGroundTruth.model_validate(
+            {**data, "_id": case_id, "access": "SEALED_UNTIL_VERDICT", "anonymization_map": anonymization_map}
+        )
+    except ValidationError as exc:
+        problems += [f"{'.'.join(map(str, e['loc'])) or '<truth>'}: {e['msg']}" for e in exc.errors()]
+        return AssembledTruth(truth=None, problems=problems, flags=flags)
+    return AssembledTruth(truth=truth, problems=problems, flags=flags)
