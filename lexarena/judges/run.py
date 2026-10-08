@@ -27,6 +27,7 @@ from lexarena.judges.packet import (
     cited_precedent_uids,
     fetch_precedents,
     record_ids,
+    render_audit_notes,
     render_case,
     render_issues,
     render_precedents,
@@ -37,6 +38,7 @@ from lexarena.judges.packet import (
 from lexarena.judges.personas import PersonaPrompt, PersonaRegistry
 from lexarena.judges.validate import Allowed, check_opinion, finalize
 from lexarena.llm.client import LLMClient
+from lexarena.memory.pinning import render as render_lessons
 from lexarena.prompts import PromptStore, RenderedPrompt
 from lexarena.schemas.bench import (
     ORDERS,
@@ -50,7 +52,9 @@ from lexarena.schemas.bench import (
 )
 from lexarena.schemas.case import AgentCaseView
 from lexarena.schemas.config import AppConfig
+from lexarena.schemas.lesson import Lesson
 from lexarena.schemas.predicate import PredicateEntry
+from lexarena.schemas.session import ThemisGlobalReport
 from lexarena.schemas.transcript import PublishedTurn
 from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_local.extract import extract_checklists
@@ -90,6 +94,8 @@ class BenchInputs:
     turns: list[PublishedTurn]
     law: BenchLaw
     fetch_precedent: PrecedentFetcher
+    audit: ThemisGlobalReport | None = None  # shown as notes only if judging.show_audit_notes (D-078)
+    lessons: list[Lesson] = field(default_factory=list)  # LEGAL_RULE lessons pinned for the bench (D-077)
 
 
 @dataclass
@@ -190,6 +196,7 @@ class Bench:
             first_side=COUNSEL[first],
             second_side=COUNSEL[second],
             submissions=render_submissions(inputs.case, inputs.turns, order),
+            audit_notes=render_audit_notes(inputs.audit if self._cfg.judging.show_audit_notes else None, order),
             **shared,
         )
         draft = self._ask(original, session_id)
@@ -227,6 +234,7 @@ class Bench:
             "issue_ids": ", ".join(issue_ids),
             "statutes": render_statutes(inputs.law.views),
             "precedents": render_precedents(precedents),
+            "lessons": render_lessons(inputs.lessons),
         }
         notes = [
             f"precedent {uid} cited by counsel is not available to the bench"

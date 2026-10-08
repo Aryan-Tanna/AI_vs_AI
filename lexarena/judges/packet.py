@@ -21,6 +21,7 @@ from lexarena.schemas.base import SIDES, Side
 from lexarena.schemas.bench import PresentationOrder
 from lexarena.schemas.case import AgentCaseView, SimulationSide
 from lexarena.schemas.retrieval import PrecedentExcerpt, PrecedentView
+from lexarena.schemas.session import ThemisGlobalReport
 from lexarena.schemas.transcript import PublishedTurn
 from lexarena.storage.temporal import StatuteView
 
@@ -211,4 +212,30 @@ def render_submissions(case: AgentCaseView, turns: list[PublishedTurn], order: P
         own = [t for t in turns if t.speaker == side]
         lines += ["", *(_render_turn(t) for t in own)] if own else ["", "No turns."]
         blocks.append("\n".join(lines))
+    return "\n\n".join(blocks)
+
+
+# ---------------------------------------------------------------- auditor's notes (D-078)
+
+
+def render_audit_notes(report: ThemisGlobalReport | None, order: PresentationOrder) -> str:
+    """THEMIS-GLOBAL's map of the transcript for the bench: where each side's points are and where they were answered,
+    and confirmed self-contradictions, in the same side order as the submissions. Never its scores (SPEC E1)."""
+    if report is None:
+        return NONE
+    raw = report.rebuttal_depth.get("points", [])
+    points = raw if isinstance(raw, list) else []
+    blocks: list[str] = []
+    for side in SIDE_ORDER[order]:
+        lines = [f"Points made by {COUNSEL[side]}:"]
+        for p in points:
+            if not isinstance(p, dict) or p.get("speaker") != side:
+                continue
+            answered = p.get("answered_in_turn")
+            where = f"answered or conceded in turn {answered}" if answered else "no later answer noted"
+            issue = p.get("issue_id") or "-"
+            lines.append(f'- turn {p.get("turn")} ({issue}): "{p.get("quote")}"; {where}')
+        own = [c for c in report.contradictions if c.get("speaker") == side]
+        lines += [f"- contradiction between claims {c.get('claim_a')} and {c.get('claim_b')}" for c in own]
+        blocks.append("\n".join(lines if len(lines) > 1 else [*lines, NONE]))
     return "\n\n".join(blocks)

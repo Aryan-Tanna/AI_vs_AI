@@ -63,7 +63,7 @@ prompts:
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   reflection_lessons: {id: reflection/lessons, version: 1}   # [SPEC F1-F7, D-077]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
-  judge_decide: {id: judges/decide, version: 1}         # [D-071] one opinion per persona and presentation order
+  judge_decide: {id: judges/decide, version: 2}         # [D-071] one opinion per persona and order; v2 auditor's notes and bench memory [D-078]
   judge_revise: {id: judges/revise, version: 1}         # [D-071] the one revision (ARCHITECTURE §5)
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
     TEXTUALIST: {id: judges/persona_textualist, version: 1}
@@ -137,6 +137,7 @@ judging:
   abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
   min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
   check_reasons_with_layer1: true        # [ARCHITECTURE §5, D-071] THEMIS layer 1 on each opinion's stated law (one verifier call per opinion)
+  show_audit_notes: true                 # [D-078] THEMIS-GLOBAL's point map and contradictions, never its scores; ablate on dev to check bias
   # Report limits, fixed before measuring [D-024]; Step 11 reports against them, nothing is re-run automatically [D-071].
   max_order_swap_disagreement_rate: 0.2  # [PLACEHOLDER] share of a persona's cases whose two orders disagree on the result
   persona_role_max_win_rate: 0.65        # [SPEC E1] a persona favouring one side above this ...

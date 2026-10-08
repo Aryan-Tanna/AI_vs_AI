@@ -172,3 +172,60 @@ def test_the_model_facing_schema_is_strict_json_friendly() -> None:
     schema = OpinionDraft.model_json_schema()
     text = str(schema)
     assert "additionalProperties" in text and "patternProperties" not in text
+
+
+def _audit() -> Any:
+    from lexarena.schemas.session import ThemisGlobalReport
+
+    return ThemisGlobalReport(
+        consistency={"PETITIONER": {"score": 0.123456}, "RESPONDENT": {"score": 0.654321}},
+        rebuttal_depth={
+            "PETITIONER": {"depth": 0.987654},
+            "RESPONDENT": {"depth": 0.111111},
+            "points": [
+                {
+                    "speaker": "PETITIONER",
+                    "turn": 1,
+                    "issue_id": "I1",
+                    "quote": "<petitioner point>",
+                    "answered_in_turn": 2,
+                },
+                {
+                    "speaker": "RESPONDENT",
+                    "turn": 2,
+                    "issue_id": "I1",
+                    "quote": "<respondent point>",
+                    "answered_in_turn": None,
+                },
+            ],
+        },
+        contradictions=[{"speaker": "RESPONDENT", "claim_a": "T02-C1", "claim_b": "T04-C1"}],
+    )
+
+
+def test_judges_see_the_auditor_map_in_order_but_never_its_scores(tmp_path: Path) -> None:
+    from dataclasses import replace
+
+    llm, judge, _ = client([opinion_json()] * CALLS)
+    bench(llm, approved(tmp_path)).decide(replace(inputs(), audit=_audit()), session_id=SESSION_ID)
+    first, second = sent(judge, 0), sent(judge, 1)
+    for text in (first, second):
+        assert '"<petitioner point>"; answered or conceded in turn 2' in text
+        assert "contradiction between claims T02-C1 and T04-C1" in text
+        for score in ("0.123456", "0.654321", "0.987654", "0.111111"):
+            assert score not in text
+    notes = first[first.index("AUDITOR'S NOTES") :]
+    assert notes.index("Points made by Petitioner's") < notes.index("Points made by Respondent's")
+    notes = second[second.index("AUDITOR'S NOTES") :]
+    assert notes.index("Points made by Respondent's") < notes.index("Points made by Petitioner's")
+
+
+def test_audit_notes_can_be_switched_off(tmp_path: Path) -> None:
+    from dataclasses import replace
+
+    cfg = CFG.model_copy(update={"judging": CFG.judging.model_copy(update={"show_audit_notes": False})})
+    llm, judge, _ = client([opinion_json()] * CALLS)
+    Bench(llm, PromptStore(PROMPTS_ROOT), cfg, approved(tmp_path), layer1=no_layer1).decide(
+        replace(inputs(), audit=_audit()), session_id=SESSION_ID
+    )
+    assert "<petitioner point>" not in sent(judge, 0)
