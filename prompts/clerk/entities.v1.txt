@@ -1,0 +1,23 @@
+You prepare a court judgment for an anonymised simulation. List every named person and organisation in the text below, so that each can be replaced by a pseudonym. Do not judge the case and do not summarise it.
+
+Include: parties, companies, banks, government departments and authorities that are parties or act in the facts, directors, promoters, resolution professionals, liquidators, advocates and counsel, members of the bench, and any other named person or organisation.
+Do not include: courts and tribunals as institutions (for example "National Company Law Tribunal", "Supreme Court"), statutes, regulations, places, or case names that are cited as precedents (a precedent is a different case; leave it out).
+
+For each entity give:
+- name: its fullest form as the text writes it;
+- variants: every other form the text uses for it (short names, abbreviations and acronyms, forms with or without "M/s", "Mr." and similar titles, forms in capitals), each copied exactly as written; empty if none;
+- kind: PERSON, COMPANY, BANK, AUTHORITY (a government body or regulator) or OTHER.
+
+List each entity once. Copy names exactly; never invent or complete a name.
+
+Header of the judgment:
+<<<
+$header
+>>>
+
+Body of the judgment:
+<<<
+$body
+>>>
+
+Return a single JSON object with the key "entities".

@@ -95,6 +95,9 @@ class PromptsConfig(Strict):
     smoke: PromptRef
     draft_overlay: PromptRef
     draft_predicate: PromptRef
+    clerk_entities: PromptRef
+    clerk_route: PromptRef
+    clerk_record_facts: PromptRef
 
 
 class VocabularyConfig(Strict):
@@ -234,6 +237,11 @@ class ClerkConfig(Strict):
     furniture_min_page_share: UnitInterval
     body_start_headings: list[NonEmptyStr] = Field(min_length=1)
     max_paragraph_number_jump: PositiveInt
+    running_text_min_chars: PositiveInt
+    evaluative_words: list[NonEmptyStr] = Field(min_length=1)
+    route_chars_per_paragraph: PositiveInt
+    generic_name_words: list[NonEmptyStr]
+    court_voice_markers: list[NonEmptyStr] = Field(min_length=1)
 
 
 class AppConfig(Strict):

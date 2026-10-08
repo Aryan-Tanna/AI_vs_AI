@@ -49,6 +49,9 @@ prompts:
   smoke: {id: smoke/dummy, version: 1}
   draft_overlay: {id: drafting/overlay, version: 4}     # v4 [D-043]: unique quotes, whole matching footnote, start date required
   draft_predicate: {id: drafting/predicate, version: 1}
+  clerk_entities: {id: clerk/entities, version: 1}      # [D-056]
+  clerk_route: {id: clerk/route, version: 1}            # [D-056]
+  clerk_record_facts: {id: clerk/record_facts, version: 1}   # [D-056 amendment, D-058]
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -124,5 +127,13 @@ clerk:
   furniture_min_page_share: 0.5          # [PLACEHOLDER] a line (digits ignored) on this share of pages is a running header/footer [SPEC H5-1, D-056]
   body_start_headings: [JUDGMENT, JUDGEMENT, ORDER, "ORAL JUDGMENT", "ORAL ORDER", "FINAL ORDER", "COMMON ORDER", "COMMON JUDGMENT"]   # upper case, any letter spacing; the header ends at the first [D-056]
   max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
+  running_text_min_chars: 25             # [PLACEHOLDER] a header line this long recurring in the body is merged running text [D-056]
+  # SPEC A3 evaluative words: a court-stated sentence with one is reasoning, never a record fact [D-056].
+  evaluative_words: [erred, merely, satisfies, satisfied, failed, rightly, wrongly, correctly, incorrectly, hopelessly, clearly, admittedly, manifestly, untenable, unsustainable, misconceived, no merit, devoid of merit, cannot lie]
+  route_chars_per_paragraph: 700        # [PLACEHOLDER] each paragraph's opening characters shown to the router (cost, not behaviour)
+  # Words that are part of many names, so they never mark a leaked name on their own [D-056].
+  generic_name_words: [ltd, limited, pvt, private, company, co, corporation, corp, india, indian, bank, of, the, and, for, services, financial, finance, industries, infrastructure, developers, projects, trading, investment, investments, enterprises, group, holdings, international, mr, ms, mrs, shri, smt, sri, dr, "m/s", messrs, union, state, national, authority, department, board, resolution, professional, liquidator, committee, creditors, organisation, organization, society, association, cooperative, "co-operative", fund, trust, through, its, director, directors, partner, proprietor]
+  # The appellate court speaking in its own voice: never in the agent view [SPEC H5-12, D-056].
+  court_voice_markers: ["we are of the view", "we are of the considered view", "in our view", "in our opinion", "we hold that", "we find that", "we are satisfied", "we do not find", "we see no reason", "we are not inclined", "we are inclined", "this tribunal has already held", "this appellate tribunal has", "this tribunal is of the", "the appeal is dismissed", "the appeal is allowed", "the appeals are dismissed", "the appeals are allowed", "appeal stands dismissed", "appeal stands allowed", "in the result", "for the foregoing reasons", "as held below"]
 
 seed: 7                                  # [PLACEHOLDER]

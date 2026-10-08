@@ -1,0 +1,16 @@
+You read sentences from the reasoning part of an Indian tribunal judgment. Some of them only restate what is on the case record; the rest are the tribunal's reasoning. Pick out the record facts. Do not judge the case.
+
+A RECORD FACT states only something that is on the record: a date, an amount, a document and what it says, something a party or a forum did, or a procedural event. Example: "In the application, the date of default is recorded as <date>." or "The creditor approached the recovery tribunal on <date>."
+
+Anything else is reasoning, and must not be picked, including a sentence that:
+- evaluates, infers, concludes or decides anything (whether a claim is barred, valid, proved, or has merit);
+- states or applies law, or says what a precedent held;
+- says what the tribunal thinks, notices, finds, holds or directs;
+- mixes a record fact with any of the above.
+
+Sentences (each starts with its ID):
+<<<
+$sentences
+>>>
+
+Return a single JSON object with the key "record_fact_ids": the IDs of the record-fact sentences, in order. Return an empty list if there are none.

@@ -1,0 +1,23 @@
+You label the paragraphs of an Indian tribunal judgment by the part of the judgment each belongs to. Do not judge the case. Each paragraph below starts with its ID; long paragraphs are shown only in part.
+
+Parts:
+- HEADER: cause title, counsel, coram, or other formal matter that appears after the heading.
+- FACTS: the background facts and the procedural history, as narrated, including what happened before the forums below.
+- LOWER_ORDER: what the order under appeal decided or directed, and its reasons (appeals only).
+- ISSUES: the questions the tribunal frames for decision.
+- SUBMISSIONS_P: arguments made for the appellant or applicant (the side seeking relief here).
+- SUBMISSIONS_R: arguments made for the respondents.
+- ANALYSIS: the tribunal's own discussion: its reading of statutes and precedents, its evaluation of the arguments and evidence, and its findings.
+- CONCLUSION: the result, the operative directions, and costs.
+
+Rules:
+- Every paragraph gets exactly one label.
+- When a paragraph mixes facts or submissions with the tribunal's own evaluation or findings, label it ANALYSIS.
+- A paragraph that reports what counsel argued is a submission, even if it quotes a precedent.
+
+Paragraphs:
+<<<
+$paragraphs
+>>>
+
+Return a single JSON object with the key "labels": a list of {"para_id": ..., "part": ...}, one for each paragraph, in order.

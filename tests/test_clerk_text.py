@@ -4,10 +4,14 @@ paragraph splitting. Deterministic, no model calls. Placeholder text only (non-n
 
 from __future__ import annotations
 
-from lexarena.clerk.text import clean_pages, split_paragraphs
+from lexarena.clerk.text import SplitText, clean_pages, split_paragraphs
 
 SHARE = 0.5
 HEADINGS = ["JUDGMENT", "ORDER", "J U D G M E N T"]
+
+
+def sp(pages: list[str], jump: int, running: int) -> SplitText:
+    return split_paragraphs(clean_pages(pages, SHARE), HEADINGS, max_number_jump=jump, running_text_min_chars=running)
 
 
 def page(n: int, body: str) -> str:
@@ -54,9 +58,7 @@ def body(*lines: str) -> list[str]:
 
 
 def test_header_ends_at_the_first_heading_and_its_numbered_lines_are_not_paragraphs() -> None:
-    split = split_paragraphs(
-        clean_pages(["\n".join(body("1. <first>", "2. <second>"))], SHARE), HEADINGS, max_number_jump=1
-    )
+    split = sp(["\n".join(body("1. <first>", "2. <second>"))], 1, 99)
     assert "<party list item" in split.header
     assert [(p.para_id, p.court_no, p.text) for p in split.paragraphs] == [
         ("P1", "1", "<first>"),
@@ -66,34 +68,28 @@ def test_header_ends_at_the_first_heading_and_its_numbered_lines_are_not_paragra
 
 def test_out_of_sequence_numbers_stay_inside_the_paragraph() -> None:
     text = "\n".join(body("1. <a>", "2. <b> quoting:", "45. <quoted paragraph of another judgment>", "3. <c>"))
-    paras = split_paragraphs(clean_pages([text], SHARE), HEADINGS, max_number_jump=1).paragraphs
+    paras = sp([text], 1, 99).paragraphs
     assert [p.court_no for p in paras] == ["1", "2", "3"]
     assert "45. <quoted paragraph" in paras[1].text
 
 
 def test_text_before_the_first_number_is_its_own_paragraph() -> None:
-    paras = split_paragraphs(
-        clean_pages(["\n".join(body("<unnumbered opening>", "2. <next>"))], SHARE), HEADINGS, max_number_jump=1
-    )
+    paras = sp(["\n".join(body("<unnumbered opening>", "2. <next>"))], 1, 99)
     assert [(p.court_no, p.text) for p in paras.paragraphs] == [(None, "<unnumbered opening>"), ("2", "<next>")]
 
 
 def test_spaced_heading_is_recognised() -> None:
-    split = split_paragraphs(clean_pages(["<court>\nJ U D G M E N T\n1. <a>"], SHARE), HEADINGS, max_number_jump=1)
+    split = sp(["<court>\nJ U D G M E N T\n1. <a>"], 1, 99)
     assert split.header == "<court>" and split.paragraphs[0].text == "<a>"
 
 
 def test_without_a_heading_everything_is_body() -> None:
-    split = split_paragraphs(clean_pages(["1. <a>\n2. <b>"], SHARE), HEADINGS, max_number_jump=1)
+    split = sp(["1. <a>\n2. <b>"], 1, 99)
     assert split.header == "" and [p.court_no for p in split.paragraphs] == ["1", "2"]
 
 
 def test_continuation_lines_join_with_spaces_and_pages_follow_the_start() -> None:
-    split = split_paragraphs(
-        clean_pages(["JUDGMENT\n1. <starts>\n<continues>", "<still going>\n2. <next>"], SHARE),
-        HEADINGS,
-        max_number_jump=1,
-    )
+    split = sp(["JUDGMENT\n1. <starts>\n<continues>", "<still going>\n2. <next>"], 1, 99)
     first, second = split.paragraphs
     assert first.text == "<starts> <continues> <still going>" and first.page == 1
     assert second.page == 2
@@ -101,7 +97,7 @@ def test_continuation_lines_join_with_spaces_and_pages_follow_the_start() -> Non
 
 def test_a_heading_merged_into_a_line_still_ends_the_header() -> None:
     text = "<court>\n<appeal number> J U D G M EN T (<date>) <member> This appeal\n<continues>\n2. <next>"
-    split = split_paragraphs(clean_pages([text], SHARE), HEADINGS, max_number_jump=2)
+    split = sp([text], 2, 99)
     assert split.header == "<court>\n<appeal number>"
     assert split.paragraphs[0].text == "(<date>) <member> This appeal <continues>"
     assert split.paragraphs[1].court_no == "2"
@@ -109,25 +105,43 @@ def test_a_heading_merged_into_a_line_still_ends_the_header() -> None:
 
 def test_a_whole_line_heading_wins_over_an_embedded_one() -> None:
     text = "<ARISING OUT OF JUDGMENT DATED>\n<court>\nJUDGMENT\n1. <a>"
-    split = split_paragraphs(clean_pages([text], SHARE), HEADINGS, max_number_jump=2)
+    split = sp([text], 2, 99)
     assert split.header == "<ARISING OUT OF JUDGMENT DATED>\n<court>" and split.paragraphs[0].text == "<a>"
 
 
 def test_lower_case_words_are_never_headings() -> None:
-    split = split_paragraphs(
-        clean_pages(["the impugned judgment was passed\n1. <a>"], SHARE), HEADINGS, max_number_jump=2
-    )
+    split = sp(["the impugned judgment was passed\n1. <a>"], 2, 99)
     assert split.header == ""
 
 
 def test_a_small_skip_in_the_court_numbering_is_followed_and_flagged() -> None:
     text = "JUDGMENT\n1. <a>\n2. <b>\n4. <d, the court skipped 3>\n5. <e>"
-    split = split_paragraphs(clean_pages([text], SHARE), HEADINGS, max_number_jump=2)
+    split = sp([text], 2, 99)
     assert [p.court_no for p in split.paragraphs] == ["1", "2", "4", "5"]
     assert [f.code for f in split.flags] == ["PARAGRAPH_NUMBERING_GAP"] and "2 -> 4" in split.flags[0].detail
 
 
 def test_a_big_jump_is_a_quotation_not_a_paragraph() -> None:
     text = "JUDGMENT\n1. <a>\n2. <b> quoting:\n45. <quoted>\n3. <c>"
-    split = split_paragraphs(clean_pages([text], SHARE), HEADINGS, max_number_jump=2)
+    split = sp([text], 2, 99)
     assert [p.court_no for p in split.paragraphs] == ["1", "2", "3"] and split.flags == []
+
+
+def test_a_running_footer_merged_into_body_text_is_removed() -> None:
+    footer = "Company Appeal (AT) No. 77 of 2001"
+    pages = [
+        f"<court>\n{footer}\nJUDGMENT\n1. <a> start",
+        f"<more a> {footer} <still a>\n2. <b>",
+        f"<b> continues {footer.replace(' No.', chr(10) + 'No.')} <end b>",
+    ]
+    split = sp(pages, 1, 20)
+    assert all("Company Appeal" not in p.text for p in split.paragraphs)
+    assert split.paragraphs[0].text == "<a> start <more a> <still a>"
+    assert split.paragraphs[1].text == "<b> <b> continues <end b>"
+    assert [f.code for f in split.flags] == ["RUNNING_TEXT_REMOVED"]
+
+
+def test_a_header_line_mentioned_once_in_the_body_stays() -> None:
+    pages = ["<court>\nCompany Appeal (AT) No. 77 of 2001\nJUDGMENT\n1. <a> see Company Appeal (AT) No. 77 of 2001"]
+    split = sp(pages, 1, 20)
+    assert "Company Appeal (AT) No. 77 of 2001" in split.paragraphs[0].text and split.flags == []

@@ -8,6 +8,8 @@ General rules only (D-033), never rules for one source:
 - Header: everything before the judgment or order heading (config) is the header; its numbered lines (party
   lists) are not paragraphs. A heading alone on its line wins; only when there is none is a heading merged into a
   line by the PDF layout accepted ("<appeal no.> J U D G M EN T (<date>) ..."). Headings match upper case only.
+- Running text: a header line (appeal number, tribunal name) that recurs inside body paragraphs, merged there by
+  the PDF layout, is removed from them and flagged.
 - Paragraphs: a line starting with the court's paragraph number ("7. ...") opens a paragraph when it is the first
   number seen, the next number, or a small forward jump (the court skipped a number; flagged). Lower numbers and
   big jumps are quotations from other judgments and stay inside the current paragraph. Text before the first
@@ -126,7 +128,33 @@ def _split_header(lines: list[Line], headings: list[str]) -> tuple[list[Line], l
     return [], list(lines)
 
 
-def split_paragraphs(cleaned: CleanedText, body_start_headings: list[str], max_number_jump: int) -> SplitText:
+def _remove_running_text(
+    paragraphs: list[JudgmentParagraph], header_lines: list[Line], min_chars: int
+) -> tuple[list[JudgmentParagraph], list[ExtractionFlag]]:
+    """A header line (the appeal number, the tribunal's name) that the PDF layout merged into body text, possibly
+    across a line break, is running furniture when it recurs at least twice in the body: removed and flagged."""
+    removed: list[str] = []
+    texts = [p.text for p in paragraphs]
+    for candidate in sorted({" ".join(line.text.split()) for line in header_lines}, key=len, reverse=True):
+        if len(candidate) < min_chars:
+            continue
+        pattern = re.compile(r"\s+".join(map(re.escape, candidate.split())))
+        if sum(len(pattern.findall(t)) for t in texts) >= MIN_FURNITURE_PAGES:
+            texts = [" ".join(pattern.sub(" ", t).split()) for t in texts]
+            removed.append(candidate)
+    if not removed:
+        return paragraphs, []
+    flag = ExtractionFlag(
+        code="RUNNING_TEXT_REMOVED",
+        detail=f"running header text merged into the body was removed: {sorted(removed)}",
+        resolution="removed wherever it recurred; the header keeps it",
+    )
+    return [p.model_copy(update={"text": t}) for p, t in zip(paragraphs, texts, strict=True)], [flag]
+
+
+def split_paragraphs(
+    cleaned: CleanedText, body_start_headings: list[str], max_number_jump: int, running_text_min_chars: int
+) -> SplitText:
     header_lines, body = _split_header(cleaned.lines, body_start_headings)
     paragraphs: list[JudgmentParagraph] = []
     flags: list[ExtractionFlag] = []
@@ -162,4 +190,6 @@ def split_paragraphs(cleaned: CleanedText, body_start_headings: list[str], max_n
                 current_page = line.page
             current.append(line.text.strip())
     close()
-    return SplitText(header="\n".join(line.text for line in header_lines), paragraphs=paragraphs, flags=flags)
+    paragraphs, running = _remove_running_text(paragraphs, header_lines, running_text_min_chars)
+    header = "\n".join(line.text for line in header_lines)
+    return SplitText(header=header, paragraphs=paragraphs, flags=flags + running)
