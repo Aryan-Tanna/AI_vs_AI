@@ -28,11 +28,12 @@ from lexarena.app import DEFAULT_ENV_FILE, PROMPTS_ROOT, SEALED_ENV_FILE, build_
 from lexarena.cli import _config_path
 from lexarena.config import load_config
 from lexarena.prompts import PromptStore
+from lexarena.schemas.config import ThemisLocalConfig
 from lexarena.schemas.predicate import PredicateEntry
 from lexarena.storage.factory import SealedProcess
 from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_local.extract import extract_checklists
-from lexarena.themis_local.layer1 import CaseFacts, run_layer1
+from lexarena.themis_local.layer1 import CaseFacts, alternative_readings, run_layer1
 
 REPORT = Path("reports/step7_acceptance.md")
 RAW = Path("reports/step7_acceptance.json")
@@ -56,6 +57,8 @@ OLDER_MINIMUM_SENTENCE = (
     "and the default here is well above that minimum."
 )
 MUTATION_FACTOR = 2
+ALTERNATIVES: dict[str, list[dict[str, StatuteView] | None]] = {}
+THEMIS_CFG: list[ThemisLocalConfig] = []
 
 
 @dataclass
@@ -88,6 +91,10 @@ def build_arguments(
             wanted |= {s for sub in getattr(truth.real_submissions, side) for s in sub.statutes_cited}
         views = {sid: v for sid in sorted(wanted) if (v := law.get_statute(sid, as_of)) is not None}
         views_by_case[case_id] = views
+        ALTERNATIVES[case_id] = [
+            None if alt is None else {sid: v for sid in sorted(wanted) if (v := law.get_statute(sid, alt)) is not None}
+            for alt in alternative_readings(as_of, THEMIS_CFG[0])
+        ]
         facts_by_case[case_id] = CaseFacts(
             amounts={a.amount_id: a for a in av.record.amounts},
             key_dates={k.label: k.date for k in av.metadata.key_dates},
@@ -140,6 +147,7 @@ def main() -> int:
     configure_llm_logging(cfg)
     prompts = PromptStore(PROMPTS_ROOT)
     llm = build_llm_client(cfg)
+    THEMIS_CFG.append(cfg.themis_local)
     with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
         arguments, views_by_case, facts_by_case = build_arguments(proc, args.case_ids)
         law = proc.clerk().law
@@ -154,7 +162,12 @@ def main() -> int:
             llm, prompts, cfg, arg.text, views, predicates, facts_by_case[arg.case_id].amounts,
             session_id=f"STEP7-{arg.case_id}",
         )  # fmt: skip
-        result = run_layer1(report.checklists, views, predicates, facts_by_case[arg.case_id], cfg.themis_local)
+        alts = [
+            None if a is None else {k: v for k, v in a.items() if k in arg.statutes} for a in ALTERNATIVES[arg.case_id]
+        ]
+        result = run_layer1(
+            report.checklists, views, predicates, facts_by_case[arg.case_id], cfg.themis_local, alternatives=alts
+        )
         hard = sorted({e.code for e in result.hard_errors})
         warnings = sorted({w.code for w in [*result.warnings, *report.warnings]})
         arg.result = {

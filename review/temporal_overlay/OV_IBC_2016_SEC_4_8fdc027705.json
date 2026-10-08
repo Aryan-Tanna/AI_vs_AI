@@ -1,0 +1,65 @@
+{
+  "draft_id": "OV_IBC_2016_SEC_4_8fdc027705",
+  "statute_id": "IBC_2016_SEC_4",
+  "source_id": "IBC_2016_CONSOLIDATED_UPTO_2021_08_12",
+  "source_text_sha256": "48f329fb08ff14e2e8d768f3b967601c4dcb8f71545224ebf3809deed5dcc418",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-08)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 11617-11772: ... FOR CORPORATE PERSONS CHAPTER I PRELIMINARY 4. Application of this Part. - (1) This Part shall apply to matters relating to the insolvency and liquidation of corporate debtors where the minimum amount of the default is one lakh rupees: Provided that the Central Government may, by notification, specify the minimum..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 11720-11772: ...o matters relating to the insolvency and liquidation of corporate debtors where the minimum amount of the default is one lakh rupees: Provided that the Central Government may, by notification, specify the minimum..."
+    },
+    {
+      "name": "value",
+      "status": "NOT_CHECKABLE",
+      "detail": "100000.0"
+    },
+    {
+      "name": "effective_to_quote",
+      "status": "MISSING",
+      "detail": "no quote given"
+    }
+  ],
+  "blocking_problems": [
+    "effective_to_quote needs a quote from the source"
+  ],
+  "reviewer_must_judge": [
+    "value 100,000 is not written in digits in its quote; check it against the words",
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is FILING the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-08T13:17:32.062753Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "minimum_default_inr",
+    "value_kind": "number",
+    "value_boolean": null,
+    "value_number": 100000.0,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "FILING",
+    "effective_from": null,
+    "effective_to": "2020-03-23",
+    "source_text": "This Part shall apply to matters relating to the insolvency and liquidation of corporate debtors where the minimum amount of the default is one lakh rupees",
+    "value_quote": "the minimum amount of the default is one lakh rupees",
+    "effective_from_quote": null,
+    "effective_to_quote": null,
+    "commencement_note": "The figure in s.4(1) itself, in force from the Part's commencement until notification S.O. 1205(E) of 24.03.2020 raised it to one crore (already approved, OV_IBC_2016_SEC_4_6be1c476ec). The end date 23.03.2020 is the day before that notification; it is not written in this source. Keyed on FILING like the one-crore row; layer 1 checks a threshold only when the filing-date and default-date readings give the same figure (D-069), because tribunals have differed on which date governs."
+  }
+}

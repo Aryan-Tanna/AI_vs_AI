@@ -99,6 +99,8 @@ themis_local:
   penalty_cap: 0.30                      # [SPEC D6]
   threshold_overlay_parameter: minimum_default_inr   # overlay parameter holding the dated minimum default [D-062]
   threshold_currency: INR                # amounts in the record are in this currency [D-062]
+  threshold_date_readings:               # a dated threshold is checked only if it is the same under each reading [D-069]
+    - {key: FILING, alternative: DEFAULT}
   amount_unit_words:                     # Indian numbering words, to read '1 crore' in a quote [D-066]
     - {word: crore, value: 10000000}
     - {word: lakh, value: 100000}

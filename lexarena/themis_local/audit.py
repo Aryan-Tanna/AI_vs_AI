@@ -9,11 +9,12 @@ Hard errors, each a tracked Z3 assertion so the unsat core names the code:
 - ERR_THRESHOLD_APPLICATION: "met" or "not met" contradicts the record amount the argument relies on;
 - ERR_TIMELINE_MISSTATED: a claimed period differs from the law.
 
-The threshold is checked only against an APPROVED overlay value that covers the case date (D-062). The Law DB stores
-one figure, today's; a case filed before a notification changed it would otherwise be held to the wrong number, and
-an honest argument rejected. Without a dated value the claim becomes THRESHOLD_NOT_VERIFIABLE for layer 2. Timelines
-use the dated overlay value when one applies, are left unchecked when one exists but could not be dated, and otherwise
-use the Law DB value.
+The threshold is checked only against an APPROVED overlay value that covers the case date (D-062), and only when every
+reading of which date it turns on gives the same value (D-069: tribunals have differed on filing date vs default
+date). The Law DB stores one figure, today's; a case filed before a notification changed it would otherwise be held to
+the wrong number, and an honest argument rejected. Without a dated value the claim becomes THRESHOLD_NOT_VERIFIABLE
+for layer 2. Timelines use the dated overlay value when one applies, are left unchecked when one exists but could not
+be dated, and otherwise use the Law DB value.
 
 Everything uncertain is a warning or UNMAPPED and is never rejected (SPEC D1 point 4).
 """
@@ -81,6 +82,10 @@ class _Checks:
         return failed, held
 
 
+def _dated_threshold(view: StatuteView, cfg: ThemisLocalConfig) -> float | None:
+    return _numeric({a.parameter: a.value for a in view.applied}.get(cfg.threshold_overlay_parameter))
+
+
 def _numeric(value: object) -> float | None:
     return value if isinstance(value, int | float) and not isinstance(value, bool) else None
 
@@ -96,19 +101,23 @@ def _audit_threshold(
     cfg: ThemisLocalConfig,
     checks: _Checks,
     out: StatuteAudit,
+    alternatives: list[StatuteView | None],
 ) -> None:
     claimed = claim.diagnostic_checklist.financial_threshold
     mentions_threshold = claimed.minimum_amount is not None or claim.asserts_threshold_met is not None
     if not mentions_threshold:
         return
-    dated = {a.parameter: a.value for a in view.applied}
-    law_min = _numeric(dated.get(cfg.threshold_overlay_parameter))
-    if law_min is None:
+    law_min = _dated_threshold(view, cfg)
+    readings = [_dated_threshold(alt, cfg) if alt is not None else None for alt in alternatives]
+    if law_min is None or any(r != law_min for r in readings):
+        detail = (
+            "no approved threshold covers the case date"
+            if law_min is None
+            else f"the threshold differs between readings of its key date ({law_min} vs {readings})"
+        )
         out.warnings.append(
             ThemisWarning(
-                code=THRESHOLD_NOT_VERIFIABLE,
-                field="financial_threshold",
-                detail="no approved threshold covers the case date; left to layer 2",
+                code=THRESHOLD_NOT_VERIFIABLE, field="financial_threshold", detail=f"{detail}; left to layer 2"
             )
         )
         return
@@ -208,13 +217,19 @@ def _audit_items(view: StatuteView, claim: ExtractedChecklist, cfg: ThemisLocalC
 
 
 def audit_statute(
-    view: StatuteView, claim: ExtractedChecklist, amounts: dict[str, Amount], cfg: ThemisLocalConfig
+    view: StatuteView,
+    claim: ExtractedChecklist,
+    amounts: dict[str, Amount],
+    cfg: ThemisLocalConfig,
+    alternatives: list[StatuteView | None] | None = None,
 ) -> StatuteAudit:
+    """`alternatives`: the same statute resolved under each other reading of the key dates (D-069); a threshold is
+    checked only when every reading gives the same value. Empty means no contested reading applies."""
     if claim.statute_id != view.statute_id:
         raise ValueError(f"checklist for {claim.statute_id} audited against {view.statute_id}")
     out = StatuteAudit(view.statute_id)
     checks = _Checks()
-    _audit_threshold(view, claim, amounts, cfg, checks, out)
+    _audit_threshold(view, claim, amounts, cfg, checks, out, alternatives or [])
     _audit_timelines(view, claim, checks, out)
     _audit_items(view, claim, cfg, out)
     out.hard_errors, out.matched = checks.run()

@@ -172,3 +172,38 @@ def test_the_limitation_rule_applies_to_a_conclusion_stated_under_another_limita
     wrong = for_statute("ACK_SEC_18", asserts_within_limitation=True)
     result = run_layer1([wrong], views, {}, FACTS, CFG)
     assert [w.code for w in result.warnings] == ["WARN_LIMITATION_INCONSISTENT"]
+
+
+def _threshold_views(value: float | None) -> dict[str, StatuteView]:
+    return {
+        "A_SEC_1": statute_view("A_SEC_1", applied={} if value is None else {CFG.threshold_overlay_parameter: value})
+    }
+
+
+def test_a_threshold_is_checked_only_when_every_reading_of_its_date_agrees() -> None:
+    # Tribunals have differed on whether the dated threshold turns on the filing date or the default date (D-069).
+    stated = for_statute("A_SEC_1", financial_threshold={"minimum_amount": 100_000, "currency": "INR"})
+    agree = run_layer1(
+        [stated], _threshold_views(10_000_000), {}, FACTS, CFG, alternatives=[_threshold_views(10_000_000)]
+    )
+    assert [e.code for e in agree.hard_errors] == ["ERR_THRESHOLD_MISSTATED"]
+    for other in (_threshold_views(100_000), _threshold_views(None)):
+        differ = run_layer1([stated], _threshold_views(10_000_000), {}, FACTS, CFG, alternatives=[other])
+        assert differ.hard_errors == [] and "THRESHOLD_NOT_VERIFIABLE" in [w.code for w in differ.warnings]
+
+
+def test_alternative_dates_come_from_config(tmp_path: Any) -> None:
+    from lexarena.storage.temporal import AsOf
+    from lexarena.themis_local.layer1 import alternative_readings
+
+    pair = CFG.threshold_date_readings[0]
+    as_of = AsOf(key_dates={pair.key: date(2021, 1, 1), pair.alternative: date(2019, 1, 1)})
+    (variant,) = alternative_readings(as_of, CFG)
+    assert variant is not None and variant.key_dates[pair.key] == date(2019, 1, 1)
+    assert alternative_readings(AsOf(key_dates={pair.key: date(2021, 1, 1)}), CFG) == [None]  # no default date known
+
+
+def test_without_alternative_readings_a_threshold_is_never_rejected() -> None:
+    stated = for_statute("A_SEC_1", financial_threshold={"minimum_amount": 100_000, "currency": "INR"})
+    result = run_layer1([stated], _threshold_views(10_000_000), {}, FACTS, CFG)
+    assert result.hard_errors == [] and "THRESHOLD_NOT_VERIFIABLE" in [w.code for w in result.warnings]

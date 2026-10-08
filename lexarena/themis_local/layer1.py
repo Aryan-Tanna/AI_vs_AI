@@ -28,7 +28,7 @@ from lexarena.schemas.case import Amount
 from lexarena.schemas.config import ThemisLocalConfig
 from lexarena.schemas.predicate import PredicateEntry
 from lexarena.schemas.transcript import ExtractedChecklist, ThemisWarning
-from lexarena.storage.temporal import StatuteView
+from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_local.audit import UNMAPPED, HardError, audit_statute
 from lexarena.themis_local.limitation import LimitationRule, limitation_expiry, rule_from_overlays
 from lexarena.themis_local.predicates import evaluate, resolve_inputs, select_approved
@@ -155,13 +155,33 @@ def _dedupe(errors: list[HardError]) -> list[HardError]:
     return list(seen.values())
 
 
+def alternative_readings(as_of: AsOf, cfg: ThemisLocalConfig) -> list[AsOf | None]:
+    """The case dates under each other reading of a contested key date (config `threshold_date_readings`, D-069):
+    the key's date replaced by the alternative's. None where the case lacks the alternative date, so that reading
+    cannot be confirmed."""
+    variants: list[AsOf | None] = []
+    for pair in cfg.threshold_date_readings:
+        if pair.key not in as_of.key_dates:
+            continue
+        other = as_of.key_dates.get(pair.alternative)
+        variants.append(None if other is None else AsOf(key_dates={**as_of.key_dates, pair.key: other}))
+    return variants
+
+
 def run_layer1(
     checklists: list[ExtractedChecklist],
     views: dict[str, StatuteView],
     predicates: dict[str, list[PredicateEntry]],
     facts: CaseFacts,
     cfg: ThemisLocalConfig,
+    *,
+    alternatives: list[dict[str, StatuteView] | None] | None = None,
 ) -> Layer1Result:
+    """`alternatives`: `views` resolved under each of `alternative_readings` (None where a reading is unknown). If the
+    caller passes nothing while config lists contested readings, thresholds are not checked: unsafe defaults never
+    reject (D-069)."""
+    if alternatives is None:
+        alternatives = [None] if cfg.threshold_date_readings else []
     out = Layer1Result()
     matched: set[tuple[str, float]] = set()
     rule = _limitation_rule(views, cfg)
@@ -173,7 +193,8 @@ def run_layer1(
                 ThemisWarning(code=STATUTE_NOT_AVAILABLE, detail=f"{checklist.statute_id} not checkable by layer 1")
             )
             continue
-        audit = audit_statute(view, checklist, facts.amounts, cfg)
+        alts = [alt.get(view.statute_id) if alt is not None else None for alt in alternatives]
+        audit = audit_statute(view, checklist, facts.amounts, cfg, alts)
         out.hard_errors += audit.hard_errors
         out.warnings += audit.warnings
         matched |= audit.matched

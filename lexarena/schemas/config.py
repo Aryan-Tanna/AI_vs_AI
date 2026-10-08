@@ -187,6 +187,11 @@ class UnitWord(Strict):
     value: PositiveInt
 
 
+class DateReading(Strict):
+    key: NonEmptyStr
+    alternative: NonEmptyStr
+
+
 class LimitationConfig(Strict):
     period_parameter: NonEmptyStr
     excluded_parameter: NonEmptyStr
@@ -204,6 +209,7 @@ class ThemisLocalConfig(Strict):
     threshold_overlay_parameter: NonEmptyStr
     threshold_currency: NonEmptyStr
     amount_unit_words: list[UnitWord]
+    threshold_date_readings: list[DateReading]
     limitation: LimitationConfig
 
     @model_validator(mode="after")
