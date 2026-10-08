@@ -29,7 +29,7 @@ from lexarena.schemas.retrieval import CaseScope
 from lexarena.secrets import SecretStore
 from lexarena.storage.cases import CaseRepository
 from lexarena.storage.errors import CredentialLeakError
-from lexarena.storage.ground_truth import GroundTruthRepository
+from lexarena.storage.ground_truth import GroundTruthRepository, JudgmentTextRepository
 from lexarena.storage.law import LawRepository
 from lexarena.storage.mongo import ROOT_NAMESPACE, Doc, Namespace
 from lexarena.storage.policy import Principal, Role
@@ -129,6 +129,7 @@ class EvaluatorStores:
     transcript: TranscriptRepository
     sessions: SessionRepository
     ground_truth: GroundTruthRepository
+    judgment_texts: JudgmentTextRepository
 
 
 @dataclass(frozen=True)
@@ -137,6 +138,7 @@ class ReflectionStores:
     transcript: TranscriptRepository
     sessions: SessionRepository
     ground_truth: GroundTruthRepository
+    judgment_texts: JudgmentTextRepository
     private_turns: PrivateTurnRepository
 
 
@@ -153,6 +155,17 @@ class ClerkStores:
     cases: CaseRepository
     precedents: PrecedentRepository  # overlap check (SPEC B1)
     ground_truth: GroundTruthRepository
+    judgment_texts: JudgmentTextRepository
+
+
+@dataclass(frozen=True)
+class ReviewStores:
+    """The owner's check of a clerked case before it runs (D-056): read-only; sealed reads close at the first
+    session."""
+
+    cases: CaseRepository
+    ground_truth: GroundTruthRepository
+    judgment_texts: JudgmentTextRepository
 
 
 # ---------------------------------------------------------------- processes
@@ -258,6 +271,7 @@ class SealedProcess(_Process):
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             sessions=SessionRepository(p, self._app_db, self._ns),
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+            judgment_texts=JudgmentTextRepository(p, self._sealed_db, self._app_db, self._ns),
         )
 
     def reflection(self, side: Side | None = None) -> ReflectionStores:
@@ -267,6 +281,7 @@ class SealedProcess(_Process):
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             sessions=SessionRepository(p, self._app_db, self._ns),
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+            judgment_texts=JudgmentTextRepository(p, self._sealed_db, self._app_db, self._ns),
             private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
         )
 
@@ -282,4 +297,13 @@ class SealedProcess(_Process):
             cases=CaseRepository(p, self._app_db, self._ns),
             precedents=PrecedentRepository(p, self._qdrant),
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+            judgment_texts=JudgmentTextRepository(p, self._sealed_db, self._app_db, self._ns),
+        )
+
+    def review(self) -> ReviewStores:
+        p = Principal(Role.REVIEW)
+        return ReviewStores(
+            cases=CaseRepository(p, self._app_db, self._ns),
+            ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
+            judgment_texts=JudgmentTextRepository(p, self._sealed_db, self._app_db, self._ns),
         )

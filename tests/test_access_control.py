@@ -20,7 +20,7 @@ from lexarena.schemas.session import Aggregate, Evaluation, SessionState, Themis
 from lexarena.secrets import SecretStore
 from lexarena.storage.errors import AccessDeniedError, SealedError, StateTransitionError
 from lexarena.storage.factory import SealedProcess, SessionProcess
-from lexarena.storage.ground_truth import GroundTruthRepository
+from lexarena.storage.ground_truth import GroundTruthRepository, JudgmentTextRepository
 from lexarena.storage.mongo import Namespace
 from lexarena.storage.policy import Principal, Role
 from lexarena.storage.precedents import PrecedentRepository, ScopedPrecedentReader
@@ -140,7 +140,7 @@ def test_session_process_has_no_sealed_handle_and_no_ground_truth_repository(wor
     assert not hasattr(world.session, "_sealed_db")
     for name, bundle in _session_bundles(world, sid).items():
         held = [getattr(bundle, f.name) for f in fields(bundle)]
-        assert not any(isinstance(r, GroundTruthRepository) for r in held), name
+        assert not any(isinstance(r, (GroundTruthRepository, JudgmentTextRepository)) for r in held), name
 
 
 def test_session_roles_read_precedents_only_through_the_case_scope(world: World) -> None:
@@ -192,6 +192,74 @@ def test_verdict_in_another_case_does_not_unseal(world: World) -> None:
     other_sid = world.new_session(case_id=OTHER_CASE, state=SessionState.VERDICT_RECORDED)
     with pytest.raises(SealedError):
         world.sealed.evaluator().ground_truth.get(CASE, session_id=other_sid)
+
+
+# ---------------------------------------------------------------- the owner's review (D-056, Q-019 option A)
+
+
+def _fresh_clerked_case(world: World) -> str:
+    case_id = f"TESTCASE_{uuid.uuid4().hex[:6].upper()}"
+    clerk = world.sealed.clerk()
+    clerk.cases.put(builders.case(case_id, build_marker=BUILD_SENTINEL, date_marker=SIM_DATE))
+    clerk.ground_truth.put(builders.ground_truth(case_id, GT_SENTINEL))
+    clerk.judgment_texts.put(builders.judgment_text(case_id, GT_SENTINEL))
+    return case_id
+
+
+def test_review_reads_ground_truth_and_judgment_text_before_any_session(world: World) -> None:
+    case_id = _fresh_clerked_case(world)
+    review = world.sealed.review()
+    assert review.ground_truth.get_for_review(case_id).issue_findings[0].finding == GT_SENTINEL
+    assert review.judgment_texts.get_for_review(case_id).paragraphs[0].text == GT_SENTINEL
+    assert review.cases.get(case_id).build.excluded_precedent_ids == [BUILD_SENTINEL]
+
+
+@pytest.mark.parametrize("state", list(SessionState))
+def test_review_closes_for_good_once_any_session_exists(world: World, state: SessionState) -> None:
+    case_id = _fresh_clerked_case(world)
+    world.new_session(case_id=case_id, state=state)
+    review = world.sealed.review()
+    with pytest.raises(SealedError):
+        review.ground_truth.get_for_review(case_id)
+    with pytest.raises(SealedError):
+        review.judgment_texts.get_for_review(case_id)
+
+
+def test_review_cannot_use_the_post_verdict_path(world: World) -> None:
+    case_id = _fresh_clerked_case(world)
+    sid = world.new_session(case_id=case_id, state=SessionState.VERDICT_RECORDED)
+    review = world.sealed.review()
+    with pytest.raises(SealedError):
+        review.ground_truth.get(case_id, session_id=sid)
+    with pytest.raises(SealedError):
+        review.judgment_texts.get(case_id, session_id=sid)
+
+
+def test_post_verdict_readers_cannot_use_the_review_path(world: World) -> None:
+    case_id = _fresh_clerked_case(world)
+    for stores in (world.sealed.evaluator(), world.sealed.reflection()):
+        with pytest.raises(SealedError):
+            stores.ground_truth.get_for_review(case_id)
+
+
+def test_judgment_text_unseals_for_the_evaluator_after_the_verdict_only(world: World) -> None:
+    case_id = _fresh_clerked_case(world)
+    early = world.new_session(case_id=case_id, state=SessionState.IN_PROGRESS)
+    with pytest.raises(SealedError):
+        world.sealed.evaluator().judgment_texts.get(case_id, session_id=early)
+    done = world.new_session(case_id=case_id, state=SessionState.VERDICT_RECORDED)
+    assert world.sealed.evaluator().judgment_texts.get(case_id, session_id=done).paragraphs[0].text == GT_SENTINEL
+
+
+@pytest.mark.parametrize("principal", BARRED_FROM_GROUND_TRUTH, ids=str)
+def test_session_roles_never_read_judgment_text(world: World, principal: Principal) -> None:
+    case_id = _fresh_clerked_case(world)
+    repo = JudgmentTextRepository(principal, world.sealed._sealed_db, world.session._app_db, world.ns)
+    with pytest.raises(AccessDeniedError):
+        repo.get_for_review(case_id)
+    sid = world.new_session(case_id=case_id, state=SessionState.VERDICT_RECORDED)
+    with pytest.raises(AccessDeniedError):
+        repo.get(case_id, session_id=sid)
 
 
 # ---------------------------------------------------------------- nothing sealed reaches a session role

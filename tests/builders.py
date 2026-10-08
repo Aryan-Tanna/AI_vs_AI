@@ -12,6 +12,7 @@ from typing import Any
 from lexarena.schemas.base import Side
 from lexarena.schemas.case import Case
 from lexarena.schemas.ground_truth import CaseGroundTruth
+from lexarena.schemas.judgment import JudgmentText
 from lexarena.schemas.retrieval import CaseScope
 from lexarena.schemas.session import Session
 from lexarena.schemas.transcript import PrivateTurnData, PublishedTurn, turn_document_id
@@ -247,5 +248,18 @@ def private_turn(session_id: str, case_id: str, turn: int, side: Side, sentinel:
             },
             "claim_assessments": [{"claim_id": "C1", "citation_tier": None, "entailment": None}],
             "statute_checklists": [],
+        }
+    )
+
+
+def judgment_text(case_id: str, sentinel: str) -> JudgmentText:
+    """A sealed judgment text whose paragraph carries the sentinel."""
+    return JudgmentText.model_validate(
+        {
+            "_id": case_id,
+            "source_file": "<file>",
+            "source_sha256": "0" * 64,
+            "header": "<header>",
+            "paragraphs": [{"para_id": "P1", "court_no": "1", "page": 1, "text": sentinel, "part": "ANALYSIS"}],
         }
     )

@@ -22,6 +22,7 @@ NEVER_READ_BY: dict[Store, set[Role]] = {
     Store.SESSIONS: SESSION_ROLES,
     Store.CASE_FULL: SESSION_ROLES,  # D-035: build, split and simulation_date never reach a prompt
     Store.PRECEDENTS_UNSCOPED: SESSION_ROLES,  # D-052: session roles read precedents only through a CaseScope
+    Store.JUDGMENT_TEXT: SESSION_ROLES | {R.ORCHESTRATOR, R.CLERK, R.INGEST},  # D-056: holds the court's reasoning
 }
 
 # SPEC I1 "Written by".
@@ -31,6 +32,7 @@ ONLY_WRITTEN_BY: dict[Store, set[Role]] = {
     Store.PREDICATE_REGISTRY: {R.INGEST},
     Store.PRECEDENTS: {R.INGEST},
     Store.PRECEDENTS_UNSCOPED: set(),  # a read-only view; writes go through PRECEDENTS
+    Store.JUDGMENT_TEXT: {R.CLERK},
     Store.CASE_FULL: {R.CLERK},
     Store.CASE_AGENT_VIEW: {R.CLERK},
     Store.CASE_GROUND_TRUTH: {R.CLERK},
@@ -59,8 +61,22 @@ def test_only_written_by(store: Store) -> None:
     assert set(POLICY[store][Op.WRITE]) == ONLY_WRITTEN_BY[store]
 
 
-def test_ground_truth_reads_always_wait_for_the_verdict() -> None:
-    assert set(POLICY[Store.CASE_GROUND_TRUTH][Op.READ].values()) == {Scope.AFTER_VERDICT}
+def test_ground_truth_reads_wait_for_the_verdict_except_the_owners_review_before_any_session() -> None:
+    """D-056 (Q-019 option A): REVIEW is the only reader before the verdict, and only before any session exists."""
+    for store in (Store.CASE_GROUND_TRUTH, Store.JUDGMENT_TEXT):
+        readers = POLICY[store][Op.READ]
+        assert readers[R.REVIEW] == Scope.BEFORE_FIRST_SESSION, store
+        assert {r: s for r, s in readers.items() if r != R.REVIEW} == {
+            R.EVALUATOR: Scope.AFTER_VERDICT,
+            R.REFLECTION: Scope.AFTER_VERDICT,
+        }, store
+
+
+def test_review_is_read_only_and_reads_nothing_of_a_session() -> None:
+    writes = {store for store, ops in POLICY.items() if R.REVIEW in ops[Op.WRITE]}
+    assert writes == set()
+    session_data = (Store.PUBLISHED_TURNS, Store.PRIVATE_TURNS, Store.SESSION_MEMORY, Store.SESSIONS)
+    assert all(R.REVIEW not in POLICY[s][Op.READ] for s in session_data)
     assert set(POLICY[Store.PRIVATE_TURNS][Op.READ].values()) == {Scope.OWN_SIDE_AFTER_VERDICT}
 
 

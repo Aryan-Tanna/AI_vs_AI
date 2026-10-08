@@ -13,6 +13,7 @@ MongoDb = Database[Doc]
 
 CASES = "cases"
 CASE_GROUND_TRUTH = "case_ground_truth"  # in the sealed database only
+JUDGMENT_TEXTS = "judgment_texts"  # in the sealed database only (D-056)
 TRANSCRIPT_TURNS = "transcript_turns"
 TURN_PRIVATE = "turn_private"
 SESSIONS = "sessions"

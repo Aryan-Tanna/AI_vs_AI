@@ -8,7 +8,9 @@ Additions to SPEC I1, each needed by a documented job (D-035):
 - the clerk reads the Law DB and precedents (statute-ID normalisation, overlap check, SPEC A/H);
 - the orchestrator reads the full case (date cut-off and exclusion list are applied server-side) and both
   experience memories (it pins lessons at session start, ARCHITECTURE §4);
-- the ingestion scripts read what they write (integrity checks).
+- the ingestion scripts read what they write (integrity checks);
+- REVIEW, the owner checking a clerked case, reads the full case, its ground truth and its judgment text, but only
+  while the case has no session at all (D-056, Q-019 option A). It writes nothing.
 """
 
 from __future__ import annotations
@@ -34,6 +36,7 @@ class Role(StrEnum):
     JUDGE = "JUDGE"
     EVALUATOR = "EVALUATOR"
     REFLECTION = "REFLECTION"
+    REVIEW = "REVIEW"  # the owner checking a clerked case against its judgment (D-056); a human role, never an agent
 
 
 SIDED_ROLES = frozenset({Role.LAWYER, Role.THEMIS_LOCAL})
@@ -60,6 +63,7 @@ class Store(StrEnum):
     TEMPORAL_OVERLAY = "TEMPORAL_OVERLAY"
     PREDICATE_REGISTRY = "PREDICATE_REGISTRY"
     PRECEDENTS = "PRECEDENTS"  # session roles: only through a ScopedPrecedentReader bound to one case (D-052)
+    JUDGMENT_TEXT = "JUDGMENT_TEXT"  # cleaned, routed paragraphs of the judgment: sealed (D-056)
     PRECEDENTS_UNSCOPED = "PRECEDENTS_UNSCOPED"  # reads that ignore any case's cut-off and exclusions
     CASE_AGENT_VIEW = "CASE_AGENT_VIEW"  # agent_view without simulation_date
     CASE_FULL = "CASE_FULL"  # whole cases document: build, split, simulation_date
@@ -82,6 +86,7 @@ class Scope(StrEnum):
     OWN_SIDE = "OWN_SIDE"  # principal.side must equal the data's side
     AFTER_VERDICT = "AFTER_VERDICT"  # the session must be in an unsealed state
     OWN_SIDE_AFTER_VERDICT = "OWN_SIDE_AFTER_VERDICT"
+    BEFORE_FIRST_SESSION = "BEFORE_FIRST_SESSION"  # no session of any state exists for the case (D-056)
 
 
 R = Role
@@ -98,15 +103,29 @@ POLICY: dict[Store, dict[Op, dict[Role, Scope]]] = {
         Op.WRITE: {},
     },
     Store.CASE_AGENT_VIEW: {
-        Op.READ: {r: Scope.ANY for r in (*_SESSION_READERS, R.ORCHESTRATOR, R.CLERK, R.EVALUATOR, R.REFLECTION)},
+        Op.READ: {
+            r: Scope.ANY for r in (*_SESSION_READERS, R.ORCHESTRATOR, R.CLERK, R.EVALUATOR, R.REFLECTION, R.REVIEW)
+        },
         Op.WRITE: {R.CLERK: Scope.ANY},
     },
     Store.CASE_FULL: {
-        Op.READ: {r: Scope.ANY for r in (R.ORCHESTRATOR, R.CLERK, R.EVALUATOR, R.REFLECTION)},
+        Op.READ: {r: Scope.ANY for r in (R.ORCHESTRATOR, R.CLERK, R.EVALUATOR, R.REFLECTION, R.REVIEW)},
         Op.WRITE: {R.CLERK: Scope.ANY},
     },
     Store.CASE_GROUND_TRUTH: {
-        Op.READ: {R.EVALUATOR: Scope.AFTER_VERDICT, R.REFLECTION: Scope.AFTER_VERDICT},
+        Op.READ: {
+            R.EVALUATOR: Scope.AFTER_VERDICT,
+            R.REFLECTION: Scope.AFTER_VERDICT,
+            R.REVIEW: Scope.BEFORE_FIRST_SESSION,
+        },
+        Op.WRITE: {R.CLERK: Scope.ANY},
+    },
+    Store.JUDGMENT_TEXT: {
+        Op.READ: {
+            R.EVALUATOR: Scope.AFTER_VERDICT,
+            R.REFLECTION: Scope.AFTER_VERDICT,
+            R.REVIEW: Scope.BEFORE_FIRST_SESSION,
+        },
         Op.WRITE: {R.CLERK: Scope.ANY},
     },
     Store.PUBLISHED_TURNS: {

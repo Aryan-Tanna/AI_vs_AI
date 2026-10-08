@@ -41,6 +41,11 @@ def load_session_state(db: MongoDb, ns: Namespace, session_id: str) -> Session:
     return Session.model_validate(doc)
 
 
+def case_has_sessions(db: MongoDb, ns: Namespace, case_id: str) -> bool:
+    """Whether any session, in any state, exists for the case (closes the REVIEW window, D-056)."""
+    return ns.collection(db, SESSIONS).count_documents({"case_id": case_id}, limit=1) > 0
+
+
 class SessionRepository:
     def __init__(self, principal: Principal, db: MongoDb, ns: Namespace = ROOT_NAMESPACE) -> None:
         self._principal = principal
