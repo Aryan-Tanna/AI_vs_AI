@@ -1,0 +1,9 @@
+$original
+
+YOUR PREVIOUS ANSWER
+$previous
+
+The bench's validator found these problems in your previous answer:
+$problems
+
+Give your full answer again, in the same JSON schema, with every problem fixed. Cite only the issue, statute, precedent and record IDs shown above. Keep every finding that had no problem unless fixing a problem requires changing it. This is your only chance to revise.

@@ -104,6 +104,16 @@ class PromptsConfig(Strict):
     clerk_probe: PromptRef
     clerk_agent_view_repair: PromptRef
     themis_extract: PromptRef
+    judge_decide: PromptRef
+    judge_revise: PromptRef
+    judge_personas: dict[Literal["TEXTUALIST", "PURPOSIVIST", "PROCEDURALIST"], PromptRef]
+
+    @model_validator(mode="after")
+    def _every_persona(self) -> PromptsConfig:
+        missing = {"TEXTUALIST", "PURPOSIVIST", "PROCEDURALIST"} - set(self.judge_personas)
+        if missing:
+            raise ValueError(f"prompts.judge_personas lacks {sorted(missing)} (INTENT: three personas)")
+        return self
 
 
 class VocabularyConfig(Strict):
@@ -234,6 +244,10 @@ class JudgingConfig(Strict):
     tie_break: Literal["ADVOCACY_SCORE"]  # D-048: the score decides only an equal split of deciding judges
     abstain_on_order_swap_disagreement: bool  # D-051
     min_deciding_judges: int  # D-051: fewer deciding judges -> UNSTABLE verdict, reported apart, never decided
+    check_reasons_with_layer1: bool  # D-071: THEMIS layer 1 checks the law each opinion states
+    max_order_swap_disagreement_rate: UnitInterval  # report limit (D-024, D-071)
+    persona_role_max_win_rate: UnitInterval  # SPEC E1 persona bias flag
+    persona_role_min_cases: PositiveInt  # SPEC E1
 
     @model_validator(mode="after")
     def _no_lone_judge(self) -> JudgingConfig:

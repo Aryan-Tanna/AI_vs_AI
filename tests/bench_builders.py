@@ -30,8 +30,10 @@ def opinion(
     *,
     p_score: float = 0.5,
     r_score: float = 0.5,
-    problems: list[str] | None = None,
+    p_dims: DimensionScores | None = None,
+    r_dims: DimensionScores | None = None,
 ) -> JudgeOpinion:
+    p, r = p_dims or scores(p_score), r_dims or scores(r_score)
     return JudgeOpinion.model_validate(
         {
             "order": order,
@@ -49,11 +51,8 @@ def opinion(
             ],
             "overall_result": result,
             "overall_reasons": "<reasons>",
-            "advocacy": [
-                {"issue_id": issue, "PETITIONER": scores(p_score), "RESPONDENT": scores(r_score)} for issue in upholds
-            ],
+            "advocacy": [{"issue_id": issue, "PETITIONER": p, "RESPONDENT": r} for issue in upholds],
             "revised": False,
-            "problems": problems or [],
         }
     )
 

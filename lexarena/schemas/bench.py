@@ -67,7 +67,8 @@ class IssueAdvocacy(StoredModel):
 
 
 class JudgeOpinion(StoredModel):
-    """One persona's decision under one presentation order, after validation."""
+    """One persona's valid decision under one presentation order: it passed the validator, at once or after its one
+    revision."""
 
     order: PresentationOrder
     issue_decisions: list[IssueDecision] = Field(min_length=1)
@@ -75,8 +76,6 @@ class JudgeOpinion(StoredModel):
     overall_reasons: NonEmptyStr
     advocacy: list[IssueAdvocacy] = Field(min_length=1)
     revised: bool  # the validator sent it back once (ARCHITECTURE §5: one revision)
-    # Problems the one revision did not fix. An opinion with any is INVALID and its persona abstains.
-    problems: list[NonEmptyStr]
 
     @model_validator(mode="after")
     def _issues_match(self) -> JudgeOpinion:
@@ -88,9 +87,16 @@ class JudgeOpinion(StoredModel):
             raise ValueError("advocacy must score exactly the issues the opinion decides")
         return self
 
-    @property
-    def valid(self) -> bool:
-        return not self.problems
+
+class InvalidOpinion(StoredModel):
+    """An opinion that still failed the validator after its one revision. Its persona abstains on the whole case
+    (INVALID_OPINION). The draft is kept as the model returned it, so the failure can be inspected; nothing in it is
+    used."""
+
+    order: PresentationOrder
+    revised: bool
+    problems: list[NonEmptyStr] = Field(min_length=1)
+    draft: OpinionDraft
 
 
 class JudgeIssueResult(StoredModel):
@@ -113,7 +119,7 @@ class JudgeDecision(StoredModel):
     persona_prompt: NonEmptyStr
     persona_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     persona_approved: bool
-    opinions: list[JudgeOpinion] = Field(min_length=len(ORDERS), max_length=len(ORDERS))
+    opinions: list[JudgeOpinion | InvalidOpinion] = Field(min_length=len(ORDERS), max_length=len(ORDERS))
     status: Literal["DECIDED", "ABSTAINED"]
     result: Side | None
     abstain_reason: AbstainReason | None
@@ -130,8 +136,10 @@ class JudgeDecision(StoredModel):
             raise ValueError("result is set exactly when the judge DECIDED")
         if (self.status == "ABSTAINED") != (self.abstain_reason is not None):
             raise ValueError("abstain_reason is set exactly when the judge ABSTAINED")
-        if self.result is not None and any(o.overall_result != self.result for o in self.opinions):
-            raise ValueError("a judge decides only a result both presentation orders reached")
+        if self.result is not None and any(
+            not isinstance(o, JudgeOpinion) or o.overall_result != self.result for o in self.opinions
+        ):
+            raise ValueError("a judge decides only a result both presentation orders reached in valid opinions")
         _no_duplicates([r.issue_id for r in self.issue_results], "issue results")
         return self
 
@@ -239,3 +247,7 @@ class PersonaApproval(StoredModel):
         if undecided != (self.decided_by is None) or undecided != (self.decided_on is None):
             raise ValueError("decided_by and decided_on are set exactly when the draft is APPROVED or REJECTED")
         return self
+
+
+InvalidOpinion.model_rebuild()
+JudgeDecision.model_rebuild()

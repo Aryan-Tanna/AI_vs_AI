@@ -58,6 +58,12 @@ prompts:
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
   themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
+  judge_decide: {id: judges/decide, version: 1}         # [D-071] one opinion per persona and presentation order
+  judge_revise: {id: judges/revise, version: 1}         # [D-071] the one revision (ARCHITECTURE §5)
+  judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
+    TEXTUALIST: {id: judges/persona_textualist, version: 1}
+    PURPOSIVIST: {id: judges/persona_purposivist, version: 1}
+    PROCEDURALIST: {id: judges/persona_proceduralist, version: 1}
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -122,6 +128,11 @@ judging:
   tie_break: ADVOCACY_SCORE              # [D-048] only when deciding judges split evenly
   abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
   min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
+  check_reasons_with_layer1: true        # [ARCHITECTURE §5, D-071] THEMIS layer 1 on each opinion's stated law (one verifier call per opinion)
+  # Report limits, fixed before measuring [D-024]; Step 11 reports against them, nothing is re-run automatically [D-071].
+  max_order_swap_disagreement_rate: 0.2  # [PLACEHOLDER] share of a persona's cases whose two orders disagree on the result
+  persona_role_max_win_rate: 0.65        # [SPEC E1] a persona favouring one side above this ...
+  persona_role_min_cases: 50             # [SPEC E1] ... over at least this many decided cases is flagged
 
 memory:
   pinned_token_budget: 250               # [SPEC E6]
