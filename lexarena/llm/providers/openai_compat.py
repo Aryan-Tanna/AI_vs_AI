@@ -36,6 +36,8 @@ class OpenAICompatProvider:
             self._config.max_tokens_param: request.model.max_output_tokens,
             "messages": [m.model_dump() for m in request.messages],
         }
+        if request.model.reasoning_effort is not None:
+            payload["reasoning_effort"] = request.model.reasoning_effort
         if self._config.json_mode == "json_schema":
             payload["response_format"] = {
                 "type": "json_schema",

@@ -30,7 +30,13 @@ SCHEMA = {
 
 def _request(provider: str, json_mode_model: str = "m") -> LLMRequest:
     model = ModelConfig(
-        provider=provider, family="f", name=json_mode_model, temperature=0.0, max_output_tokens=64, api_key_env="K"
+        provider=provider,
+        family="f",
+        name=json_mode_model,
+        temperature=0.0,
+        max_output_tokens=64,
+        reasoning_effort=None,
+        api_key_env="K",
     )
     return LLMRequest(
         model=model,
@@ -92,6 +98,20 @@ def test_openai_payload_and_parsing() -> None:
         "json_schema": {"name": "Answer", "strict": True, "schema": SCHEMA},
     }
     assert resp.text == '{"answer": 1}' and resp.input_tokens == 11 and resp.output_tokens == 3
+
+
+def test_reasoning_effort_is_sent_only_when_set() -> None:
+    bodies: list[dict[str, Any]] = []
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        bodies.append(json.loads(req.content))
+        return httpx.Response(200, json=_ok_openai('{"answer": 1}'))
+
+    plain = _request("p")
+    _openai(handler).complete(plain, api_key="k")
+    low = plain.model_copy(update={"model": plain.model.model_copy(update={"reasoning_effort": "low"})})
+    _openai(handler).complete(low, api_key="k")
+    assert "reasoning_effort" not in bodies[0] and bodies[1]["reasoning_effort"] == "low"
 
 
 def test_openai_json_object_mode_and_max_tokens_name() -> None:

@@ -13,7 +13,15 @@ BASE_SCHEMA: dict[str, Any] = {"type": "object", "properties": {"a": {"type": "i
 
 
 def _req(**changes: Any) -> LLMRequest:
-    model = ModelConfig(provider="p", family="f", name="m", temperature=0.0, max_output_tokens=64, api_key_env="K")
+    model = ModelConfig(
+        provider="p",
+        family="f",
+        name="m",
+        temperature=0.0,
+        max_output_tokens=64,
+        reasoning_effort=None,
+        api_key_env="K",
+    )
     fields: dict[str, Any] = {
         "model": model,
         "messages": [ChatMessage(role="user", content="hi")],
@@ -63,3 +71,21 @@ def test_cache_round_trip(tmp_path: Path) -> None:
     assert cache.get("k") == '{"a": 1}'
     cache.close()
     assert ResponseCache(tmp_path / "c.sqlite").get("k") == '{"a": 1}'
+
+
+def test_an_unset_optional_model_setting_leaves_the_key_unchanged() -> None:
+    """Adding `reasoning_effort` (D-081) must not invalidate cached answers of models that do not use it."""
+    import hashlib
+    import json
+
+    req = _req()
+    legacy = {
+        "model": req.model.model_dump(exclude={"api_key_env", "reasoning_effort"}),
+        "seed": req.seed,
+        "schema_name": req.schema_name,
+        "schema": req.json_schema,
+        "messages": [m.model_dump() for m in req.messages],
+    }
+    assert request_key(req) == hashlib.sha256(json.dumps(legacy, sort_keys=True).encode("utf-8")).hexdigest()
+    low = _req(model=req.model.model_copy(update={"reasoning_effort": "low"}))
+    assert request_key(low) != request_key(req)

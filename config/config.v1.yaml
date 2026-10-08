@@ -30,19 +30,19 @@ providers:
 
 models:
   # Lawyers: one model for both sides (non-negotiable 3).
-  lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 2048, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]
+  lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 2048, reasoning_effort: low, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]  # reasoning_effort low [MEASURED 2026-10-09, D-081]: default reasoning filled the 2,048-token output cap
   # THEMIS-LOCAL layer 2 and entailment: different family from the lawyers [SPEC I3-7].
-  verifier:        {provider: groq,   family: qwen,    name: qwen/qwen3.8-27b,    temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API3}
-  judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0.3, max_output_tokens: 8192, api_key_env: gemini_api}  # temperature 0.3 [PLACEHOLDER, your request 2026-10-07 D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]
+  verifier:        {provider: groq,   family: qwen,    name: qwen/qwen3.8-27b,    temperature: 0,   max_output_tokens: 2048, reasoning_effort: null, api_key_env: Groq_API3}
+  judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0.3, max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api}  # temperature 0.3 [PLACEHOLDER, your request 2026-10-07 D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
-  auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
+  auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api}
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api3}  # third key: the first two keys' daily quota went on Step 6 [D-060]
-  clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API4}
-  reflection:      {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
+  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, reasoning_effort: null, api_key_env: gemini_api3}  # third key: the first two keys' daily quota went on Step 6 [D-060]
+  clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, reasoning_effort: null, api_key_env: Groq_API4}
+  reflection:      {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
-  drafter_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0, max_output_tokens: 8192, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
-  drafter_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0, max_output_tokens: 4096, api_key_env: Groq_API2}
+  drafter_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0, max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
+  drafter_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0, max_output_tokens: 4096, reasoning_effort: null, api_key_env: Groq_API2}
 
 prompts:
   schema_repair: {id: llm/schema_repair, version: 1}

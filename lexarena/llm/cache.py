@@ -13,7 +13,8 @@ from lexarena.llm.types import LLMRequest
 def request_key(request: LLMRequest) -> str:
     """Everything that can change the output is in the key: provider, model, sampling, schema and messages."""
     payload = {
-        "model": request.model.model_dump(exclude={"api_key_env"}),
+        # Unset optional settings are left out, so adding one never changes the key of a model that does not use it.
+        "model": request.model.model_dump(exclude={"api_key_env"}, exclude_none=True),
         "seed": request.seed,
         "schema_name": request.schema_name,
         "schema": request.json_schema,

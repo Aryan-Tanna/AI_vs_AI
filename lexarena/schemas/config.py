@@ -49,6 +49,8 @@ class ModelConfig(Strict):
     name: str
     temperature: Annotated[float, Field(ge=0)]
     max_output_tokens: PositiveInt
+    # Reasoning models only (sent as `reasoning_effort`); null for every other model (D-081).
+    reasoning_effort: Literal["low", "medium", "high"] | None
     api_key_env: EnvVarName
 
 
