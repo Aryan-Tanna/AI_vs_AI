@@ -103,6 +103,7 @@ class PromptsConfig(Strict):
     clerk_entailment: PromptRef
     clerk_probe: PromptRef
     clerk_agent_view_repair: PromptRef
+    themis_extract: PromptRef
 
 
 class VocabularyConfig(Strict):

@@ -76,7 +76,7 @@ class ClaimedItem(StoredModel):
 
 
 class ClaimedThreshold(StoredModel):
-    minimum_amount: int | float | None
+    minimum_amount: float | None  # one number type: Groq's strict JSON mode refuses an int|float union (D-062)
     currency: str | None
 
 

@@ -1,0 +1,33 @@
+You read one argument by counsel in an insolvency case and record, for each statute below that the argument relies on, what the argument says that statute requires and how it applies. You record what counsel said, not whether counsel is right, and not what you know about the law or about any real case.
+
+Statutes you may use (only these). Each list item has an index; use it to say which item counsel addressed:
+$statutes
+
+Amounts in the case record (refer to them by ID only):
+$amounts
+
+The argument:
+<<<
+$argument
+>>>
+
+Return a single JSON object {"checklists": [...]}, with one entry for each statute above that the argument actually relies on, explicitly or in substance; leave out statutes it does not touch. Each entry:
+{
+  "statute_id": one of the IDs above,
+  "stance": "ASSERT_CLAIM" (the argument says the provision is satisfied for relief it seeks) | "INVOKE_BAR" (it says a bar or failure defeats the other side) | "INVOKE_EXCEPTION" (it relies on a saving exception),
+  "asserts_threshold_met": true or false if the argument says whether the minimum amount is met, else null,
+  "threshold_amount_id": the amount ID the argument applies the minimum to, else null,
+  "chosen_readings": {parameter: option} for any reading listed under the statute that the argument adopts, else {},
+  "asserts_within_limitation": true or false if the argument says the application is (or is not) within limitation, else null,
+  "acknowledgment_dates": ["YYYY-MM-DD", ...] dates of acknowledgments of debt the argument relies on for limitation, else [],
+  "diagnostic_checklist": {
+    "applicant_eligibility": [item, ...],
+    "financial_threshold": {"minimum_amount": the minimum amount in rupees the argument states the law sets, as a number, else null, "currency": "INR" or null},
+    "mandatory_prerequisites": [item, ...],
+    "statutory_bars": [item, ...],
+    "saving_exceptions": [item, ...]
+  },
+  "procedural_timelines": {"adjudication_window_days": the number of days the argument says the law gives the authority to decide, else null, "rectification_window_days": the number of days the argument says the law gives to cure a defect, else null}
+}
+An item is {"law_index": the index of the listed item it addresses, or null if counsel states a condition that is not in the list, "quote": the exact words of the argument, copied character for character, "confidence": 0 to 1}.
+Record a number only if the argument states it. Never fill a value the argument does not give. If unsure, use a lower confidence.

@@ -57,6 +57,7 @@ prompts:
   clerk_agent_view_repair: {id: clerk/agent_view_repair, version: 1}   # [D-060]
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
+  themis_extract: {id: themis/extract_checklist, version: 1}   # [SPEC D1, D-062] verifier model, temperature 0
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
