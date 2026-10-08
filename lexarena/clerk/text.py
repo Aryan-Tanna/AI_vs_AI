@@ -26,12 +26,12 @@ from lexarena.schemas.judgment import JudgmentParagraph
 
 # Mis-decoded UTF-8: a lead byte read as cp1252 (A-circumflex, A-tilde, a-circumflex) followed by a byte that
 # cp1252 maps to a C1-range or punctuation character. Built from code points to keep the source ASCII.
-_LEAD = "".join(map(chr, (0xC2, 0xC3, 0xE2)))
-_TRAIL = "".join(
-    map(chr, [*range(0x80, 0xC0), *range(0x2018, 0x203B), *range(0x152, 0x179), 0x2C6, 0x2DC, 0x20AC, 0x2122])
-)
+_LEAD = "".join(map(chr, (0xC2, 0xC3, 0xE2)))  # literal-ok: Unicode code points (encoding repair)
+_C1_AND_PUNCTUATION = (*range(0x80, 0xC0), *range(0x2018, 0x203B))  # literal-ok: Unicode code points
+_CP1252_EXTRAS = (*range(0x152, 0x179), 0x2C6, 0x2DC, 0x20AC, 0x2122)  # literal-ok: Unicode code points
+_TRAIL = "".join(map(chr, (*_C1_AND_PUNCTUATION, *_CP1252_EXTRAS)))
 MOJIBAKE = re.compile(f"[{re.escape(_LEAD)}][{re.escape(_TRAIL)}]")
-REPLACEMENT = chr(0xFFFD)  # the Unicode replacement character: an unrecoverable glyph
+REPLACEMENT = chr(0xFFFD)  # literal-ok: the Unicode replacement character, an unrecoverable glyph
 PARA_START = re.compile(r"^\s*(?P<num>\d{1,3})\.\s+(?P<rest>\S.*)$")
 MIN_FURNITURE_PAGES = 2  # literal-ok: a running header needs at least two pages to be seen as repeating
 
