@@ -145,3 +145,14 @@ def test_an_excluded_window_comes_from_overlay_data() -> None:
     view = statute_view(LIMITATION_ID, applied={LIM.period_parameter: 3, LIM.excluded_parameter: window})
     within = for_statute(LIMITATION_ID, asserts_within_limitation=True)  # the window stops the clock
     assert run_layer1([within], {LIMITATION_ID: view}, {}, FACTS, CFG).warnings == []
+
+
+def test_a_value_attached_to_several_statutes_is_wrong_only_if_it_matches_none() -> None:
+    # Measured 2026-10-08: the extractor copied "14 days" from a sentence about one section onto two sections.
+    other = statute_view("B_SEC_2")
+    other.record.procedural_timelines.adjudication_window_days = 30
+    views = {"A_SEC_1": statute_view("A_SEC_1"), "B_SEC_2": other}
+    honest = [for_statute("A_SEC_1", adjudication_window_days=14), for_statute("B_SEC_2", adjudication_window_days=14)]
+    assert run_layer1(honest, views, {}, FACTS, CFG).hard_errors == []
+    wrong = [for_statute("A_SEC_1", adjudication_window_days=21), for_statute("B_SEC_2", adjudication_window_days=21)]
+    assert sorted(e.statute_id for e in run_layer1(wrong, views, {}, FACTS, CFG).hard_errors) == ["A_SEC_1", "B_SEC_2"]

@@ -10,6 +10,11 @@ For each statute checklist extracted from the argument:
    config), the date chain from approved overlay values, as a warning only (D-063): limitation
    turns on dates of default and acknowledgments that are usually contested, and it is not a SPEC D8 hard error.
 
+A stated value the extractor attached to several statutes (measured: one sentence about s.7's period copied onto
+s.21) is ambiguous about which statute counsel meant; it is a misstatement only if it matches none of them, so a value
+that is right for one of them never rejects the argument. Only a statute whose law actually holds that value excuses
+it; a statute with no value cannot.
+
 Hard errors are deduplicated by (code, statute), keeping the first detail, so retry feedback names each problem once.
 """
 
@@ -143,6 +148,7 @@ def run_layer1(
     cfg: ThemisLocalConfig,
 ) -> Layer1Result:
     out = Layer1Result()
+    matched: set[tuple[str, float]] = set()
     for checklist in checklists:
         view = views.get(checklist.statute_id)
         if view is None:
@@ -153,7 +159,8 @@ def run_layer1(
         audit = audit_statute(view, checklist, facts.amounts, cfg)
         out.hard_errors += audit.hard_errors
         out.warnings += audit.warnings
+        matched |= audit.matched
         _run_predicates(view, checklist, predicates.get(view.statute_id, []), facts, out)
         _check_limitation(view, checklist, facts, cfg, out)
-    out.hard_errors = _dedupe(out.hard_errors)
+    out.hard_errors = _dedupe([e for e in out.hard_errors if e.claim_key is None or e.claim_key not in matched])
     return out

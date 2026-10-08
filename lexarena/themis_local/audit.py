@@ -44,6 +44,9 @@ class HardError:
     statute_id: str
     detail: str
     record_ids: list[str] = field(default_factory=list)
+    # For a misstated value: which field and what the argument stated, so a value the extractor attached to several
+    # statutes can be judged against all of them (layer1.py).
+    claim_key: tuple[str, float] | None = None
 
 
 @dataclass
@@ -51,6 +54,8 @@ class StatuteAudit:
     statute_id: str
     hard_errors: list[HardError] = field(default_factory=list)
     warnings: list[ThemisWarning] = field(default_factory=list)
+    # (field, stated value) pairs that were checked against this statute's law and held.
+    matched: set[tuple[str, float]] = field(default_factory=set)
 
 
 class _Checks:
@@ -62,15 +67,18 @@ class _Checks:
     def equal(self, code: str, claimed: float, actual: float, error: HardError) -> None:
         self._pending.append((code, Fraction(claimed), Fraction(actual), error))
 
-    def failures(self) -> list[HardError]:
+    def run(self) -> tuple[list[HardError], set[tuple[str, float]]]:
         failed: list[HardError] = []
+        held: set[tuple[str, float]] = set()
         for code, claimed, actual, error in self._pending:
             solver = z3.Solver()
             solver.set(unsat_core=True)
             solver.assert_and_track(z3.RealVal(claimed) == z3.RealVal(actual), z3.Bool(code))
             if solver.check() == z3.unsat:
                 failed.append(error)
-        return failed
+            elif error.claim_key is not None:
+                held.add(error.claim_key)
+        return failed, held
 
 
 def _numeric(value: object) -> float | None:
@@ -113,7 +121,10 @@ def _audit_threshold(
                 claimed.minimum_amount,
                 law_min,
                 HardError(
-                    "ERR_THRESHOLD_MISSTATED", view.statute_id, f"stated {claimed.minimum_amount}; law {law_min}"
+                    "ERR_THRESHOLD_MISSTATED",
+                    view.statute_id,
+                    f"stated {claimed.minimum_amount}; law {law_min}",
+                    claim_key=("financial_threshold", float(claimed.minimum_amount)),
                 ),
             )
     if claim.asserts_threshold_met is not None:
@@ -158,7 +169,12 @@ def _audit_timelines(view: StatuteView, claim: ExtractedChecklist, checks: _Chec
             "ERR_TIMELINE_MISSTATED",
             value,
             law_value,
-            HardError("ERR_TIMELINE_MISSTATED", view.statute_id, f"{key}: stated {value}; law {law_value}"),
+            HardError(
+                "ERR_TIMELINE_MISSTATED",
+                view.statute_id,
+                f"{key}: stated {value}; law {law_value}",
+                claim_key=(key, float(value)),
+            ),
         )
 
 
@@ -201,5 +217,5 @@ def audit_statute(
     _audit_threshold(view, claim, amounts, cfg, checks, out)
     _audit_timelines(view, claim, checks, out)
     _audit_items(view, claim, cfg, out)
-    out.hard_errors = checks.failures()
+    out.hard_errors, out.matched = checks.run()
     return out
