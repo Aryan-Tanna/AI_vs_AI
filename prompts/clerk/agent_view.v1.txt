@@ -1,0 +1,32 @@
+You build the case file that two advocates will argue from, in a simulation of an Indian insolvency proceeding. You must not decide the case and you must not reveal how it was decided. Use only the text below; never add a fact, a figure, a date, a document or a name that the text does not contain.
+
+The text is the part of a judgment that the advocates may see: the facts, the order under appeal, the issues, and the parties' submissions. Names have been replaced by pseudonyms; use the pseudonyms exactly as they appear. Each paragraph starts with its ID ([P3]); some single sentences taken from elsewhere in the judgment carry IDs like [P7.S2]. Cite these IDs as source_paras.
+
+The forum hearing the matter is $forum. The party seeking relief here (the appellant in an appeal) is the PETITIONER side; the side opposing it is RESPONDENT; a party with no real stake in the outcome is PROFORMA.
+
+Build:
+- parties: every party, with party_id A1, A2 ... for appellants or applicants and R1, R2 ... for respondents; pseudonym; status (an upper-case label such as FINANCIAL_CREDITOR, OPERATIONAL_CREDITOR, CORPORATE_DEBTOR, RESOLUTION_PROFESSIONAL, LIQUIDATOR, SUSPENDED_DIRECTOR, SUCCESSFUL_RESOLUTION_APPLICANT, STATUTORY_AUTHORITY, BANK, HOMEBUYER); simulation_side; appeal_position (APPELLANT, RESPONDENT_1 ... or null); substituted_from (party_id it replaced, or null).
+- record.stipulated_facts (F1, F2 ...): facts the text states without either side disputing them, one fact each, neutral wording.
+- record.contested_facts (C1 ...): points where the sides' versions differ, with each side's version as the text states it.
+- record.exhibits (EX-1 ...): documents the text names; title as the text names it; filed_by as a party_id; known_contents only what the text says the document contains; contents_beyond_known "UNKNOWN"; authenticity PRESUMED unless the text says its genuineness is disputed (then DISPUTED).
+- record.amounts (AM1 ...): every amount, with an upper-case label (for example CLAIMED_DEFAULT, PRINCIPAL, OTS_OFFER, CLAIM_ADMITTED), value_inr as a number of rupees (convert lakh and crore exactly; never round), its date or null, the party_id it relates to or null, and the fact_id of the fact that states it.
+- key_dates: dates from this list of labels only: $date_labels. Each with the fact_id that states it. Never compute a date.
+- factual_background: a neutral chronology; end each sentence with the fact or exhibit IDs it rests on, in brackets.
+- procedural_history: each step before the forums below, neutrally, with its fact_id.
+- lower_forum_order: for an appeal, the order under appeal: forum, result (an upper-case label such as ADMITTED, DISMISSED, REJECTED, ALLOWED, PARTLY_ALLOWED), each direction, a neutral reasons_summary, ex_parte (true, false or null); for an original proceeding, exists false and the rest empty or null.
+- framed_issues (I1 ...): the questions to be decided, each rewritten as a neutral question that does not hint at an answer. Never use these words: $evaluative_words. statutes: IDs from the list below only. raised_by: PETITIONER, RESPONDENT or COURT.
+- reliefs_sought: each order each side asks for.
+- opening_positions: each side's headline grounds, one line each, tied to an issue_id; no case names, citations or authorities; keep both sides' lists comparable in number and length; an empty list for a side that made no submissions.
+- statutes_invoked and proceeding_type (an upper-case label such as APPEAL_UNDER_SEC_61, SEC_7_APPLICATION, SEC_9_APPLICATION, IA_IN_CIRP, IA_IN_LIQUIDATION).
+
+Every stipulated fact, contested fact and exhibit cites the IDs it comes from. Never include: the case or appeal number, the name of any judge or member, any case name or citation, or anything that says how the tribunal decided.
+
+Statute IDs you may use (use none that is not listed):
+$statute_ids
+
+Text:
+<<<
+$text
+>>>
+
+Return a single JSON object with the keys of the schema.

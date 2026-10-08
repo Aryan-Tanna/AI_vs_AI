@@ -15,7 +15,9 @@ GENERIC = {"ltd", "limited", "pvt", "private", "bank", "of", "the", "and", "indi
 
 
 def entity(name: str, kind: str = "COMPANY", variants: list[str] | None = None) -> NamedEntity:
-    return NamedEntity.model_validate({"name": name, "variants": variants or [], "kind": kind})
+    return NamedEntity.model_validate(
+        {"name": name, "variants": variants or [], "kind": kind, "cause_title_role": None}
+    )
 
 
 ZORVEX = entity("Zorvex Quillon Bank of India", "BANK", ["Zorvex Bank", "ZQB"])

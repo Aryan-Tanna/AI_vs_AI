@@ -79,7 +79,9 @@ def test_router_sees_the_opening_of_long_paragraphs_only() -> None:
 
 
 def test_entities_come_back_as_listed(cfg: AppConfig) -> None:
-    answer = {"entities": [{"name": "<Name One>", "variants": ["<N1>"], "kind": "COMPANY"}]}
+    answer = {
+        "entities": [{"name": "<Name One>", "variants": ["<N1>"], "kind": "COMPANY", "cause_title_role": "APPELLANT"}]
+    }
     llm, provider = client(cfg, answer)
     [entity] = list_entities(llm, PromptStore(PROMPTS_ROOT), cfg, "<header>", paras(1), session_id="t")
     assert entity.name == "<Name One>" and entity.variants == ["<N1>"]
@@ -131,3 +133,19 @@ def test_unknown_sentence_ids_are_refused(cfg: AppConfig) -> None:
     llm, _ = client(cfg, {"record_fact_ids": ["P4.S9"]})
     with pytest.raises(RouteError):
         select_record_facts(llm, PromptStore(PROMPTS_ROOT), cfg, [analysis_para()], session_id="t")
+
+
+def test_the_roster_shows_pseudonyms_and_roles_never_real_names() -> None:
+    from lexarena.clerk.names import assign_pseudonyms
+    from lexarena.clerk.steps import render_roster
+    from lexarena.schemas.clerk import NamedEntity
+
+    party = NamedEntity.model_validate(
+        {"name": "<Real Name Co>", "variants": [], "kind": "COMPANY", "cause_title_role": "RESPONDENT_1"}
+    )
+    counsel = NamedEntity.model_validate(
+        {"name": "<Counsel>", "variants": [], "kind": "PERSON", "cause_title_role": None}
+    )
+    roster = render_roster(assign_pseudonyms([party, counsel], case_key="K", seed=7))
+    assert "position RESPONDENT_1" in roster and "Company-" in roster
+    assert "<Real Name Co>" not in roster and "<Counsel>" not in roster and "Person-" not in roster

@@ -49,9 +49,10 @@ prompts:
   smoke: {id: smoke/dummy, version: 1}
   draft_overlay: {id: drafting/overlay, version: 4}     # v4 [D-043]: unique quotes, whole matching footnote, start date required
   draft_predicate: {id: drafting/predicate, version: 1}
-  clerk_entities: {id: clerk/entities, version: 1}      # [D-056]
+  clerk_entities: {id: clerk/entities, version: 2}      # [D-056] v2: cause-title role [D-059]
   clerk_route: {id: clerk/route, version: 1}            # [D-056]
   clerk_record_facts: {id: clerk/record_facts, version: 1}   # [D-056 amendment, D-058]
+  clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -116,6 +117,8 @@ vocabulary:
   # key_dates labels [SPEC H1 examples]; DECISION = simulation_date [D-039]. The clerk (Step 6) uses this list.
   case_date_labels: [DEFAULT, DEMAND_NOTICE, NOTICE_OF_DISPUTE, FILING, ADMISSION, CIRP_COMMENCEMENT, LIQUIDATION_ORDER, PLAN_SUBMISSION, PLAN_APPROVAL, DECISION]
   # temporal_overlay parameters [DATA_FORMATS §3 examples]; section_in_force drives get_statute [D-039].
+  # Party statuses (SPEC H1 examples, extended): the legal position a party holds in the insolvency. Lawyer memory is keyed by it [D-013, D-059].
+  party_statuses: [FINANCIAL_CREDITOR, OPERATIONAL_CREDITOR, CORPORATE_DEBTOR, SUSPENDED_DIRECTOR, PROMOTER, SHAREHOLDER, RESOLUTION_PROFESSIONAL, INTERIM_RESOLUTION_PROFESSIONAL, LIQUIDATOR, COMMITTEE_OF_CREDITORS, RESOLUTION_APPLICANT, SUCCESSFUL_RESOLUTION_APPLICANT, PERSONAL_GUARANTOR, CORPORATE_GUARANTOR, HOMEBUYER, ALLOTTEE, WORKMAN, EMPLOYEE, STATUTORY_AUTHORITY, TAX_AUTHORITY, REGULATOR, AUCTION_PURCHASER, MONITORING_AGENCY, INTERVENOR, BANK, OTHER]
   overlay_parameters: [section_in_force, minimum_default_inr, bar_window, excluded_period, precedent_overruled]
 
 drafting:
@@ -127,6 +130,8 @@ clerk:
   furniture_min_page_share: 0.5          # [PLACEHOLDER] a line (digits ignored) on this share of pages is a running header/footer [SPEC H5-1, D-056]
   body_start_headings: [JUDGMENT, JUDGEMENT, ORDER, "ORAL JUDGMENT", "ORAL ORDER", "FINAL ORDER", "COMMON ORDER", "COMMON JUDGMENT"]   # upper case, any letter spacing; the header ends at the first [D-056]
   max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
+  # SPEC A1: the presumption is narrowed to exhibits; contested facts stay contested.
+  presumptions: ["Exhibits are presumed genuine and duly executed; do not object that a document was not produced.", "Facts marked CONTESTED remain disputed.", "Nothing is known about an exhibit beyond its known_contents."]
   running_text_min_chars: 25             # [PLACEHOLDER] a header line this long recurring in the body is merged running text [D-056]
   # SPEC A3 evaluative words: a court-stated sentence with one is reasoning, never a record fact [D-056].
   evaluative_words: [erred, merely, satisfies, satisfied, failed, rightly, wrongly, correctly, incorrectly, hopelessly, clearly, admittedly, manifestly, untenable, unsustainable, misconceived, no merit, devoid of merit, cannot lie]

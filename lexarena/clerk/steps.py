@@ -12,11 +12,20 @@ from __future__ import annotations
 import re
 from collections import Counter
 
+from lexarena.clerk.assemble import DECISION_LABEL
 from lexarena.clerk.scan import court_voice_hits
 from lexarena.llm.client import LLMClient
 from lexarena.prompts import PromptStore
 from lexarena.schemas.case import ExtractionFlag
-from lexarena.schemas.clerk import CourtSentence, EntityList, NamedEntity, RecordFactIds, RouteResult
+from lexarena.schemas.clerk import (
+    AgentViewDraft,
+    AssignedPseudonym,
+    CourtSentence,
+    EntityList,
+    NamedEntity,
+    RecordFactIds,
+    RouteResult,
+)
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.judgment import JudgmentParagraph, JudgmentPart
 
@@ -171,3 +180,50 @@ def select_record_facts(
         else:
             kept.append(s)
     return kept, flags
+
+
+# ---------------------------------------------------------------- agent view (D-056)
+
+
+def render_visible_text(paragraphs: list[JudgmentParagraph], sentences: list[CourtSentence]) -> str:
+    """The extractor's whole input: agent-visible paragraphs, then the record-fact sentences kept from the
+    reasoning, each with its ID. Both are already pseudonymised by the caller."""
+    blocks = [f"[{p.para_id}] {p.text}" for p in paragraphs] + [f"[{s.sentence_id}] {s.text}" for s in sentences]
+    return "\n\n".join(blocks)
+
+
+def render_roster(parties: list[AssignedPseudonym]) -> str:
+    """Pseudonyms of the cause-title parties with their kind and position; never the real names."""
+    rows = [
+        f"- {a.pseudonym}: cause-title position {a.entity.cause_title_role}; kind {a.entity.kind}"
+        for a in parties
+        if a.entity.cause_title_role
+    ]
+    return "\n".join(rows) if rows else "- (no party named in the cause title)"
+
+
+def extract_agent_view(
+    llm: LLMClient,
+    prompts: PromptStore,
+    cfg: AppConfig,
+    text: str,
+    *,
+    parties: list[AssignedPseudonym],
+    forum: str,
+    statute_ids: list[str],
+    session_id: str,
+) -> AgentViewDraft:
+    ref = cfg.prompts.clerk_agent_view
+    labels = [label for label in cfg.vocabulary.case_date_labels if label != DECISION_LABEL]
+    prompt = prompts.render(
+        ref.id,
+        ref.version,
+        parties=render_roster(parties),
+        party_statuses=", ".join(cfg.vocabulary.party_statuses),
+        forum=forum,
+        date_labels=", ".join(labels),
+        evaluative_words=", ".join(cfg.clerk.evaluative_words),
+        statute_ids=", ".join(sorted(statute_ids)),
+        text=text,
+    )
+    return llm.complete_json(role=ROLE, user=prompt, schema=AgentViewDraft, session_id=session_id).value

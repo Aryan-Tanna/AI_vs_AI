@@ -98,6 +98,7 @@ class PromptsConfig(Strict):
     clerk_entities: PromptRef
     clerk_route: PromptRef
     clerk_record_facts: PromptRef
+    clerk_agent_view: PromptRef
 
 
 class VocabularyConfig(Strict):
@@ -109,6 +110,7 @@ class VocabularyConfig(Strict):
 
     case_date_labels: list[Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]*$")]]
     overlay_parameters: list[Annotated[str, Field(pattern=r"^[a-z][a-z0-9_]*$")]]
+    party_statuses: list[Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]*$")]] = Field(min_length=1)
 
     @model_validator(mode="after")
     def _required_names(self) -> VocabularyConfig:
@@ -238,6 +240,7 @@ class ClerkConfig(Strict):
     body_start_headings: list[NonEmptyStr] = Field(min_length=1)
     max_paragraph_number_jump: PositiveInt
     running_text_min_chars: PositiveInt
+    presumptions: list[NonEmptyStr] = Field(min_length=1)
     evaluative_words: list[NonEmptyStr] = Field(min_length=1)
     route_chars_per_paragraph: PositiveInt
     generic_name_words: list[NonEmptyStr]

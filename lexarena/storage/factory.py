@@ -153,6 +153,7 @@ class IngestStores:
 @dataclass(frozen=True)
 class ClerkStores:
     cases: CaseRepository
+    law: LawRepository  # statute IDs for the issues and statutes_invoked (D-035)
     precedents: PrecedentRepository  # overlap check (SPEC B1)
     ground_truth: GroundTruthRepository
     judgment_texts: JudgmentTextRepository
@@ -295,6 +296,7 @@ class SealedProcess(_Process):
         p = Principal(Role.CLERK)
         return ClerkStores(
             cases=CaseRepository(p, self._app_db, self._ns),
+            law=LawRepository(p, self._app_db, self._ns),
             precedents=PrecedentRepository(p, self._qdrant),
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
             judgment_texts=JudgmentTextRepository(p, self._sealed_db, self._app_db, self._ns),

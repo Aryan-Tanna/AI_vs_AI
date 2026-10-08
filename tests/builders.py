@@ -113,8 +113,8 @@ def case_doc(case_id: str, *, build_marker: str = "<build>", date_marker: str = 
             ],
             "reliefs_sought": {"PETITIONER": ["<relief P>"], "RESPONDENT": ["<relief R>"]},
             "opening_positions": {
-                "PETITIONER": [{"issue_id": "I1", "ground": "<ground P>"}],
-                "RESPONDENT": [{"issue_id": "I1", "ground": "<ground R>"}],
+                "PETITIONER": [{"issue_id": "I1", "ground": "<ground P>", "source_paras": ["1"]}],
+                "RESPONDENT": [{"issue_id": "I1", "ground": "<ground R>", "source_paras": ["1"]}],
             },
             "presumptions": ["<presumption>"],
         },

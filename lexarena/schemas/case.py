@@ -179,6 +179,8 @@ class ReliefsSought(StoredModel):
 class OpeningGround(StoredModel):
     issue_id: IssueId
     ground: NonEmptyStr
+    # Not in the H1 example: every ground cites where it comes from, so entailment can check it (D-059).
+    source_paras: SourceParas
 
 
 class OpeningPositions(StoredModel):
