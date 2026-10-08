@@ -106,6 +106,7 @@ class PromptsConfig(Strict):
     themis_extract: PromptRef
     judge_decide: PromptRef
     judge_revise: PromptRef
+    single_llm: PromptRef
     judge_personas: dict[Literal["TEXTUALIST", "PURPOSIVIST", "PROCEDURALIST"], PromptRef]
 
     @model_validator(mode="after")
@@ -271,6 +272,12 @@ class MemoryConfig(Strict):
     dedup_embedding_threshold: UnitInterval
 
 
+class EvaluationConfig(Strict):
+    single_llm_role: NonEmptyStr  # D-072: a models.<role>; checked against the models below
+    bootstrap_resamples: PositiveInt
+    confidence_level: Annotated[float, Field(gt=0, lt=1)]
+
+
 class SplitsConfig(Strict):
     test_count: PositiveInt
     validation_count: PositiveInt
@@ -306,6 +313,7 @@ class AppConfig(Strict):
     session: SessionConfig
     themis_local: ThemisLocalConfig
     judging: JudgingConfig
+    evaluation: EvaluationConfig
     memory: MemoryConfig
     splits: SplitsConfig
     vocabulary: VocabularyConfig
@@ -318,4 +326,6 @@ class AppConfig(Strict):
         for role, model in self.models.by_role().items():
             if model.provider not in self.providers:
                 raise ValueError(f"models.{role}.provider '{model.provider}' is not defined under providers")
+        if self.evaluation.single_llm_role not in self.models.by_role():
+            raise ValueError(f"evaluation.single_llm_role '{self.evaluation.single_llm_role}' is not a model role")
         return self

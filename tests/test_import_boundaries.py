@@ -18,6 +18,7 @@ SEALED_PATHS = (
     "lexarena.storage.ground_truth",
     "lexarena.storage.factory.SealedProcess",
     "lexarena.app.SEALED_ENV_FILE",
+    "lexarena.evaluator",  # reads ground truth after the verdict; session code never imports it (D-072)
 )
 NO_INFRASTRUCTURE = (*SEALED_PATHS, "lexarena.secrets", "lexarena.storage.factory", "pymongo", "qdrant_client", "redis")
 
@@ -26,6 +27,7 @@ FORBIDDEN: dict[str, tuple[str, ...]] = {
     "themis_local": NO_INFRASTRUCTURE,
     "themis_global": NO_INFRASTRUCTURE,
     "judges": NO_INFRASTRUCTURE,
+    "baselines": NO_INFRASTRUCTURE,  # the single-LLM baseline sees the agent-visible case file only (D-072)
     "retrieval": SEALED_PATHS,
     "orchestrator": SEALED_PATHS,
 }
@@ -64,3 +66,8 @@ def test_session_side_packages_respect_boundaries(package: str) -> None:
         bad = violations(path.read_text(encoding="utf-8"), FORBIDDEN[package])
         found += [f"{path.relative_to(REPO_ROOT)}: {name}" for name in bad]
     assert not found
+
+
+def test_package_prefix_is_matched_whole() -> None:
+    assert violations("from lexarena.evaluator.align import evaluate", SEALED_PATHS)
+    assert not violations("from lexarena.evaluators_elsewhere import x", SEALED_PATHS)

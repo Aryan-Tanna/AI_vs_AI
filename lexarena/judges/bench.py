@@ -22,7 +22,7 @@ The advocacy score per side is the mean, over issues and presentation orders, of
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from statistics import fmean
 
 from lexarena.schemas.base import SIDES, Side
@@ -94,7 +94,7 @@ def order_swap_gap(first: JudgeOpinion, second: JudgeOpinion, w: JudgingWeights)
 
 def fold_judge(
     persona: Persona,
-    opinions: dict[PresentationOrder, JudgeOpinion | InvalidOpinion],
+    opinions: Mapping[PresentationOrder, JudgeOpinion | InvalidOpinion],
     issue_ids: list[str],
     cfg: JudgingConfig,
     *,

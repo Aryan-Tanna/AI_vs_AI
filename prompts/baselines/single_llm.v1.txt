@@ -1,0 +1,16 @@
+You are deciding an insolvency matter under the Insolvency and Bankruptcy Code, 2016, on the case file below.
+
+Decide only on the record and the statutes shown. Do not rely on anything else you may know about this matter, the parties, or how any court actually decided it. Contested facts remain disputed: decide which version the record better supports, or treat the fact as unproven. Nothing is known about an exhibit beyond its listed contents.
+
+For each framed issue ($issue_ids), and for no other issue, give issue_id and upholds: PETITIONER if your finding upholds the petitioner's position on the issue, RESPONDENT if it upholds the respondent's, NEITHER if it upholds neither. Then give overall_result (PETITIONER or RESPONDENT: which side prevails on the reliefs sought) and brief reasons.
+
+THE CASE
+$case
+
+FRAMED ISSUES
+$issues
+
+STATUTES (as they apply on this case's dates)
+$statutes
+
+Answer with JSON only, in the required schema.

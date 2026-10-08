@@ -64,6 +64,7 @@ prompts:
     TEXTUALIST: {id: judges/persona_textualist, version: 1}
     PURPOSIVIST: {id: judges/persona_purposivist, version: 1}
     PROCEDURALIST: {id: judges/persona_proceduralist, version: 1}
+  single_llm: {id: baselines/single_llm, version: 1}    # [D-072] the single-LLM baseline on the same case file
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -140,6 +141,11 @@ memory:
   decay_lambda: 0.98                     # [SPEC F4]
   retire_below_confidence: 0.2           # [SPEC F4]
   dedup_embedding_threshold: 0.90        # [PLACEHOLDER] SPEC F3 warns 0.90 can merge opposite lessons
+
+evaluation:                              # [D-072] Step 12; the report reads these, nothing is tuned on them
+  single_llm_role: judge                 # [D-072] same model as the bench, so the comparison isolates debate and verification
+  bootstrap_resamples: 2000              # [PLACEHOLDER] resamples for percentile confidence intervals
+  confidence_level: 0.95                 # [PLACEHOLDER]
 
 splits:
   test_count: 100                        # [INTENT]

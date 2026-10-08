@@ -1,0 +1,13 @@
+{
+  "case_id": "DEV_0001",
+  "kind": "SINGLE_LLM",
+  "model": "gemini-2.5-flash",
+  "prompt_id": "baselines/single_llm.v1",
+  "prompt_sha256": "c4fbed04aecb0f798b78495b1c1ebadfe14ebfb4a8871a7b0ebffd0df2020e7a",
+  "overall": "PETITIONER",
+  "issues": {
+    "I1": "PETITIONER",
+    "I2": "PETITIONER"
+  },
+  "problems": []
+}
