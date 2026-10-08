@@ -383,6 +383,13 @@ class AppConfig(Strict):
     seed: int
 
     @model_validator(mode="after")
+    def _turn_fits_the_lawyer(self) -> AppConfig:
+        # A submission, its claims list and the model's reasoning share the lawyer's output cap (D-082).
+        if self.session.max_turn_tokens >= self.models.lawyer.max_output_tokens:
+            raise ValueError("session.max_turn_tokens must leave room in models.lawyer.max_output_tokens")
+        return self
+
+    @model_validator(mode="after")
     def _providers_exist(self) -> AppConfig:
         for role, model in self.models.by_role().items():
             if model.provider not in self.providers:

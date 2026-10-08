@@ -107,7 +107,7 @@ retrieval:
 session:
   alternating_turns: 8                   # [D-011]
   parallel_closings: true                # [D-011]
-  max_turn_tokens: 1200                  # [PLACEHOLDER] same cap for both sides [SPEC E1]
+  max_turn_tokens: 600                   # [MEASURED 2026-10-09, D-082] same for both sides [SPEC E1]; text + claims + reasoning must fit the lawyer's 2,048-token output cap
   lawyer_input_tokens: 6000              # [MEASURED R-011: Groq rejects >7,000 input tokens] budget per lawyer call; older turns condense first [D-055, D-079]
   research_queries: 3                    # [PLACEHOLDER, D-053] searches per side in the strategy phase, the same for both
   words_per_token: 0.75                  # [PLACEHOLDER] turns max_turn_tokens into the word guide shown to lawyers
