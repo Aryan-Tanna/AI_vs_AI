@@ -118,3 +118,12 @@ def test_case_citations_are_found(text: str) -> None:
 def test_a_named_authority_is_found_even_without_a_citation_pattern() -> None:
     assert citation_hits("the principle in Qarno Vell applies", authority_names=["Qarno Vell"])
     assert citation_hits("the Creditor versus the Debtor dispute", authority_names=[]) == []
+
+
+def test_an_entity_named_only_by_generic_words_is_not_pseudonymised() -> None:
+    coc = NamedEntity.model_validate(
+        {"name": "Committee of Creditors", "variants": ["CoC"], "kind": "OTHER", "cause_title_role": "RESPONDENT_2"}
+    )
+    p = Pseudonymizer(assign_pseudonyms([coc, PELLAM], case_key="CASE-X", seed=7), GENERIC | {"committee", "creditors"})
+    assert p.apply("the Committee of Creditors approved") == "the Committee of Creditors approved"
+    assert [a.entity.name for a in p.assigned] == ["Pellam Tarsh Seeds Pvt. Ltd."]

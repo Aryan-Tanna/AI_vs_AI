@@ -1,0 +1,23 @@
+You built the case file below from the text below. An independent checker found these problems in it:
+$problems
+
+Fix exactly these problems and nothing else:
+- an item the checker says its sources do not support: reword it so that it says only what its sources state, or remove it (and remove every reference to it);
+- a value not written in its sources: correct it from the sources, or remove it;
+- anything else listed: correct it as the problem says.
+Never add a fact, a figure, a date, a document or a name that the text does not contain. Keep every other part of the case file exactly as it is, including all IDs.
+
+The parties named in the cause title, by pseudonym (use exactly these):
+$parties
+
+Text:
+<<<
+$text
+>>>
+
+Your case file:
+<<<
+$previous
+>>>
+
+Return the complete corrected case file as a single JSON object with the keys of the schema.

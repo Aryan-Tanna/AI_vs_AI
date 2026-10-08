@@ -257,3 +257,28 @@ def extract_ground_truth(
         body=render_paragraphs(paragraphs),
     )
     return llm.complete_json(role=ROLE, user=prompt, schema=GroundTruthDraft, session_id=session_id).value
+
+
+def repair_agent_view(
+    llm: LLMClient,
+    prompts: PromptStore,
+    cfg: AppConfig,
+    text: str,
+    previous: AgentViewDraft,
+    problems: list[str],
+    *,
+    parties: list[AssignedPseudonym],
+    session_id: str,
+) -> AgentViewDraft:
+    """One repair round (D-060): the extractor sees its own case file and the checker's problems, and must fix only
+    those. Its answer goes through every check again."""
+    ref = cfg.prompts.clerk_agent_view_repair
+    prompt = prompts.render(
+        ref.id,
+        ref.version,
+        problems="\n".join(f"- {p}" for p in problems),
+        parties=render_roster(parties),
+        text=text,
+        previous=previous.model_dump_json(indent=1),
+    )
+    return llm.complete_json(role=ROLE, user=prompt, schema=AgentViewDraft, session_id=session_id).value

@@ -73,10 +73,11 @@ def _pattern(form: str) -> re.Pattern[str]:
 
 class Pseudonymizer:
     def __init__(self, assigned: list[AssignedPseudonym], generic_words: Iterable[str]) -> None:
-        self.assigned = assigned
         self._generic = {w.lower() for w in generic_words}
+        # A body named only by generic words ("Committee of Creditors") is a role, not a name: it stays as written.
+        self.assigned = [a for a in assigned if _distinctive_words(a.entity.name, self._generic)]
         forms: list[tuple[str, str]] = []
-        for a in assigned:
+        for a in self.assigned:
             names = {a.entity.name, *a.entity.variants}
             initials = acronym(a.entity.name)
             if len(initials) >= MIN_ACRONYM:
@@ -89,6 +90,14 @@ class Pseudonymizer:
         for pattern, pseudonym in self._rules:
             text = pattern.sub(pseudonym, text)
         return text
+
+
+def _distinctive_words(name: str, generic: set[str]) -> set[str]:
+    return {
+        t.lower()
+        for t in TOKEN.findall(name)
+        if t.lower() not in generic and t.lower() not in FUNCTION_WORDS and len(t) >= MIN_ACRONYM
+    }
 
 
 def residual_names(text: str, entities: list[NamedEntity], generic_words: Iterable[str]) -> list[str]:

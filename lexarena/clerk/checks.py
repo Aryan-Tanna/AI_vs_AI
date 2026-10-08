@@ -91,7 +91,8 @@ def literal_problems(view: AgentView, sources: dict[str, str]) -> list[str]:
 
 
 def _words(text: str) -> list[str]:
-    return re.findall(r"[a-z0-9]+", text.lower())
+    """Words without numbers: a date or figure written another way must not make or break a match."""
+    return re.findall(r"[a-z]+", text.lower())
 
 
 def _ngrams(texts: Iterable[str], n: int) -> set[tuple[str, ...]]:

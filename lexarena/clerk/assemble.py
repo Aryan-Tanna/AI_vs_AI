@@ -96,6 +96,19 @@ def build_agent_view(
         dropped += lost
         issues.append(issue.model_copy(update={"statutes": ids}))
     flags = []
+    by_position: dict[str, set[str]] = {}
+    for p in draft.parties:
+        if p.appeal_position:
+            by_position.setdefault(p.appeal_position, set()).add(p.status)
+    mixed = {pos: sorted(st) for pos, st in by_position.items() if len(st) > 1}
+    if mixed:
+        flags.append(
+            ExtractionFlag(
+                code="PARTY_POSITION_STATUS_MISMATCH",
+                detail=f"parties sharing a cause-title position hold different statuses: {mixed}",
+                resolution="kept as extracted; review each party's status against the cause title",
+            )
+        )
     unlisted = sorted({p.status for p in draft.parties} - set(party_statuses))
     if unlisted:
         flags.append(

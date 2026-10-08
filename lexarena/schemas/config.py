@@ -102,6 +102,7 @@ class PromptsConfig(Strict):
     clerk_ground_truth: PromptRef
     clerk_entailment: PromptRef
     clerk_probe: PromptRef
+    clerk_agent_view_repair: PromptRef
 
 
 class VocabularyConfig(Strict):
@@ -244,6 +245,7 @@ class ClerkConfig(Strict):
     max_paragraph_number_jump: PositiveInt
     running_text_min_chars: PositiveInt
     entailment_batch_chars: PositiveInt
+    repair_rounds: int = Field(ge=0)
     leakage_ngram: PositiveInt
     grounds_max_ratio: float = Field(gt=1)
     presumptions: list[NonEmptyStr] = Field(min_length=1)

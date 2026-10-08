@@ -37,7 +37,7 @@ models:
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
   auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api}
+  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api2}  # second key: first key's daily quota went on Step 6 probing [D-060]
   clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API4}
   reflection:      {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
@@ -53,7 +53,8 @@ prompts:
   clerk_route: {id: clerk/route, version: 1}            # [D-056]
   clerk_record_facts: {id: clerk/record_facts, version: 1}   # [D-056 amendment, D-058]
   clerk_ground_truth: {id: clerk/ground_truth, version: 1}   # [D-056]
-  clerk_entailment: {id: clerk/entailment, version: 1}  # [D-056] second family
+  clerk_entailment: {id: clerk/entailment, version: 2}  # [D-056] second family; v2 party roster [D-060]
+  clerk_agent_view_repair: {id: clerk/agent_view_repair, version: 1}   # [D-060]
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
 
@@ -135,8 +136,9 @@ clerk:
   max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
   # SPEC A1: the presumption is narrowed to exhibits; contested facts stay contested.
   presumptions: ["Exhibits are presumed genuine and duly executed; do not object that a document was not produced.", "Facts marked CONTESTED remain disputed.", "Nothing is known about an exhibit beyond its known_contents."]
+  repair_rounds: 1                       # [PLACEHOLDER] extractor repair rounds after failed checks; problems left after them block the case [D-060]
   entailment_batch_chars: 12000         # [PLACEHOLDER] items + sources per entailment request; fits Groq's ~7k-token input limit [R-011, D-056]
-  leakage_ngram: 8                       # [PLACEHOLDER] a run of this many words shared with the reasoning (and not with agent-visible text) is leakage
+  leakage_ngram: 12                      # [PLACEHOLDER] a run of this many words shared with the reasoning (and not with agent-visible text) is leakage; 8 flagged legal boilerplate on DEV_0002/0003 [D-060]
   grounds_max_ratio: 3.0                 # [PLACEHOLDER] flag when one side's opening grounds outnumber or outweigh the other's by more
   running_text_min_chars: 25             # [PLACEHOLDER] a header line this long recurring in the body is merged running text [D-056]
   # SPEC A3 evaluative words: a court-stated sentence with one is reasoning, never a record fact [D-056].

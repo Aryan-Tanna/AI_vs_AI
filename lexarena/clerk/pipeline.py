@@ -27,6 +27,7 @@ from lexarena.clerk.steps import (
     extract_ground_truth,
     list_entities,
     render_visible_text,
+    repair_agent_view,
     route_paragraphs,
     select_record_facts,
 )
@@ -108,33 +109,70 @@ def clerk_judgment(
     kept = [s.model_copy(update={"text": pseudo.apply(s.text)}) for s in kept]
     sources = {p.para_id: p.text for p in visible} | {s.sentence_id: s.text for s in kept}
 
+    text = render_visible_text(visible, kept)
     draft = extract_agent_view(
         llm,
         prompts,
         cfg,
-        render_visible_text(visible, kept),
+        text,
         parties=pseudo.assigned,
         forum=forum,
         statute_ids=sorted(known_statutes),
         session_id=sid,
     )
-    built = build_agent_view(
-        draft,
-        forum=forum,
-        decision_date=decided,
-        presumptions=c.presumptions,
-        visible_sources=set(sources),
-        known_statutes=known_statutes,
-        aliases=aliases,
-        date_labels=cfg.vocabulary.case_date_labels,
-        pseudonyms={a.pseudonym for a in pseudo.assigned},
-        party_statuses=cfg.vocabulary.party_statuses,
-    )
-    problems += built.problems
-    flags += built.flags
-    view = built.view
+    # Checks that need only the agent view run in a loop with up to `clerk.repair_rounds` repairs (D-060): the
+    # extractor sees the problems and fixes only those; whatever is left after the last round blocks the case.
+    for round_no in range(c.repair_rounds + 1):
+        built = build_agent_view(
+            draft,
+            forum=forum,
+            decision_date=decided,
+            presumptions=c.presumptions,
+            visible_sources=set(sources),
+            known_statutes=known_statutes,
+            aliases=aliases,
+            date_labels=cfg.vocabulary.case_date_labels,
+            pseudonyms={a.pseudonym for a in pseudo.assigned},
+            party_statuses=cfg.vocabulary.party_statuses,
+        )
+        view_problems, view_flags, view = list(built.problems), list(built.flags), built.view
+        if view is not None:
+            view_problems += literal_problems(view, sources)
+            view_problems += leakage_problems(
+                view,
+                case_number="",
+                bench=[],
+                decision_date=decided,
+                entities=[a.entity for a in pseudo.assigned],
+                authority_names=[],
+                reasoning=[],
+                visible=[],
+                cfg_markers=c.court_voice_markers,
+                evaluative_words=c.evaluative_words,
+                generic_words=c.generic_name_words,
+                ngram=c.leakage_ngram,
+            )
+            entail_problems, entail_flags = check_entailment(llm, prompts, cfg, view, sources, session_id=sid)
+            view_problems += entail_problems
+            view_flags += entail_flags
+        if not view_problems or round_no == c.repair_rounds:
+            break
+        flags.append(
+            ExtractionFlag(
+                code="EXTRACTION_REPAIRED",
+                detail=f"repair round {round_no + 1} for: {view_problems}",
+                resolution="the extractor fixed only these items; every check ran again",
+            )
+        )
+        draft = repair_agent_view(
+            llm, prompts, cfg, text, draft, view_problems, parties=pseudo.assigned, session_id=sid
+        )
+    problems += view_problems
+    flags += view_flags
     if view is None:
         return ClerkOutcome(case_id, None, None, judgment, problems, flags, sources=sources)
+    if (balance := grounds_balance(view, c.grounds_max_ratio)) is not None:
+        flags.append(balance)
 
     gt_draft = extract_ground_truth(
         llm,
@@ -164,7 +202,7 @@ def clerk_judgment(
     if truth is None:
         return ClerkOutcome(case_id, None, None, judgment, problems, flags, sources=sources)
 
-    problems += literal_problems(view, sources)
+    # Checks that need the sealed record: case number, bench, pleaded authorities, reasoning copied into the view.
     pleaded = [
         a.name
         for subs in (truth.real_submissions.PETITIONER, truth.real_submissions.RESPONDENT)
@@ -176,7 +214,7 @@ def clerk_judgment(
         case_number=truth.citation.case_number,
         bench=truth.citation.bench,
         decision_date=truth.citation.decision_date,
-        entities=entities,
+        entities=[a.entity for a in pseudo.assigned],
         authority_names=pleaded,
         reasoning=[pseudo.apply(p.text) for p in reasoning],
         visible=list(sources.values()),
@@ -185,11 +223,7 @@ def clerk_judgment(
         generic_words=c.generic_name_words,
         ngram=c.leakage_ngram,
     )
-    if (balance := grounds_balance(view, c.grounds_max_ratio)) is not None:
-        flags.append(balance)
-    entail_problems, entail_flags = check_entailment(llm, prompts, cfg, view, sources, session_id=sid)
-    problems += entail_problems
-    flags += entail_flags
+    problems = list(dict.fromkeys(problems))
 
     numbers = appeal_numbers(f"{truth.citation.case_number} {truth.citation.arising_from or ''}")
     overlaps = find_overlaps(precedent_payloads, entities, case_numbers=numbers, generic_words=c.generic_name_words)

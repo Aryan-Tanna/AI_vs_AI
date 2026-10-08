@@ -1,10 +1,11 @@
 """Overlap with the precedent DB and the memorisation verdict (SPEC A4, B1; D-019, D-020, D-056).
 
-`find_overlaps` lists precedents that concern the case being clerked: the same parties or the same corporate debtor
-(two distinctive words of one party's name in the precedent's title), or the same appeal number together with any
-distinctive party word. Every match goes into the case's `excluded_precedent_ids`: over-exclusion is the safe
-direction, and each match is listed with its reason for the owner's review. A shared appeal number alone is not a
-match, since numbers recur across benches and kinds of case.
+`find_overlaps` lists precedents that concern the case being clerked: an organisation named in the judgment (the
+corporate debtor among them) with two distinctive words of its name in the precedent's title; a person who is a
+cause-title party with their full name there; or the same appeal number together with any such word. Every match
+goes into the case's `excluded_precedent_ids`: over-exclusion is the safe direction, and each match is listed with
+its reason for the owner's review. A shared appeal number alone is not a match, since numbers recur across benches
+and kinds of case.
 
 `probe_identified` reads the lawyer model's answer to "which case is this?": it counts as identified only if the
 answer names a real party (distinctive words) or the real appeal number.
@@ -54,20 +55,42 @@ def find_overlaps(
     generic_words: Iterable[str],
 ) -> list[Overlap]:
     generic = {w.lower() for w in generic_words}
-    names = [
-        (p.name, _distinctive(p.name, generic) | {w for v in p.variants for w in _distinctive(v, generic)})
-        for p in parties
-        if p.cause_title_role
-    ]
+    # Each name: its distinctive words, how many must appear in a precedent's title, and a word that must be among them.
+    names: list[tuple[str, set[str], int, str | None]] = []
+    supporting: list[tuple[str, set[str]]] = []  # names that count only together with the same appeal number
+    for p in parties:
+        words = _distinctive(p.name, generic)
+        if p.kind == "PERSON":
+            # People share first names ("Ashok Kumar"): only a cause-title party, and only on a full name (any form
+            # the judgment uses, since spellings vary). Counsel and bench members never mark the same dispute.
+            if p.cause_title_role:
+                for form in (p.name, *p.variants):
+                    form_words = _distinctive(form, generic)
+                    if len(form_words) >= MIN_DISTINCTIVE:
+                        names.append((p.name, form_words, len(form_words), None))
+        elif p.kind in ("BANK", "AUTHORITY"):
+            # Frequent litigants: their name alone says nothing about the dispute.
+            supporting.append((p.name, words))
+        else:
+            # An organisation named anywhere in the judgment counts (the corporate debtor among them), on its leading
+            # distinctive word plus another: industry words ("Steels", "Mills") never match on their own.
+            lead = next((t.lower() for t in TOKEN.findall(p.name) if t.lower() in words), None)
+            all_words = words | {w for v in p.variants for w in _distinctive(v, generic)}
+            names.append((p.name, all_words, MIN_DISTINCTIVE, lead))
     found: list[Overlap] = []
     for pl in payloads:
         title = _words(pl.get("case_title", ""))
-        shared = {name: words & title for name, words in names}
-        party_hit = next(((n, w) for n, w in shared.items() if len(w) >= MIN_DISTINCTIVE), None)
+        hits = [
+            (name, words & title)
+            for name, words, needed, lead in names
+            if len(words & title) >= needed and (lead is None or lead in title)
+        ]
         number_hit = appeal_numbers(pl.get("appeal_number", "")) & case_numbers
-        if party_hit:
-            reason = f"party {party_hit[0]!r} in the title (words {sorted(party_hit[1])})"
-        elif number_hit and any(shared.values()):
+        any_word = any(words & title for _, words, _, _ in names) or any(w & title for _, w in supporting)
+        if hits:
+            name, shared = hits[0]
+            reason = f"party {name!r} in the title (words {sorted(shared)})"
+        elif number_hit and any_word:
             reason = f"same appeal number {sorted(number_hit)} and a party word in the title"
         else:
             continue

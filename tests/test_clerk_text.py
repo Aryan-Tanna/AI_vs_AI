@@ -145,3 +145,9 @@ def test_a_header_line_mentioned_once_in_the_body_stays() -> None:
     pages = ["<court>\nCompany Appeal (AT) No. 77 of 2001\nJUDGMENT\n1. <a> see Company Appeal (AT) No. 77 of 2001"]
     split = sp(pages, 1, 20)
     assert "Company Appeal (AT) No. 77 of 2001" in split.paragraphs[0].text and split.flags == []
+
+
+def test_a_euro_sign_before_an_indian_grouped_number_is_a_rupee_sign() -> None:
+    cleaned = clean_pages(["claim of €1,54,64,626/- and a fee of € 2,500"], SHARE)
+    assert cleaned.lines[0].text == "claim of ₹1,54,64,626/- and a fee of € 2,500"
+    assert any("rupee" in f.detail for f in cleaned.flags)

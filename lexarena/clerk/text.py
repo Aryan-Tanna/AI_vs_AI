@@ -33,6 +33,10 @@ _C1_AND_PUNCTUATION = (*range(0x80, 0xC0), *range(0x2018, 0x203B))  # literal-ok
 _CP1252_EXTRAS = (*range(0x152, 0x179), 0x2C6, 0x2DC, 0x20AC, 0x2122)  # literal-ok: Unicode code points
 _TRAIL = "".join(map(chr, (*_C1_AND_PUNCTUATION, *_CP1252_EXTRAS)))
 MOJIBAKE = re.compile(f"[{re.escape(_LEAD)}][{re.escape(_TRAIL)}]")
+EURO, RUPEE = chr(0x20AC), chr(0x20B9)  # literal-ok: Unicode code points
+# A euro sign before a number in Indian lakh grouping (1,54,64,626) is a rupee sign mis-mapped by the PDF's font;
+# euro amounts are never grouped that way. Any other euro sign is left as it is.
+RUPEE_MISREAD = re.compile(re.escape(EURO) + r"(?=\s?\d{1,3}(?:,\d{2})+,\d{3}(?!\d))")
 REPLACEMENT = chr(0xFFFD)  # literal-ok: the Unicode replacement character, an unrecoverable glyph
 PARA_START = re.compile(r"^\s*(?P<num>\d{1,3})\.\s+(?P<rest>\S.*)$")
 MIN_FURNITURE_PAGES = 2  # literal-ok: a running header needs at least two pages to be seen as repeating
@@ -82,7 +86,7 @@ def clean_pages(pages: list[str], furniture_min_page_share: float) -> CleanedTex
     furniture = {key for key, n in seen_on.items() if n >= needed} if len(pages) >= MIN_FURNITURE_PAGES else set()
 
     out: list[Line] = []
-    removed = repaired = 0
+    removed = repaired = rupees = 0
     for number, lines in enumerate(page_lines, 1):
         for raw in lines:
             if _furniture_key(raw) in furniture:
@@ -90,14 +94,17 @@ def clean_pages(pages: list[str], furniture_min_page_share: float) -> CleanedTex
                 continue
             text, changed = _repair(raw.strip())
             repaired += changed
+            text, rupees_here = RUPEE_MISREAD.subn(RUPEE, text)
+            rupees += rupees_here
             out.append(Line(number, text))
     unrepairable = sum(line.text.count(REPLACEMENT) for line in out)
     flags = []
-    if repaired or unrepairable:
+    if repaired or unrepairable or rupees:
         flags.append(
             ExtractionFlag(
                 code="ENCODING_ERROR",
-                detail=f"repaired {repaired} line(s) of mis-decoded text; unrepairable {unrepairable} character(s)",
+                detail=f"repaired {repaired} line(s) of mis-decoded text; {rupees} rupee sign(s) read as euro signs "
+                f"before Indian-grouped numbers; unrepairable {unrepairable} character(s)",
                 resolution="repaired lines re-decoded as UTF-8; unrepairable characters left as they are for review",
             )
         )

@@ -235,3 +235,57 @@ def test_the_review_file_lists_items_with_their_sources() -> None:
     assert "- [ ] **F1** The default date is recorded as 01.01.1998." in text
     assert "> **P3.S1**: The default date is recorded as 01.01.1998." in text
     assert "P-SAME-CD" in text and "Zorvex" not in text
+
+
+def test_one_repair_round_fixes_an_unsupported_item_and_everything_is_checked_again() -> None:
+    cfg = load_config(CONFIG_V1)
+    from lexarena.clerk.names import assign_pseudonyms
+    from lexarena.schemas.clerk import EntityList
+
+    assigned = assign_pseudonyms(EntityList.model_validate(ENTITIES).entities, case_key="DEV_T", seed=cfg.seed)
+    bank, company = (a.pseudonym for a in assigned)
+    first = view_answer(bank, company)
+    repaired = json.loads(json.dumps(first))
+    repaired["opening_positions"]["RESPONDENT"] = []
+    bad = {
+        "verdicts": [
+            {"item_id": i, "verdict": "NOT_SUPPORTED" if i == "RESPONDENT-G1" else "SUPPORTED", "reason": "<r>"}
+            for i in ("F1", "EX-1", "PETITIONER-G1", "RESPONDENT-G1")
+        ]
+    }
+    good = {
+        "verdicts": [{"item_id": i, "verdict": "SUPPORTED", "reason": "<r>"} for i in ("F1", "EX-1", "PETITIONER-G1")]
+    }
+    gemini = FakeProvider(
+        [text_response(json.dumps(x)) for x in (ENTITIES, ROUTE, RECORD_FACTS, first, repaired, TRUTH)]
+    )
+    groq = FakeProvider([text_response(json.dumps(x)) for x in (bad, good, PROBE)])
+    names = {m.api_key_env for m in cfg.models.by_role().values()}
+    llm = LLMClient(
+        cfg,
+        SecretStore(env_file=None, environ={n: "k" for n in names}),
+        PromptStore(PROMPTS_ROOT),
+        providers={"gemini": gemini, "groq": groq},
+        cache=None,
+        sleep=lambda _: None,
+    )
+    outcome = clerk_judgment(
+        PAGES,
+        source_file="<f>",
+        source_bytes=b"<b>",
+        case_id="DEV_T",
+        forum="NCLAT",
+        decided=date(2002, 2, 2),
+        split_name="DEV",
+        llm=llm,
+        prompts=PromptStore(PROMPTS_ROOT),
+        cfg=cfg,
+        known_statutes={"TEST_ACT_SEC_7"},
+        aliases=StatuteAliasTable(aliases=[]),
+        precedent_payloads=[],
+    )
+    assert outcome.problems == []
+    assert any(f.code == "EXTRACTION_REPAIRED" for f in outcome.flags)
+    repair_prompt = gemini.requests[4].messages[-1].content
+    assert "RESPONDENT-G1 is not supported" in repair_prompt
+    assert bank in groq.requests[0].messages[-1].content  # the verifier gets the party roster

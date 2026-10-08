@@ -158,3 +158,11 @@ def test_a_status_outside_the_vocabulary_is_flagged_not_blocked() -> None:
     d.parties[0].status = "BANK"
     result = build(d)
     assert result.problems == [] and [f.code for f in result.flags] == ["PARTY_STATUS_UNLISTED"]
+
+
+def test_parties_sharing_a_position_with_different_statuses_are_flagged() -> None:
+    d = draft()
+    extra = d.parties[1].model_copy(update={"party_id": "R2", "pseudonym": "Bank-K", "status": "FINANCIAL_CREDITOR"})
+    d.parties.append(extra)
+    codes = [f.code for f in build(d).flags]
+    assert "PARTY_POSITION_STATUS_MISMATCH" in codes

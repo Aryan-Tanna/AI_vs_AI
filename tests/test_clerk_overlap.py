@@ -68,3 +68,66 @@ def test_the_probe_counts_as_identified_only_when_it_names_a_real_party_or_numbe
     assert probe_identified("This looks like Pellam Tarsh v. a bank", parties, {("972", "2020")}, GENERIC)
     assert probe_identified("Appeal No. 972 of 2020", parties, {("972", "2020")}, GENERIC)
     assert not probe_identified("A limitation dispute between a bank and a company", parties, set(), GENERIC)
+
+
+def person(name: str, role: str | None) -> NamedEntity:
+    return NamedEntity.model_validate({"name": name, "variants": [], "kind": "PERSON", "cause_title_role": role})
+
+
+def test_a_person_matches_only_on_the_full_name() -> None:
+    payloads = [
+        prec("P-7", "Ashok Kumar Gulla vs. A Bank", "<n>"),
+        prec("P-8", "Someone vs. Ashok Kumar Bhati", "<n>"),
+    ]
+    found = find_overlaps(
+        payloads, [person("Ashok Kumar Bhati", "RESPONDENT_2")], case_numbers=set(), generic_words=GENERIC
+    )
+    assert [o.precedent_id for o in found] == ["P-8"]
+
+
+def test_a_company_named_anywhere_counts_but_counsel_and_bench_never_do() -> None:
+    debtor = NamedEntity.model_validate(
+        {"name": "Vorn Rathe Steels Mills", "variants": [], "kind": "COMPANY", "cause_title_role": None}
+    )
+    payloads = [
+        prec("P-9", "A Creditor vs. Vorn Rathe Steels Mills", "<n>"),
+        prec("P-10", "Qelto Varn vs. Someone", "<n>"),
+    ]
+    counsel = person("Qelto Varn", None)
+    found = find_overlaps(payloads, [debtor, counsel], case_numbers=set(), generic_words=GENERIC)
+    assert [o.precedent_id for o in found] == ["P-9"]
+
+
+def test_an_organisation_match_needs_its_leading_word() -> None:
+    debtor = NamedEntity.model_validate(
+        {"name": "Vorn Rathe Steels Rolling Mills", "variants": [], "kind": "COMPANY", "cause_title_role": None}
+    )
+    payloads = [
+        prec("P-11", "Kelta Steel Rolling Mills vs. Someone", "<n>"),  # industry words only
+        prec("P-12", "Rathe Powertech vs. Someone", "<n>"),  # a second word without the leading one
+        prec("P-13", "A Creditor vs. Vorn Rathe Steels", "<n>"),
+    ]
+    found = find_overlaps(payloads, [debtor], case_numbers=set(), generic_words=GENERIC)
+    assert [o.precedent_id for o in found] == ["P-13"]
+
+
+def test_a_bank_or_authority_never_matches_on_its_name_alone() -> None:
+    bank = NamedEntity.model_validate(
+        {"name": "Zorvex Quillon Bank", "variants": [], "kind": "BANK", "cause_title_role": "APPELLANT"}
+    )
+    payloads = [
+        prec("P-14", "Zorvex Quillon Bank vs. Some Debtor", "<appeal> No. 1 of 1999"),
+        prec("P-15", "Zorvex Quillon Bank vs. Our Debtor", "<appeal> No. 972 of 2020"),
+    ]
+    found = find_overlaps(payloads, [bank], case_numbers={("972", "2020")}, generic_words=GENERIC)
+    assert [o.precedent_id for o in found] == ["P-15"]
+
+
+def test_a_person_matches_on_any_spelling_the_judgment_uses() -> None:
+    rp = NamedEntity.model_validate(
+        {"name": "Qorin Bhatacharya", "variants": ["Qorin Bhattacharya"], "kind": "PERSON", "cause_title_role": "R1"}
+    )
+    found = find_overlaps(
+        [prec("P-16", "A Bank vs Qorin Bhattacharya", "<n>")], [rp], case_numbers=set(), generic_words=GENERIC
+    )
+    assert [o.precedent_id for o in found] == ["P-16"]

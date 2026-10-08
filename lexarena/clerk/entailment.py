@@ -92,10 +92,12 @@ def check_entailment(
     session_id: str,
 ) -> tuple[list[str], list[ExtractionFlag]]:
     ref = cfg.prompts.clerk_entailment
+    roster = "\n".join(f"- {p.pseudonym}: {p.status}, {p.simulation_side}" for p in view.parties)
     problems: list[str] = []
     flags: list[ExtractionFlag] = []
     for batch in _batches(entailment_items(view, sources), cfg.clerk.entailment_batch_chars):
-        prompt = prompts.render(ref.id, ref.version, items="\n\n".join(i.render() for i in batch))
+        items = "\n\n".join(i.render() for i in batch)
+        prompt = prompts.render(ref.id, ref.version, parties=roster, items=items)
         result = llm.complete_json(role=ROLE, user=prompt, schema=EntailmentResult, session_id=session_id).value
         got = Counter(v.item_id for v in result.verdicts)
         wanted = [i.item_id for i in batch]
