@@ -1,6 +1,6 @@
 # Handoff for Parth: joining the LexArena build
 
-Written 2026-10-08 for your first clone of this repository. Read this first, then `CLAUDE.md`, `docs/INTENT.md` and
+Written 2026-10-08 for your first clone of this repository; updated the same day after Step 7. Read this first, then `CLAUDE.md`, `docs/INTENT.md` and
 `docs/ARCHITECTURE.md`. If you use Claude Code, it loads `CLAUDE.md` automatically.
 
 ## 1. What this repository is, and how your work fits
@@ -59,7 +59,7 @@ uv sync --python 3.12
    ```
 4. **Check everything.** All three should pass:
    ```
-   .venv/Scripts/python -m pytest -q                                  # offline: ~630 pass
+   .venv/Scripts/python -m pytest -q                                  # offline: ~700 pass, ~160 skipped
    .venv/Scripts/python -m pytest --run-integration -m integration    # needs Docker: ~150 pass
    .venv/Scripts/lexarena llm smoke                                   # one real call per model role
    ```
@@ -72,10 +72,16 @@ To get the three clerked dev cases on your machine, run:
 
 ```
 .venv/Scripts/lexarena clerk run --file "data/dev/State_Bank_Of_India_vs_Krishidhan_Seeds_Pvt_Ltd_on_17_November_2020.PDF" --case-id DEV_0001
+.venv/Scripts/lexarena clerk run --file "data/dev/Rajat_Metaal_Polychem_Pvt_Ltd_vs_Neeraj_Bhatia_And_Anr_on_4_September_2024.PDF" --case-id DEV_0002
+.venv/Scripts/lexarena clerk run --file "data/dev/Citi_Securities_Financial_Services_vs_Sudip_Bhattacharya_Resolution_on_16_September_2022.PDF" --case-id DEV_0003
 ```
 
-Repeat for the files listed in `docs/HANDOFF.md`, about 6 Gemini calls each. Gemini's free tier allows 20 calls a
-day per model per key.
+Each needs about 6 Gemini calls. Free-tier limits measured so far:
+- **Gemini:** 20 calls a day per model per key.
+- **Groq:** about 7,000 input tokens per request, and 200,000 tokens a day per key. The Step 7 acceptance run used
+  one key's whole day.
+
+Spread work across keys, and let the LLM cache make re-runs free. Aryan is moving to paid keys for full sessions.
 
 ## 3. Where the build stands (BUILD_PLAN.md)
 
@@ -85,7 +91,19 @@ day per model per key.
 | 4 Precedents in Qdrant | built; awaiting Aryan's tick |
 | 5 Retrieval tools (compact cards; reranker tested and off) | done, ticked |
 | 6 Clerk (judgment PDF to case + sealed ground truth) | built; 3 dev cases clerked; awaiting Aryan's review |
-| 7-14 | not started; split below |
+| 7 THEMIS layer 1 (Z3 predicate engine, D1 audit, claim extractor, limitation chain) | built; 42-argument acceptance run: 0/34 honest rejected, 7/8 mutations caught (D-062 to D-068); awaiting Aryan's decision |
+| 8-14 | not started; split below |
+
+**Legal data since your clone:**
+- Aryan approved five overlay rows: the s.4 Rs 1 crore threshold from 24.03.2020, and the in-force dates of
+  ss.10A, 29A, 32A and 240A.
+- Three limitation rows are drafted and waiting for his approval:
+  - the Art. 137 three-year period;
+  - the COVID exclusion window, 15.03.2020 to 28.02.2022;
+  - the 90-day minimum.
+- Pull, then run `lexarena review load` to load whatever is approved.
+- Approval is always Aryan's act. An agent, including Claude Code, may run `review approve` only on his explicit
+  instruction, and that is logged (D-064).
 
 Tests are written first, and every non-trivial check has a planted-bug test proving it can fail. Guards run on every
 `pytest`:
@@ -112,6 +130,19 @@ Each person owns separate packages. The shared contract is `lexarena/schemas/`:
 | --- | --- | --- | --- |
 | **Aryan (with Claude Code)** | 7 Z3 predicate engine + THEMIS layer 1; 8 THEMIS layer 2; 9 agents + LangGraph session; 10 THEMIS-GLOBAL | `lexarena/themis_local/`, `lexarena/agents/`, `lexarena/orchestrator/`, `lexarena/themis_global/` | retrieval tools, clerked cases, Law DB |
 | **Parth** | 11 judges; 12 evaluator; 13 run manager; a review viewer | `lexarena/judges/`, `lexarena/evaluator/`, `lexarena/runner/`, `lexarena/ui/` | `lexarena/schemas/transcript.py`, `session.py`, `ground_truth.py`; test transcripts from `tests/builders.py` |
+
+### What Step 7 gives your judges (Step 11)
+
+ARCHITECTURE §5 says every judge reason must cite record, statute or precedent IDs, and that THEMIS layer 1 rules check
+those references. You can reuse layer 1 for that:
+- `lexarena/themis_local/extract.py`: `extract_checklists(...)` turns a text into per-statute checklists. Every
+  number it keeps is quoted from the text and checked in code.
+- `lexarena/themis_local/layer1.py`: `run_layer1(checklists, views, predicates, CaseFacts, cfg.themis_local)` returns
+  hard errors and warnings.
+- A judge's reason that misstates a period or a threshold gets the same hard error a lawyer's would, with one revision
+  (ARCHITECTURE §5). Use the same code; don't write a second checker.
+- Statute views come from `LawRepository.get_statute(id, AsOf.for_case(case))`. Never read the stored Law DB figure
+  directly: thresholds change over time (D-062).
 
 ### Parth's tasks in detail
 
