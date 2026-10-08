@@ -21,6 +21,10 @@
   2. The owner decides: persona approval (Q-031), the D-071 and D-078 choices, the Step 4, 6 and 7 ticks, and the
      three limitation drafts.
   3. Clerk more dev cases. The new keys `gemini_api4` and `gemini_api5` are untested.
+  4. The owner's Phase 2 proposal: a teacher-student design (Claude for cases 1-100, then DeepSeek/Qwen for
+     101-500). See the open question logged on 2026-10-09 in OPEN_QUESTIONS. It needs a dev-set pilot and the
+     owner's decision. API plan discussed: Groq Developer tier plus Gemini billing; Claude for the baseline or
+     teacher.
 
 > **Update 2026-10-09:** Parth built Steps 8 to 13, reflection and the review viewer; read `docs/HANDOFF_ARYAN.md` first.
 
