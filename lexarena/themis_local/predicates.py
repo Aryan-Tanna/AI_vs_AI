@@ -17,10 +17,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date, timedelta
+from fractions import Fraction
 from typing import Any, Literal
 
 import z3  # type: ignore[import-untyped]
 
+from lexarena.schemas.law import LawRecord, checklist_item, item_hash
 from lexarena.schemas.predicate import ChooseNode, ConstLeaf, Expression, OpNode, PredicateEntry, VarLeaf
 
 Value = bool | int | float | str | date
@@ -42,12 +44,21 @@ class PredicateResult:
     missing: list[str] = field(default_factory=list)
 
 
-def select_approved(entries: list[PredicateEntry]) -> list[PredicateEntry]:
-    """Only APPROVED predicates run; DRAFT, STALE and RETIRED never do (non-negotiable 8)."""
-    return [p for p in entries if p.status == "APPROVED"]
+def is_current(predicate: PredicateEntry, law: LawRecord) -> bool:
+    """The Law DB item the predicate encodes still has the text it was approved against (ARCHITECTURE §8)."""
+    try:
+        return item_hash(checklist_item(law, predicate.field, predicate.item_index)) == predicate.item_hash
+    except (KeyError, IndexError):
+        return False
 
 
-def _law_path(law: dict[str, Any], path: str) -> Value | None:
+def select_approved(entries: list[PredicateEntry], law: dict[str, LawRecord]) -> list[PredicateEntry]:
+    """Predicates that may run: APPROVED (non-negotiable 8) and current. DRAFT, STALE, RETIRED and predicates whose
+    Law DB item changed after approval never run; their checks fall to layer 2."""
+    return [p for p in entries if p.status == "APPROVED" and p.statute_id in law and is_current(p, law[p.statute_id])]
+
+
+def _path(law: dict[str, Any], path: str) -> Value | None:
     node: Any = law
     for part in path.split("."):
         if not isinstance(node, dict) or part not in node:
@@ -73,11 +84,11 @@ def resolve_inputs(
         elif kind == "record.key_dates":
             out[item.name] = key_dates.get(key)
         elif kind == "law":
-            out[item.name] = _law_path(law, key)
+            out[item.name] = _path(law, key)
         elif kind == "overlay":
             out[item.name] = overlay.get(key)
-        else:  # claim:
-            out[item.name] = claim.get(key)
+        else:  # claim: a field of the extracted checklist, dotted for nested ones
+            out[item.name] = _path(claim, key)
     return out
 
 
@@ -122,6 +133,7 @@ class _Compiler:
         if op in ("add_years", "add_days"):
             return _z3_value(self.concrete(node))
         terms = [self.term(a) for a in args]
+        _check_sorts(op, terms)
         if op == "and":
             return z3.And(*terms)
         if op == "or":
@@ -150,6 +162,23 @@ class _Compiler:
         return comparisons[op](terms[0], terms[1])
 
 
+_LOGIC_OPS = frozenset({"and", "or", "not", "implies"})
+
+
+def _check_sorts(op: str, terms: list[Any]) -> None:
+    """Refuse silent coercion (z3 turns a boolean into 0/1 next to a number): a mismatch is a wrong-kind value."""
+    if op in _LOGIC_OPS:
+        if not all(z3.is_bool(t) for t in terms):
+            raise TypeError(f"{op} needs booleans")
+        return
+    if op == "if":
+        if not z3.is_bool(terms[0]):
+            raise TypeError("if needs a boolean condition")
+        terms = terms[1:]
+    if len({t.sort() for t in terms}) > 1 and not all(z3.is_arith(t) for t in terms):
+        raise TypeError(f"{op} mixes {sorted(str(t.sort()) for t in terms)}")
+
+
 def _z3_value(value: Value) -> Any:
     if isinstance(value, bool):
         return z3.BoolVal(value)
@@ -158,7 +187,7 @@ def _z3_value(value: Value) -> Any:
     if isinstance(value, int):
         return z3.IntVal(value)
     if isinstance(value, float):
-        return z3.RealVal(value)
+        return z3.RealVal(Fraction(value))  # exact: 1e7 equals 10000000
     return z3.StringVal(value)
 
 
@@ -169,6 +198,8 @@ def evaluate(predicate: PredicateEntry, inputs: Inputs, choices: dict[str, str])
     except _MissingError as missing:
         absent = sorted(n for n, v in inputs.items() if v is None) or [missing.name]
         return PredicateResult(predicate.predicate_id, "SKIPPED", missing=absent)
+    except (TypeError, z3.Z3Exception) as wrong:  # an extracted value of the wrong kind: layer 2, never a rejection
+        return PredicateResult(predicate.predicate_id, "SKIPPED", missing=[f"type:{wrong}"])
     solver = z3.Solver()
     solver.set(unsat_core=True)
     solver.assert_and_track(claim, z3.Bool(predicate.error_code))

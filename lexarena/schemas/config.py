@@ -181,12 +181,23 @@ class ScoreWeights(Strict):
     llm: UnitInterval
 
 
+class LimitationConfig(Strict):
+    period_parameter: NonEmptyStr
+    excluded_parameter: NonEmptyStr
+    minimum_balance_parameter: NonEmptyStr
+    default_date_label: NonEmptyStr
+    filing_date_label: NonEmptyStr
+
+
 class ThemisLocalConfig(Strict):
     retry_cap: PositiveInt
     extraction_min_confidence: UnitInterval
     repetition_hard_threshold: UnitInterval
     score_weights: ScoreWeights
     penalty_cap: UnitInterval
+    threshold_overlay_parameter: NonEmptyStr
+    threshold_currency: NonEmptyStr
+    limitation: LimitationConfig
 
     @model_validator(mode="after")
     def _weights_sum(self) -> ThemisLocalConfig:

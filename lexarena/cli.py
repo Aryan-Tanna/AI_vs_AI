@@ -122,6 +122,9 @@ def _precedents(action: str, source: Path, aliases_path: Path, config_path: Path
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):  # legal sources quote non-Latin text; a Windows console defaults to cp1252
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(prog="lexarena")
     parser.add_argument("--config", help="config file (default: LEXARENA_CONFIG_PATH)")
     sub = parser.add_subparsers(dest="group", required=True)

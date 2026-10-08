@@ -10,13 +10,13 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal
 
 from pydantic import Field, model_validator
 
 from lexarena.schemas.base import NonEmptyStr, Side, StoredModel, UnitScore, UpperCode
-from lexarena.schemas.case import CaseId, IssueId
+from lexarena.schemas.case import AmountId, CaseId, IssueId
 from lexarena.schemas.codes import HardErrorCode
 
 Stance = Literal["ASSERT_CLAIM", "INVOKE_BAR", "INVOKE_EXCEPTION"]
@@ -99,6 +99,14 @@ class ExtractedChecklist(StoredModel):
     statute_id: NonEmptyStr
     stance: Stance
     asserts_threshold_met: bool | None
+    # The record amount the argument says meets (or misses) the threshold; None when it names none (D-062).
+    threshold_amount_id: AmountId | None = None
+    # The reading the argument chose for each open parameter of this statute's predicates (SPEC D2).
+    chosen_readings: dict[str, str] = Field(default_factory=dict)
+    # Limitation, when this checklist is for the limitation article: the argument's conclusion and the
+    # acknowledgment dates it relies on (SPEC D3; D-063). Checked as a warning, never a hard error.
+    asserts_within_limitation: bool | None = None
+    acknowledgment_dates: list[date] = Field(default_factory=list)
     diagnostic_checklist: ClaimedChecklist
     procedural_timelines: ClaimedTimelines
 

@@ -12,10 +12,17 @@ from typing import Any
 
 import pytest
 
+from lexarena.schemas.law import LawRecord, checklist_item, item_hash
 from lexarena.schemas.predicate import PredicateEntry
 from lexarena.themis_local.predicates import Inputs, evaluate, resolve_inputs, select_approved
+from tests.test_law_validation import law_record as raw_law_record
 
 HASH = "0" * 64
+
+
+@pytest.fixture
+def law_record() -> LawRecord:
+    return LawRecord.model_validate(raw_law_record("TEST_ACT_SEC_7"))
 
 
 def predicate(expression: dict[str, Any], inputs: list[dict[str, str]], **change: Any) -> PredicateEntry:
@@ -197,7 +204,23 @@ def test_days_between_and_add_days() -> None:
     assert evaluate(p, inputs, choices={}).status == "PASS"
 
 
-def test_only_approved_current_predicates_are_used() -> None:
-    draft = THRESHOLD.model_copy(update={"status": "DRAFT", "approved_by": None, "predicate_id": "PR-D"})
-    stale = THRESHOLD.model_copy(update={"status": "STALE", "predicate_id": "PR-S"})
-    assert [p.predicate_id for p in select_approved([THRESHOLD, draft, stale])] == ["PR-T"]
+def test_only_approved_current_predicates_are_used(law_record: LawRecord) -> None:
+    current = item_hash(checklist_item(law_record, "financial_threshold", None))
+    approved = THRESHOLD.model_copy(update={"statute_id": law_record.statute_id, "item_hash": current})
+    draft = approved.model_copy(update={"status": "DRAFT", "approved_by": None, "predicate_id": "PR-D"})
+    stale = approved.model_copy(update={"status": "STALE", "predicate_id": "PR-S"})
+    changed = approved.model_copy(update={"predicate_id": "PR-C", "item_hash": "f" * 64})  # Law DB item edited later
+    other = approved.model_copy(update={"predicate_id": "PR-O", "statute_id": "NOT_IN_LAW_DB"})
+    chosen = select_approved([approved, draft, stale, changed, other], {law_record.statute_id: law_record})
+    assert [p.predicate_id for p in chosen] == ["PR-T"]
+
+
+@pytest.mark.parametrize("wrong", ["yes", 3, None])
+def test_an_extracted_value_of_the_wrong_kind_skips_never_rejects(wrong: Any) -> None:
+    inputs = {**values(), "says_met": wrong}
+    assert evaluate(THRESHOLD, inputs, choices={}).status == "SKIPPED"
+
+
+def test_amounts_compare_exactly_across_int_and_float() -> None:
+    inputs = {**values(asserts_threshold_met=True), "amount": 1e7, "minimum": 10_000_000}
+    assert evaluate(THRESHOLD, inputs, choices={}).status == "PASS"

@@ -96,6 +96,14 @@ themis_local:
   repetition_hard_threshold: 0.95        # [SPEC D8]
   score_weights: {rule: 0.5, llm: 0.5}   # [PLACEHOLDER]
   penalty_cap: 0.30                      # [SPEC D6]
+  threshold_overlay_parameter: minimum_default_inr   # overlay parameter holding the dated minimum default [D-062]
+  threshold_currency: INR                # amounts in the record are in this currency [D-062]
+  limitation:                            # overlay parameter names and record labels for the date chain [D-063]
+    period_parameter: limitation_period_years
+    excluded_parameter: limitation_excluded_period
+    minimum_balance_parameter: limitation_minimum_balance_days
+    default_date_label: DEFAULT
+    filing_date_label: FILING
 
 judging:
   weights: {accuracy: 0.35, consistency: 0.25, rebuttal: 0.20, grounding: 0.20}   # [SPEC E1]
