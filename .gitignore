@@ -14,3 +14,6 @@ __pycache__/
 # local caches and service data
 .cache/
 qdrant_data/
+
+# run manager output (ledgers, per-case outputs, reports)
+runs/

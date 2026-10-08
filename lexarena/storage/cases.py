@@ -4,6 +4,8 @@ missed field fails loudly instead of reaching a prompt)."""
 
 from __future__ import annotations
 
+from datetime import date
+
 from lexarena.schemas.case import AgentCaseView, Case
 from lexarena.storage.errors import NotFoundError
 from lexarena.storage.mongo import CASES, ROOT_NAMESPACE, MongoDb, Namespace
@@ -27,6 +29,14 @@ class CaseRepository:
         if doc is None:
             raise NotFoundError(f"case {case_id}")
         return Case.model_validate(doc)
+
+    def index(self) -> list[tuple[str, str, date]]:
+        """(case_id, split, simulation_date) of every stored case: what the run manager orders a run by (D-073)."""
+        require(self._principal, Store.CASE_FULL, Op.READ)
+        docs = self._col.find({}, projection={"split": True, "agent_view.metadata.simulation_date": True})
+        return [
+            (d["_id"], d["split"], date.fromisoformat(d["agent_view"]["metadata"]["simulation_date"])) for d in docs
+        ]
 
     def agent_view(self, case_id: str) -> AgentCaseView:
         require(self._principal, Store.CASE_AGENT_VIEW, Op.READ)

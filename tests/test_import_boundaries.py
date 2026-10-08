@@ -18,9 +18,18 @@ SEALED_PATHS = (
     "lexarena.storage.ground_truth",
     "lexarena.storage.factory.SealedProcess",
     "lexarena.app.SEALED_ENV_FILE",
-    "lexarena.evaluator",  # reads ground truth after the verdict; session code never imports it (D-072)
+    "lexarena.evaluator.evaluate",  # opens ground truth after the verdict; session-side code never imports it (D-072)
 )
-NO_INFRASTRUCTURE = (*SEALED_PATHS, "lexarena.secrets", "lexarena.storage.factory", "pymongo", "qdrant_client", "redis")
+NO_INFRASTRUCTURE = (
+    *SEALED_PATHS,
+    "lexarena.evaluator",  # agents, THEMIS, judges and baselines never touch evaluation code at all (D-072, D-073)
+    "lexarena.runner",
+    "lexarena.secrets",
+    "lexarena.storage.factory",
+    "pymongo",
+    "qdrant_client",
+    "redis",
+)
 
 FORBIDDEN: dict[str, tuple[str, ...]] = {
     "agents": NO_INFRASTRUCTURE,
@@ -30,6 +39,7 @@ FORBIDDEN: dict[str, tuple[str, ...]] = {
     "baselines": NO_INFRASTRUCTURE,  # the single-LLM baseline sees the agent-visible case file only (D-072)
     "retrieval": SEALED_PATHS,
     "orchestrator": SEALED_PATHS,
+    "runner": SEALED_PATHS,  # stages needing sealed data run as separate processes (D-073)
 }
 
 
@@ -69,5 +79,6 @@ def test_session_side_packages_respect_boundaries(package: str) -> None:
 
 
 def test_package_prefix_is_matched_whole() -> None:
-    assert violations("from lexarena.evaluator.align import evaluate", SEALED_PATHS)
+    assert violations("from lexarena.evaluator.evaluate import evaluate_session", SEALED_PATHS)
+    assert violations("from lexarena.evaluator.align import evaluate", NO_INFRASTRUCTURE)
     assert not violations("from lexarena.evaluators_elsewhere import x", SEALED_PATHS)

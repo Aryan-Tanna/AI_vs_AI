@@ -278,6 +278,38 @@ class EvaluationConfig(Strict):
     confidence_level: Annotated[float, Field(gt=0, lt=1)]
 
 
+class QuotaLimit(Strict):
+    model: NonEmptyStr
+    api_key_env: EnvVarName
+    requests_per_window: PositiveInt
+    tokens_per_window: PositiveInt | None
+
+
+class RoleRequests(Strict):
+    role: NonEmptyStr
+    requests: PositiveInt
+
+
+class StageRequests(Strict):
+    SESSION: list[RoleRequests]
+    BASELINE: list[RoleRequests]
+    EVALUATE: list[RoleRequests]
+    REFLECT: list[RoleRequests]
+
+    def for_stage(self, stage: str) -> dict[str, int]:
+        return {r.role: r.requests for r in getattr(self, stage)}
+
+
+class RunnerConfig(Strict):
+    runs_dir: NonEmptyStr
+    allowed_splits: list[Literal["DEV", "TRAIN", "VALIDATION", "TEST"]] = Field(min_length=1)
+    stage_timeout_s: PositiveFloat
+    quota_window_hours: PositiveFloat
+    ablations: list[NonEmptyStr]
+    quotas: list[QuotaLimit]
+    stage_requests: StageRequests
+
+
 class SplitsConfig(Strict):
     test_count: PositiveInt
     validation_count: PositiveInt
@@ -314,6 +346,7 @@ class AppConfig(Strict):
     themis_local: ThemisLocalConfig
     judging: JudgingConfig
     evaluation: EvaluationConfig
+    runner: RunnerConfig
     memory: MemoryConfig
     splits: SplitsConfig
     vocabulary: VocabularyConfig
@@ -326,6 +359,12 @@ class AppConfig(Strict):
         for role, model in self.models.by_role().items():
             if model.provider not in self.providers:
                 raise ValueError(f"models.{role}.provider '{model.provider}' is not defined under providers")
+        roles = set(self.models.by_role())
+        sr = self.runner.stage_requests
+        named = {r.role for stage in type(sr).model_fields for r in getattr(sr, stage)}
+        unknown = sorted(named - roles)
+        if unknown:
+            raise ValueError(f"runner.stage_requests names unknown model roles {unknown}")
         if self.evaluation.single_llm_role not in self.models.by_role():
             raise ValueError(f"evaluation.single_llm_role '{self.evaluation.single_llm_role}' is not a model role")
         return self

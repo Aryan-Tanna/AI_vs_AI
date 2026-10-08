@@ -147,6 +147,26 @@ evaluation:                              # [D-072] Step 12; the report reads the
   bootstrap_resamples: 2000              # [PLACEHOLDER] resamples for percentile confidence intervals
   confidence_level: 0.95                 # [PLACEHOLDER]
 
+runner:                                  # [D-073] Step 13
+  runs_dir: runs                         # git-ignored; one folder per run (ledger, per-case outputs, report)
+  allowed_splits: [DEV]                  # [D-073] the 500 are a red line until you start Phase 2 (CLAUDE.md §5.4)
+  stage_timeout_s: 7200                  # [PLACEHOLDER] one stage subprocess
+  quota_window_hours: 24                 # [D-073] trailing window; no provider reset hour needed
+  ablations: [NO_THEMIS, NO_MEMORY, NO_EXHIBIT_CARDS]   # [SPEC G1] switches a run may name; the session stage reads them
+  quotas:                                # [MEASURED 2026-10-06, R-011, R-012] free tiers, per (model, key variable)
+    - {model: gemini-2.5-flash, api_key_env: gemini_api, requests_per_window: 20, tokens_per_window: null}
+    - {model: gemini-3.5-flash, api_key_env: gemini_api2, requests_per_window: 20, tokens_per_window: null}
+    - {model: gemini-3.5-flash, api_key_env: gemini_api3, requests_per_window: 20, tokens_per_window: null}
+    - {model: openai/gpt-oss-120b, api_key_env: Groq_API1, requests_per_window: 1000, tokens_per_window: 200000}
+    - {model: openai/gpt-oss-120b, api_key_env: Groq_API2, requests_per_window: 1000, tokens_per_window: 200000}
+    - {model: qwen/qwen3.8-27b, api_key_env: Groq_API3, requests_per_window: 1000, tokens_per_window: 200000}
+    - {model: openai/gpt-oss-120b, api_key_env: Groq_API4, requests_per_window: 1000, tokens_per_window: 200000}
+  stage_requests:                        # [PLACEHOLDER] requests a stage needs before it may start; measure in the SPEC G4 pilot
+    SESSION: [{role: lawyer, requests: 20}, {role: verifier, requests: 40}, {role: judge, requests: 12}, {role: auditor, requests: 3}]
+    BASELINE: [{role: judge, requests: 1}]
+    EVALUATE: []
+    REFLECT: [{role: reflection, requests: 2}]
+
 splits:
   test_count: 100                        # [INTENT]
   validation_count: 50                   # [SPEC G1] reporting only, no tuning [D-023]

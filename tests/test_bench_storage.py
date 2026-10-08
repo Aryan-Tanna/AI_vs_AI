@@ -95,3 +95,15 @@ def test_only_the_orchestrator_records_the_bench(procs: tuple[SessionProcess, Se
     evaluator = SessionRepository(Principal(Role.EVALUATOR), session._app_db, session._ns)
     with pytest.raises(StateTransitionError):
         evaluator.record_bench_verdict(sid, decisions=decisions, bench=verdict, themis_global=REPORT)
+
+
+def test_case_index_is_for_full_case_readers_only(procs: tuple[SessionProcess, SealedProcess]) -> None:
+    from lexarena.storage.cases import CaseRepository
+    from lexarena.storage.errors import AccessDeniedError
+
+    session, _ = procs
+    index = session.orchestrator().cases.index()
+    assert [(c, s, d.isoformat()) for c, s, d in index] == [(CASE, "DEV", builders.PLACEHOLDER_DATE)]
+    judge_repo = CaseRepository(Principal(Role.JUDGE), session._app_db, session._ns)
+    with pytest.raises(AccessDeniedError):
+        judge_repo.index()  # the simulation date never reaches a session role

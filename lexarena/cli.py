@@ -10,6 +10,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict
 
+from lexarena import exit_codes
 from lexarena.app import (
     DEFAULT_ENV_FILE,
     PROMPTS_ROOT,
@@ -19,7 +20,7 @@ from lexarena.app import (
     configure_llm_logging,
 )
 from lexarena.config import config_sha256, load_config
-from lexarena.llm.errors import LLMError
+from lexarena.llm.errors import LLMError, RateLimitedError
 from lexarena.prompts import PromptStore
 from lexarena.settings import Settings
 
@@ -144,13 +145,23 @@ def main(argv: Sequence[str] | None = None) -> int:
         cmd.add_argument(
             "--aliases", type=Path, default=REPO_ROOT / "data" / "statute_aliases.json", help="statute alias table"
         )
-    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review
+    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review, cli_run
 
     cli_review.add_parsers(sub)
     cli_clerk.add_parsers(sub)
     cli_judges.add_parsers(sub)
     cli_evaluate.add_parsers(sub)
+    cli_run.add_parsers(sub)
     args = parser.parse_args(argv)
+    try:
+        return _dispatch(args)
+    except RateLimitedError as exc:  # the run manager pauses on this code and resumes later (D-073)
+        print(json.dumps({"error": "RATE_LIMITED", "detail": str(exc)}), file=sys.stderr)
+        return exit_codes.QUOTA_EXHAUSTED
+
+
+def _dispatch(args: argparse.Namespace) -> int:
+    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review, cli_run
 
     path = _config_path(args.config)
     if args.group == "config":
@@ -167,6 +178,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return cli_judges.run(args, path)
     if args.group in ("evaluate", "baseline"):
         return cli_evaluate.run(args, path)
+    if args.group == "run":
+        return cli_run.run(args, path)
     return _llm_smoke(path, args.role)
 
 
