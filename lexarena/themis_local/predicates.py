@@ -131,7 +131,8 @@ class _Compiler:
         if op == "implies":
             return z3.Implies(terms[0], terms[1])
         if op == "if":
-            return z3.If(terms[0], terms[1], terms[2])
+            condition, then, otherwise = terms
+            return z3.If(condition, then, otherwise)
         if op == "+":
             return z3.Sum(*terms)
         if op == "-":
