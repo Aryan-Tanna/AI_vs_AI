@@ -4,14 +4,16 @@ paragraph splitting. Deterministic, no model calls. Placeholder text only (non-n
 
 from __future__ import annotations
 
-from lexarena.clerk.text import SplitText, clean_pages, split_paragraphs
+from lexarena.clerk.text import BLOCK_MARK, SplitText, clean_pages, paragraphs_too_sparse, split_paragraphs
 
 SHARE = 0.5
 HEADINGS = ["JUDGMENT", "ORDER", "J U D G M E N T"]
 
 
 def sp(pages: list[str], jump: int, running: int) -> SplitText:
-    return split_paragraphs(clean_pages(pages, SHARE), HEADINGS, max_number_jump=jump, running_text_min_chars=running)
+    return split_paragraphs(
+        clean_pages(pages, SHARE), HEADINGS, max_number_jump=jump, running_text_min_chars=running, max_first_number=99
+    )
 
 
 def page(n: int, body: str) -> str:
@@ -151,3 +153,53 @@ def test_a_euro_sign_before_an_indian_grouped_number_is_a_rupee_sign() -> None:
     cleaned = clean_pages(["claim of €1,54,64,626/- and a fee of € 2,500"], SHARE)
     assert cleaned.lines[0].text == "claim of ₹1,54,64,626/- and a fee of € 2,500"
     assert any("rupee" in f.detail for f in cleaned.flags)
+
+
+# ---------------------------------------------------------------- other judgment layouts (D-061)
+
+MARK = BLOCK_MARK
+
+
+def sp2(pages: list[str], first: int = 3) -> SplitText:
+    return split_paragraphs(
+        clean_pages(pages, SHARE), HEADINGS, max_number_jump=2, running_text_min_chars=99, max_first_number=first
+    )
+
+
+def test_a_title_case_heading_alone_on_its_line_ends_the_header() -> None:
+    split = sp2(["<report citation>\nIssue for Consideration\n<summary of the holding>\nJudgment\n1. <a>\n2. <b>"])
+    assert "<summary of the holding>" in split.header and [p.court_no for p in split.paragraphs] == ["1", "2"]
+
+
+def test_a_paragraph_number_alone_on_its_line_opens_the_paragraph() -> None:
+    split = sp2(["JUDGMENT\n1.\n<first text>\n<more>\n2.\n<second text>"])
+    assert [(p.court_no, p.text) for p in split.paragraphs] == [("1", "<first text> <more>"), ("2", "<second text>")]
+
+
+def test_a_number_after_the_judges_name_opens_the_first_paragraph() -> None:
+    split = sp2(["JUDGMENT\nQORVEL TAMSIN, J. 1. <first>\n2. <second>"])
+    assert [(p.court_no, p.text) for p in split.paragraphs] == [("1", "<first>"), ("2", "<second>")]
+
+
+def test_a_quoted_high_number_cannot_start_the_numbering() -> None:
+    split = sp2(["JUDGMENT\n<opening>\n81. <quoted paragraph of another judgment>\n1. <a>\n2. <b>"])
+    assert [p.court_no for p in split.paragraphs] == [None, "1", "2"]
+
+
+def test_an_unnumbered_judgment_falls_back_to_text_blocks() -> None:
+    page = (
+        f"JUDGMENT\n{MARK}<first block> sentence one.\n<still first block> end.\n"
+        f"{MARK}<second block> that runs on\n{MARK}into this block.\n{MARK}<third block> end."
+    )
+    split = sp2([page])
+    assert [p.text for p in split.paragraphs] == [
+        "<first block> sentence one. <still first block> end.",
+        "<second block> that runs on into this block.",
+        "<third block> end.",
+    ]
+    assert "UNNUMBERED_PARAGRAPHS" in [f.code for f in split.flags]
+
+
+def test_too_few_paragraphs_for_the_pages_is_reported() -> None:
+    assert paragraphs_too_sparse(paragraphs=2, pages=40, min_per_page=0.3)
+    assert not paragraphs_too_sparse(paragraphs=20, pages=40, min_per_page=0.3)

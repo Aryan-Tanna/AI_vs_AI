@@ -31,7 +31,7 @@ from lexarena.clerk.steps import (
     route_paragraphs,
     select_record_facts,
 )
-from lexarena.clerk.text import clean_pages, split_paragraphs
+from lexarena.clerk.text import SplitText, clean_pages, paragraphs_too_sparse, split_paragraphs
 from lexarena.llm.client import LLMClient
 from lexarena.prompts import PromptStore
 from lexarena.schemas.case import Case, ExtractionFlag
@@ -76,9 +76,26 @@ def clerk_judgment(
     c = cfg.clerk
     sid = f"clerk-{case_id}"
     cleaned = clean_pages(pages, c.furniture_min_page_share)
-    split = split_paragraphs(cleaned, c.body_start_headings, c.max_paragraph_number_jump, c.running_text_min_chars)
+    split = split_paragraphs(
+        cleaned,
+        c.body_start_headings,
+        c.max_paragraph_number_jump,
+        c.running_text_min_chars,
+        c.max_first_paragraph_number,
+    )
     flags = [*cleaned.flags, *split.flags]
     problems: list[str] = []
+    if paragraphs_too_sparse(
+        paragraphs=len(split.paragraphs), pages=len(pages), min_per_page=c.min_paragraphs_per_page
+    ):
+        # The structure of this judgment was not understood: stop loudly rather than route a few giant blocks.
+        problems.append(
+            f"only {len(split.paragraphs)} paragraph(s) found in {len(pages)} page(s): the judgment's layout was not "
+            "understood (PARAGRAPHS_NOT_FOUND)"
+        )
+        return ClerkOutcome(
+            case_id, None, None, _bare_judgment(case_id, source_file, source_bytes, split), problems, flags
+        )
 
     entities = list_entities(llm, prompts, cfg, split.header, split.paragraphs, session_id=sid)
     pseudo = Pseudonymizer(assign_pseudonyms(entities, case_key=case_id, seed=cfg.seed), c.generic_name_words)
@@ -251,6 +268,18 @@ def clerk_judgment(
         }
     )
     return ClerkOutcome(case_id, case, truth, judgment, problems, flags, overlaps, probe, sources)
+
+
+def _bare_judgment(case_id: str, source_file: str, source_bytes: bytes, split: SplitText) -> JudgmentText:
+    return JudgmentText.model_validate(
+        {
+            "_id": case_id,
+            "source_file": source_file,
+            "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+            "header": split.header,
+            "paragraphs": [p.model_dump() for p in split.paragraphs],
+        }
+    )
 
 
 def _probe(llm: LLMClient, prompts: PromptStore, cfg: AppConfig, view: Any, *, session_id: str) -> ProbeAnswer:

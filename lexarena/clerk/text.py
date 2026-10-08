@@ -38,7 +38,11 @@ EURO, RUPEE = chr(0x20AC), chr(0x20B9)  # literal-ok: Unicode code points
 # euro amounts are never grouped that way. Any other euro sign is left as it is.
 RUPEE_MISREAD = re.compile(re.escape(EURO) + r"(?=\s?\d{1,3}(?:,\d{2})+,\d{3}(?!\d))")
 REPLACEMENT = chr(0xFFFD)  # literal-ok: the Unicode replacement character, an unrecoverable glyph
-PARA_START = re.compile(r"^\s*(?P<num>\d{1,3})\.\s+(?P<rest>\S.*)$")
+# A court paragraph number at the start of a line: alone on its line ("1."), before the text ("7. The appeal ..."),
+# or after the judge's name in an SC judgment ("R.F. NARIMAN, J. 1. The present case ...").
+PARA_START = re.compile(r"^\s*(?:[A-Z][A-Za-z .'-]{2,60},\s*J\.\s*)?(?P<num>\d{1,3})\.(?:\s+(?P<rest>\S.*))?$")
+BLOCK_MARK = chr(0x1F)  # literal-ok: Unicode unit separator; marks the first line of a PDF text block
+SENTENCE_END = re.compile("[.:;?!)\\]\"'" + chr(0x201D) + chr(0x2019) + "]$")  # literal-ok: closing quotes
 MIN_FURNITURE_PAGES = 2  # literal-ok: a running header needs at least two pages to be seen as repeating
 
 
@@ -46,6 +50,7 @@ MIN_FURNITURE_PAGES = 2  # literal-ok: a running header needs at least two pages
 class Line:
     page: int
     text: str
+    block_start: bool = False  # the PDF layout starts a text block here (used only for unnumbered judgments)
 
 
 @dataclass
@@ -80,15 +85,17 @@ def _repair(line: str) -> tuple[str, bool]:
 
 
 def clean_pages(pages: list[str], furniture_min_page_share: float) -> CleanedText:
-    page_lines = [[ln for ln in p.splitlines() if ln.strip()] for p in pages]
-    seen_on = Counter(key for lines in page_lines for key in {_furniture_key(ln) for ln in lines})
+    page_lines = [[ln for ln in p.splitlines() if ln.strip(BLOCK_MARK).strip()] for p in pages]
+    seen_on = Counter(key for lines in page_lines for key in {_furniture_key(ln.lstrip(BLOCK_MARK)) for ln in lines})
     needed = max(MIN_FURNITURE_PAGES, math.ceil(furniture_min_page_share * len(pages)))
     furniture = {key for key, n in seen_on.items() if n >= needed} if len(pages) >= MIN_FURNITURE_PAGES else set()
 
     out: list[Line] = []
     removed = repaired = rupees = 0
     for number, lines in enumerate(page_lines, 1):
-        for raw in lines:
+        for marked in lines:
+            block_start = marked.startswith(BLOCK_MARK)
+            raw = marked.lstrip(BLOCK_MARK)
             if _furniture_key(raw) in furniture:
                 removed += 1
                 continue
@@ -96,7 +103,7 @@ def clean_pages(pages: list[str], furniture_min_page_share: float) -> CleanedTex
             repaired += changed
             text, rupees_here = RUPEE_MISREAD.subn(RUPEE, text)
             rupees += rupees_here
-            out.append(Line(number, text))
+            out.append(Line(number, text, block_start))
     unrepairable = sum(line.text.count(REPLACEMENT) for line in out)
     flags = []
     if repaired or unrepairable or rupees:
@@ -114,16 +121,19 @@ def clean_pages(pages: list[str], furniture_min_page_share: float) -> CleanedTex
 # ---------------------------------------------------------------- step 2: header and paragraphs
 
 
-def _heading_pattern(heading: str) -> re.Pattern[str]:
-    """Upper case only, any spacing between letters ("J U D G M EN T"), never inside a longer word."""
+def _heading_pattern(heading: str, flags: int = 0) -> re.Pattern[str]:
+    """Any spacing between letters ("J U D G M EN T"), never inside a longer word; upper case unless flags say."""
     letters = [c for c in heading.upper() if not c.isspace()]
-    return re.compile(r"(?<![A-Z])" + r"\s*".join(map(re.escape, letters)) + r"(?![A-Z])")
+    return re.compile(r"(?<![A-Za-z])" + r"\s*".join(map(re.escape, letters)) + r"(?![A-Za-z])", flags)
 
 
 def _split_header(lines: list[Line], headings: list[str]) -> tuple[list[Line], list[Line]]:
+    # A heading alone on its line matches in any case ("Judgment" after an SCR headnote); inside a line, only
+    # upper case.
+    whole = [_heading_pattern(h, re.IGNORECASE) for h in headings]
     patterns = [_heading_pattern(h) for h in headings]
     for i, line in enumerate(lines):
-        if any(p.fullmatch(line.text.strip()) for p in patterns):
+        if any(p.fullmatch(line.text.strip()) for p in whole):
             return lines[:i], lines[i + 1 :]
     for i, line in enumerate(lines):
         found = [m for p in patterns if (m := p.search(line.text))]
@@ -159,8 +169,33 @@ def _remove_running_text(
     return [p.model_copy(update={"text": t}) for p, t in zip(paragraphs, texts, strict=True)], [flag]
 
 
+def paragraphs_too_sparse(*, paragraphs: int, pages: int, min_per_page: float) -> bool:
+    """A judgment whose paragraphs were not found: far fewer paragraphs than its length allows (the case is blocked)."""
+    return paragraphs < pages * min_per_page
+
+
+def _block_paragraphs(body: list[Line]) -> list[JudgmentParagraph]:
+    """Unnumbered judgments: the PDF's own text blocks are the paragraphs; a block that ends mid-sentence runs on."""
+    groups: list[tuple[int, list[str]]] = []
+    for line in body:
+        text = line.text.strip()
+        ends = bool(groups) and bool(SENTENCE_END.search(groups[-1][1][-1]))
+        if not groups or (line.block_start and ends):
+            groups.append((line.page, [text]))
+        else:
+            groups[-1][1].append(text)
+    return [
+        JudgmentParagraph(para_id=f"P{i}", court_no=None, page=page, text=" ".join(parts))
+        for i, (page, parts) in enumerate(groups, 1)
+    ]
+
+
 def split_paragraphs(
-    cleaned: CleanedText, body_start_headings: list[str], max_number_jump: int, running_text_min_chars: int
+    cleaned: CleanedText,
+    body_start_headings: list[str],
+    max_number_jump: int,
+    running_text_min_chars: int,
+    max_first_number: int,
 ) -> SplitText:
     header_lines, body = _split_header(cleaned.lines, body_start_headings)
     paragraphs: list[JudgmentParagraph] = []
@@ -181,7 +216,13 @@ def split_paragraphs(
     for line in body:
         m = PARA_START.match(line.text)
         number = int(m["num"]) if m else 0
-        if m and (last_no == 0 or last_no < number <= last_no + max_number_jump):
+        # The numbering starts at a low number (a quoted "81." of another judgment cannot start it); then the next
+        # number opens a paragraph, or a small forward jump (the court skipped a number; flagged).
+        opens = m is not None and (
+            (last_no == 0 and number <= max_first_number)
+            or (last_no > 0 and last_no < number <= last_no + max_number_jump)
+        )
+        if m and opens:
             if last_no and number != last_no + 1:
                 flags.append(
                     ExtractionFlag(
@@ -191,12 +232,22 @@ def split_paragraphs(
                     )
                 )
             close()
-            current, current_no, current_page, last_no = [m["rest"].strip()], m["num"], line.page, number
+            current = [m["rest"].strip()] if m["rest"] else []
+            current_no, current_page, last_no = m["num"], line.page, number
         else:
             if not current:
                 current_page = line.page
             current.append(line.text.strip())
     close()
+    if not any(p.court_no for p in paragraphs):
+        paragraphs = _block_paragraphs(body)
+        flags.append(
+            ExtractionFlag(
+                code="UNNUMBERED_PARAGRAPHS",
+                detail="the court does not number its paragraphs; the PDF's text blocks were used as paragraphs",
+                resolution="review the paragraph boundaries in the review file",
+            )
+        )
     paragraphs, running = _remove_running_text(paragraphs, header_lines, running_text_min_chars)
     header = "\n".join(line.text for line in header_lines)
     return SplitText(header=header, paragraphs=paragraphs, flags=flags + running)

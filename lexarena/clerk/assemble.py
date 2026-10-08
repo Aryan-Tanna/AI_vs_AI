@@ -165,6 +165,22 @@ class AssembledTruth:
     flags: list[ExtractionFlag] = field(default_factory=list)
 
 
+def _clean_id(source: str) -> str:
+    """'[P3]' or ' P3 ' -> 'P3': formatting only; the ID must still exist to pass."""
+    return source.strip().strip("[]").strip()
+
+
+def _normalise_sources(draft: GroundTruthDraft) -> GroundTruthDraft:
+    data = draft.model_dump(mode="json")
+    for side in ("PETITIONER", "RESPONDENT"):
+        for sub in data["real_submissions"][side]:
+            sub["source_paras"] = [_clean_id(s) for s in sub["source_paras"]]
+    for key in ("statutory_analysis", "precedent_analysis", "issue_findings"):
+        for item in data[key]:
+            item["source_paras"] = [_clean_id(s) for s in item["source_paras"]]
+    return GroundTruthDraft.model_validate(data)
+
+
 def evidence_dependency(drivers: list[str]) -> EvidenceDependency:
     """SPEC A7: every issue decided on law -> LAW_ONLY; every issue on evidence -> EVIDENCE_DECIDED; else MIXED."""
     kinds = set(drivers)
@@ -189,6 +205,7 @@ def build_ground_truth(
 ) -> AssembledTruth:
     """Seal the ground truth only if it lines up with the agent view: the same issues (each with a finding), only
     reliefs the agents were shown, only real paragraphs, and the decision date of the dev manifest."""
+    draft = _normalise_sources(draft)
     problems: list[str] = []
     found = [f.issue_id for f in draft.issue_findings]
     problems += [f"finding for issue {i}, which the agent view does not frame" for i in found if i not in issue_ids]

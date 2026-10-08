@@ -120,3 +120,10 @@ def test_evidence_dependency_follows_the_drivers() -> None:
     assert evidence_dependency(["EVIDENCE"]) == "EVIDENCE_DECIDED"
     assert evidence_dependency(["LAW", "EVIDENCE"]) == "MIXED"
     assert evidence_dependency(["MIXED"]) == "MIXED"
+
+
+def test_bracketed_source_ids_are_read_as_paragraph_ids() -> None:
+    d = gt_draft()
+    d.issue_findings[0].source_paras = ["[P3]", " P1 "]
+    result = build(d)
+    assert result.problems == [] and result.truth.issue_findings[0].source_paras == ["P3", "P1"]

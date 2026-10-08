@@ -127,3 +127,12 @@ def test_an_entity_named_only_by_generic_words_is_not_pseudonymised() -> None:
     p = Pseudonymizer(assign_pseudonyms([coc, PELLAM], case_key="CASE-X", seed=7), GENERIC | {"committee", "creditors"})
     assert p.apply("the Committee of Creditors approved") == "the Committee of Creditors approved"
     assert [a.entity.name for a in p.assigned] == ["Pellam Tarsh Seeds Pvt. Ltd."]
+
+
+def test_a_name_of_generic_words_with_a_real_acronym_is_still_pseudonymised() -> None:
+    sbi = NamedEntity.model_validate(
+        {"name": "State Bank of India", "variants": [], "kind": "BANK", "cause_title_role": "APPELLANT"}
+    )
+    p = Pseudonymizer(assign_pseudonyms([sbi], case_key="CASE-X", seed=7), GENERIC | {"state"})
+    [bank] = p.assigned
+    assert p.apply("State Bank of India appealed; SBI said") == f"{bank.pseudonym} appealed; {bank.pseudonym} said"

@@ -74,8 +74,13 @@ def _pattern(form: str) -> re.Pattern[str]:
 class Pseudonymizer:
     def __init__(self, assigned: list[AssignedPseudonym], generic_words: Iterable[str]) -> None:
         self._generic = {w.lower() for w in generic_words}
-        # A body named only by generic words ("Committee of Creditors") is a role, not a name: it stays as written.
-        self.assigned = [a for a in assigned if _distinctive_words(a.entity.name, self._generic)]
+        # A body named only by generic words and with no real acronym ("Committee of Creditors") is a role, not a name:
+        # it stays as written. A name of generic words with a real acronym ("National Bank of X", NBX) is kept.
+        self.assigned = [
+            a
+            for a in assigned
+            if _distinctive_words(a.entity.name, self._generic) or len(acronym(a.entity.name)) >= MIN_ACRONYM
+        ]
         forms: list[tuple[str, str]] = []
         for a in self.assigned:
             names = {a.entity.name, *a.entity.variants}

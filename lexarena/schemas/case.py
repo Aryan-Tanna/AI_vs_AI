@@ -48,7 +48,7 @@ class ExtractionFlag(StoredModel):
 
 
 class Build(StoredModel):
-    source_forum: Literal["NCLT", "NCLAT"]
+    source_forum: Literal["NCLT", "NCLAT", "SC"]  # SC appeals under s.62 are in scope (D-061)
     evidence_dependency: Literal["LAW_ONLY", "MIXED", "EVIDENCE_DECIDED"]
     issues_source: Literal["FRAMED_BY_COURT", "DERIVED_FROM_SUBMISSIONS"]
     memorization_probe: Literal["NOT_IDENTIFIED", "IDENTIFIED"]
@@ -68,7 +68,7 @@ class KeyDate(StoredModel):
 
 
 class PromptMetadata(StoredModel):
-    forum: Literal["NCLT", "NCLAT"]
+    forum: Literal["NCLT", "NCLAT", "SC"]  # SC appeals under s.62 are in scope (D-061)
     proceeding_type: UpperCode
     statutes_invoked: list[NonEmptyStr]
     key_dates: list[KeyDate]

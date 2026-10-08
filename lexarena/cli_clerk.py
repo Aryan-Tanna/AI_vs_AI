@@ -26,8 +26,9 @@ from lexarena.app import (
 )
 from lexarena.clerk.pipeline import clerk_judgment
 from lexarena.clerk.review import render_review
+from lexarena.clerk.text import BLOCK_MARK
 from lexarena.config import load_config
-from lexarena.drafting.pdf import pdf_pages_text
+from lexarena.drafting.pdf import pdf_pages_blocks
 from lexarena.prompts import PromptStore
 from lexarena.statute_ids import load_statute_aliases
 from lexarena.storage.factory import SealedProcess
@@ -66,7 +67,7 @@ def _run(pdf: Path, case_id: str, config_path: Path) -> int:
     configure_llm_logging(cfg)
     entry = _manifest_entry(pdf)
     data = pdf.read_bytes()
-    pages = pdf_pages_text(data)
+    pages = pdf_pages_blocks(data, BLOCK_MARK)
     with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
         stores = proc.clerk()
         outcome = clerk_judgment(

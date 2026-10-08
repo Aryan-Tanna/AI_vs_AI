@@ -243,6 +243,8 @@ class ClerkConfig(Strict):
     furniture_min_page_share: UnitInterval
     body_start_headings: list[NonEmptyStr] = Field(min_length=1)
     max_paragraph_number_jump: PositiveInt
+    max_first_paragraph_number: PositiveInt
+    min_paragraphs_per_page: float = Field(gt=0)
     running_text_min_chars: PositiveInt
     entailment_batch_chars: PositiveInt
     repair_rounds: int = Field(ge=0)

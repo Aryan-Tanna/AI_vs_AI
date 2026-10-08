@@ -37,7 +37,7 @@ models:
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
   auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api}
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api2}  # second key: first key's daily quota went on Step 6 probing [D-060]
+  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, api_key_env: gemini_api3}  # third key: the first two keys' daily quota went on Step 6 [D-060]
   clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, api_key_env: Groq_API4}
   reflection:      {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 8192, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
@@ -133,6 +133,8 @@ clerk:
   version: clerk-v1                      # stamped into build.clerk_version [SPEC H1]
   furniture_min_page_share: 0.5          # [PLACEHOLDER] a line (digits ignored) on this share of pages is a running header/footer [SPEC H5-1, D-056]
   body_start_headings: [JUDGMENT, JUDGEMENT, ORDER, "ORAL JUDGMENT", "ORAL ORDER", "FINAL ORDER", "COMMON ORDER", "COMMON JUDGMENT"]   # upper case, any letter spacing; the header ends at the first [D-056]
+  max_first_paragraph_number: 3          # [PLACEHOLDER] the court's numbering starts at or below this; a quoted '81.' cannot start it [D-061]
+  min_paragraphs_per_page: 0.3           # [PLACEHOLDER] fewer paragraphs than this per page means the structure was not understood: the case is blocked [D-061]
   max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
   # SPEC A1: the presumption is narrowed to exhibits; contested facts stay contested.
   presumptions: ["Exhibits are presumed genuine and duly executed; do not object that a document was not produced.", "Facts marked CONTESTED remain disputed.", "Nothing is known about an exhibit beyond its known_contents."]
@@ -147,6 +149,6 @@ clerk:
   # Words that are part of many names, so they never mark a leaked name on their own [D-056].
   generic_name_words: [ltd, limited, pvt, private, company, co, corporation, corp, india, indian, bank, of, the, and, for, services, financial, finance, industries, infrastructure, developers, projects, trading, investment, investments, enterprises, group, holdings, international, mr, ms, mrs, shri, smt, sri, dr, "m/s", messrs, union, state, national, authority, department, board, resolution, professional, liquidator, committee, creditors, organisation, organization, society, association, cooperative, "co-operative", fund, trust, through, its, director, directors, partner, proprietor]
   # The appellate court speaking in its own voice: never in the agent view [SPEC H5-12, D-056].
-  court_voice_markers: ["we are of the view", "we are of the considered view", "in our view", "in our opinion", "we hold that", "we find that", "we are satisfied", "we do not find", "we see no reason", "we are not inclined", "we are inclined", "this tribunal has already held", "this appellate tribunal has", "this tribunal is of the", "the appeal is dismissed", "the appeal is allowed", "the appeals are dismissed", "the appeals are allowed", "appeal stands dismissed", "appeal stands allowed", "in the result", "for the foregoing reasons", "as held below"]
+  court_voice_markers: ["this court has held", "this court is of the", "we are of the view", "we are of the considered view", "in our view", "in our opinion", "we hold that", "we find that", "we are satisfied", "we do not find", "we see no reason", "we are not inclined", "we are inclined", "this tribunal has already held", "this appellate tribunal has", "this tribunal is of the", "the appeal is dismissed", "the appeal is allowed", "the appeals are dismissed", "the appeals are allowed", "appeal stands dismissed", "appeal stands allowed", "in the result", "for the foregoing reasons", "as held below"]
 
 seed: 7                                  # [PLACEHOLDER]
