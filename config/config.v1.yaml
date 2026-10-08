@@ -30,7 +30,7 @@ providers:
 
 models:
   # Lawyers: one model for both sides (non-negotiable 3).
-  lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 2048, reasoning_effort: low, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]  # reasoning_effort low [MEASURED 2026-10-09, D-081]: default reasoning filled the 2,048-token output cap
+  lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 4096, reasoning_effort: null, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]  # full (default) reasoning, cap 4096 [your decision 2026-10-09, D-085; supersedes D-081 low]
   # THEMIS-LOCAL layer 2 and entailment: different family from the lawyers [SPEC I3-7].
   verifier:        {provider: groq,   family: qwen,    name: qwen/qwen3.8-27b,    temperature: 0,   max_output_tokens: 4096, reasoning_effort: null, api_key_env: Groq_API6}
   judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0.3, max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api}  # temperature 0.3 [PLACEHOLDER, your request 2026-10-07 D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]

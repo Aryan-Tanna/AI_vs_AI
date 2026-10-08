@@ -1,4 +1,26 @@
-# Handoff: state of LexArena (end of the 2026-10-08 session)
+# Handoff: state of LexArena (end of the 2026-10-08 session; top note added 2026-10-09)
+
+## Start here (2026-10-09)
+
+- **Main is up to date.** Parth's Steps 8-13 and the review viewer were pulled as a fast-forward with no conflicts.
+  965 offline tests pass and 164 integration tests pass. Mypy needs `uv sync --group ui` (Streamlit). Read
+  `docs/HANDOFF_ARYAN.md` (Parth's notes) next.
+- **No model is degraded, by the owner's decision (D-084, D-085).**
+  - The lawyer runs at full (default) reasoning with a 4,096-token output cap.
+  - The verifier runs at full reasoning with a 4,096-token cap, on its own key `Groq_API6`.
+  - All Groq keys (`Groq_API1`-`Groq_API7`) are free tier: 8,000 tokens a minute and 1,000 requests a day.
+    `Groq_API5` is shared with another user.
+  - Free-key sessions are plumbing tests only. Real sessions use paid keys.
+- **Fixed on 2026-10-09:** `.env.local` held another machine's service passwords. They were restored from
+  `.env.docker`. Never re-run `make_env.py` here: it would force wiping MongoDB, which holds the only copies of the
+  clerked dev cases.
+- **Nothing real has run yet.** `data/cases/` is empty. Dev-run lessons are cleared in Step 14 before v1.0.
+- **Next (the owner said tomorrow):**
+  1. Finish the first live end-to-end DEV_0001 session (HANDOFF_ARYAN §5.1). Expect free-tier rate-limit pauses at
+     full reasoning; the runner resumes from the cache.
+  2. The owner decides: persona approval (Q-031), the D-071 and D-078 choices, the Step 4, 6 and 7 ticks, and the
+     three limitation drafts.
+  3. Clerk more dev cases. The new keys `gemini_api4` and `gemini_api5` are untested.
 
 > **Update 2026-10-09:** Parth built Steps 8 to 13, reflection and the review viewer; read `docs/HANDOFF_ARYAN.md` first.
 
