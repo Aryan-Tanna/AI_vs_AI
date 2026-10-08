@@ -59,8 +59,17 @@ class RunManager:
         for key, value in update.items():
             setattr(record, key, value)
 
-    def _outputs(self, job: CaseJob) -> dict[str, str]:
-        values = {"case_id": job.case_id, "case_dir": self._store.case_dir(job.case_id).as_posix()}
+    def _outputs(self, job: CaseJob, ledger: RunLedger) -> dict[str, str]:
+        m = ledger.manifest
+        values = {
+            "case_id": job.case_id,
+            "case_dir": self._store.case_dir(job.case_id).as_posix(),
+            "run_id": m.run_id,
+            "mode": m.mode,
+            "seq": str(job.seq),
+            "ablations": ",".join(m.ablations),
+            "allow_draft_personas": str(m.allow_draft_personas).lower(),
+        }
         for r in job.stages:
             if r.status == "DONE":
                 values.update(r.outputs)
@@ -70,7 +79,7 @@ class RunManager:
         """Run one stage. Returns None to continue, or the reason to stop (PAUSED:... or FAILED:...)."""
         spec = self._specs[record.stage]
         mode = ledger.manifest.mode
-        values = self._outputs(job)
+        values = self._outputs(job, ledger)
         if not stage_allowed(record.stage, mode):
             self._set(record, status="SKIPPED", detail=f"{mode} run: memory is never written")
             return None

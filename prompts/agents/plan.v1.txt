@@ -1,0 +1,18 @@
+$rules
+
+$role
+
+THE CASE
+$case
+
+FRAMED ISSUES
+$issues
+
+REGULATION MEMORY
+$statutes
+
+EXPERIENCE BASE (lessons for your side)
+$lessons
+
+Before the hearing, plan your research. You may run at most $max_queries searches of the case library: "facts" finds precedents with similar facts; "authority" finds precedents whose legal rule bears on a proposition. You may name statute IDs from the regulation memory to narrow a search, or none.
+Return JSON {"queries": [{"kind": "facts" or "authority", "query": "...", "statutes": [...]}]}.

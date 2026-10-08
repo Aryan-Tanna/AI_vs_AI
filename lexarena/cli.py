@@ -145,13 +145,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         cmd.add_argument(
             "--aliases", type=Path, default=REPO_ROOT / "data" / "statute_aliases.json", help="statute alias table"
         )
-    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review, cli_run
+    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review, cli_run, cli_session
 
     cli_review.add_parsers(sub)
     cli_clerk.add_parsers(sub)
     cli_judges.add_parsers(sub)
     cli_evaluate.add_parsers(sub)
     cli_run.add_parsers(sub)
+    cli_session.add_parsers(sub)
     args = parser.parse_args(argv)
     try:
         return _dispatch(args)
@@ -161,7 +162,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 def _dispatch(args: argparse.Namespace) -> int:
-    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review, cli_run
+    from lexarena import cli_clerk, cli_evaluate, cli_judges, cli_review, cli_run, cli_session
 
     path = _config_path(args.config)
     if args.group == "config":
@@ -180,6 +181,8 @@ def _dispatch(args: argparse.Namespace) -> int:
         return cli_evaluate.run(args, path)
     if args.group == "run":
         return cli_run.run(args, path)
+    if args.group == "session":
+        return cli_session.run(args, path)
     return _llm_smoke(path, args.role)
 
 

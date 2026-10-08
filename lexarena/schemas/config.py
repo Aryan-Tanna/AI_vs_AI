@@ -112,6 +112,11 @@ class PromptsConfig(Strict):
     judge_decide: PromptRef
     judge_revise: PromptRef
     single_llm: PromptRef
+    agent_rules: PromptRef
+    agent_role: PromptRef
+    agent_plan: PromptRef
+    agent_notes: PromptRef
+    agent_turn: PromptRef
     judge_personas: dict[Literal["TEXTUALIST", "PURPOSIVIST", "PROCEDURALIST"], PromptRef]
 
     @model_validator(mode="after")
@@ -192,6 +197,9 @@ class SessionConfig(Strict):
     alternating_turns: PositiveInt
     parallel_closings: bool
     max_turn_tokens: PositiveInt
+    lawyer_input_tokens: PositiveInt  # D-079: per-call budget; the transcript condenses to fit
+    research_queries: PositiveInt  # D-053: strategy-phase searches per side
+    words_per_token: PositiveFloat
 
 
 class ScoreWeights(Strict):

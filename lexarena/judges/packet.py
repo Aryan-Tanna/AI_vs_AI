@@ -94,7 +94,8 @@ def record_ids(case: AgentCaseView) -> set[str]:
 # ---------------------------------------------------------------- case
 
 
-def render_case(case: AgentCaseView) -> str:
+def render_case(case: AgentCaseView, *, exhibit_contents: bool = True) -> str:
+    """`exhibit_contents=False` is the NO_EXHIBIT_CARDS ablation (SPEC G1): exhibits by title only."""
     meta, r = case.metadata, case.record
     side_of = {p.party_id: p for p in case.parties}
     lines = [f"Forum: {meta.forum}. Proceeding: {meta.proceeding_type}.", "", "PARTIES"]
@@ -113,8 +114,9 @@ def render_case(case: AgentCaseView) -> str:
     for e in r.exhibits:
         filer = side_of[e.filed_by].pseudonym if e.filed_by in side_of else e.filed_by
         lines.append(f"[{e.exhibit_id}] (exhibit, filed by {filer}, authenticity {e.authenticity}) {e.title}")
-        lines += [f"    known content: {k}" for k in e.known_contents]
-        lines.append("    nothing else is known about this document")
+        if exhibit_contents:
+            lines += [f"    known content: {k}" for k in e.known_contents]
+            lines.append("    nothing else is known about this document")
     for a in r.amounts:
         when = f" on {a.date.isoformat()}" if a.date else ""
         lines.append(f"[{a.amount_id}] (amount) {a.label}: INR {a.value_inr}{when} (from {a.fact_id})")

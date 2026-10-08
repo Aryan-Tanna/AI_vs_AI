@@ -189,10 +189,10 @@ def test_dry_run_records_every_stage_and_executes_nothing(tmp_path: Path) -> Non
     led = manager(store, script, specs=DEFAULT_SPECS).go()
     assert led.status == "COMPLETE" and script.calls == []
     assert statuses(led)[0] == {
-        "SESSION": "NOT_BUILT",
+        "SESSION": "DRY",
         "BASELINE": "DRY",
         "EVALUATE": "SKIPPED",
-        "REFLECT": "NOT_BUILT",
+        "REFLECT": "SKIPPED",
     }
     assert led.jobs[0].record("BASELINE").detail is not None
     assert "baseline single --case-id TESTCASE_0001" in (led.jobs[0].record("BASELINE").detail or "")
@@ -309,9 +309,9 @@ def test_report_states_the_memory_proof_and_unbuilt_stages(tmp_path: Path) -> No
     report = build_report(led, CFG, {"<bucket>": {"requests": 1, "tokens": 2}})
     assert report.memory.unchanged and report.memory.reflect_runs == 0 and report.memory.cases_checked == 2
     assert report.evaluation.cases == 0
-    assert any("SESSION is not built" in n for n in report.notes)
+    assert any("dry run" in n for n in report.notes)
     md = to_markdown(report, led)
-    assert "| 1 | TESTCASE_0001 | DEV | NOT_BUILT | DRY | SKIPPED | SKIPPED | yes |" in md
+    assert "| 1 | TESTCASE_0001 | DEV | DRY | DRY | SKIPPED | SKIPPED | yes |" in md
 
 
 def test_planted_bug_a_disabled_memory_check_is_caught(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

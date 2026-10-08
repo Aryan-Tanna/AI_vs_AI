@@ -61,6 +61,8 @@ class RunManifest(StoredModel):
     config_version: NonEmptyStr
     config_sha256: NonEmptyStr
     dry_run: bool
+    # Dev runs before the owner approves the persona prompts: every judge decision is stamped unapproved (D-071).
+    allow_draft_personas: bool = False
 
 
 class RunLedger(StoredModel):

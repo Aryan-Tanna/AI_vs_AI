@@ -4,8 +4,8 @@ Every stage is a `lexarena` subprocess, never a function call, because the stage
 session and the baseline run with session secrets only, the evaluator with the sealed ones (D-034). The run manager's
 own process holds neither sealed credentials nor any repository of sealed data.
 
-A stage with no command is NOT_BUILT: SESSION until the orchestrator exists (Step 9; it must print a final JSON line
-with `session_id`), REFLECT until reflection exists (Q-032).
+Every stage prints a final JSON line; SESSION's carries `session_id`, which EVALUATE and REFLECT need. A stage spec
+with no command is NOT_BUILT (kept for stages a later step adds).
 """
 
 from __future__ import annotations
@@ -32,7 +32,25 @@ class StageSpec:
 
 
 DEFAULT_SPECS: dict[Stage, StageSpec] = {
-    "SESSION": StageSpec("SESSION", None),
+    "SESSION": StageSpec(
+        "SESSION",
+        (
+            "session",
+            "run",
+            "--case-id",
+            "{case_id}",
+            "--run-id",
+            "{run_id}",
+            "--mode",
+            "{mode}",
+            "--case-seq",
+            "{seq}",
+            "--ablations",
+            "{ablations}",
+            "--allow-draft-personas",
+            "{allow_draft_personas}",
+        ),
+    ),
     "BASELINE": StageSpec(
         "BASELINE",
         ("baseline", "single", "--case-id", "{case_id}", "--out", "{case_dir}/baseline.json"),
@@ -52,7 +70,9 @@ DEFAULT_SPECS: dict[Stage, StageSpec] = {
         needs=(SESSION_ID,),
         files={"outcome": "{case_dir}/outcome.json"},
     ),
-    "REFLECT": StageSpec("REFLECT", None, needs=(SESSION_ID,)),
+    "REFLECT": StageSpec(
+        "REFLECT", ("reflect", "session", "{session_id}", "--run-id", "{run_id}"), needs=(SESSION_ID,)
+    ),
 }
 
 

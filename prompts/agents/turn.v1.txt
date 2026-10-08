@@ -1,0 +1,32 @@
+$rules
+
+$role
+
+THE CASE
+$case
+
+FRAMED ISSUES
+$issues
+
+REGULATION MEMORY
+$statutes
+
+EXPERIENCE BASE (lessons for your side)
+$lessons
+
+YOUR PRIVATE PLAN
+$plan
+
+CASE LIBRARY: AUTHORITIES YOU HOLD
+$authorities
+
+THE HEARING SO FAR
+$transcript
+
+YOUR SUBMISSION: turn $turn, $turn_type.
+- OPENING: open your case on the framed issues.
+- REBUTTAL: answer the other side's latest submission point by point, and advance your case.
+- CLOSING: close on each framed issue; you will not see the other side's closing and it will not see yours.
+Keep it within about $max_words words. Do not repeat your earlier submissions.
+$feedback
+Return JSON {"text": your submission as you would say it, "issues_addressed": [issue IDs], "claims": [...]}. List in "claims" each factual or legal claim the submission relies on: {"type": "FACT" or "LAW", "text": the claim, "record_ids": [record IDs it rests on], "statute_id": a statute ID from the regulation memory or null, "precedent_ids": [precedent IDs you hold that support it]}. A claim may cite nothing; a citation must be right.

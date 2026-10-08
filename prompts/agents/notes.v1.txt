@@ -1,0 +1,21 @@
+$rules
+
+$role
+
+THE CASE
+$case
+
+FRAMED ISSUES
+$issues
+
+REGULATION MEMORY
+$statutes
+
+EXPERIENCE BASE (lessons for your side)
+$lessons
+
+CASE LIBRARY: WHAT YOUR RESEARCH FOUND
+$research
+
+Plan your case privately; the other side and the bench never see this plan.
+Return JSON {"issues_to_press": [...], "expected_attacks": [...], "authorities_held": [precedent IDs from the research above that you may rely on], "plan": "..."}.

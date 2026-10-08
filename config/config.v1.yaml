@@ -70,6 +70,11 @@ prompts:
     PURPOSIVIST: {id: judges/persona_purposivist, version: 1}
     PROCEDURALIST: {id: judges/persona_proceduralist, version: 1}
   single_llm: {id: baselines/single_llm, version: 1}    # [D-072] the single-LLM baseline on the same case file
+  agent_rules: {id: agents/rules, version: 1}           # [D-079] the same for both sides: knowledge-base and record rules
+  agent_role: {id: agents/role, version: 1}             # [SPEC E6] the only template whose values differ by side
+  agent_plan: {id: agents/plan, version: 1}             # [D-053] private strategy phase, research plan
+  agent_notes: {id: agents/notes, version: 1}           # [D-053] private strategy phase, plan after research
+  agent_turn: {id: agents/turn, version: 1}             # [D-079] one submission
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -103,6 +108,9 @@ session:
   alternating_turns: 8                   # [D-011]
   parallel_closings: true                # [D-011]
   max_turn_tokens: 1200                  # [PLACEHOLDER] same cap for both sides [SPEC E1]
+  lawyer_input_tokens: 6000              # [MEASURED R-011: Groq rejects >7,000 input tokens] budget per lawyer call; older turns condense first [D-055, D-079]
+  research_queries: 3                    # [PLACEHOLDER, D-053] searches per side in the strategy phase, the same for both
+  words_per_token: 0.75                  # [PLACEHOLDER] turns max_turn_tokens into the word guide shown to lawyers
 
 themis_local:
   retry_cap: 3                           # [SPEC D8]

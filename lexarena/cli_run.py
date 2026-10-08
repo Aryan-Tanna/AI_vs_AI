@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import cast
@@ -22,7 +21,7 @@ from lexarena.app import DEFAULT_ENV_FILE, REPO_ROOT
 from lexarena.config import config_sha256, load_config
 from lexarena.runner.ledger import LedgerStore
 from lexarena.runner.manager import RunManager, new_job
-from lexarena.runner.memory import NoMemory
+from lexarena.runner.memory import ExperienceMemory
 from lexarena.runner.plan import CaseRef, PlanRefusedError, check_plan, run_order
 from lexarena.runner.quota import usage_since, window_start
 from lexarena.runner.report import build_report, to_markdown
@@ -31,6 +30,7 @@ from lexarena.schemas.case import Split
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.run import STAGES, MemoryMode, RunLedger, RunManifest
 from lexarena.storage.factory import SessionProcess
+from lexarena.versioning import git_sha
 
 JSON_INDENT = 2  # literal-ok: display indentation
 
@@ -44,20 +44,14 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     plan.add_argument("--case-id", action="append", help="only these cases (repeatable)")
     plan.add_argument("--ablation", action="append", default=[], help="an ablation switch from runner.ablations")
     plan.add_argument("--dry-run", action="store_true", help="plan and record every stage without executing")
+    plan.add_argument(
+        "--allow-draft-personas", action="store_true", help="dev only: judges may run on unapproved persona prompts"
+    )
     go = run.add_parser("go", help="execute or resume a run (spends LLM quota)")
     go.add_argument("run_id")
     go.add_argument("--max-cases", type=int)
     for name in ("status", "report"):
         run.add_parser(name).add_argument("run_id")
-
-
-def git_sha() -> str:
-    def git(*args: str) -> str:
-        done = subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=False)
-        return done.stdout.strip()
-
-    sha = git("rev-parse", "HEAD") or "unknown"
-    return f"{sha}-dirty" if git("status", "--porcelain", "--untracked-files=no") else sha
 
 
 def _store(cfg: AppConfig, run_id: str) -> LedgerStore:
@@ -93,10 +87,11 @@ def _plan(args: argparse.Namespace, cfg: AppConfig, config_path: Path) -> int:
             mode=mode,
             ablations=args.ablation,
             stages=list(STAGES),
-            git_sha=git_sha(),
+            git_sha=git_sha(REPO_ROOT),
             config_version=cfg.version,
             config_sha256=config_sha256(config_path),
             dry_run=args.dry_run,
+            allow_draft_personas=args.allow_draft_personas,
         ),
         status="PLANNED",
         pause_reason=None,
@@ -134,7 +129,7 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
             store,
             DEFAULT_SPECS,
             SubprocessExecutor(config_path, REPO_ROOT, cfg.runner.stage_timeout_s),
-            NoMemory(),
+            ExperienceMemory(),
             REPO_ROOT / cfg.llm.log_path,
         )
         ledger = manager.go(max_cases=args.max_cases)

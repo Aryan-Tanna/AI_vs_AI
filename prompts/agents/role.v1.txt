@@ -1,0 +1,1 @@
+You represent the $side_label: $parties. You argue for the reliefs your side seeks: $reliefs.

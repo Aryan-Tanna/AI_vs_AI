@@ -8,8 +8,8 @@ The proof is a snapshot comparison: the run manager records the memory snapshot 
 FROZEN and EMPTY modes any change fails the run (FrozenMemoryViolation). The snapshot comes from the memory store
 itself (`MemoryStore.snapshot`), so it covers writes from anywhere, not only from the stages the runner started.
 
-The experience memories are built with reflection (Step 12, Q-032). Until then `NoMemory` stands in: an empty store
-whose snapshot never changes.
+`ExperienceMemory` reads both experience memories through the orchestrator role (read-only key), in a fresh session
+process each time, so a write by any other process shows up in the next snapshot.
 """
 
 from __future__ import annotations
@@ -46,3 +46,16 @@ def check_unchanged(mode: MemoryMode, case_id: str, before: str, after: str) -> 
         raise FrozenMemoryViolationError(
             f"memory changed during {case_id} in a {mode} run ({before} -> {after}); the run is invalid"
         )
+
+
+class ExperienceMemory:
+    """The lawyer and judge memories' combined snapshot (D-077), read with session credentials."""
+
+    def snapshot(self) -> str:
+        from lexarena.app import DEFAULT_ENV_FILE
+        from lexarena.storage.factory import SessionProcess
+        from lexarena.versioning import combine
+
+        with SessionProcess.from_env_files([DEFAULT_ENV_FILE]) as proc:
+            orch = proc.orchestrator()
+            return combine(orch.lawyer_memory.snapshot(), orch.judge_memory.snapshot())
