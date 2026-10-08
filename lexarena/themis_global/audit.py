@@ -38,7 +38,7 @@ class AuditPoint(StoredModel):
     issue_id: str | None
     summary: str
     quote: str
-    centrality: Literal[1, 2, 3]
+    centrality: Literal[1, 2, 3]  # literal-ok: the 1-3 scale the audit prompt defines
     status: Literal["ANSWERED", "CONCEDED", "IGNORED"]
     answered_in_turn: int | None
 
