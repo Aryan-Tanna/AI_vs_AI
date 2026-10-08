@@ -6,9 +6,10 @@ For each statute checklist extracted from the argument:
 2. the D1 audit (audit.py);
 3. every APPROVED, current predicate for that statute, with claim inputs read from the checklist and the reading
    the argument chose for each open parameter; a skipped predicate is UNMAPPED;
-4. for a statute carrying an approved limitation-period overlay value (the data marks it; no statute ID in code or
-   config), the date chain from approved overlay values, as a warning only (D-063): limitation
-   turns on dates of default and acknowledgments that are usually contested, and it is not a SPEC D8 hard error.
+4. for a limitation conclusion, the date chain built from the approved values on whichever offered statute
+   carries a limitation period (the data marks it; no statute ID in code or config; D-068), as a warning only
+   (D-063): limitation turns on dates of default and acknowledgments that are usually contested, and it is not a
+   SPEC D8 hard error.
 
 A stated value the extractor attached to several statutes (measured: one sentence about s.7's period copied onto
 s.21) is ambiguous about which statute counsel meant; it is a misstatement only if it matches none of them, so a value
@@ -29,7 +30,7 @@ from lexarena.schemas.predicate import PredicateEntry
 from lexarena.schemas.transcript import ExtractedChecklist, ThemisWarning
 from lexarena.storage.temporal import StatuteView
 from lexarena.themis_local.audit import UNMAPPED, HardError, audit_statute
-from lexarena.themis_local.limitation import limitation_expiry, rule_from_overlays
+from lexarena.themis_local.limitation import LimitationRule, limitation_expiry, rule_from_overlays
 from lexarena.themis_local.predicates import evaluate, resolve_inputs, select_approved
 
 STATUTE_NOT_AVAILABLE = "STATUTE_NOT_AVAILABLE"
@@ -101,18 +102,32 @@ def _run_predicates(
             )
 
 
+def _limitation_rule(views: dict[str, StatuteView], cfg: ThemisLocalConfig) -> LimitationRule | None:
+    """The rule from whichever offered statute carries an approved period (D-068): counsel's conclusion is often
+    extracted under the acknowledgment section while the period sits on the article."""
+    lim = cfg.limitation
+    for view in views.values():
+        rule = rule_from_overlays(
+            view.applied,
+            period=lim.period_parameter,
+            excluded=lim.excluded_parameter,
+            minimum=lim.minimum_balance_parameter,
+        )
+        if rule is not None:
+            return rule
+    return None
+
+
 def _check_limitation(
-    view: StatuteView, checklist: ExtractedChecklist, facts: CaseFacts, cfg: ThemisLocalConfig, out: Layer1Result
+    rule: LimitationRule | None,
+    checklist: ExtractedChecklist,
+    facts: CaseFacts,
+    cfg: ThemisLocalConfig,
+    out: Layer1Result,
 ) -> None:
     lim = cfg.limitation
     if checklist.asserts_within_limitation is None:
         return
-    rule = rule_from_overlays(
-        view.applied,
-        period=lim.period_parameter,
-        excluded=lim.excluded_parameter,
-        minimum=lim.minimum_balance_parameter,
-    )
     default, filed = facts.key_dates.get(lim.default_date_label), facts.key_dates.get(lim.filing_date_label)
     if rule is None or default is None or filed is None:
         return
@@ -149,6 +164,8 @@ def run_layer1(
 ) -> Layer1Result:
     out = Layer1Result()
     matched: set[tuple[str, float]] = set()
+    rule = _limitation_rule(views, cfg)
+    concluded = False
     for checklist in checklists:
         view = views.get(checklist.statute_id)
         if view is None:
@@ -161,6 +178,8 @@ def run_layer1(
         out.warnings += audit.warnings
         matched |= audit.matched
         _run_predicates(view, checklist, predicates.get(view.statute_id, []), facts, out)
-        _check_limitation(view, checklist, facts, cfg, out)
+        if checklist.asserts_within_limitation is not None and not concluded:
+            _check_limitation(rule, checklist, facts, cfg, out)  # once per argument: the conclusion is one claim
+            concluded = True
     out.hard_errors = _dedupe([e for e in out.hard_errors if e.claim_key is None or e.claim_key not in matched])
     return out

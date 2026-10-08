@@ -1,5 +1,44 @@
 [
   {
+    "source_id": "LIMITATION_ACT_1963",
+    "title": "The Limitation Act, 1963 (as amended; copy hosted by the High Court of Tripura)",
+    "issuer": "Parliament of India",
+    "reference": "Act No. 36 of 1963",
+    "issued_on": "1963-10-05",
+    "url": "https://www.thc.nic.in/Central%20Governmental%20Acts/Limitation%20Act,%202019.pdf",
+    "retrieved_on": "2026-10-08",
+    "file": "files/LIMITATION_ACT_1963.pdf",
+    "file_sha256": "508feabba1a8039d2d30fd74ddfec2155d912c44c63f988947f95e0a5a92176c",
+    "text_file": "files/LIMITATION_ACT_1963.txt",
+    "text_sha256": "4cd39cc0bba1e215f8197eafbace684e8358a6d7c21a0b976e88f1ec5ac7cac3",
+    "page_chars": [
+      1618,
+      288,
+      2606,
+      3454,
+      4231,
+      3812,
+      4011,
+      3788,
+      3872,
+      4028,
+      2988,
+      2514,
+      2436,
+      2801,
+      2311,
+      2307,
+      2160,
+      2295,
+      2682,
+      2797,
+      2302,
+      2150,
+      2324,
+      1726
+    ]
+  },
+  {
     "source_id": "IBC_AMENDMENT_ACT_2020",
     "title": "The Insolvency and Bankruptcy Code (Amendment) Act, 2020",
     "issuer": "Ministry of Law and Justice (Legislative Department), Gazette of India via IBBI",
@@ -285,6 +324,29 @@
       2237,
       1450,
       939
+    ]
+  },
+  {
+    "source_id": "SC_SUO_MOTU_LIMITATION_2022_01_10",
+    "title": "In Re: Cognizance for Extension of Limitation, order of 10.01.2022 (copy hosted by IBBI)",
+    "issuer": "Supreme Court of India",
+    "reference": "M.A. No. 21 of 2022 in M.A. No. 665 of 2021 in Suo Motu W.P.(C) No. 3 of 2020",
+    "issued_on": "2022-01-10",
+    "url": "https://ibbi.gov.in/uploads/order/2022-01-13-125847-lhdpo-f3d9abb903127694db460aa9c7f4d7be.pdf",
+    "retrieved_on": "2026-10-08",
+    "file": "files/SC_SUO_MOTU_LIMITATION_2022_01_10.pdf",
+    "file_sha256": "5575c5f03f810e08bbbad5657e0644cc09efa06136b3a26d83f1beaad1a730cf",
+    "text_file": "files/SC_SUO_MOTU_LIMITATION_2022_01_10.txt",
+    "text_sha256": "e993d72df661a839e2d5c0ea7b7299c36efeefd36170072778d0754734147027",
+    "page_chars": [
+      868,
+      1333,
+      1199,
+      1130,
+      212,
+      1445,
+      1135,
+      1165
     ]
   },
   {

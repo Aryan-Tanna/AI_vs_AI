@@ -1,0 +1,68 @@
+{
+  "draft_id": "OV_LIMITATION_ACT_1963_ART_137_f589ec605f",
+  "statute_id": "LIMITATION_ACT_1963_ART_137",
+  "source_id": "LIMITATION_ACT_1963",
+  "source_text_sha256": "4cd39cc0bba1e215f8197eafbace684e8358a6d7c21a0b976e88f1ec5ac7cac3",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-08)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 63115-63261: ...ion shall not be subject to any period of limitation. PART II-OTHER APPLICATION 137. Any other application for which no period of limitation is provided elsewhere in this Division. Three years. When the right to apply accrues...."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 63179-63228: ...HER APPLICATION 137. Any other application for which no period of limitation is provided elsewhere in this Division. Three years. When the right to apply accrues...."
+    },
+    {
+      "name": "value",
+      "status": "NOT_CHECKABLE",
+      "detail": "3.0"
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 4031-4081: ...omitted by Act 34 of 2019, s. 95 and the Fifth Schedule (w.e.f. 3110- 2019). 2. 1st January, 1964, vide notification No. S.O. 3118, dated 29th October, 1963, see Gazette of India, Part II, sec. 3 (ii). Amended ..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "1964-01-01"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "value 3 is not written in digits in its quote; check it against the words",
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is FILING the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-08T13:05:47.269868Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "limitation_period_years",
+    "value_kind": "number",
+    "value_boolean": null,
+    "value_number": 3.0,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "FILING",
+    "effective_from": "1964-01-01",
+    "effective_to": null,
+    "source_text": "137. Any other application for which no period of limitation is provided elsewhere in this Division. Three years. When the right to apply accrues.",
+    "value_quote": "provided elsewhere in this Division. Three years.",
+    "effective_from_quote": "1st January, 1964, vide notification No. S.O. 3118",
+    "effective_to_quote": null,
+    "commencement_note": "The Act commenced on 01.01.1964. Its application to IBC applications under ss.7 and 9 comes through IBC s.238A (inserted w.e.f. 06.06.2018), which the Supreme Court has applied also to applications filed before that date; whether to key this row from 1964 or 06.06.2018 is for the reviewer. The period runs 'when the right to apply accrues' (for IBC, the date of default): that is the DEFAULT key date the checker uses."
+  }
+}

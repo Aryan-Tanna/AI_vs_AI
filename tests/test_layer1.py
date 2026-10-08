@@ -163,3 +163,12 @@ def test_limitation_parameters_are_draftable_names() -> None:
     vocabulary = set(load_config(CONFIG_V1).vocabulary.overlay_parameters)
     assert {LIM.period_parameter, LIM.excluded_parameter, LIM.minimum_balance_parameter} <= vocabulary
     assert CFG.threshold_overlay_parameter in vocabulary
+
+
+def test_the_limitation_rule_applies_to_a_conclusion_stated_under_another_limitation_statute() -> None:
+    # Measured on a dev case: counsel's limitation conclusion was extracted under the acknowledgment section, while
+    # the approved period sits on the article (D-068).
+    views = {LIMITATION_ID: limitation_view(), "ACK_SEC_18": statute_view("ACK_SEC_18")}
+    wrong = for_statute("ACK_SEC_18", asserts_within_limitation=True)
+    result = run_layer1([wrong], views, {}, FACTS, CFG)
+    assert [w.code for w in result.warnings] == ["WARN_LIMITATION_INCONSISTENT"]

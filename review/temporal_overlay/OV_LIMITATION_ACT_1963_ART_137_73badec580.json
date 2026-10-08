@@ -1,0 +1,67 @@
+{
+  "draft_id": "OV_LIMITATION_ACT_1963_ART_137_73badec580",
+  "statute_id": "LIMITATION_ACT_1963_ART_137",
+  "source_id": "SC_SUO_MOTU_LIMITATION_2022_01_10",
+  "source_text_sha256": "e993d72df661a839e2d5c0ea7b7299c36efeefd36170072778d0754734147027",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-08)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 3336-3725: ...on 03.10.2021, if any, shall become available with effect from 01.03.2022. III. In cases where the limitation would have expired during the period between 15.03.2020 till 28.02.2022, notwithstanding the actual balance period of limitation remaining, all persons shall have a limitation period of 90 days from 01.03.2022. In the event the actual balance period of limitation remaining, with effect from 01.03.2022 is greater than 90 days, that longer period shall apply. IV. It is further clarified that the period from 15.03.2020 till 28.02.2022 sha..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 3506-3575: ... 28.02.2022, notwithstanding the actual balance period of limitation remaining, all persons shall have a limitation period of 90 days from 01.03.2022. In the event the actual balance period of limitation remaining, with effect fr..."
+    },
+    {
+      "name": "value",
+      "status": "MATCHED",
+      "detail": "90.0"
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 981-1018: ...d of limitation in all proceedings before Courts/Tribunals including this Court w.e.f. 15.03.2020 till further orders. On 08.03.2021, the order dated 23.03.2020 was brought to an end, permitting th..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2020-03-15"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is FILING the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-08T13:05:50.078468Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "limitation_minimum_balance_days",
+    "value_kind": "number",
+    "value_boolean": null,
+    "value_number": 90.0,
+    "value_from": null,
+    "value_to": null,
+    "value_text": null,
+    "keyed_on": "FILING",
+    "effective_from": "2020-03-15",
+    "effective_to": null,
+    "source_text": "In cases where the limitation would have expired during the period between 15.03.2020 till 28.02.2022, notwithstanding the actual balance period of limitation remaining, all persons shall have a limitation period of 90 days from 01.03.2022. In the event the actual balance period of limitation remaining, with effect from 01.03.2022 is greater than 90 days, that longer period shall apply.",
+    "value_quote": "all persons shall have a limitation period of 90 days from 01.03.2022",
+    "effective_from_quote": "w.e.f. 15.03.2020 till further orders",
+    "effective_to_quote": null,
+    "commencement_note": "The checker resumes the balance on 01.03.2022 (the day after the window) and gives max(balance, 90 days), which equals direction III: where limitation would not have expired in the window the balance always exceeds 90 days."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "draft_id": "OV_LIMITATION_ACT_1963_ART_137_adac47aa3a",
+  "statute_id": "LIMITATION_ACT_1963_ART_137",
+  "source_id": "SC_SUO_MOTU_LIMITATION_2022_01_10",
+  "source_text_sha256": "e993d72df661a839e2d5c0ea7b7299c36efeefd36170072778d0754734147027",
+  "status": "DRAFT",
+  "decided_by": null,
+  "decided_on": null,
+  "decision_note": null,
+  "agreement": "MANUAL",
+  "conflicts_with": [],
+  "proposed_by": [
+    "manual:Claude Code (manual extraction, your instruction of 2026-10-08)"
+  ],
+  "prompt_ref": "manual",
+  "checks": [
+    {
+      "name": "source_text",
+      "status": "VERIFIED",
+      "detail": "chars 2962-3189: ...tinuation of the subsequent orders dated 08.03.2021, 27.04.2021 and 23.09.2021, it is directed that the period from 15.03.2020 till 28.02.2022 shall stand excluded for the purposes of limitation as may be prescribed under any general or special laws in respect of all judicial or quasi judicial proceedings. 4 II. Consequently, the balance period of limitation remaining as on 03.10.2021..."
+    },
+    {
+      "name": "value_quote",
+      "status": "VERIFIED",
+      "detail": "chars 2982-3076: ...sequent orders dated 08.03.2021, 27.04.2021 and 23.09.2021, it is directed that the period from 15.03.2020 till 28.02.2022 shall stand excluded for the purposes of limitation as may be prescribed under any general or special laws in respect of all judici..."
+    },
+    {
+      "name": "value_from_date",
+      "status": "MATCHED",
+      "detail": "2020-03-15"
+    },
+    {
+      "name": "value_to_date",
+      "status": "MATCHED",
+      "detail": "2022-02-28"
+    },
+    {
+      "name": "effective_from_quote",
+      "status": "VERIFIED",
+      "detail": "chars 981-1018: ...d of limitation in all proceedings before Courts/Tribunals including this Court w.e.f. 15.03.2020 till further orders. On 08.03.2021, the order dated 23.03.2020 was brought to an end, permitting th..."
+    },
+    {
+      "name": "effective_from_date",
+      "status": "MATCHED",
+      "detail": "2020-03-15"
+    }
+  ],
+  "blocking_problems": [],
+  "reviewer_must_judge": [
+    "Is this the provision as it applied to cases on these dates (an ordinance later replaced by an Act, later amendments, retrospective effect)?",
+    "Is FILING the case date this rule turns on?"
+  ],
+  "created_at": "2026-10-08T13:05:50.061012Z",
+  "kind": "temporal_overlay",
+  "row": {
+    "parameter": "excluded_period",
+    "value_kind": "date_range",
+    "value_boolean": null,
+    "value_number": null,
+    "value_from": "2020-03-15",
+    "value_to": "2022-02-28",
+    "value_text": null,
+    "keyed_on": "FILING",
+    "effective_from": "2020-03-15",
+    "effective_to": null,
+    "source_text": "it is directed that the period from 15.03.2020 till 28.02.2022 shall stand excluded for the purposes of limitation as may be prescribed under any general or special laws in respect of all judicial or quasi judicial proceedings.",
+    "value_quote": "the period from 15.03.2020 till 28.02.2022 shall stand excluded for the purposes of limitation",
+    "effective_from_quote": "w.e.f. 15.03.2020 till further orders",
+    "effective_to_quote": null,
+    "commencement_note": "Keyed on FILING from 15.03.2020: an application filed before the window began gains nothing from it. The order is dated 10.01.2022 but excludes the window retrospectively. The checker applies it only when limitation was running during the window (SPEC D3); an acknowledgment made inside the window is sent to layer 2, not computed."
+  }
+}
