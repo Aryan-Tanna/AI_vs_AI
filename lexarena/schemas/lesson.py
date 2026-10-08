@@ -36,6 +36,8 @@ class Lesson(StoredModel):
     last_retrieved_case_seq: int = Field(ge=0)
     status: Literal["ACTIVE", "RETIRED"]
     created_in_run: NonEmptyStr
+    # The reward of the case that last used it (SPEC F4: confidence rises when the next use does at least as well).
+    last_reward: UnitScore | None = None
 
     @model_validator(mode="after")
     def _routing(self) -> Lesson:

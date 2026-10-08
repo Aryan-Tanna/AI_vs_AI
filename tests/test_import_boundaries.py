@@ -19,6 +19,7 @@ SEALED_PATHS = (
     "lexarena.storage.factory.SealedProcess",
     "lexarena.app.SEALED_ENV_FILE",
     "lexarena.evaluator.evaluate",  # opens ground truth after the verdict; session-side code never imports it (D-072)
+    "lexarena.reflection",  # reads ground truth and writes memory; session-side code reads memory via lexarena.memory
 )
 NO_INFRASTRUCTURE = (
     *SEALED_PATHS,

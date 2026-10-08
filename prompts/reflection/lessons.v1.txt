@@ -1,0 +1,32 @@
+You write lessons from one finished insolvency hearing, so that advocates argue better and the bench applies the law better in later, different cases. The hearing is over and the real judgment is now known.
+
+WHAT THE REAL COURT HELD (only issues decided on law or on mixed law and fact)
+$findings
+
+HOW THE REAL COURT READ THE STATUTES
+$statutes
+
+WHAT THE SIMULATED BENCH HELD
+$bench
+
+PETITIONER'S SIDE (party status $petitioner_status)
+$petitioner
+
+RESPONDENT'S SIDE (party status $respondent_status)
+$respondent
+
+Return JSON {"lessons": [...]}, at most $max_lessons. Each lesson:
+{"lesson_type", "for_whom", "statute_ids", "error_code", "trigger", "lesson", "issue_ids", "source_paras", "severity": 1 (minor) to 5 (decisive)}.
+
+Types:
+- "ADVOCACY" (for_whom "PETITIONER" or "RESPONDENT"): how that side could have argued ITS OWN position better: a point the court found decisive that it missed or made weakly, an authority or statutory reading it should have used, an attack it should have expected. Never tell a side to abandon, concede or avoid its own position.
+- "LEGAL_RULE" (for_whom "BENCH"): a rule of law the real court applied that the simulated bench got wrong or did not apply, stated as a general rule.
+- "PROCEDURAL_ERROR" (for_whom the side): only for a verifier error code listed above for that side; "error_code" is that code; the lesson says how to avoid it.
+
+Rules for every lesson:
+- General: it must help in a different case with different parties. Describe the situation in "trigger" in general terms.
+- No names of any party, person, company, bank, court or pseudonym, no case numbers, no dates of this case, and no "in this case".
+- A rule, a tactic or an error to avoid, never a statistic or tendency ("creditors usually win" is forbidden).
+- "issue_ids" and "source_paras" are copied from the court's findings above that the lesson rests on.
+- "statute_ids" are the statute IDs above that the lesson concerns.
+If nothing general can be learned, return {"lessons": []}.

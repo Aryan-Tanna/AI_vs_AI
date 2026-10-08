@@ -31,6 +31,7 @@ from lexarena.storage.cases import CaseRepository
 from lexarena.storage.errors import CredentialLeakError
 from lexarena.storage.ground_truth import GroundTruthRepository, JudgmentTextRepository
 from lexarena.storage.law import LawRepository
+from lexarena.storage.lessons import LessonRepository
 from lexarena.storage.mongo import ROOT_NAMESPACE, Doc, Namespace
 from lexarena.storage.policy import Principal, Role
 from lexarena.storage.precedents import PrecedentRepository, ScopedPrecedentReader
@@ -121,6 +122,8 @@ class OrchestratorStores:
     transcript: TranscriptRepository
     sessions: SessionRepository
     session_memory: InProcessSessionMemory
+    lawyer_memory: LessonRepository  # read-only key: pinning lessons and the memory snapshot (D-077)
+    judge_memory: LessonRepository
 
 
 @dataclass(frozen=True)
@@ -140,6 +143,8 @@ class ReflectionStores:
     ground_truth: GroundTruthRepository
     judgment_texts: JudgmentTextRepository
     private_turns: PrivateTurnRepository
+    lawyer_memory: LessonRepository  # write key: reflection writes lessons (D-077)
+    judge_memory: LessonRepository
 
 
 @dataclass(frozen=True)
@@ -245,6 +250,8 @@ class SessionProcess(_Process):
             transcript=TranscriptRepository(p, self._app_db, self._ns),
             sessions=SessionRepository(p, self._app_db, self._ns),
             session_memory=self._memory,
+            lawyer_memory=LessonRepository(p, self._qdrant, "LAWYER", self._ns.prefix),
+            judge_memory=LessonRepository(p, self._qdrant, "JUDGE", self._ns.prefix),
         )
 
     def _observer(self, p: Principal, scope: CaseScope) -> ObserverStores:
@@ -284,6 +291,8 @@ class SealedProcess(_Process):
             ground_truth=GroundTruthRepository(p, self._sealed_db, self._app_db, self._ns),
             judgment_texts=JudgmentTextRepository(p, self._sealed_db, self._app_db, self._ns),
             private_turns=PrivateTurnRepository(p, self._app_db, self._ns),
+            lawyer_memory=LessonRepository(p, self._qdrant, "LAWYER", self._ns.prefix),
+            judge_memory=LessonRepository(p, self._qdrant, "JUDGE", self._ns.prefix),
         )
 
     def ingest(self) -> IngestStores:

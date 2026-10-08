@@ -122,6 +122,10 @@ class Session(StoredModel):
     # The bench's reasoned decision (D-048). Defaults keep documents written before Step 11 valid.
     judge_decisions: list[JudgeDecision] = Field(default_factory=list)
     bench: BenchVerdict | None = None
+    # Position in the run (decay of lessons, SPEC F4) and the lessons pinned into it (D-077). A FROZEN or EMPTY run
+    # records what it read here and writes nothing to memory; reflection updates the lessons in LEARN runs only.
+    case_seq: int | None = Field(default=None, ge=1)
+    pinned_lessons: list[NonEmptyStr] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _fields_match_state(self) -> Session:

@@ -1,0 +1,12 @@
+Two lessons from an insolvency-law memory. Are they the same lesson, opposite lessons, or different lessons?
+
+LESSON A
+When: $trigger_a
+Lesson: $lesson_a
+
+LESSON B
+When: $trigger_b
+Lesson: $lesson_b
+
+"SAME": they give the same advice for the same situation, perhaps in different words. "OPPOSITE": for the same situation they advise against each other. "DIFFERENT": anything else.
+Return JSON {"relation": "SAME" | "OPPOSITE" | "DIFFERENT"}.

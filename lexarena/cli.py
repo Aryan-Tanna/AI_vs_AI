@@ -176,7 +176,7 @@ def _dispatch(args: argparse.Namespace) -> int:
         return cli_clerk.run(args, path)
     if args.group == "judges":
         return cli_judges.run(args, path)
-    if args.group in ("evaluate", "baseline"):
+    if args.group in ("evaluate", "baseline", "reflect"):
         return cli_evaluate.run(args, path)
     if args.group == "run":
         return cli_run.run(args, path)

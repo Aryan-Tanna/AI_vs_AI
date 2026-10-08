@@ -61,6 +61,8 @@ prompts:
   themis_layer2: {id: themis/layer2_review, version: 1}   # [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
   themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
+  reflection_lessons: {id: reflection/lessons, version: 1}   # [SPEC F1-F7, D-077]
+  reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
   judge_decide: {id: judges/decide, version: 1}         # [D-071] one opinion per persona and presentation order
   judge_revise: {id: judges/revise, version: 1}         # [D-071] the one revision (ARCHITECTURE §5)
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
@@ -77,6 +79,7 @@ llm:
   cache_enabled: true
   cache_path: .cache/llm_cache.sqlite
   log_path: .cache/logs/llm_calls.jsonl
+  chars_per_token: 4                     # [PLACEHOLDER, D-077] estimate for prompt budgets where no tokenizer exists for the model
 
 embedding:
   model: BAAI/bge-small-en-v1.5          # [SPEC B5]
@@ -145,6 +148,11 @@ memory:
   decay_lambda: 0.98                     # [SPEC F4]
   retire_below_confidence: 0.2           # [SPEC F4]
   dedup_embedding_threshold: 0.90        # [PLACEHOLDER] SPEC F3 warns 0.90 can merge opposite lessons
+  initial_confidence: 0.5                # [SPEC F4]
+  confidence_step: 0.05                  # [PLACEHOLDER, D-077] rise or fall per use; an opposite newer lesson costs the older one this much
+  max_lessons_per_case: 6                # [PLACEHOLDER, D-077] candidates kept per reflected session (after filters)
+  # Base-rate phrasing (SPEC I3-5): a lesson containing any of these is rejected as a statistic, not a rule [D-077].
+  base_rate_markers: ["usually win", "usually lose", "tend to win", "tend to lose", "more often than not", "most cases", "typically succeed", "typically fail", "are likely to win", "are likely to lose", "generally succeed", "generally fail", "base rate"]
 
 evaluation:                              # [D-072] Step 12; the report reads these, nothing is tuned on them
   single_llm_role: judge                 # [D-072] same model as the bench, so the comparison isolates debate and verification

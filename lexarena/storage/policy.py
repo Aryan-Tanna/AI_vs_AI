@@ -141,12 +141,13 @@ POLICY: dict[Store, dict[Op, dict[Role, Scope]]] = {
         Op.WRITE: {R.LAWYER: Scope.OWN_SIDE},
     },
     Store.LAWYER_MEMORY: {
-        # Party-status matching is applied by the lesson query (Step 12), on top of this rule.
-        Op.READ: {R.LAWYER: Scope.ANY, R.ORCHESTRATOR: Scope.ANY},
+        # Party-status matching is applied by the lesson query (Step 12), on top of this rule. Reflection reads what
+        # it writes, to deduplicate (SPEC F3, D-077).
+        Op.READ: {R.LAWYER: Scope.ANY, R.ORCHESTRATOR: Scope.ANY, R.REFLECTION: Scope.ANY},
         Op.WRITE: {R.REFLECTION: Scope.ANY},
     },
     Store.JUDGE_MEMORY: {
-        Op.READ: {R.JUDGE: Scope.ANY, R.ORCHESTRATOR: Scope.ANY},
+        Op.READ: {R.JUDGE: Scope.ANY, R.ORCHESTRATOR: Scope.ANY, R.REFLECTION: Scope.ANY},
         Op.WRITE: {R.REFLECTION: Scope.ANY},
     },
     Store.SESSIONS: {

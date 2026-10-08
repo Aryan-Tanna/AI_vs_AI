@@ -107,6 +107,8 @@ class PromptsConfig(Strict):
     themis_layer2: PromptRef
     themis_entailment: PromptRef
     themis_global_audit: PromptRef
+    reflection_lessons: PromptRef
+    reflection_compare: PromptRef
     judge_decide: PromptRef
     judge_revise: PromptRef
     single_llm: PromptRef
@@ -154,6 +156,7 @@ class LLMConfig(Strict):
     cache_enabled: bool
     cache_path: str
     log_path: str
+    chars_per_token: PositiveFloat  # D-077: budget estimate where the model has no local tokenizer
 
 
 class EmbeddingConfig(Strict):
@@ -280,6 +283,10 @@ class MemoryConfig(Strict):
     decay_lambda: UnitInterval
     retire_below_confidence: UnitInterval
     dedup_embedding_threshold: UnitInterval
+    initial_confidence: UnitInterval
+    confidence_step: UnitInterval
+    max_lessons_per_case: PositiveInt
+    base_rate_markers: list[NonEmptyStr]
 
 
 class EvaluationConfig(Strict):
