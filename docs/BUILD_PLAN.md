@@ -40,7 +40,7 @@ One step per session. Tick a step only when every "done when" item holds and I h
 - [ ] **Step 7: Predicate engine and THEMIS-LOCAL layer 1**
   - Build: the expression-to-Z3 compiler, claim extraction into checklist-mirroring JSON, the audit (SPEC D1, D2), the limitation date-chain helper driven by overlay data.
   - Done when: a test suite of at least 30 arguments built from dev cases and precedents (honest, misstated, open-interpretation) gives the expected hard errors and warnings, and no honest argument is rejected. The honest arguments come from real counsel submissions in dev judgments, the misstated ones are mechanical mutations of them, and the false-rejection rate is reported (D-024).
-  - Status 2026-10-08: built; 42-argument run gives 0/34 false rejections and 8/8 mutations caught (D-065). Open-interpretation not exercised on real data (no approved predicate). Awaiting your review and tick.
+  - Status 2026-10-08: built; 42-argument run, prompt v2: 0/34 false rejections, 7/8 mutations caught (D-065, D-066). Not met as written: no open-interpretation case on real data (no predicate drafted), honest arguments are paraphrases not counsel's own words, no precedent-based arguments. Awaiting your decision.
 
 - [ ] **Step 8: THEMIS-LOCAL layer 2 and outcome policy**
   - Build: citation tiers plus entailment, record fidelity, responsiveness, repetition (Redis), and the D8 outcome policy with retries.

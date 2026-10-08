@@ -99,6 +99,14 @@ Each person owns separate packages. The shared contract is `lexarena/schemas/`:
 - the transcript, session, case and ground-truth models;
 - frozen for this sprint;
 - a change there goes in its own small PR that both of you agree to first.
+- **Changed since this file was first written (Step 7, 2026-10-08):**
+  - `ClaimedThreshold.minimum_amount` is now `float`;
+  - `ExtractedChecklist` gained optional fields: `threshold_amount_id`, `chosen_readings`,
+    `asserts_within_limitation`, `acknowledgment_dates`;
+  - `lexarena/schemas/themis.py` is new (what the extractor model returns);
+  - config gained `themis_local` keys.
+
+  Old data still validates (D-062, D-066).
 
 | Who | Steps | Packages | Builds against |
 | --- | --- | --- | --- |

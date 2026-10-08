@@ -57,7 +57,7 @@ prompts:
   clerk_agent_view_repair: {id: clerk/agent_view_repair, version: 1}   # [D-060]
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
-  themis_extract: {id: themis/extract_checklist, version: 1}   # [SPEC D1, D-062] verifier model, temperature 0
+  themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -99,6 +99,12 @@ themis_local:
   penalty_cap: 0.30                      # [SPEC D6]
   threshold_overlay_parameter: minimum_default_inr   # overlay parameter holding the dated minimum default [D-062]
   threshold_currency: INR                # amounts in the record are in this currency [D-062]
+  amount_unit_words:                     # Indian numbering words, to read '1 crore' in a quote [D-066]
+    - {word: crore, value: 10000000}
+    - {word: lakh, value: 100000}
+    - {word: lakhs, value: 100000}
+    - {word: lac, value: 100000}
+    - {word: lacs, value: 100000}
   limitation:                            # overlay parameter names and record labels for the date chain [D-063]
     period_parameter: limitation_period_years
     excluded_parameter: limitation_excluded_period

@@ -27,6 +27,12 @@ class ChecklistDraft(StoredModel):
     acknowledgment_dates: list[date]
     diagnostic_checklist: ClaimedChecklist
     procedural_timelines: ClaimedTimelines
+    # The argument's own words behind each claim that can cause a hard error (SPEC D1 point 4, D-066). Code checks
+    # each is verbatim in the argument and, for a number, that the number is in it; otherwise the claim is dropped.
+    minimum_amount_quote: str | None
+    threshold_met_quote: str | None
+    adjudication_window_quote: str | None
+    rectification_window_quote: str | None
 
     def to_checklist(self, valid_amount_ids: set[str]) -> ExtractedChecklist:
         return ExtractedChecklist(

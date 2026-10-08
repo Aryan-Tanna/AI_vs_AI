@@ -7,13 +7,19 @@ extraction to the argument, so an extraction error can never reject a good argum
 - a quote that is not found verbatim in the argument (whitespace and case aside) gets confidence 0, so the audit
   treats it as UNMAPPED;
 - a reading not among a predicate's options is dropped;
-- an amount ID not in the record is dropped (the audit then reports UNMAPPED).
+- an amount ID not in the record is dropped (the audit then reports UNMAPPED);
+- every claim that can cause a hard error (a stated minimum amount, "the minimum is met", a stated period) needs the
+  argument's own words: the quote must be verbatim in the argument and, for a number, contain that number (digits,
+  or digits with an Indian numbering word from config, such as "1 crore"). Otherwise the claim is dropped and
+  reported UNMAPPED (D-066). A number written only in words is therefore never checked: a missed check, not a
+  rejection.
 """
 
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+from fractions import Fraction
 
 from lexarena.llm.client import LLMClient
 from lexarena.prompts import PromptStore
@@ -21,17 +27,22 @@ from lexarena.schemas.case import Amount
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.law import LIST_FIELDS
 from lexarena.schemas.predicate import PredicateEntry
-from lexarena.schemas.themis import ArgumentExtraction
-from lexarena.schemas.transcript import ClaimedItem, ExtractedChecklist
+from lexarena.schemas.themis import ArgumentExtraction, ChecklistDraft
+from lexarena.schemas.transcript import ClaimedItem, ExtractedChecklist, ThemisWarning
 from lexarena.storage.temporal import StatuteView
 
 ROLE = "verifier"
+UNMAPPED = "UNMAPPED"
+NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
+WORD = re.compile(r"[a-z]+")
 
 
 @dataclass
 class ExtractionReport:
     checklists: list[ExtractedChecklist]
     notes: list[str] = field(default_factory=list)
+    # Claims dropped because the argument's words do not support them; the caller adds these to layer 1's warnings.
+    warnings: list[ThemisWarning] = field(default_factory=list)
 
 
 def _squeeze(text: str) -> str:
@@ -54,6 +65,61 @@ def render_statute(view: StatuteView, predicates: list[PredicateEntry]) -> str:
 
 def render_amounts(amounts: dict[str, Amount]) -> str:
     return "\n".join(f"- {a.amount_id}: {a.label}, INR {a.value_inr}" for a in amounts.values()) or "(none)"
+
+
+def unit_words(cfg: AppConfig) -> dict[str, int]:
+    return {u.word.casefold(): u.value for u in cfg.themis_local.amount_unit_words}
+
+
+def numbers_in(quote: str, unit_words: dict[str, int]) -> set[Fraction]:
+    """The numbers a quote states: its digit groups (Indian commas allowed), and each scaled by any numbering word."""
+    found = {Fraction(m.group(0).replace(",", "")) for m in NUMBER.finditer(quote)}
+    words = set(WORD.findall(quote.casefold()))
+    return found | {n * scale for n in found for word, scale in unit_words.items() if word in words}
+
+
+def _supported(quote: str | None, argument: str, value: float | None, unit_words: dict[str, int]) -> bool:
+    if not quote or not quote.strip() or _squeeze(quote) not in argument:
+        return False
+    return value is None or Fraction(value) in numbers_in(quote, unit_words)
+
+
+def _ground(draft: ChecklistDraft, argument: str, unit_words: dict[str, int], out: ExtractionReport) -> ChecklistDraft:
+    """Drop every hard-error-capable claim the argument's own words do not state."""
+    dropped: list[str] = []
+    threshold = draft.diagnostic_checklist.financial_threshold
+    if threshold.minimum_amount is not None and not _supported(
+        draft.minimum_amount_quote, argument, threshold.minimum_amount, unit_words
+    ):
+        threshold = threshold.model_copy(update={"minimum_amount": None})
+        dropped.append("financial_threshold")
+    met, amount_id = draft.asserts_threshold_met, draft.threshold_amount_id
+    if met is not None and not _supported(draft.threshold_met_quote, argument, None, unit_words):
+        met, amount_id = None, None
+        dropped.append("asserts_threshold_met")
+    timelines = draft.procedural_timelines.model_copy()
+    for key, quote in (
+        ("adjudication_window_days", draft.adjudication_window_quote),
+        ("rectification_window_days", draft.rectification_window_quote),
+    ):
+        value = getattr(timelines, key)
+        if value is not None and not _supported(quote, argument, value, unit_words):
+            setattr(timelines, key, None)
+            dropped.append(key)
+    for name in dropped:
+        out.warnings.append(
+            ThemisWarning(
+                code=UNMAPPED, field=name, detail=f"{draft.statute_id}: not stated in the argument's quoted words"
+            )
+        )
+    return draft.model_copy(
+        update={
+            "diagnostic_checklist": draft.diagnostic_checklist.model_copy(update={"financial_threshold": threshold}),
+            "asserts_threshold_met": met,
+            "threshold_amount_id": amount_id,
+            "procedural_timelines": timelines,
+        }
+    )
 
 
 def _hold_to_argument(item: ClaimedItem, argument: str) -> ClaimedItem:
@@ -109,19 +175,19 @@ def extract_checklists(
     prompt = prompts.render(ref.id, ref.version, statutes=statutes, amounts=render_amounts(amounts), argument=argument)
     raw = llm.complete_json(role=ROLE, user=prompt, schema=ArgumentExtraction, session_id=session_id).value
     squeezed = _squeeze(argument)
-    notes: list[str] = []
-    kept: list[ExtractedChecklist] = []
+    report = ExtractionReport([])
+    notes = report.notes
     for draft in raw.checklists:
         if draft.threshold_amount_id is not None and draft.threshold_amount_id not in amounts:
             notes.append(f"{draft.statute_id}: dropped unknown amount {draft.threshold_amount_id}")
-        checklist = draft.to_checklist(set(amounts))
-        if checklist.statute_id not in views:
-            notes.append(f"dropped a checklist for {checklist.statute_id}, which was not offered")
+        if draft.statute_id not in views:
+            notes.append(f"dropped a checklist for {draft.statute_id}, which was not offered")
             continue
+        checklist = _ground(draft, squeezed, unit_words(cfg), report).to_checklist(set(amounts))
         options = {
             param.name: set(param.options)
             for p in predicates.get(checklist.statute_id, [])
             for param in p.open_parameters
         }
-        kept.append(_clean(checklist, squeezed, options, notes))
-    return ExtractionReport(kept, notes)
+        report.checklists.append(_clean(checklist, squeezed, options, notes))
+    return report

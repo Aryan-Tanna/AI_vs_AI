@@ -156,7 +156,7 @@ def main() -> int:
         )  # fmt: skip
         result = run_layer1(report.checklists, views, predicates, facts_by_case[arg.case_id], cfg.themis_local)
         hard = sorted({e.code for e in result.hard_errors})
-        warnings = sorted({w.code for w in result.warnings})
+        warnings = sorted({w.code for w in [*result.warnings, *report.warnings]})
         arg.result = {
             "hard": hard,
             "hard_detail": [f"{e.code} {e.statute_id}: {e.detail}" for e in result.hard_errors],

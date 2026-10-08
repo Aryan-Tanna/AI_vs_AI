@@ -182,6 +182,11 @@ class ScoreWeights(Strict):
     llm: UnitInterval
 
 
+class UnitWord(Strict):
+    word: NonEmptyStr
+    value: PositiveInt
+
+
 class LimitationConfig(Strict):
     period_parameter: NonEmptyStr
     excluded_parameter: NonEmptyStr
@@ -198,6 +203,7 @@ class ThemisLocalConfig(Strict):
     penalty_cap: UnitInterval
     threshold_overlay_parameter: NonEmptyStr
     threshold_currency: NonEmptyStr
+    amount_unit_words: list[UnitWord]
     limitation: LimitationConfig
 
     @model_validator(mode="after")
