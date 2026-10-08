@@ -11,6 +11,8 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from lexarena.schemas.base import NonEmptyStr
+
 UnitInterval = Annotated[float, Field(ge=0, le=1)]
 PositiveInt = Annotated[int, Field(gt=0)]
 PositiveFloat = Annotated[float, Field(gt=0)]
@@ -227,6 +229,13 @@ class SplitsConfig(Strict):
     validation_count: PositiveInt
 
 
+class ClerkConfig(Strict):
+    version: NonEmptyStr
+    furniture_min_page_share: UnitInterval
+    body_start_headings: list[NonEmptyStr] = Field(min_length=1)
+    max_paragraph_number_jump: PositiveInt
+
+
 class AppConfig(Strict):
     version: str
     providers: dict[str, ProviderConfig]
@@ -242,6 +251,7 @@ class AppConfig(Strict):
     splits: SplitsConfig
     vocabulary: VocabularyConfig
     drafting: DraftingConfig
+    clerk: ClerkConfig
     seed: int
 
     @model_validator(mode="after")

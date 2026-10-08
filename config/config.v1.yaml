@@ -119,4 +119,10 @@ drafting:
   excerpt_chars: 2500                    # [PLACEHOLDER] characters around each search hit; Groq rejects >7k input tokens [MEASURED]
   max_excerpts: 3                        # [PLACEHOLDER]
 
+clerk:
+  version: clerk-v1                      # stamped into build.clerk_version [SPEC H1]
+  furniture_min_page_share: 0.5          # [PLACEHOLDER] a line (digits ignored) on this share of pages is a running header/footer [SPEC H5-1, D-056]
+  body_start_headings: [JUDGMENT, JUDGEMENT, ORDER, "ORAL JUDGMENT", "ORAL ORDER", "FINAL ORDER", "COMMON ORDER", "COMMON JUDGMENT"]   # upper case, any letter spacing; the header ends at the first [D-056]
+  max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
+
 seed: 7                                  # [PLACEHOLDER]
