@@ -1,5 +1,7 @@
 # Handoff: state of LexArena (end of the 2026-10-08 session)
 
+> **Update 2026-10-09:** Parth built Steps 8 to 13, reflection and the review viewer; read `docs/HANDOFF_ARYAN.md` first.
+
 Read this first in a new session, then CLAUDE.md, the tail of `docs/DECISIONS.md` (D-048 to D-069) and
 `docs/OPEN_QUESTIONS.md`. Parth reads `docs/HANDOFF_PARTH.md` first.
 
