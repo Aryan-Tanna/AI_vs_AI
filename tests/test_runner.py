@@ -335,3 +335,16 @@ def test_cli_returns_the_quota_code_on_a_rate_limit(monkeypatch: pytest.MonkeyPa
 
     monkeypatch.setattr(cli_judges, "run", boom)
     assert cli.main(["judges", "personas"]) == exit_codes.QUOTA_EXHAUSTED
+
+
+def test_the_operator_can_skip_the_preflight_and_the_ledger_says_so(tmp_path: Path) -> None:
+    store, script = ledger(tmp_path), Script()
+    tight = CFG.runner.model_copy(
+        update={"quotas": [q.model_copy(update={"requests_per_window": 1}) for q in CFG.runner.quotas]}
+    )
+    cfg = CFG.model_copy(update={"runner": tight})
+    m = RunManager(cfg, store, {**DEFAULT_SPECS, "SESSION": SESSION_SPEC, "REFLECT": REFLECT_SPEC}, script, Memory(),
+                   store.dir / "none.jsonl", clock=lambda: NOW, quota_preflight=False)  # fmt: skip
+    led = m.go()
+    assert led.status == "COMPLETE" and script.calls
+    assert "quota preflight skipped by the operator" in (led.jobs[0].record("SESSION").detail or "")

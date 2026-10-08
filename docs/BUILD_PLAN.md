@@ -50,10 +50,12 @@ One step per session. Tick a step only when every "done when" item holds and I h
 - [ ] **Step 9: Agents and session orchestration**
   - Build: LEX-P and LEX-D on one prompt template; a private strategy phase per lawyer before turn 1, with equal budgets (D-053); a per-call context budget from each model's real input limit in config, assembled in a fixed order (stable prefix first, so provider prompt caching applies), with older turns condensed into the THEMIS claim ledger rather than an LLM summary, identical for both sides (D-055); the LangGraph session (8 alternating turns plus parallel closings); lesson retrieval for pinning; version stamping.
   - Done when: one dev case runs end to end; a diff of both agents' assembled inputs shows the same template and identical shared inputs, and every side-specific input (role line, party-status lessons, own opening positions and reliefs) is listed and within equal budgets (D-024).
+  - Status 2026-10-09 (Parth, branch `parth/step-09-session`): built (D-079): three-part knowledge base per lawyer, strategy phase, fixed-order assembly with budget, orchestrator, `lexarena session run`. Shared-input equality and the simulation date in no prompt are proven in `tests/test_session_orchestrator.py`; the live dev run is reported in `reports/step9_e2e.md`.
 
 - [ ] **Step 10: THEMIS-GLOBAL**
   - Build: contradiction detection from tracked claims; answered, conceded or ignored marking per opposing point; the audit report.
   - Done when: a planted contradiction in a test transcript is found; the report contains no ground-truth fields.
+  - Status 2026-10-09 (Parth, branch `parth/step-10-themis-global`): built (D-076, D-078); planted contradiction found and no ground-truth field, `tests/test_themis_global.py`. The bench sees its map, never its scores (D-078).
 
 - [ ] **Step 11: Judges**
   - Build: persona prompts (drafted into `review/` for my approval); issue-wise reasoned decisions, each decided twice in swapped order; abstention on disagreement; majority verdict with dissent; advocacy scores as the secondary measure and tie-breaker; THEMIS layer 1 check of judge references with one revision; validator with ID checks (D-048).
@@ -63,7 +65,8 @@ One step per session. Tick a step only when every "done when" item holds and I h
 - [ ] **Step 12: Evaluator and reflection**
   - Build: post-verdict unseal, per-issue alignment, lesson extraction with provenance, rejection of base-rate lessons and lessons containing names, three-step dedup, weighting with decay.
   - Done when: lessons from 3 dev cases are general, typed and sourced, and contain no names; evidence-driven mismatches produce none.
-  - Status 2026-10-08 (Parth, branch `parth/step-12-evaluator`): evaluator, baselines and statistics built (D-072); reflection unassigned (Q-032). Evaluated only on test data: no real session exists yet.
+  - Status 2026-10-08 (Parth, branch `parth/step-12-evaluator`): evaluator, baselines and statistics built (D-072).
+  - Status 2026-10-09 (Parth, branch `parth/step-12-reflection`): experience memory and reflection built (D-077): F5 evidence filter, name and base-rate rejection, three-step dedup, F4 weighting. Lessons from the first live session in `reports/step9_e2e.md`.
 
 - [ ] **Step 13: Run manager and reports**
   - Build: sequential runner in date order, dispute grouping for splits, memory snapshots, frozen-memory test mode, empty-memory baseline mode, ablation switches, metrics report.

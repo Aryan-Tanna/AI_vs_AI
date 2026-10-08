@@ -50,6 +50,11 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     go = run.add_parser("go", help="execute or resume a run (spends LLM quota)")
     go.add_argument("run_id")
     go.add_argument("--max-cases", type=int)
+    go.add_argument(
+        "--skip-quota-check",
+        action="store_true",
+        help="start stages without the quota preflight (a real rate limit still pauses); recorded in the ledger",
+    )
     for name in ("status", "report"):
         run.add_parser(name).add_argument("run_id")
 
@@ -131,6 +136,7 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
             SubprocessExecutor(config_path, REPO_ROOT, cfg.runner.stage_timeout_s),
             ExperienceMemory(),
             REPO_ROOT / cfg.llm.log_path,
+            quota_preflight=not args.skip_quota_check,
         )
         ledger = manager.go(max_cases=args.max_cases)
         print(json.dumps(_status(ledger), indent=JSON_INDENT))

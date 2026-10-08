@@ -39,6 +39,8 @@ class RunManager:
         memory: MemoryStore,
         log_path: Path,
         clock: Callable[[], datetime] = _now,
+        *,
+        quota_preflight: bool = True,
     ) -> None:
         self._cfg = cfg
         self._store = store
@@ -47,6 +49,7 @@ class RunManager:
         self._memory = memory
         self._log = log_path
         self._clock = clock
+        self._preflight = quota_preflight
 
     # ------------------------------------------------------------ helpers
 
@@ -94,13 +97,20 @@ class RunManager:
         if ledger.manifest.dry_run:
             self._set(record, status="DRY", detail="lexarena " + " ".join(argv))
             return None
-        short = shortfalls(
-            self._cfg, record.stage, usage_since(self._log, self._cfg, window_start(self._clock(), self._cfg))
+        short = (
+            []
+            if not self._preflight
+            else shortfalls(
+                self._cfg, record.stage, usage_since(self._log, self._cfg, window_start(self._clock(), self._cfg))
+            )
         )
         if short:
             return f"PAUSED:quota before {record.stage} of {job.case_id}: " + "; ".join(short)
         self._store.case_dir(job.case_id).mkdir(parents=True, exist_ok=True)
-        self._set(record, attempts=record.attempts + 1, started_at=self._clock(), detail="lexarena " + " ".join(argv))
+        note = "" if self._preflight else " [quota preflight skipped by the operator]"
+        self._set(
+            record, attempts=record.attempts + 1, started_at=self._clock(), detail="lexarena " + " ".join(argv) + note
+        )
         self._store.save(ledger)
         result = self._exec.run(argv)
         if result.code == exit_codes.QUOTA_EXHAUSTED:

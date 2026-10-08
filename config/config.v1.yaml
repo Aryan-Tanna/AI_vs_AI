@@ -182,8 +182,10 @@ runner:                                  # [D-073] Step 13
     - {model: openai/gpt-oss-120b, api_key_env: Groq_API2, requests_per_window: 1000, tokens_per_window: 200000}
     - {model: qwen/qwen3.8-27b, api_key_env: Groq_API3, requests_per_window: 1000, tokens_per_window: 200000}
     - {model: openai/gpt-oss-120b, api_key_env: Groq_API4, requests_per_window: 1000, tokens_per_window: 200000}
-  stage_requests:                        # [PLACEHOLDER] requests a stage needs before it may start; measure in the SPEC G4 pilot
-    SESSION: [{role: lawyer, requests: 20}, {role: verifier, requests: 40}, {role: judge, requests: 12}, {role: auditor, requests: 3}]
+  stage_requests:                        # [DERIVED, D-080] the most a stage can need, from the design; the G4 pilot measures the typical
+    # SESSION: lawyer 2 strategy calls x 2 sides + 10 turns x (1 + retry_cap); verifier 3 calls per draft x 40 drafts + 6 judge
+    # layer-1 checks x 2 (revision); judge 3 personas x 2 orders x 2 (one revision each); auditor 1 transcript audit.
+    SESSION: [{role: lawyer, requests: 44}, {role: verifier, requests: 132}, {role: judge, requests: 12}, {role: auditor, requests: 1}]
     BASELINE: [{role: judge, requests: 1}]
     EVALUATE: []
     REFLECT: [{role: reflection, requests: 2}]
