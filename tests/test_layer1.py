@@ -156,3 +156,10 @@ def test_a_value_attached_to_several_statutes_is_wrong_only_if_it_matches_none()
     assert run_layer1(honest, views, {}, FACTS, CFG).hard_errors == []
     wrong = [for_statute("A_SEC_1", adjudication_window_days=21), for_statute("B_SEC_2", adjudication_window_days=21)]
     assert sorted(e.statute_id for e in run_layer1(wrong, views, {}, FACTS, CFG).hard_errors) == ["A_SEC_1", "B_SEC_2"]
+
+
+def test_limitation_parameters_are_draftable_names() -> None:
+    # The checker must read the names the drafting tool may write (found missing 2026-10-08, D-067).
+    vocabulary = set(load_config(CONFIG_V1).vocabulary.overlay_parameters)
+    assert {LIM.period_parameter, LIM.excluded_parameter, LIM.minimum_balance_parameter} <= vocabulary
+    assert CFG.threshold_overlay_parameter in vocabulary

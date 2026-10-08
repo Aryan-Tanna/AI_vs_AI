@@ -107,7 +107,7 @@ themis_local:
     - {word: lacs, value: 100000}
   limitation:                            # overlay parameter names and record labels for the date chain [D-063]
     period_parameter: limitation_period_years
-    excluded_parameter: limitation_excluded_period
+    excluded_parameter: excluded_period            # SPEC C2 name
     minimum_balance_parameter: limitation_minimum_balance_days
     default_date_label: DEFAULT
     filing_date_label: FILING
@@ -138,7 +138,7 @@ vocabulary:
   # temporal_overlay parameters [DATA_FORMATS §3 examples]; section_in_force drives get_statute [D-039].
   # Party statuses (SPEC H1 examples, extended): the legal position a party holds in the insolvency. Lawyer memory is keyed by it [D-013, D-059].
   party_statuses: [FINANCIAL_CREDITOR, OPERATIONAL_CREDITOR, CORPORATE_DEBTOR, SUSPENDED_DIRECTOR, PROMOTER, SHAREHOLDER, RESOLUTION_PROFESSIONAL, INTERIM_RESOLUTION_PROFESSIONAL, LIQUIDATOR, COMMITTEE_OF_CREDITORS, RESOLUTION_APPLICANT, SUCCESSFUL_RESOLUTION_APPLICANT, PERSONAL_GUARANTOR, CORPORATE_GUARANTOR, HOMEBUYER, ALLOTTEE, WORKMAN, EMPLOYEE, STATUTORY_AUTHORITY, TAX_AUTHORITY, REGULATOR, AUCTION_PURCHASER, MONITORING_AGENCY, INTERVENOR, BANK, OTHER]
-  overlay_parameters: [section_in_force, minimum_default_inr, bar_window, excluded_period, precedent_overruled]
+  overlay_parameters: [section_in_force, minimum_default_inr, bar_window, excluded_period, precedent_overruled, limitation_period_years, limitation_minimum_balance_days]   # last two [D-067]
 
 drafting:
   excerpt_chars: 2500                    # [PLACEHOLDER] characters around each search hit; Groq rejects >7k input tokens [MEASURED]
