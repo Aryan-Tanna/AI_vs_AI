@@ -43,6 +43,16 @@ class GeminiProviderConfig(Strict):
 ProviderConfig = Annotated[OpenAICompatProviderConfig | GeminiProviderConfig, Field(discriminator="kind")]
 
 
+class ProviderRouting(Strict):
+    """Pins the upstream host on a routing gateway (OpenRouter's `provider` field). Hosts of one model differ in
+    precision and in which parameters they honour, so both lawyers must be served by the same pinned build."""
+
+    order: Annotated[list[str], Field(min_length=1)]
+    allow_fallbacks: bool
+    require_parameters: bool
+    quantizations: list[str] | None
+
+
 class ModelConfig(Strict):
     provider: str
     family: str
@@ -52,6 +62,8 @@ class ModelConfig(Strict):
     # Reasoning models only (sent as `reasoning_effort`); null for every other model (D-081).
     reasoning_effort: Literal["low", "medium", "high"] | None
     api_key_env: EnvVarName
+    # Gateway host pinning; omitted (null) for direct providers, so their cache keys are unchanged.
+    routing: ProviderRouting | None
 
 
 class ModelsConfig(Strict):
@@ -394,6 +406,8 @@ class AppConfig(Strict):
         for role, model in self.models.by_role().items():
             if model.provider not in self.providers:
                 raise ValueError(f"models.{role}.provider '{model.provider}' is not defined under providers")
+            if model.routing is not None and self.providers[model.provider].kind != "openai_compatible":
+                raise ValueError(f"models.{role}.routing needs an openai_compatible provider")
         roles = set(self.models.by_role())
         sr = self.runner.stage_requests
         named = {r.role for stage in type(sr).model_fields for r in getattr(sr, stage)}

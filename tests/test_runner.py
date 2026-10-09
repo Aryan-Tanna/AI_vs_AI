@@ -20,10 +20,20 @@ from lexarena.runner.plan import CaseRef, PlanRefusedError, assign_splits, check
 from lexarena.runner.quota import shortfalls, usage_since
 from lexarena.runner.report import build_report, to_markdown
 from lexarena.runner.stages import DEFAULT_SPECS, ExecResult, StageSpec, last_json
+from lexarena.schemas.config import QuotaLimit
 from lexarena.schemas.run import STAGES, MemoryMode, RunLedger, RunManifest, Stage
 from tests.conftest import CONFIG_V1
 
 CFG = load_config(CONFIG_V1)
+# A measured free-tier limit on the judge's key, set here so the quota tests don't depend on which keys production
+# config happens to pace (a paid key has none).
+JUDGE_QUOTA = QuotaLimit(
+    model=CFG.models.judge.name,
+    api_key_env=CFG.models.judge.api_key_env,
+    requests_per_window=20,
+    tokens_per_window=None,
+)  # literal-ok: test limit
+PACED = CFG.model_copy(update={"runner": CFG.runner.model_copy(update={"quotas": [*CFG.runner.quotas, JUDGE_QUOTA]})})
 NOW = datetime(2000, 1, 2, tzinfo=UTC)  # literal-ok: placeholder clock
 D1, D2, D3 = date(2000, 1, 1), date(2000, 2, 1), date(2000, 3, 1)  # literal-ok: placeholder dates
 
@@ -172,13 +182,12 @@ def test_usage_counts_attempts_and_tokens_and_ignores_cache_hits_and_old_calls(t
 
 
 def test_shortfall_when_a_stage_needs_more_than_is_left(tmp_path: Path) -> None:
-    bucket = (CFG.models.judge.name, CFG.models.judge.api_key_env)
-    limit = next(q for q in CFG.runner.quotas if (q.model, q.api_key_env) == bucket)
+    bucket = (JUDGE_QUOTA.model, JUDGE_QUOTA.api_key_env)
     from lexarena.runner.quota import Usage
 
-    assert shortfalls(CFG, "BASELINE", {}) == []
-    assert shortfalls(CFG, "BASELINE", {bucket: Usage(limit.requests_per_window, 0)})
-    assert shortfalls(CFG, "EVALUATE", {bucket: Usage(limit.requests_per_window, 0)}) == []  # needs no model
+    assert shortfalls(PACED, "BASELINE", {}) == []
+    assert shortfalls(PACED, "BASELINE", {bucket: Usage(JUDGE_QUOTA.requests_per_window, 0)})
+    assert shortfalls(PACED, "EVALUATE", {bucket: Usage(JUDGE_QUOTA.requests_per_window, 0)}) == []  # needs no model
 
 
 # ---------------------------------------------------------------- the run
@@ -233,10 +242,10 @@ def test_a_failed_stage_stops_the_run_and_later_cases_never_start(tmp_path: Path
 
 def test_quota_shortfall_pauses_before_the_stage_starts(tmp_path: Path) -> None:
     store, script = ledger(tmp_path), Script()
-    tight = CFG.runner.model_copy(
-        update={"quotas": [q.model_copy(update={"requests_per_window": 1}) for q in CFG.runner.quotas]}
+    tight = PACED.runner.model_copy(
+        update={"quotas": [q.model_copy(update={"requests_per_window": 1}) for q in PACED.runner.quotas]}
     )
-    cfg = CFG.model_copy(update={"runner": tight})
+    cfg = PACED.model_copy(update={"runner": tight})
     led = manager(store, script, cfg=cfg).go()
     assert led.status == "PAUSED" and "quota before SESSION" in (led.pause_reason or "")
     assert script.calls == []

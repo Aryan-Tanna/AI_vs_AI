@@ -1,4 +1,4 @@
-"""OpenAI-compatible chat completions: Groq today; DeepSeek and Qwen (DashScope) use the same adapter."""
+"""OpenAI-compatible chat completions: Groq and OpenRouter (with optional host pinning)."""
 
 from __future__ import annotations
 
@@ -40,6 +40,8 @@ class OpenAICompatProvider:
         }
         if request.model.reasoning_effort is not None:
             payload["reasoning_effort"] = request.model.reasoning_effort
+        if request.model.routing is not None:
+            payload["provider"] = request.model.routing.model_dump(exclude_none=True)
         if self._config.json_mode == "json_schema":
             payload["response_format"] = {
                 "type": "json_schema",

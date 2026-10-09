@@ -18,7 +18,7 @@ from lexarena.schemas.transcript import PublishedTurn
 from lexarena.secrets import SecretStore
 from tests import builders
 from tests.conftest import CONFIG_V1, PROMPTS_ROOT
-from tests.fakes import FakeProvider, text_response
+from tests.fakes import FakeProvider, fakes_by_role, text_response
 from tests.test_layer1 import statute_view
 
 CFG = load_config(CONFIG_V1)
@@ -112,12 +112,13 @@ def client(
     judge = FakeProvider([text_response(t) for t in judge_script])
     verifier_responses: list[LLMResponse | Exception] = [text_response(json.dumps(v)) for v in verifier_script or []]
     verifier = FakeProvider(verifier_responses)
-    models = CFG.models.by_role()
+    # The auditor shares the judge script, as when both ran on one provider.
+    cfg, providers = fakes_by_role(CFG, {"judge": judge, "auditor": judge, "verifier": verifier})
     llm = LLMClient(
-        CFG,
+        cfg,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
         PromptStore(PROMPTS_ROOT),
-        providers={models["judge"].provider: judge, models["verifier"].provider: verifier},
+        providers=dict(providers),
         cache=None,
         sleep=lambda _: None,
     )

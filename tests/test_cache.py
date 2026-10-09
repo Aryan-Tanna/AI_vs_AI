@@ -7,7 +7,7 @@ import pytest
 
 from lexarena.llm.cache import ResponseCache, request_key
 from lexarena.llm.types import ChatMessage, LLMRequest
-from lexarena.schemas.config import ModelConfig
+from lexarena.schemas.config import ModelConfig, ProviderRouting
 
 BASE_SCHEMA: dict[str, Any] = {"type": "object", "properties": {"a": {"type": "integer"}}, "required": ["a"]}
 
@@ -20,6 +20,7 @@ def _req(**changes: Any) -> LLMRequest:
         temperature=0.0,
         max_output_tokens=64,
         reasoning_effort=None,
+        routing=None,
         api_key_env="K",
     )
     fields: dict[str, Any] = {
@@ -80,7 +81,7 @@ def test_an_unset_optional_model_setting_leaves_the_key_unchanged() -> None:
 
     req = _req()
     legacy = {
-        "model": req.model.model_dump(exclude={"api_key_env", "reasoning_effort"}),
+        "model": req.model.model_dump(exclude={"api_key_env", "reasoning_effort", "routing"}),
         "seed": req.seed,
         "schema_name": req.schema_name,
         "schema": req.json_schema,
@@ -89,3 +90,18 @@ def test_an_unset_optional_model_setting_leaves_the_key_unchanged() -> None:
     assert request_key(req) == hashlib.sha256(json.dumps(legacy, sort_keys=True).encode("utf-8")).hexdigest()
     low = _req(model=req.model.model_copy(update={"reasoning_effort": "low"}))
     assert request_key(low) != request_key(req)
+
+
+def test_routing_changes_the_key_only_when_set() -> None:
+    """A pinned host can serve a different build, so it is part of the key; unset, old entries stay valid."""
+    req = _req()
+    pinned = _req(
+        model=req.model.model_copy(
+            update={
+                "routing": ProviderRouting(
+                    order=["HostA"], allow_fallbacks=False, require_parameters=True, quantizations=None
+                )
+            }
+        )
+    )
+    assert request_key(pinned) != request_key(req)

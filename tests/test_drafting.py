@@ -23,7 +23,7 @@ from lexarena.schemas.config import AppConfig
 from lexarena.schemas.law import LawRecord
 from lexarena.secrets import SecretStore
 from tests.conftest import CONFIG_V1, PROMPTS_ROOT
-from tests.fakes import FakeProvider, text_response
+from tests.fakes import FakeProvider, fakes_by_role, text_response
 from tests.test_drafting_sources import TEST_TEXT, make_pdf, meta
 from tests.test_law_validation import law_record
 
@@ -73,15 +73,12 @@ def record() -> LawRecord:
 def client(cfg: AppConfig, primary: str, secondary: str) -> tuple[LLMClient, FakeProvider, FakeProvider]:
     names = {m.api_key_env for m in cfg.models.by_role().values()}
     first, second = FakeProvider([text_response(primary)]), FakeProvider([text_response(secondary)])
-    by_provider = {
-        cfg.models.drafter_primary.provider: first,
-        cfg.models.drafter_secondary.provider: second,
-    }
+    split, by_provider = fakes_by_role(cfg, {"drafter_primary": first, "drafter_secondary": second})
     llm = LLMClient(
-        cfg,
+        split,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
         PromptStore(PROMPTS_ROOT),
-        providers=by_provider,
+        providers=dict(by_provider),
         cache=None,
         sleep=lambda _: None,
     )

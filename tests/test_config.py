@@ -202,3 +202,23 @@ def test_config_is_immutable() -> None:
     cfg: AppConfig = load_config(CONFIG_V1)
     with pytest.raises(ValidationError):
         cfg.seed = cfg.seed + 1  # type: ignore[misc]
+
+
+def test_routing_needs_an_openai_compatible_provider(tmp_path: Path) -> None:
+    raw = copy.deepcopy(RAW_V1)
+    raw["providers"]["direct"] = {
+        "kind": "gemini",
+        "base_url": "https://g.example",
+        "json_mode": "json_schema",
+        "timeout_s": 5,
+    }
+    gemini_role = "judge"
+    raw["models"][gemini_role]["provider"] = "direct"
+    raw["models"][gemini_role]["routing"] = {
+        "order": ["HostA"],
+        "allow_fallbacks": False,
+        "require_parameters": True,
+        "quantizations": None,
+    }
+    with pytest.raises(ValidationError, match="routing"):
+        load_config(_write(tmp_path, raw))

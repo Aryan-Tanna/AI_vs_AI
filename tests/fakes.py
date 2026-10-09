@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from lexarena.llm.types import LLMRequest, LLMResponse
+from lexarena.schemas.config import AppConfig
 
 
 @dataclass
@@ -24,6 +25,19 @@ class FakeProvider:
         if isinstance(item, Exception):
             raise item
         return item
+
+
+def fakes_by_role(cfg: AppConfig, fakes: dict[str, FakeProvider]) -> tuple[AppConfig, dict[str, FakeProvider]]:
+    """Gives each named role its own provider name, so a test can script it separately even when the production
+    config serves several roles through one gateway. Only provider names change; models, keys and the rest stay."""
+    providers = dict(cfg.providers)
+    models = {}
+    for role in fakes:
+        model = getattr(cfg.models, role)
+        providers[f"fake-{role}"] = cfg.providers[model.provider]
+        models[role] = model.model_copy(update={"provider": f"fake-{role}"})
+    split = cfg.model_copy(update={"models": cfg.models.model_copy(update=models), "providers": providers})
+    return split, {f"fake-{role}": fake for role, fake in fakes.items()}
 
 
 def text_response(text: str) -> LLMResponse:

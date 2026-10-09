@@ -16,7 +16,7 @@ from lexarena.prompts import PromptStore
 from lexarena.schemas.statute_alias import StatuteAliasTable
 from lexarena.secrets import SecretStore
 from tests.conftest import CONFIG_V1
-from tests.fakes import FakeProvider, text_response
+from tests.fakes import FakeProvider, fakes_by_role, text_response
 
 PAGES = [
     "<Tribunal>\nAppeal No. 77 of 2001\nZorvex Quillon Bank ...Appellant\nVersus\n"
@@ -178,11 +178,13 @@ def run() -> Any:
     )
     groq = FakeProvider([text_response(json.dumps(x)) for x in (ENTAILMENT, PROBE)])
     names = {m.api_key_env for m in cfg.models.by_role().values()}
+    # The clerk's second family also stands in for the lawyer probe.
+    split, providers = fakes_by_role(cfg, {"clerk_primary": gemini, "clerk_secondary": groq, "lawyer": groq})
     llm = LLMClient(
-        cfg,
+        split,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
         PromptStore(PROMPTS_ROOT),
-        providers={"gemini": gemini, "groq": groq},
+        providers=dict(providers),
         cache=None,
         sleep=lambda _: None,
     )
@@ -225,7 +227,8 @@ def test_the_extractor_never_sees_real_names_or_the_reasoning() -> None:
 
 def test_the_second_family_checks_and_the_lawyer_model_is_probed() -> None:
     _, _, groq, _, _ = run()
-    assert [r.model.name for r in groq.requests] == ["openai/gpt-oss-120b", "openai/gpt-oss-120b"]
+    models = load_config(CONFIG_V1).models
+    assert [r.model.name for r in groq.requests] == [models.clerk_secondary.name, models.lawyer.name]
     assert "Zorvex" not in groq.requests[1].messages[-1].content  # the probe sees the pseudonymised case
 
 
@@ -261,11 +264,13 @@ def test_one_repair_round_fixes_an_unsupported_item_and_everything_is_checked_ag
     )
     groq = FakeProvider([text_response(json.dumps(x)) for x in (bad, good, PROBE)])
     names = {m.api_key_env for m in cfg.models.by_role().values()}
+    # The clerk's second family also stands in for the lawyer probe.
+    split, providers = fakes_by_role(cfg, {"clerk_primary": gemini, "clerk_secondary": groq, "lawyer": groq})
     llm = LLMClient(
-        cfg,
+        split,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
         PromptStore(PROMPTS_ROOT),
-        providers={"gemini": gemini, "groq": groq},
+        providers=dict(providers),
         cache=None,
         sleep=lambda _: None,
     )

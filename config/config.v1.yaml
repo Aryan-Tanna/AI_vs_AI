@@ -15,34 +15,29 @@
 
 version: v1
 
-providers:
-  groq:
+providers:                               # Groq and Gemini direct providers removed: every role is on OpenRouter [D-087]
+  openrouter:                            # paid gateway (key paidAPI, D-086); every model on it pins its host via `routing`
     kind: openai_compatible
-    base_url: https://api.groq.com/openai/v1
-    json_mode: json_schema               # [MEASURED] strict json_schema works on gpt-oss and qwen3.8
-    max_tokens_param: max_completion_tokens
-    timeout_s: 120                       # [PLACEHOLDER]
-  gemini:
-    kind: gemini
-    base_url: https://generativelanguage.googleapis.com/v1beta
-    json_mode: json_schema               # responseJsonSchema
-    timeout_s: 300                       # [PLACEHOLDER] long judgments take ~30 s [MEASURED]
+    base_url: https://openrouter.ai/api/v1
+    json_mode: json_schema               # [MEASURED 2026-10-09] strict json_schema honoured when require_parameters is set
+    max_tokens_param: max_tokens
+    timeout_s: 300                       # [PLACEHOLDER]
 
 models:
   # Lawyers: one model for both sides (non-negotiable 3).
-  lawyer:          {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0.7, max_output_tokens: 4096, reasoning_effort: null, api_key_env: Groq_API1}   # temperature [PLACEHOLDER]  # full (default) reasoning, cap 4096 [your decision 2026-10-09, D-085; supersedes D-081 low]
+  lawyer:          {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0.7, max_output_tokens: 4096, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}   # temperature [PLACEHOLDER]  # default reasoning, cap 4096 (D-085); paid OpenRouter, both hosts fp8 with seed + strict schema [D-086]
   # THEMIS-LOCAL layer 2 and entailment: different family from the lawyers [SPEC I3-7].
-  verifier:        {provider: groq,   family: qwen,    name: qwen/qwen3.8-27b,    temperature: 0,   max_output_tokens: 4096, reasoning_effort: null, api_key_env: Groq_API6}
-  judge:           {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0.3, max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api}  # temperature 0.3 [PLACEHOLDER, your request 2026-10-07 D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]
+  verifier:        {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0, max_output_tokens: 4096, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}   # same model as before, paid key (free Groq 8k TPM cap, R-034) [D-086]
+  judge:           {provider: openrouter, family: qwen, name: qwen/qwen3.8-max-0902, temperature: 0.3, max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # your choice 2026-10-09: stronger than the lawyer, not its family (Q-017) [D-087]; temperature 0.3 [PLACEHOLDER, D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
-  auditor:         {provider: gemini, family: gemini,  name: gemini-2.5-flash,    temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api}
+  auditor:         {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}  # [D-087]
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 16384, reasoning_effort: null, api_key_env: gemini_api3}  # third key: the first two keys' daily quota went on Step 6 [D-060]
-  clerk_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0,   max_output_tokens: 2048, reasoning_effort: null, api_key_env: Groq_API4}
-  reflection:      {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
+  clerk_primary:   {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0,   max_output_tokens: 16384, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}  # [D-087]
+  clerk_secondary: {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}  # cap 2048 -> 8192: DeepSeek reasons by default [D-087]
+  reflection:      {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}  # [D-087]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
-  drafter_primary:   {provider: gemini, family: gemini,  name: gemini-3.5-flash,    temperature: 0, max_output_tokens: 8192, reasoning_effort: null, api_key_env: gemini_api2}  # second key; 2.5-flash is closed to new accounts [MEASURED 2026-10-07, D-044]
-  drafter_secondary: {provider: groq,   family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0, max_output_tokens: 4096, reasoning_effort: null, api_key_env: Groq_API2}
+  drafter_primary:   {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0, max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}  # [D-087]
+  drafter_secondary: {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0, max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}  # cap 4096 -> 8192: DeepSeek reasons by default [D-087]
 
 prompts:
   schema_repair: {id: llm/schema_repair, version: 1}
