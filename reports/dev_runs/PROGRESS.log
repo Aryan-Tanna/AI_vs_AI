@@ -18,3 +18,27 @@ EXIT=1
 2026-10-10 02:17 CLERK FAILED: DEV_0004 not stored. Stopping. See reports/dev_runs/clerk_DEV_0004.log
 2026-10-10 02:17 chain exited 0
 2026-10-10 02:19 clerk refused to store DEV_0004: 14 citations like P14(v), sub-points of SCR paragraphs. FIX D-097: P14(v) resolves to P14. Tests 1027 pass. Restarting the chain.
+2026-10-10 02:19 start spend $0.903
+2026-10-10 02:19 waiting for any running lexarena process to finish
+2026-10-10 02:19 clerking DEV_0004 (Gemini 3.5 Flash primary, DeepSeek secondary)
+2026-10-10 02:19 clerk exit 0; spend so far $0.000
+2026-10-10 02:19 clerk ok; flags: ['ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY']; memorization probe: NOT_IDENTIFIED; evidence: LAW_ONLY
+2026-10-10 02:19 planning run DEV4_E2E_1
+2026-10-10 02:20 run DEV4_E2E_1 started (session, baseline, evaluate, reflect); cap $2.0
+2026-10-10 02:21 stages now: {'SESSION': 'PENDING', 'BASELINE': 'PENDING', 'EVALUATE': 'PENDING', 'REFLECT': 'PENDING'}
+2026-10-10 04:20 run exit 1; run spend $0.278; total today $1.180
+2026-10-10 04:20 ```
+2026-10-10 04:20 session DEV_0004_DEV4_E2E_1_335c69 state IN_PROGRESS
+2026-10-10 04:20 bench winner: None (None)
+2026-10-10 04:20 evaluation: {}
+2026-10-10 04:20 ### Turn 1 PETITIONER OPENING flags=[]
+2026-10-10 04:20 ### Turn 2 RESPONDENT OPENING flags=[]
+2026-10-10 04:20 ### Turn 3 PETITIONER REBUTTAL flags=[]
+2026-10-10 04:20 ### Turn 4 RESPONDENT REBUTTAL flags=[]
+2026-10-10 04:20 ### Turn 5 PETITIONER REBUTTAL flags=[]
+2026-10-10 04:20 ### Turn 6 RESPONDENT REBUTTAL flags=[]
+2026-10-10 04:20 ### Turn 7 PETITIONER REBUTTAL flags=[]
+2026-10-10 04:20 ### Turn 8 RESPONDENT REBUTTAL flags=[]
+2026-10-10 04:20 report: reports\dev_runs\DEV_0004_overnight.md
+2026-10-10 04:20 chain exited 0
+2026-10-10 04:21 DEV4_E2E_1 hit the 2 h stage timeout at turn 8 ($0.28, cached). D-098: timeout 8 h. Restarting as DEV4_E2E_2 (scripts/overnight_dev4.py).

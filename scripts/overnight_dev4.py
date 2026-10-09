@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import dotenv_values
 from pymongo import MongoClient
 
-EXE = "C:/IPD_AIvsAI/.venv/Scripts/lexarena.exe"; RUN = "DEV4_E2E_1"; CAP = 2.0
+EXE = "C:/IPD_AIvsAI/.venv/Scripts/lexarena.exe"; RUN = "DEV4_E2E_2"; CAP = 2.0
 OUT = Path("reports/dev_runs/DEV_0004_overnight.md"); OUT.parent.mkdir(parents=True, exist_ok=True)
 PROGRESS = Path("reports/dev_runs/PROGRESS.log")
 env = dotenv_values(".env.local")

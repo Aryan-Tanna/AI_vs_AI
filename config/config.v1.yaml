@@ -175,7 +175,7 @@ evaluation:                              # [D-072] Step 12; the report reads the
 runner:                                  # [D-073] Step 13
   runs_dir: runs                         # git-ignored; one folder per run (ledger, per-case outputs, report)
   allowed_splits: [DEV]                  # [D-073] the 500 are a red line until you start Phase 2 (CLAUDE.md §5.4)
-  stage_timeout_s: 7200                  # [PLACEHOLDER] one stage subprocess
+  stage_timeout_s: 28800                 # [D-098] 8 h: Qwen 3.8 Flash reasons for minutes per call; 2 h cut DEV_0004 short at turn 8
   quota_window_hours: 24                 # [D-073] trailing window; no provider reset hour needed
   ablations: [NO_THEMIS, NO_MEMORY, NO_EXHIBIT_CARDS]   # [SPEC G1] switches a run may name; the session stage reads them
   quotas:                                # [MEASURED 2026-10-06, R-011, R-012] free tiers, per (model, key variable)
