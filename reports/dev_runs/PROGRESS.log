@@ -11,3 +11,10 @@ EXIT=1
 2026-10-10 02:07 CLERK FAILED: DEV_0004 not stored. Stopping. See reports/dev_runs/clerk_DEV_0004.log
 2026-10-10 02:07 chain exited 0
 2026-10-10 02:08 clerk on Gemini got through 5 steps; the repair of the agent view hit 16,384. clerk_primary cap raised to 65,536 (free key). Restarting; finished steps replay from the cache.
+2026-10-10 02:08 start spend $0.886
+2026-10-10 02:08 waiting for any running lexarena process to finish
+2026-10-10 02:08 clerking DEV_0004 (Gemini 3.5 Flash primary, DeepSeek secondary)
+2026-10-10 02:17 clerk exit 1; spend so far $0.011
+2026-10-10 02:17 CLERK FAILED: DEV_0004 not stored. Stopping. See reports/dev_runs/clerk_DEV_0004.log
+2026-10-10 02:17 chain exited 0
+2026-10-10 02:19 clerk refused to store DEV_0004: 14 citations like P14(v), sub-points of SCR paragraphs. FIX D-097: P14(v) resolves to P14. Tests 1027 pass. Restarting the chain.

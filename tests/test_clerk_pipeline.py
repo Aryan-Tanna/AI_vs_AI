@@ -294,3 +294,15 @@ def test_one_repair_round_fixes_an_unsupported_item_and_everything_is_checked_ag
     repair_prompt = gemini.requests[4].messages[-1].content
     assert "RESPONDENT-G1 is not supported" in repair_prompt
     assert bank in groq.requests[0].messages[-1].content  # the verifier gets the party roster
+
+
+def test_a_sub_point_citation_resolves_to_its_paragraph() -> None:
+    """SCR reports list submissions as sub-points, 'P14(v)': the sub-point sits inside P14, so it traces to P14
+    (DEV_0004). Anything that is not a sub-point marker is left as it was, and must still exist to pass."""
+    from lexarena.clerk.assemble import _clean_id
+
+    assert _clean_id("P14(v)") == "P14"
+    assert _clean_id(" [P15 (iii)] ") == "P15"
+    assert _clean_id("P3(a)") == "P3"
+    assert _clean_id("P3.S1") == "P3.S1"
+    assert _clean_id("P14(see note)") == "P14(see note)"

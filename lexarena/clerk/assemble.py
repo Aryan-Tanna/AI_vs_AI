@@ -13,6 +13,7 @@ guess:
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Literal
@@ -165,9 +166,15 @@ class AssembledTruth:
     flags: list[ExtractionFlag] = field(default_factory=list)
 
 
+SUB_POINT = re.compile(r"^(P\d+)\s*\((?:[ivxlc]+|[a-z]|\d+)\)$")
+
+
 def _clean_id(source: str) -> str:
-    """'[P3]' or ' P3 ' -> 'P3': formatting only; the ID must still exist to pass."""
-    return source.strip().strip("[]").strip()
+    """'[P3]' or ' P3 ' -> 'P3': formatting only; the ID must still exist to pass. A sub-point of a paragraph,
+    'P14(v)' as in SCR reports, is part of that paragraph and cites it ('P14')."""
+    cleaned = source.strip().strip("[]").strip()
+    sub = SUB_POINT.match(cleaned)
+    return sub.group(1) if sub else cleaned
 
 
 def _normalise_sources(draft: GroundTruthDraft) -> GroundTruthDraft:
