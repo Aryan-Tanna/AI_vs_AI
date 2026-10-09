@@ -4,3 +4,10 @@
 EXIT=1
 2026-10-10 01:55 clerk step 1 (list_entities) on Qwen 3.8 Flash hit 65,536 output tokens twice: suspected runaway loop. Running one diagnostic capture (scratchpad dump_clerk.py) to see the raw output. No session started. Spend about $0.82.
 2026-10-10 02:00 DIAGNOSIS: Qwen 3.8 Flash loops in its reasoning on the entity list (no answer). FIX D-096: clerk_primary moved to Gemini 3.5 Flash on the free key gemini_api3. Tests 1026 pass. Restarting the overnight chain.
+2026-10-10 02:00 start spend $0.884
+2026-10-10 02:00 waiting for any running lexarena process to finish
+2026-10-10 02:00 clerking DEV_0004 (Gemini 3.5 Flash primary, DeepSeek secondary)
+2026-10-10 02:07 clerk exit 1; spend so far $0.001
+2026-10-10 02:07 CLERK FAILED: DEV_0004 not stored. Stopping. See reports/dev_runs/clerk_DEV_0004.log
+2026-10-10 02:07 chain exited 0
+2026-10-10 02:08 clerk on Gemini got through 5 steps; the repair of the agent view hit 16,384. clerk_primary cap raised to 65,536 (free key). Restarting; finished steps replay from the cache.
