@@ -23,6 +23,12 @@ providers:                               # Groq and Gemini direct providers remo
     max_tokens_param: max_tokens
     timeout_s: 300                       # [PLACEHOLDER]
 
+  gemini:                                # [D-096] direct Google API, free key; the clerk's primary only
+    kind: gemini
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    json_mode: json_schema               # responseJsonSchema
+    timeout_s: 300                       # [PLACEHOLDER] long judgments take ~30 s [MEASURED]
+
 models:
   # Lawyers: one model for both sides (non-negotiable 3).
   lawyer:          {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0.7, max_output_tokens: 16384, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}   # temperature [PLACEHOLDER]  # default reasoning, cap 4096 (D-085); paid OpenRouter, both hosts fp8 with seed + strict schema [D-086]
@@ -33,7 +39,7 @@ models:
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
   auditor:         {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
+  clerk_primary:   {provider: gemini, family: gemini, name: gemini-3.5-flash, temperature: 0, max_output_tokens: 16384, reasoning_effort: null, api_key_env: gemini_api3, routing: null}  # [D-096] back on Gemini: Qwen 3.8 Flash looped in its reasoning on DEV_0004's entity list (65,536 reasoning tokens, no answer); Gemini clerked DEV_0001-0003; free key
   clerk_secondary: {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}  # cap 2048 -> 8192: DeepSeek reasons by default [D-087]
   reflection:      {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
