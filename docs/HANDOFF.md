@@ -1,4 +1,42 @@
-# Handoff: state of LexArena (end of the 2026-10-08 session; top note added 2026-10-09)
+# Handoff: state of LexArena
+
+## RESUME HERE (2026-10-10, night): for any model or agent continuing this work
+
+**Live progress log:** `reports/dev_runs/PROGRESS.log`. One line is appended after every step of the overnight chain. Read it first.
+
+**What is running overnight:** `scripts/overnight_dev4.py`, which:
+1. waits for the clerk of DEV_0004 (TCS v. Vishal Ghisulal Jain, SC 2021);
+2. stops if the clerk failed or flagged leakage;
+3. runs `lexarena run go DEV4_E2E_1` (session, baseline, evaluate, reflect) under a hard $2 OpenRouter spend cap;
+4. writes the full report to `reports/dev_runs/DEV_0004_overnight.md`: the verdict, the judges, the evaluation, the transcript.
+
+**If it stopped part-way:**
+- Read `PROGRESS.log` and `lexarena run status DEV4_E2E_1`.
+- A FAILED run can't be resumed. Plan a new run ID; every finished LLM call replays free from `.cache/llm_cache.sqlite`, which is keyed on the model, its settings and the prompt.
+- Don't change model settings mid-case: that breaks the cache.
+- Read a transcript with `.venv/Scripts/python scripts/show_transcript.py [SESSION_ID]`.
+- Check spend with the credits endpoint in the key-check snippet (OpenRouter `GET /api/v1/credits`, key `paidAPI`). About $0.82 had been spent before this run.
+
+**State (details in DECISIONS D-086 to D-095):**
+- All models are on OpenRouter (key `paidAPI`) with pinned hosts. Lawyers: DeepSeek V4.1 Flash. Everything else: Qwen 3.8 Flash, with caps of 65,536.
+- Shadow bench: one order per persona, alternated; no THEMIS layer 1 on the judges.
+- Reflection writes no lessons for unreviewed cases (D-094). Lawyer and judge memory are both empty.
+- DEV_0001 has run end to end: the bench was wrong because the record was one-sided (clerk flag C1). Its lessons were deleted.
+
+**Waiting on the owner:**
+- cap the OpenRouter key at about $5;
+- verify the s.18 / *Laxmi Pat Surana* point (risk logged in OPEN_QUESTIONS);
+- decide on `data/test cases/STATE BANK OF INDIA.pdf`, which is DEV_0001's own SC appeal and so not an independent test;
+- approve the personas;
+- review DEV_0001 to DEV_0004.
+
+**Next work:**
+1. Report the DEV_0004 result.
+2. Write the token and cost report. The verifier was about 85% of DEV_0001's spend; merging the layer-2 calls is the biggest saving.
+3. Date-scope the LEGAL_RULE lessons.
+
+Rules: commit, never push; run the full test suite before every commit; never approve law.
+
 
 ## Start here (2026-10-09)
 
