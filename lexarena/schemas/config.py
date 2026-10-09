@@ -291,6 +291,7 @@ class JudgingConfig(Strict):
     abstain_on_order_swap_disagreement: bool  # D-051
     min_deciding_judges: int  # D-051: fewer deciding judges -> UNSTABLE verdict, reported apart, never decided
     check_reasons_with_layer1: bool  # D-071: THEMIS layer 1 checks the law each opinion states
+    orders_per_persona: Literal[1, 2]  # literal-ok: the two allowed order counts (D-093), not a tuning value
     show_audit_notes: bool  # D-078: the auditor's map of the transcript, never its scores
     max_order_swap_disagreement_rate: UnitInterval  # report limit (D-024, D-071)
     persona_role_max_win_rate: UnitInterval  # SPEC E1 persona bias flag

@@ -15,6 +15,7 @@ An LLM failure is raised, not turned into an abstention: abstention is a judicia
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Protocol
@@ -66,6 +67,13 @@ JSON_INDENT = 2  # literal-ok: readability of the previous answer shown in the r
 
 # THEMIS layer 1 on a judge's stated law runs on its own role, sized for an opinion (D-092).
 CHECK_ROLE = "judge_checker"
+
+
+def single_orders(case_key: str, *, flip: bool = False) -> list[PresentationOrder]:
+    """Single-order mode (D-093): one presentation order per persona, alternating across personas and flipping with a
+    hash of the case, so over a run neither side is systematically read first."""
+    start = (int.from_bytes(hashlib.sha256(case_key.encode("utf-8")).digest(), "big") + int(flip)) % len(ORDERS)
+    return [ORDERS[(start + i) % len(ORDERS)] for i in range(len(PERSONAS))]
 
 
 class StatuteSource(Protocol):
@@ -251,8 +259,10 @@ class Bench:
             if not p.approved
         ]
         decisions = []
-        for persona in personas:
-            opinions = {o: self._opinion(persona, o, shared, inputs, allowed, session_id) for o in ORDERS}
+        one = single_orders(case.case_id) if self._cfg.judging.orders_per_persona < len(ORDERS) else None
+        for n, persona in enumerate(personas):
+            orders = ORDERS if one is None else (one[n],)
+            opinions = {o: self._opinion(persona, o, shared, inputs, allowed, session_id) for o in orders}
             decisions.append(
                 fold_judge(
                     persona.persona,

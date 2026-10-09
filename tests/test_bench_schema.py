@@ -93,7 +93,7 @@ def test_judge_decision_needs_one_opinion_per_order() -> None:
 
 def test_judge_cannot_decide_a_result_one_order_did_not_reach() -> None:
     pair = opinion_pair(("PETITIONER", "RESPONDENT"), {"I1": "PETITIONER"})
-    with pytest.raises(ValidationError, match="both presentation orders"):
+    with pytest.raises(ValidationError, match="every presentation order it read"):
         JudgeDecision.model_validate(_decision(opinions=[o.model_dump() for o in pair.values()]))
 
 

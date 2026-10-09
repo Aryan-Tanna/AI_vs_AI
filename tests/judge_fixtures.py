@@ -21,7 +21,12 @@ from tests.conftest import CONFIG_V1, PROMPTS_ROOT
 from tests.fakes import FakeProvider, fakes_by_role, text_response
 from tests.test_layer1 import statute_view
 
-CFG = load_config(CONFIG_V1)
+# The full bench (both orders, layer-1 check of stated law) stays tested even though production runs the shadow
+# bench in single-order mode (D-093); tests/test_single_order_bench.py covers that mode.
+_LOADED = load_config(CONFIG_V1)
+CFG = _LOADED.model_copy(
+    update={"judging": _LOADED.judging.model_copy(update={"orders_per_persona": 2, "check_reasons_with_layer1": True})}
+)
 CASE_ID = "TESTCASE_0001"
 SESSION_ID = "TESTCASE_0001_R1"
 STATUTE = "<statute id>"

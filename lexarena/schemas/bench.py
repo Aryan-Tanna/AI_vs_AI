@@ -112,14 +112,14 @@ class JudgeIssueResult(StoredModel):
 
 
 class JudgeDecision(StoredModel):
-    """A persona's two opinions and what follows from them."""
+    """A persona's opinions (one per presentation order it was given: two, or one in single-order mode, D-093)."""
 
     judge: Persona
     # Which persona prompt produced it, and whether that exact text was APPROVED (CLAUDE.md §4.8) when it ran.
     persona_prompt: NonEmptyStr
     persona_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     persona_approved: bool
-    opinions: list[JudgeOpinion | InvalidOpinion] = Field(min_length=len(ORDERS), max_length=len(ORDERS))
+    opinions: list[JudgeOpinion | InvalidOpinion] = Field(min_length=1, max_length=len(ORDERS))
     status: Literal["DECIDED", "ABSTAINED"]
     result: Side | None
     abstain_reason: AbstainReason | None
@@ -130,8 +130,9 @@ class JudgeDecision(StoredModel):
 
     @model_validator(mode="after")
     def _consistent(self) -> JudgeDecision:
-        if sorted(o.order for o in self.opinions) != sorted(ORDERS):
-            raise ValueError("a judge decision holds one opinion per presentation order")
+        orders = [o.order for o in self.opinions]
+        if len(set(orders)) != len(orders):
+            raise ValueError("a judge decision holds at most one opinion per presentation order")
         if (self.status == "DECIDED") != (self.result is not None):
             raise ValueError("result is set exactly when the judge DECIDED")
         if (self.status == "ABSTAINED") != (self.abstain_reason is not None):
@@ -139,7 +140,7 @@ class JudgeDecision(StoredModel):
         if self.result is not None and any(
             not isinstance(o, JudgeOpinion) or o.overall_result != self.result for o in self.opinions
         ):
-            raise ValueError("a judge decides only a result both presentation orders reached in valid opinions")
+            raise ValueError("a judge decides only a result every presentation order it read reached in valid opinions")
         _no_duplicates([r.issue_id for r in self.issue_results], "issue results")
         return self
 

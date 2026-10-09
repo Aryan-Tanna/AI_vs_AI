@@ -27,7 +27,7 @@ models:
   # Lawyers: one model for both sides (non-negotiable 3).
   lawyer:          {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0.7, max_output_tokens: 16384, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}   # temperature [PLACEHOLDER]  # default reasoning, cap 4096 (D-085); paid OpenRouter, both hosts fp8 with seed + strict schema [D-086]
   # THEMIS-LOCAL layer 2 and entailment: different family from the lawyers [SPEC I3-7].
-  verifier:        {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0, max_output_tokens: 8192, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}   # same model as before, paid key (free Groq 8k TPM cap, R-034) [D-086]
+  verifier:        {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0, max_output_tokens: 16384, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}   # same model as before, paid key (free Groq 8k TPM cap, R-034) [D-086]
   judge_checker:   {provider: openrouter, family: qwen, name: qwen/qwen3.8-27b, temperature: 0, max_output_tokens: 16384, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [DeepInfra], allow_fallbacks: false, require_parameters: true, quantizations: [bf16]}}  # THEMIS layer 1 on judges' stated law; own cap, opinions are long [D-092]
   judge:           {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0.3, max_output_tokens: 32768, reasoning_effort: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # your choice 2026-10-09: Qwen 3.8 Flash for cost, not the lawyers family (Q-017) [D-087, D-088]; temperature 0.3 [PLACEHOLDER, D-043]; Step 14 calibrates against the order-swap gap [SPEC E1]
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
@@ -140,7 +140,8 @@ judging:
   tie_break: ADVOCACY_SCORE              # [D-048] only when deciding judges split evenly
   abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
   min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
-  check_reasons_with_layer1: true        # [ARCHITECTURE §5, D-071] THEMIS layer 1 on each opinion's stated law (one verifier call per opinion)
+  check_reasons_with_layer1: false       # [D-093] your decision 2026-10-10: the bench is a shadow bench; THEMIS stays on the lawyers. Free ID checks remain (check_opinion)
+  orders_per_persona: 1                  # [D-093] your decision 2026-10-10: one order per persona, alternated by persona and case; order bias measured run-wide
   show_audit_notes: true                 # [D-078] THEMIS-GLOBAL's point map and contradictions, never its scores; ablate on dev to check bias
   # Report limits, fixed before measuring [D-024]; Step 11 reports against them, nothing is re-run automatically [D-071].
   max_order_swap_disagreement_rate: 0.2  # [PLACEHOLDER] share of a persona's cases whose two orders disagree on the result

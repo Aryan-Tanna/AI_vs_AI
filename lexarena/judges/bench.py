@@ -27,6 +27,7 @@ from statistics import fmean
 
 from lexarena.schemas.base import SIDES, Side
 from lexarena.schemas.bench import (
+    ORDERS,
     BenchIssueFinding,
     BenchVerdict,
     DimensionScores,
@@ -111,6 +112,16 @@ def fold_judge(
     if len(valid) < len(pair):
         reason = "INVALID_OPINION"
         issue_results = [JudgeIssueResult(issue_id=i, status="ABSTAINED", upholds=None) for i in issue_ids]
+    elif len(valid) == 1:  # single-order mode (D-093): the one opinion decides; no swap to compare
+        only = valid[0]
+        result = only.overall_result
+        held_one = {d.issue_id: d.upholds for d in only.issue_decisions}
+        issue_results = [
+            JudgeIssueResult(
+                issue_id=i, status="DECIDED" if held_one.get(i) is not None else "ABSTAINED", upholds=held_one.get(i)
+            )
+            for i in issue_ids
+        ]
     else:
         first, second = valid
         if first.overall_result == second.overall_result:
@@ -135,7 +146,9 @@ def fold_judge(
         result=result,
         abstain_reason=reason,
         issue_results=issue_results,
-        order_swap_gap=order_swap_gap(valid[0], valid[1], cfg.weights) if both_valid else None,
+        order_swap_gap=order_swap_gap(valid[0], valid[1], cfg.weights)
+        if both_valid and len(valid) == len(ORDERS)
+        else None,
         advocacy=advocacy_of(valid, cfg.weights),
     )
 
