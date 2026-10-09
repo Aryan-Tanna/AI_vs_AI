@@ -64,6 +64,9 @@ from lexarena.themis_local.verify import LawContext
 ROLE = "judge"
 JSON_INDENT = 2  # literal-ok: readability of the previous answer shown in the revision prompt
 
+# THEMIS layer 1 on a judge's stated law runs on its own role, sized for an opinion (D-092).
+CHECK_ROLE = "judge_checker"
+
 
 class StatuteSource(Protocol):
     def get_statute(self, statute_id: str, as_of: AsOf) -> StatuteView | None: ...
@@ -159,6 +162,7 @@ class Bench:
             predicates,
             facts.amounts,
             session_id=session_id,
+            role=CHECK_ROLE,
         )
         alternatives = (
             None

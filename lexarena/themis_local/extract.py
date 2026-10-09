@@ -167,13 +167,14 @@ def extract_checklists(
     amounts: dict[str, Amount],
     *,
     session_id: str,
+    role: str = ROLE,
 ) -> ExtractionReport:
     if not views:
         return ExtractionReport([], ["no statutes to extract against"])
     ref = cfg.prompts.themis_extract
     statutes = "\n\n".join(render_statute(v, predicates.get(sid, [])) for sid, v in views.items())
     prompt = prompts.render(ref.id, ref.version, statutes=statutes, amounts=render_amounts(amounts), argument=argument)
-    raw = llm.complete_json(role=ROLE, user=prompt, schema=ArgumentExtraction, session_id=session_id).value
+    raw = llm.complete_json(role=role, user=prompt, schema=ArgumentExtraction, session_id=session_id).value
     squeezed = _squeeze(argument)
     report = ExtractionReport([])
     notes = report.notes

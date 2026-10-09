@@ -69,6 +69,8 @@ class ModelConfig(Strict):
 class ModelsConfig(Strict):
     lawyer: ModelConfig
     verifier: ModelConfig
+    # THEMIS layer 1 on the judges' stated law: a judge's opinion is longer than a lawyer's turn (D-092).
+    judge_checker: ModelConfig
     judge: ModelConfig
     auditor: ModelConfig
     clerk_primary: ModelConfig
@@ -84,7 +86,7 @@ class ModelsConfig(Strict):
     @model_validator(mode="after")
     def _invariants(self) -> ModelsConfig:
         # SPEC I3-7: THEMIS (layer 2 and global) must not share the lawyers' model family.
-        for role in ("verifier", "auditor"):
+        for role in ("verifier", "judge_checker", "auditor"):
             if getattr(self, role).family == self.lawyer.family:
                 raise ValueError(f"models.{role}.family must differ from models.lawyer.family (SPEC I3-7)")
         # Two-model agreement in the clerk (ARCHITECTURE §3) needs independent families.
@@ -93,7 +95,15 @@ class ModelsConfig(Strict):
         if self.drafter_primary.family == self.drafter_secondary.family:
             raise ValueError("models.drafter_primary.family must differ from models.drafter_secondary.family")
         # CLAUDE.md: verifiers and extractors run at temperature 0.
-        for role in ("verifier", "auditor", "clerk_primary", "clerk_secondary", "drafter_primary", "drafter_secondary"):
+        for role in (
+            "verifier",
+            "judge_checker",
+            "auditor",
+            "clerk_primary",
+            "clerk_secondary",
+            "drafter_primary",
+            "drafter_secondary",
+        ):
             if getattr(self, role).temperature != 0:
                 raise ValueError(f"models.{role}.temperature must be 0 (verifiers and extractors are deterministic)")
         return self

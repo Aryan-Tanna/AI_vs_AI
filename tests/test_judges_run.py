@@ -141,7 +141,8 @@ def test_layer1_problems_in_the_stated_law_are_revised(tmp_path: Path) -> None:
     assert "LAYER1 ERR_TIMELINE_MISSTATED" in sent(judge, 1)
     assert result.decisions[0].opinions[0].revised
     assert result.decisions[0].status == "DECIDED"
-    assert verifier.requests[0].model.name == CFG.models.verifier.name
+    # The stated-law check runs on its own role (D-092), not the turn verifier.
+    assert verifier.requests[0].model == CFG.models.judge_checker.model_copy(update={"provider": "fake-judge_checker"})
 
 
 def test_an_llm_failure_is_raised_not_turned_into_an_abstention(tmp_path: Path) -> None:

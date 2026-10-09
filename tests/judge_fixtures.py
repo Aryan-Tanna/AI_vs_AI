@@ -113,7 +113,9 @@ def client(
     verifier_responses: list[LLMResponse | Exception] = [text_response(json.dumps(v)) for v in verifier_script or []]
     verifier = FakeProvider(verifier_responses)
     # The auditor shares the judge script, as when both ran on one provider.
-    cfg, providers = fakes_by_role(CFG, {"judge": judge, "auditor": judge, "verifier": verifier})
+    cfg, providers = fakes_by_role(
+        CFG, {"judge": judge, "auditor": judge, "verifier": verifier, "judge_checker": verifier}
+    )
     llm = LLMClient(
         cfg,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
