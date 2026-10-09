@@ -19,12 +19,18 @@ def note(x):
     with PROGRESS.open("a", encoding="utf-8") as f:
         f.write(time.strftime("%Y-%m-%d %H:%M ") + x.strip().splitlines()[0][:300] + chr(10))
 start = used(); note(f"start spend ${start:.3f}")
-note("waiting for the DEV_0004 clerk to finish")
+note("waiting for any running lexarena process to finish")
 while running(): time.sleep(30)
 db = MongoClient(env["LEXARENA_MONGO_APP_URI"])[env["LEXARENA_MONGO_APP_DB"]]
+if not db["cases"].find_one({"_id": "DEV_0004"}):
+    note("clerking DEV_0004 (Gemini 3.5 Flash primary, DeepSeek secondary)")
+    c = subprocess.run([EXE, "clerk", "run", "--file", "data/dev/TATA CONSULTANCY SERVICES LIMITED.pdf", "--case-id", "DEV_0004"],
+                       capture_output=True, text=True)
+    Path("reports/dev_runs/clerk_DEV_0004.log").write_text(c.stdout + c.stderr, encoding="utf-8")
+    note(f"clerk exit {c.returncode}; spend so far ${used()-start:.3f}")
 case = db["cases"].find_one({"_id": "DEV_0004"})
 if not case:
-    note("CLERK FAILED: DEV_0004 not stored. Stopping. See scratchpad clerk4.log"); OUT.write_text("\n".join(log), encoding="utf-8"); raise SystemExit(1)
+    note("CLERK FAILED: DEV_0004 not stored. Stopping. See reports/dev_runs/clerk_DEV_0004.log"); OUT.write_text("\n".join(log), encoding="utf-8"); raise SystemExit(1)
 flags = case["build"].get("extraction_flags", [])
 note(f"clerk ok; flags: {[f['code'] for f in flags]}; memorization probe: {case['build'].get('memorization_probe')}; evidence: {case['build'].get('evidence_dependency')}")
 if any("LEAK" in f["code"] for f in flags):
