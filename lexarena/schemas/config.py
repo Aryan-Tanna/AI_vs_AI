@@ -312,6 +312,7 @@ class JudgingConfig(Strict):
 
 
 class MemoryConfig(Strict):
+    require_human_reviewed_case: bool  # D-094: no lessons from a case the owner has not reviewed
     pinned_token_budget: PositiveInt
     pinned_k: PositiveInt
     decay_lambda: UnitInterval

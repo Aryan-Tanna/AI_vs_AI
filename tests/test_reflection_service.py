@@ -28,9 +28,13 @@ from lexarena.storage.policy import Principal, Role
 from tests import builders
 from tests.conftest import ENV_FILE, PROMPTS_ROOT, SEALED_ENV_FILE
 from tests.fakes import FakeProvider, WordEmbedder, text_response
-from tests.judge_fixtures import CFG
+from tests.judge_fixtures import CFG as _CFG
 from tests.test_judges_bench import CFG as JUDGING
 from tests.test_judges_bench import judge
+
+# The builders' cases are unreviewed; most tests exercise lesson writing, so they switch the review gate off (D-094).
+CFG = _CFG.model_copy(update={"memory": _CFG.memory.model_copy(update={"require_human_reviewed_case": False})})
+GATED = _CFG.model_copy(update={"memory": _CFG.memory.model_copy(update={"require_human_reviewed_case": True})})
 
 pytestmark = pytest.mark.integration
 
@@ -92,18 +96,19 @@ def candidate(**change: Any) -> dict[str, Any]:
     return {**base, **change}
 
 
-def reflection(answer: dict[str, Any]) -> tuple[Reflection, FakeProvider]:
-    names = {m.api_key_env for m in CFG.models.by_role().values()}
+def reflection(answer: dict[str, Any], cfg: Any = None) -> tuple[Reflection, FakeProvider]:
+    cfg = cfg or CFG
+    names = {m.api_key_env for m in cfg.models.by_role().values()}
     provider = FakeProvider([text_response(json.dumps(answer))])
     llm = LLMClient(
-        CFG,
+        cfg,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
         PromptStore(PROMPTS_ROOT),
-        providers={CFG.models.reflection.provider: provider},
+        providers={cfg.models.reflection.provider: provider},
         cache=None,
         sleep=lambda _: None,
     )
-    return Reflection(llm, PromptStore(PROMPTS_ROOT), CFG, WordEmbedder()), provider
+    return Reflection(llm, PromptStore(PROMPTS_ROOT), cfg, WordEmbedder()), provider
 
 
 def test_lessons_are_filtered_stored_and_the_session_reflected(
@@ -138,3 +143,17 @@ def test_lessons_are_filtered_stored_and_the_session_reflected(
         writer.upsert(lawyer[0], [0.0] * WordEmbedder.dim)
     with pytest.raises(NotReflectableError):
         engine.reflect(stores, private, sid, run_id="R1")  # type: ignore[arg-type]
+
+
+def test_an_unreviewed_case_writes_no_lesson_and_spends_no_call(
+    procs: tuple[SessionProcess, SealedProcess, Namespace],
+) -> None:
+    session, sealed, _ = procs
+    sid = evaluated_session(session, sealed)
+    engine, provider = reflection({"lessons": [candidate()]}, GATED)
+    stores = sealed.reflection()
+    private = {side: sealed.reflection(side).private_turns for side in ("PETITIONER", "RESPONDENT")}
+    result = engine.reflect(stores, private, sid, run_id="R1")  # type: ignore[arg-type]
+    assert result.session.state == SessionState.REFLECTED
+    assert result.written == [] and result.updated == [] and provider.requests == []
+    assert any("not human-reviewed" in r for r in result.rejected)

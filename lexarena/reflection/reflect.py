@@ -130,6 +130,12 @@ class Reflection:
         status_of: dict[str, str] = {
             side: next(p.status for p in case.agent_view.parties if p.simulation_side == side) for side in SIDES
         }
+        # A case the owner has not reviewed against its judgment teaches nothing (CLAUDE.md §4: the owner reviews clerk
+        # output before a case is used). DEV_0001 showed why: a one-sided record taught contested law as a rule (D-094).
+        if self._cfg.memory.require_human_reviewed_case and not case.build.human_reviewed:
+            result.rejected.append("case not human-reviewed: no lesson written or re-weighted (D-094)")
+            result.session = stores.sessions.record_lessons(session_id, [])
+            return result
         memories: dict[str, LessonRepository] = {"LAWYER": stores.lawyer_memory, "JUDGE": stores.judge_memory}
         dim = len(self._embedder.embed(["dimension probe"])[0])
         for repo in memories.values():

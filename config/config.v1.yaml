@@ -149,6 +149,7 @@ judging:
   persona_role_min_cases: 50             # [SPEC E1] ... over at least this many decided cases is flagged
 
 memory:
+  require_human_reviewed_case: true      # [D-094] your instruction 2026-10-10: unreviewed cases write and re-weight no lessons
   pinned_token_budget: 250               # [SPEC E6]
   pinned_k: 5                            # [PLACEHOLDER]
   decay_lambda: 0.98                     # [SPEC F4]
