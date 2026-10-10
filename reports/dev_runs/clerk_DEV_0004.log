@@ -1,0 +1,18 @@
+{
+  "case_id": "DEV_0004",
+  "stored": true,
+  "problems": [],
+  "flags": [
+    "ENTAILMENT_PARTLY: C2: Respondent version supported, but petitioner's 'entitled to terminate immediately' is not stated.",
+    "ENTAILMENT_PARTLY: EX-1: Date and parties stated, but source does not state document was filed by A1.",
+    "ENTAILMENT_PARTLY: EX-2: Contents, dates, and clauses are stated, but sources do not say the Facilities Agreement was filed by A1.",
+    "ENTAILMENT_PARTLY: EX-3: Notice date, issuer, immediate termination, and breaches are stated, but sources do not say it was filed by A1.",
+    "ENTAILMENT_PARTLY: PETITIONER-G2: Sources state conversion from determinable to non-terminable contract, but not that NCLT/NCLAT stayed termination."
+  ],
+  "excluded_precedents": [
+    "2020_NCLAT_DEL_237",
+    "2022_NCLAT_DEL_176"
+  ],
+  "memorization_probe": "NOT_IDENTIFIED",
+  "review_file": "reports/review/DEV_0004.md"
+}

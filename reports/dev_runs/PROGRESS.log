@@ -42,3 +42,27 @@ EXIT=1
 2026-10-10 04:20 report: reports\dev_runs\DEV_0004_overnight.md
 2026-10-10 04:20 chain exited 0
 2026-10-10 04:21 DEV4_E2E_1 hit the 2 h stage timeout at turn 8 ($0.28, cached). D-098: timeout 8 h. Restarting as DEV4_E2E_2 (scripts/overnight_dev4.py).
+2026-10-10 04:21 start spend $1.180
+2026-10-10 04:21 waiting for any running lexarena process to finish
+2026-10-10 04:21 clerk ok; flags: ['ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY']; memorization probe: NOT_IDENTIFIED; evidence: LAW_ONLY
+2026-10-10 04:21 planning run DEV4_E2E_2
+2026-10-10 04:21 run DEV4_E2E_2 started (session, baseline, evaluate, reflect); cap $2.0
+2026-10-10 04:22 stages now: {'SESSION': 'PENDING', 'BASELINE': 'PENDING', 'EVALUATE': 'PENDING', 'REFLECT': 'PENDING'}
+2026-10-10 06:16 stages now: {'SESSION': 'DONE', 'BASELINE': 'PENDING', 'EVALUATE': 'PENDING', 'REFLECT': 'PENDING'}
+2026-10-10 06:27 stages now: {'SESSION': 'DONE', 'BASELINE': 'DONE', 'EVALUATE': 'DONE', 'REFLECT': 'DONE'}
+2026-10-10 06:27 run exit 0; run spend $0.224; total today $1.405
+2026-10-10 06:27 ```
+2026-10-10 06:27 session DEV_0004_DEV4_E2E_1_335c69 state IN_PROGRESS
+2026-10-10 06:27 bench winner: None (None)
+2026-10-10 06:27 evaluation: {}
+2026-10-10 06:27 ### Turn 1 PETITIONER OPENING flags=[]
+2026-10-10 06:27 ### Turn 2 RESPONDENT OPENING flags=[]
+2026-10-10 06:27 ### Turn 3 PETITIONER REBUTTAL flags=[]
+2026-10-10 06:27 ### Turn 4 RESPONDENT REBUTTAL flags=[]
+2026-10-10 06:27 ### Turn 5 PETITIONER REBUTTAL flags=[]
+2026-10-10 06:27 ### Turn 6 RESPONDENT REBUTTAL flags=[]
+2026-10-10 06:27 ### Turn 7 PETITIONER REBUTTAL flags=[]
+2026-10-10 06:27 ### Turn 8 RESPONDENT REBUTTAL flags=[]
+2026-10-10 06:27 report: reports\dev_runs\DEV_0004_overnight.md
+2026-10-10 06:27 chain exited 0
+2026-10-10 06:28 RESULT DEV_0004 (session DEV_0004_DEV4_E2E_2_33cc10): all 4 stages DONE. Real outcome PETITIONER. Bench UNSTABLE (2 of 3 judges invalid: stray 'I' on rule IDs, R-risk logged). Baseline PETITIONER (matches overall; I1 wrong). 10 turns, 1 flag (T10 ERR_REPEATED_ARGUMENT). Reflection wrote 0 lessons (case unreviewed). Total spend today $1.405.
