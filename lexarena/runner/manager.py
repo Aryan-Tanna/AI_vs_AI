@@ -1,7 +1,8 @@
 """The run manager (BUILD_PLAN Step 13; ARCHITECTURE §7; SPEC G1, I3-10; D-049, D-073).
 
 Runs the planned cases strictly one at a time, in date order, each through its stages. Before a stage it checks the
-quota; after every stage it writes the ledger, so `go` resumes exactly where a pause or crash left off. It stops:
+quota and the money spent (D-109); after every stage it writes the ledger, so `go` resumes exactly where a pause or
+crash left off. It stops:
 - PAUSED when a stage's quota is short (checked before the stage starts), a stage exits QUOTA_EXHAUSTED (the stage is
   left PENDING and re-runs on resume; stages are idempotent or cached), or `max_cases` cases finished;
 - FAILED when a stage fails, or memory changed during a FROZEN or EMPTY case. A failed case is never skipped: in a
@@ -18,6 +19,7 @@ from lexarena import exit_codes
 from lexarena.runner.ledger import LedgerStore
 from lexarena.runner.memory import FrozenMemoryViolationError, MemoryStore, check_unchanged, stage_allowed
 from lexarena.runner.quota import shortfalls, usage_since, window_start
+from lexarena.runner.spend import over_budget, spent_since
 from lexarena.runner.stages import Executor, StageSpec, last_json, render
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.run import FINISHED, CaseJob, RunLedger, Stage, StageRecord
@@ -106,6 +108,9 @@ class RunManager:
         )
         if short:
             return f"PAUSED:quota before {record.stage} of {job.case_id}: " + "; ".join(short)
+        money = over_budget(self._cfg, record.stage, spent_since(self._log, self._cfg, ledger.manifest.created_at))
+        if money:  # never skipped, not even with the quota preflight off (D-109)
+            return f"PAUSED:spend before {record.stage} of {job.case_id}: {money}"
         self._store.case_dir(job.case_id).mkdir(parents=True, exist_ok=True)
         note = "" if self._preflight else " [quota preflight skipped by the operator]"
         self._set(

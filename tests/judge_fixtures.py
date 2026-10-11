@@ -105,6 +105,7 @@ def opinion_json(
             ],
             "overall_result": result,
             "overall_reasons": "<reasons>",
+            "lookups": [],
             "advocacy": [{"issue_id": "I1", "petitioner": dims, "respondent": dims}],
         }
     )

@@ -92,6 +92,7 @@ def draft(
         ],
         overall_result=result,
         overall_reasons="<reasons>",
+        lookups=[],
         advocacy=[IssueAdvocacyDraft(issue_id=i, petitioner=scores(0.5), respondent=scores(0.5)) for i in issues],
     )
 

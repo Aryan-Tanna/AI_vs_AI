@@ -250,3 +250,33 @@ def test_audit_notes_can_be_switched_off(tmp_path: Path) -> None:
         replace(inputs(), audit=_audit()), session_id=SESSION_ID
     )
     assert "<petitioner point>" not in sent(judge, 0)
+
+
+def test_a_judges_lookup_is_answered_in_its_revision_and_the_provision_becomes_citable(tmp_path: Path) -> None:
+    """D-112: a judge may ask for a provision it was not shown; the answer comes in its one revision, and the provision
+    it found may then be cited (for that opinion). Judges have no precedent search."""
+    import json
+    from dataclasses import replace
+
+    from lexarena.agents.desk import KnowledgeDesk
+    from lexarena.agents.knowledge import CaseLibrary
+    from tests.test_layer1 import statute_view
+
+    other = "<statute B>"
+    asks = json.loads(opinion_json())
+    asks["lookups"] = [{"kind": "STATUTE", "query": other}]
+    cites = opinion_json(rule=other)
+    llm, judge, _ = client([json.dumps(asks), cites] + [opinion_json()] * (CALLS - 1))
+    desk = KnowledgeDesk(
+        statute=lambda q: statute_view(other) if q == other else None,
+        library=CaseLibrary({}),
+        lessons=lambda q, k: [],
+        cfg=CFG,
+    )
+    result = bench(llm, approved(tmp_path)).decide(replace(inputs(), desk=desk), session_id=SESSION_ID)
+    revision = sent(judge, 1)
+    assert "ANSWERS TO YOUR LOOKUPS" in revision and f"[{other}]" in revision
+    first = result.decisions[0].opinions[0]
+    assert not isinstance(first, InvalidOpinion) and first.revised
+    assert first.issue_decisions[0].governing_rule_ids == [other]
+    assert len(judge.requests) == CALLS + 1  # one extra call, only for the judge that asked

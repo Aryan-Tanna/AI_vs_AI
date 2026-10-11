@@ -75,4 +75,5 @@ class OpenAICompatProvider:
             input_tokens=usage.get("prompt_tokens"),
             output_tokens=usage.get("completion_tokens"),
             finish_reason=choice.get("finish_reason"),
+            reasoning=choice["message"].get("reasoning") or None,
         )

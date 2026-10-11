@@ -15,6 +15,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from lexarena.agents.desk import NO_LOOKUPS, KnowledgeDesk
 from lexarena.agents.knowledge import LawyerKnowledge, render_cards
 from lexarena.judges.packet import COUNSEL, render_case, render_issues
 from lexarena.llm.client import LLMClient
@@ -79,6 +80,7 @@ class Lawyer:
         *,
         session_id: str,
         exhibit_contents: bool = True,
+        desk: KnowledgeDesk | None = None,
     ) -> None:
         self.side = side
         self._case = case
@@ -90,6 +92,8 @@ class Lawyer:
         self._exhibits = exhibit_contents
         self.notes: StrategyNotes | None = None
         self.held: list[PrecedentCard] = []
+        self._desk = desk
+        self.lookup_answers = NO_LOOKUPS  # D-112: answers to the lookups of this side's last published submission
 
     # ------------------------------------------------------------ assembly
 
@@ -126,6 +130,7 @@ class Lawyer:
             "lessons": self.knowledge.experience.render(),
             "plan": self.notes.model_dump_json() if self.notes else "(no plan)",
             "authorities": render_cards(self.held),
+            "lookups": self.lookup_answers,
         }
         s = self._cfg.session
         fixed = {
@@ -134,6 +139,7 @@ class Lawyer:
             "turn": str(turn),
             "turn_type": turn_type,
             "max_words": str(int(s.max_turn_tokens * s.words_per_token)),
+            "max_lookups": str(s.lookups_per_turn),
             "feedback": f"\nThe verifier rejected your previous draft. Fix exactly these problems:\n{feedback}\n"
             if feedback
             else "",
@@ -162,6 +168,19 @@ class Lawyer:
         self.notes = notes.model_copy(update={"authorities_held": held})
         self.held = [found[uid] for uid in held]
         return self.notes
+
+    def answer_lookups(self, draft: LawyerDraft) -> str:
+        """Serve the lookups of this side's published submission (D-112): statutes found join its regulation memory,
+        precedents found join the authorities it holds, and the answers are shown with its next submission."""
+        if self._desk is None:
+            return self.lookup_answers
+        answer = self._desk.serve(draft.lookups)
+        self.knowledge.regulation.law.views.update(answer.statutes)
+        for card in answer.cards:
+            if all(c.precedent_uid != card.precedent_uid for c in self.held):
+                self.held.append(card)
+        self.lookup_answers = answer.text
+        return answer.text
 
     def draft(
         self, turn: int, turn_type: str, transcript: list[PublishedTurn], feedback: str | None

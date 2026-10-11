@@ -21,10 +21,23 @@ class DraftClaim(StoredModel):
     precedent_ids: list[str]  # precedent_uid values, as the search cards give them (D-052)
 
 
+LookupKind = Literal["STATUTE", "AUTHORITY_SEARCH", "SIMILAR_CASES", "PRECEDENT", "LESSONS"]
+
+
+class KnowledgeLookup(StoredModel):
+    """A request to the agent's own knowledge base, answered before its next submission (D-112). `query` is a statute
+    name or ID (STATUTE), a proposition or fact pattern to search for (AUTHORITY_SEARCH, SIMILAR_CASES), a precedent ID
+    (PRECEDENT), or what the agent wants advice on (LESSONS: its own side's experience base, never the judges')."""
+
+    kind: LookupKind
+    query: str
+
+
 class LawyerDraft(StoredModel):
     text: str
     issues_addressed: list[str]
     claims: list[DraftClaim]
+    lookups: list[KnowledgeLookup]  # D-112: may be empty; served before this side's next submission
 
 
 class ResearchQuery(StoredModel):

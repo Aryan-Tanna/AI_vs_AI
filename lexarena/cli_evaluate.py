@@ -17,6 +17,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from lexarena import trace
 from lexarena.app import (
     DEFAULT_ENV_FILE,
     PROMPTS_ROOT,
@@ -69,7 +70,12 @@ def _write(path: Path | None, value: dict[str, Any]) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def _session(session_id: str, baseline: Path | None, out: Path | None) -> int:
+def _trace_dir(config_path: Path) -> Path | None:
+    cfg = load_config(config_path)
+    return REPO_ROOT / cfg.llm.trace_dir if cfg.llm.trace_enabled else None
+
+
+def _session(session_id: str, baseline: Path | None, out: Path | None, config_path: Path) -> int:
     single = (
         BaselinePrediction.model_validate_json(baseline.read_text(encoding="utf-8"))
         if baseline is not None and baseline.is_file()
@@ -79,6 +85,12 @@ def _session(session_id: str, baseline: Path | None, out: Path | None) -> int:
         result = evaluate_session(proc.evaluator(), session_id, single)
     _write(out, result.outcome.to_document())
     evaluation = result.session.evaluation
+    with trace.session_trace(_trace_dir(config_path), session_id):  # after the verdict only (D-110)
+        trace.event(
+            "evaluation",
+            evaluation=evaluation.model_dump(mode="json") if evaluation else None,
+            outcome=result.outcome.model_dump(mode="json"),
+        )
     print(
         json.dumps(
             {
@@ -121,7 +133,15 @@ def _reflect(session_id: str, run_id: str, config_path: Path) -> int:
     engine = Reflection(build_llm_client(cfg), PromptStore(PROMPTS_ROOT), cfg, embedder)
     with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
         private = {side: proc.reflection(side).private_turns for side in SIDES}
-        result = engine.reflect(proc.reflection(), private, session_id, run_id=run_id)
+        with trace.session_trace(_trace_dir(config_path), session_id), trace.tags(phase="REFLECT"):
+            result = engine.reflect(proc.reflection(), private, session_id, run_id=run_id)
+            trace.event(
+                "reflection",
+                written=result.written,
+                updated=result.updated,
+                rejected=result.rejected,
+                placements=result.placements,
+            )
     print(
         json.dumps(
             {
@@ -143,5 +163,5 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
     if args.group == "baseline":
         return _baseline(args.case_id, args.out, config_path)
     if args.action == "session":
-        return _session(args.session_id, args.baseline, args.out)
+        return _session(args.session_id, args.baseline, args.out, config_path)
     return _report(args.outcomes, args.out, config_path)

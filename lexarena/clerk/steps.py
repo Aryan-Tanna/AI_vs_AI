@@ -281,4 +281,11 @@ def repair_agent_view(
         text=text,
         previous=previous.model_dump_json(indent=1),
     )
-    return llm.complete_json(role=ROLE, user=prompt, schema=AgentViewDraft, session_id=session_id).value
+    # Its own cap (D-109): on DEV_0007 the repair looped to 65,536 output tokens, about $0.59 a call on a paid route.
+    return llm.complete_json(
+        role=ROLE,
+        user=prompt,
+        schema=AgentViewDraft,
+        session_id=session_id,
+        max_output_tokens=cfg.clerk.repair_max_output_tokens,
+    ).value

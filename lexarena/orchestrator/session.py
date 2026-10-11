@@ -22,19 +22,23 @@ import uuid
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from pathlib import Path
 
+from lexarena import trace
+from lexarena.agents.desk import KnowledgeDesk
 from lexarena.agents.knowledge import CaseLibrary, ExperienceBase, LawyerKnowledge, RegulationMemory
 from lexarena.agents.lawyer import Lawyer
 from lexarena.embedding import Embedder
 from lexarena.judges.personas import PersonaRegistry
-from lexarena.judges.run import Bench, BenchInputs, law_for_bench
+from lexarena.judges.run import Bench, BenchInputs, StatuteSource, law_for_bench
 from lexarena.llm.client import LLMClient
-from lexarena.memory.pinning import select
+from lexarena.memory.pinning import lesson_line, pin, usable
 from lexarena.prompts import PromptStore
 from lexarena.retrieval.tools import PrecedentReader, RetrievalTools
 from lexarena.schemas.agent import LawyerDraft
 from lexarena.schemas.base import SIDES, Side
 from lexarena.schemas.config import AppConfig
+from lexarena.schemas.lesson import Lesson
 from lexarena.schemas.retrieval import CaseScope
 from lexarena.schemas.run import MemoryMode
 from lexarena.schemas.session import Session, SessionConfig, SessionState, VersionStamp
@@ -47,19 +51,21 @@ from lexarena.schemas.transcript import (
     ThemisWarning,
     turn_document_id,
 )
+from lexarena.statute_ids import resolve_statute_id
 from lexarena.storage.factory import SessionProcess
 from lexarena.storage.policy import Role
-from lexarena.storage.temporal import AsOf
+from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_global.audit import audit_transcript
 from lexarena.themis_local.outcome import VerifiedTurn, verify_with_retries
-from lexarena.themis_local.verify import ThemisLocal, Verification, VerifyContext, claim_ids
-from lexarena.versioning import combine, precedent_snapshot
+from lexarena.themis_local.verify import LawContext, ThemisLocal, Verification, VerifyContext, claim_ids
+from lexarena.versioning import combine, law_versions, precedent_snapshot
 
 OPENING, REBUTTAL, CLOSING = "OPENING", "REBUTTAL", "CLOSING"
 NO_THEMIS, NO_MEMORY, NO_EXHIBIT_CARDS = "NO_THEMIS", "NO_MEMORY", "NO_EXHIBIT_CARDS"
 THEMIS_DISABLED = "THEMIS_DISABLED"
 TURN_PREFIX = "TURN:"
 NOTES_PREFIX = "NOTES:"
+ABORT_CHARS = 2000  # literal-ok: how much of an abort's message the trace keeps
 SESSION_SUFFIX = 6  # literal-ok: random hex characters that keep re-runs of one case apart
 
 
@@ -83,6 +89,44 @@ class Services:
     git_sha: str
     config_sha256: str
     log: Callable[[str], None] = field(default=lambda _: None)
+    trace_dir: Path | None = None  # the owner's session trace (D-110); None: no trace
+
+
+def statute_resolver(
+    source: StatuteSource, as_of: AsOf, known: set[str], aliases: StatuteAliasTable, side_law: LawContext
+) -> Callable[[str], StatuteView | None]:
+    """A STATUTE lookup (D-112): the cited name resolved by the ingestion rules, then the provision as it stood on the
+    case dates (server-side; the agent never gets the dates). Found provisions bring their approved predicates."""
+
+    def resolve(cited: str) -> StatuteView | None:
+        sid = cited.strip() if cited.strip() in known else resolve_statute_id(cited, known, aliases)[0]
+        if sid is None:
+            return None
+        view = source.get_statute(sid, as_of)
+        if view is not None and sid not in side_law.predicates:
+            side_law.predicates[sid] = source.predicates(sid)
+        return view
+
+    return resolve
+
+
+def lesson_search(pool: list[Lesson], *, exclude: set[str], embedder: Embedder) -> Callable[[str, int], list[Lesson]]:
+    """A LESSONS lookup (D-112): the side's usable lessons not already pinned, ranked by meaning against the query."""
+    candidates = [x for x in pool if x.lesson_id not in exclude]
+    vectors = embedder.embed([lesson_line(x) for x in candidates]) if candidates else []
+
+    def search(query: str, k: int) -> list[Lesson]:
+        if not candidates:
+            return []
+        q = embedder.embed([query])[0]
+        scored = sorted(zip(candidates, vectors, strict=True), key=lambda cv: (-_dot(q, cv[1]), cv[0].lesson_id))
+        return [c for c, _ in scored[:k]]
+
+    return search
+
+
+def _dot(a: list[float], b: list[float]) -> float:
+    return sum(x * y for x, y in zip(a, b, strict=True))
 
 
 def schedule(cfg: AppConfig) -> list[tuple[int, Side, str]]:
@@ -109,12 +153,17 @@ def _no_themis(draft: LawyerDraft, turn: int) -> VerifiedTurn:
 
 
 def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: Services) -> Session:
+    session_id = f"{case_id}_{opts.run_id}_{uuid.uuid4().hex[:SESSION_SUFFIX]}"
+    with trace.session_trace(svc.trace_dir, session_id):
+        return _run_session(proc, case_id, opts, svc, session_id)
+
+
+def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: Services, session_id: str) -> Session:
     cfg = svc.cfg
     orch = proc.orchestrator()
     full = orch.cases.get(case_id)
     scope = CaseScope.from_case(full)
     as_of = AsOf.for_case(full)
-    session_id = f"{case_id}_{opts.run_id}_{uuid.uuid4().hex[:SESSION_SUFFIX]}"
     judge_stores = proc.judge(scope)
     case = judge_stores.case.agent_view(case_id)
     law = law_for_bench(case, [], orch.law, as_of, cfg)
@@ -125,12 +174,25 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
     lawyer_pool = orch.lawyer_memory.all() if use_memory else []
     judge_pool = orch.judge_memory.all() if use_memory else []
     status_of = {s: next(p.status for p in case.parties if p.simulation_side == s) for s in SIDES}
-    pinned = {
-        s: select(lawyer_pool, party_status=status_of[s], statutes=statutes, case_seq=opts.case_seq, cfg=cfg)
+    law_seen = law_versions(law.views)  # D-111: lessons are pinned only under the same law
+    picks = {
+        s: pin(
+            lawyer_pool,
+            party_status=status_of[s],
+            statutes=statutes,
+            case_seq=opts.case_seq,
+            cfg=cfg,
+            law_versions=law_seen,
+        )
         for s in SIDES
     }
-    judge_lessons = select(judge_pool, party_status=None, statutes=statutes, case_seq=opts.case_seq, cfg=cfg)
+    judge_pick = pin(
+        judge_pool, party_status=None, statutes=statutes, case_seq=opts.case_seq, cfg=cfg, law_versions=law_seen
+    )
+    pinned = {s: picks[s].all for s in SIDES}
+    judge_lessons = judge_pick.all
     pinned_ids = sorted({x.lesson_id for ls in pinned.values() for x in ls} | {x.lesson_id for x in judge_lessons})
+    explored_ids = sorted({x.lesson_id for p in [*picks.values(), judge_pick] for x in p.explore})
 
     versions = VersionStamp(
         git_sha=svc.git_sha,
@@ -158,9 +220,26 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
             "lessons_written": [],
             "case_seq": opts.case_seq,
             "pinned_lessons": pinned_ids,
+            "explored_lessons": explored_ids,
+            "law_versions": law_seen,
         }
     )
     orch.sessions.create(session)
+    # The trace sees what the agents see (the pseudonymised agent view), never the simulation date or sealed data.
+    trace.event(
+        "case_opened",
+        case_id=case_id,
+        run_id=opts.run_id,
+        mode=opts.mode,
+        case_seq=opts.case_seq,
+        ablations=sorted(opts.ablations),
+        agent_view=case.model_dump(mode="json"),
+        statutes=sorted(statutes),
+        lessons={s: [x.model_dump(mode="json") for x in pinned[s]] for s in SIDES},
+        explored=explored_ids,
+        judge_lessons=[x.model_dump(mode="json") for x in judge_lessons],
+        models={"lawyer": cfg.models.lawyer.name, "judge": cfg.models.judge.name, "verifier": cfg.models.verifier.name},
+    )
     try:
         orch.sessions.start(session_id)
 
@@ -181,11 +260,27 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
         lawyers: dict[Side, Lawyer] = {}
         themis: dict[Side, tuple[ThemisLocal, CaseLibrary]] = {}
         stores = {s: (proc.lawyer(s, session_id, scope), proc.themis_local(s, session_id, scope)) for s in SIDES}
+        # D-112: each side's own copy of the law, so a statute one side looks up joins only its regulation memory (and
+        # its THEMIS checks it); both copies start identical.
+        side_law = {
+            s: LawContext(views=dict(law.views), alternatives=law.alternatives, predicates=dict(law.predicates))
+            for s in SIDES
+        }
         for side in SIDES:
             lawyer_stores, themis_stores = stores[side]
             known = lawyer_stores.law.statute_ids()
             library = CaseLibrary.for_role(Role.LAWYER, tools(lawyer_stores.precedents, known))
-            knowledge = LawyerKnowledge(RegulationMemory(law), library, ExperienceBase(pinned[side]))
+            knowledge = LawyerKnowledge(RegulationMemory(side_law[side]), library, ExperienceBase(pinned[side]))
+            desk = KnowledgeDesk(
+                statute=statute_resolver(orch.law, as_of, known, svc.aliases, side_law[side]),
+                library=library,
+                lessons=lesson_search(
+                    usable(lawyer_pool, party_status=status_of[side], statutes=statutes, law_versions=law_seen),
+                    exclude={x.lesson_id for x in pinned[side]},
+                    embedder=svc.embedder,
+                ),
+                cfg=cfg,
+            )
             lawyers[side] = Lawyer(
                 side,
                 case,
@@ -195,6 +290,7 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
                 cfg,
                 session_id=session_id,
                 exhibit_contents=NO_EXHIBIT_CARDS not in opts.ablations,
+                desk=desk,
             )
             fetch_lib = CaseLibrary.for_role(
                 Role.THEMIS_LOCAL,
@@ -203,7 +299,13 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
             themis[side] = (ThemisLocal(svc.llm, svc.prompts, cfg, svc.embedder), fetch_lib)
 
         for side in SIDES:  # private strategy phase, same budget for both
-            notes = lawyers[side].prepare()
+            with trace.tags(phase="PREPARE", side=side):
+                notes = lawyers[side].prepare()
+                trace.event(
+                    "prepared",
+                    notes=notes.model_dump(mode="json"),
+                    held=[c.model_dump(mode="json") for c in lawyers[side].held],
+                )
             stores[side][0].memory.append(NOTES_PREFIX + notes.model_dump_json())
             svc.log(f"{side} prepared: {len(lawyers[side].held)} authorities held")
 
@@ -218,7 +320,7 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
             checker, library = themis[side]
             ctx = VerifyContext(
                 case=case,
-                law=law,
+                law=side_law[side],
                 fetch_precedent=library.tools["get_precedent"],
                 turn=turn,
                 opponent_last=others[-1].published_text if others else None,
@@ -229,13 +331,14 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
             def write(feedback: str | None) -> LawyerDraft:
                 return lawyer.draft(turn, turn_type, upto, feedback)[0]
 
-            if NO_THEMIS in opts.ablations:
-                return _no_themis(write(None), turn)
-            return verify_with_retries(
-                write,
-                lambda d, last: checker.check(d, ctx, session_id=session_id, short_circuit=not last),
-                cfg.themis_local,
-            )
+            with trace.tags(phase="TURN", side=side, turn=turn, turn_type=turn_type):
+                if NO_THEMIS in opts.ablations:
+                    return _no_themis(write(None), turn)
+                return verify_with_retries(
+                    write,
+                    lambda d, last: checker.check(d, ctx, session_id=session_id, short_circuit=not last),
+                    cfg.themis_local,
+                )
 
         def publish(turn: int, side: Side, turn_type: str, vt: VerifiedTurn) -> None:
             framed = {i.issue_id for i in case.framed_issues}
@@ -265,6 +368,14 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
                 }
             )
             orch.transcript.publish(pub)
+            trace.event(
+                "turn_published",
+                side=side,
+                turn=turn,
+                turn_type=turn_type,
+                published=pub.model_dump(mode="json", by_alias=True),
+                themis_local=vt.result.model_dump(mode="json"),
+            )
             stores[side][1].private_turns.put(
                 PrivateTurnData(
                     id=turn_document_id(session_id, turn),
@@ -279,6 +390,11 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
             )
             stores[side][0].memory.append(TURN_PREFIX + vt.draft.text)
             published.append(pub)
+            if turn_type != CLOSING:  # D-112: answered before this side's next submission; a closing has none
+                answers = lawyers[side].answer_lookups(vt.draft)
+                trace.event(
+                    "lookups", side=side, turn=turn, asked=[x.model_dump() for x in vt.draft.lookups], answers=answers
+                )
             svc.log(f"turn {turn} {side} {turn_type}: {vt.result.outcome} after {vt.result.attempts} attempt(s)")
 
         plan = schedule(cfg)
@@ -291,7 +407,9 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
         for turn, side, vt in written:
             publish(turn, side, CLOSING, vt)
 
-        audit = audit_transcript(svc.llm, svc.prompts, cfg, case, published, session_id=session_id)
+        with trace.tags(phase="AUDIT"):
+            audit = audit_transcript(svc.llm, svc.prompts, cfg, case, published, session_id=session_id)
+            trace.event("audit", report=audit.model_dump(mode="json"))
         bench_law = law_for_bench(case, published, orch.law, as_of, cfg)
         bench = Bench(svc.llm, svc.prompts, cfg, svc.personas, allow_unapproved_personas=opts.allow_draft_personas)
         judge_library = CaseLibrary.for_role(
@@ -306,14 +424,26 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
                 fetch_precedent=judge_library.tools["get_precedent"],
                 audit=audit,
                 lessons=judge_lessons,
+                desk=KnowledgeDesk(  # D-112: statutes and the bench's own lessons; no search (SPEC I3)
+                    statute=statute_resolver(orch.law, as_of, orch.law.statute_ids(), svc.aliases, bench_law),
+                    library=judge_library,
+                    lessons=lesson_search(
+                        usable(judge_pool, party_status=None, statutes=statutes, law_versions=law_seen),
+                        exclude={x.lesson_id for x in judge_lessons},
+                        embedder=svc.embedder,
+                    ),
+                    cfg=cfg,
+                ),
             ),
             session_id=session_id,
         )
         svc.log(json.dumps({"bench": result.verdict.status, "winner": result.verdict.winner, "notes": result.notes}))
+        trace.event("verdict", verdict=result.verdict.model_dump(mode="json"), notes=result.notes)
         return orch.sessions.record_bench_verdict(
             session_id, decisions=result.decisions, bench=result.verdict, themis_global=audit
         )
-    except BaseException:
+    except BaseException as exc:
+        trace.event("aborted", error=f"{type(exc).__name__}: {exc}"[:ABORT_CHARS])
         current = orch.sessions.get(session_id)
         if current.state in (SessionState.CREATED, SessionState.IN_PROGRESS):
             orch.sessions.abort(session_id)

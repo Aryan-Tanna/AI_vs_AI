@@ -300,3 +300,36 @@ def test_system_prompt_is_sent_first(cfg: AppConfig, secrets: SecretStore, promp
         role="verifier", system=system, user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S"
     )
     assert [m.role for m in fake.requests[0].messages] == ["system", "user"]
+
+
+def test_a_per_call_output_cap_lowers_the_role_cap_and_never_raises_it(
+    cfg: AppConfig, secrets: SecretStore, prompts: PromptStore
+) -> None:
+    """D-109: the clerk's repair step has its own, smaller cap."""
+    role_cap = cfg.models.verifier.max_output_tokens
+    fake = FakeProvider([text_response(VALID), text_response(VALID)])
+    client = make_client(cfg, secrets, fake)
+    user = prompts.render("smoke/dummy", 1)
+    client.complete_json(role="verifier", user=user, schema=DaysAnswer, session_id="S1", max_output_tokens=100)
+    client.complete_json(role="verifier", user=user, schema=DaysAnswer, session_id="S1", max_output_tokens=role_cap * 2)
+    assert [r.model.max_output_tokens for r in fake.requests] == [100, role_cap]
+
+
+def test_cache_only_mode_never_calls_a_provider(
+    tmp_path: Path, cfg: AppConfig, secrets: SecretStore, prompts: PromptStore
+) -> None:
+    """D-110: a replay that misses the cache stops instead of spending money."""
+    from lexarena.llm.errors import CacheMissError
+
+    cache = ResponseCache(tmp_path / "c.sqlite")
+    fake = FakeProvider([text_response(VALID)])
+    live = make_client(cfg, secrets, fake, cache=cache)
+    user = prompts.render("smoke/dummy", 1)
+    live.complete_json(role="verifier", user=user, schema=DaysAnswer, session_id="S1")
+    replay = LLMClient(
+        cfg, secrets, prompts, {"groq": fake, "gemini": fake, "openrouter": fake}, cache, cache_only=True
+    )
+    assert replay.complete_json(role="verifier", user=user, schema=DaysAnswer, session_id="S2").cached
+    with pytest.raises(CacheMissError):
+        replay.complete_json(role="lawyer", user=user, schema=DaysAnswer, session_id="S2")
+    assert len(fake.requests) == 1

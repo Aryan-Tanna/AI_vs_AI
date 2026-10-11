@@ -34,6 +34,9 @@ class LLMResponse(BaseModel):
     input_tokens: int | None
     output_tokens: int | None
     finish_reason: str | None
+    # The model's reasoning text, when the provider returns it (OpenRouter `message.reasoning`); for the owner's trace
+    # only (D-110), never shown to another model.
+    reasoning: str | None = None
 
 
 @dataclass(frozen=True)

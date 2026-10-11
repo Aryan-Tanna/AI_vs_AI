@@ -62,6 +62,7 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
         git_sha=git_sha(REPO_ROOT),
         config_sha256=config_sha256(config_path),
         log=lambda line: print(line, file=sys.stderr, flush=True),
+        trace_dir=REPO_ROOT / cfg.llm.trace_dir if cfg.llm.trace_enabled else None,
     )
     options = SessionOptions(
         run_id=args.run_id,

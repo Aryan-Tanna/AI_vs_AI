@@ -18,9 +18,11 @@ from __future__ import annotations
 import hashlib
 import logging
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Protocol
 
+from lexarena import trace
+from lexarena.agents.desk import KnowledgeDesk
 from lexarena.judges.bench import decide_bench, fold_judge, require_supported
 from lexarena.judges.packet import (
     COUNSEL,
@@ -66,6 +68,7 @@ from lexarena.themis_local.verify import LawContext
 ROLE = "judge"
 log = logging.getLogger("lexarena.judges")
 JSON_INDENT = 2  # literal-ok: readability of the previous answer shown in the revision prompt
+NO_PROBLEMS = "(none: revise only where the answers to your lookups change your answer)"
 
 # THEMIS layer 1 on a judge's stated law runs on its own role, sized for an opinion (D-092).
 CHECK_ROLE = "judge_checker"
@@ -109,6 +112,7 @@ class BenchInputs:
     fetch_precedent: PrecedentFetcher
     audit: ThemisGlobalReport | None = None  # shown as notes only if judging.show_audit_notes (D-078)
     lessons: list[Lesson] = field(default_factory=list)  # LEGAL_RULE lessons pinned for the bench (D-077)
+    desk: KnowledgeDesk | None = None  # D-112: the bench's statute and own-lesson lookups; None turns them off
 
 
 @dataclass
@@ -211,6 +215,7 @@ class Bench:
             refs.judge_decide.id,
             refs.judge_decide.version,
             persona=persona.rendered.text,
+            max_lookups=str(self._cfg.judging.lookups_per_opinion),
             first_side=COUNSEL[first],
             second_side=COUNSEL[second],
             submissions=render_submissions(inputs.case, inputs.turns, order),
@@ -222,15 +227,35 @@ class Bench:
             **shared,
         )
         draft = self._ask(original, allowed, session_id)
+        # D-112: the judge's lookups are answered in its one revision round; a provision it found becomes citable and
+        # is checked like any other, for this opinion only.
+        cap = self._cfg.judging.lookups_per_opinion
+        answers = None
+        if inputs.desk is not None and cap and draft.lookups:
+            got = inputs.desk.serve(list(draft.lookups[:cap]))
+            answers = got.text
+            if got.statutes:
+                allowed = replace(allowed, statute_ids=allowed.statute_ids | set(got.statutes))
+                inputs = replace(
+                    inputs,
+                    law=LawContext(
+                        views={**inputs.law.views, **got.statutes},
+                        alternatives=inputs.law.alternatives,
+                        # the desk's resolver filled in the predicates of what it found (orchestrator, D-112)
+                        predicates={s: inputs.law.predicates.get(s, []) for s in {*inputs.law.views, *got.statutes}},
+                    ),
+                )
+            trace.event("judge_lookups", asked=[x.model_dump() for x in draft.lookups[:cap]], answers=answers)
         problems = self._problems(draft, allowed, inputs, session_id)
-        if not problems:
+        if not problems and answers is None:
             return finalize(draft, order, revised=False, problems=[])
         revision = self._prompts.render(
             refs.judge_revise.id,
             refs.judge_revise.version,
             original=original.text,
             previous=draft.model_dump_json(indent=JSON_INDENT),
-            problems="\n".join(f"- {p}" for p in problems),
+            problems="\n".join(f"- {p}" for p in problems) or NO_PROBLEMS,
+            lookups=answers or "(none)",
             rule_ids=", ".join(sorted(allowed.statute_ids | allowed.precedent_uids)),
             record_ids=", ".join(sorted(allowed.record_ids)),
         )
@@ -274,7 +299,11 @@ class Bench:
         one = single_orders(case.case_id) if self._cfg.judging.orders_per_persona < len(ORDERS) else None
         for n, persona in enumerate(personas):
             orders = ORDERS if one is None else (one[n],)
-            opinions = {o: self._opinion(persona, o, shared, inputs, allowed, session_id) for o in orders}
+            opinions = {}
+            for o in orders:
+                with trace.tags(phase="BENCH", persona=persona.persona, order=o):
+                    opinions[o] = self._opinion(persona, o, shared, inputs, allowed, session_id)
+                    trace.event("opinion", opinion=opinions[o].model_dump(mode="json"))
             decisions.append(
                 fold_judge(
                     persona.persona,

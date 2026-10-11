@@ -11,8 +11,9 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
+from lexarena import trace
 from lexarena.schemas.agent import LawyerDraft
 from lexarena.schemas.codes import HARD_ERROR_CODES
 from lexarena.schemas.config import ThemisLocalConfig
@@ -64,8 +65,15 @@ def verify_with_retries(
     errors_by_attempt: list[list[str]] = []
     note: str | None = None
     while True:
-        draft = write(note)
-        v = check(draft, len(errors_by_attempt) >= cfg.retry_cap)
+        with trace.tags(attempt=len(errors_by_attempt) + 1):
+            draft = write(note)
+            v = check(draft, len(errors_by_attempt) >= cfg.retry_cap)
+            trace.event(  # the owner's trace (D-110): every attempt, including rejected drafts and why
+                "themis_check",
+                draft=draft.model_dump(mode="json"),
+                hard_errors=[asdict(p) for p in v.hard_errors],
+                warnings=[w.model_dump(mode="json") for w in v.warnings],
+            )
         errors_by_attempt.append(_codes(v.hard_errors))
         if not v.hard_errors or len(errors_by_attempt) > cfg.retry_cap:
             break

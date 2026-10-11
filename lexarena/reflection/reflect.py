@@ -193,6 +193,8 @@ class Reflection:
             },
             initial_confidence=self._cfg.memory.initial_confidence,
             case_seq=case_seq,
+            law_versions=session.law_versions,
+            source_year=av.metadata.simulation_date.year,
         )
         accepted: list[Lesson] = []
         for n, candidate in enumerate(candidates, 1):

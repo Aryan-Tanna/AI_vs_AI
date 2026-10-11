@@ -357,3 +357,77 @@ def test_the_operator_can_skip_the_preflight_and_the_ledger_says_so(tmp_path: Pa
     led = m.go()
     assert led.status == "COMPLETE" and script.calls
     assert "quota preflight skipped by the operator" in (led.jobs[0].record("SESSION").detail or "")
+
+
+# ---------------------------------------------------------------- money (D-109)
+
+
+def _priced_call(when: datetime, provider: str, model: str, tin: int, tout: int, outcome: str = "ok") -> dict[str, Any]:
+    return {
+        "ts": when.isoformat(),
+        "role": "judge",
+        "provider": provider,
+        "model": model,
+        "outcome": outcome,
+        "attempts": 1,
+        "input_tokens": tin,
+        "output_tokens": tout,
+    }
+
+
+def test_spend_is_priced_by_provider_and_model_and_skips_cache_hits_and_older_calls(tmp_path: Path) -> None:
+    from lexarena.runner.spend import spent_since
+
+    ds = next(p for p in CFG.runner.prices if p.provider == "openrouter" and "deepseek" in p.model)
+    free = next(p for p in CFG.runner.prices if p.output_usd_per_m == 0)
+    log = _log(
+        tmp_path / "log.jsonl",
+        [
+            _priced_call(NOW, ds.provider, ds.model, 1_000_000, 1_000_000),
+            _priced_call(NOW, ds.provider, ds.model, 1_000_000, 1_000_000, outcome="cache_hit"),
+            _priced_call(NOW - timedelta(days=1), ds.provider, ds.model, 1_000_000, 0),
+            _priced_call(NOW, free.provider, free.model, 5_000_000, 5_000_000),
+        ],
+    )
+    spent = spent_since(log, CFG, NOW - timedelta(minutes=1))
+    assert spent.usd == pytest.approx(ds.input_usd_per_m + ds.output_usd_per_m)
+    assert spent.unpriced == []
+
+
+def test_the_same_model_on_a_paid_route_is_not_free(tmp_path: Path) -> None:
+    """Gemini direct on a free key costs nothing; the same model through OpenRouter is billed (D-109)."""
+    from lexarena.runner.spend import spent_since
+
+    log = _log(
+        tmp_path / "log.jsonl",
+        [
+            _priced_call(NOW, "gemini", "gemini-3.5-flash", 1000, 1000),
+            _priced_call(NOW, "openrouter", "google/gemini-3.5-flash", 0, 1_000_000),
+        ],
+    )
+    assert spent_since(log, CFG, NOW - timedelta(minutes=1)).usd > 0
+
+
+def test_an_unpriced_paid_call_pauses_the_run(tmp_path: Path) -> None:
+    store, script = ledger(tmp_path), Script()
+    log = _log(store.dir.parent / "log.jsonl", [_priced_call(NOW, "openrouter", "some/new-model", 10, 10)])
+    led = manager(store, script, log=log).go()
+    assert led.status == "PAUSED" and "no price row" in (led.pause_reason or "") and script.calls == []
+
+
+def test_a_stage_that_would_pass_the_spend_cap_does_not_start(tmp_path: Path) -> None:
+    store, script = ledger(tmp_path), Script()
+    ds = next(p for p in CFG.runner.prices if p.provider == "openrouter" and "deepseek" in p.model)
+    million_out = CFG.runner.spend_cap_usd / ds.output_usd_per_m * 1_000_000
+    log = _log(store.dir.parent / "log.jsonl", [_priced_call(NOW, ds.provider, ds.model, 0, int(million_out))])
+    led = manager(store, script, log=log).go()
+    assert led.status == "PAUSED" and "spend before SESSION" in (led.pause_reason or "")
+    assert script.calls == []
+
+
+def test_money_spent_before_the_run_was_planned_does_not_count(tmp_path: Path) -> None:
+    store, script = ledger(tmp_path), Script()
+    ds = next(p for p in CFG.runner.prices if p.provider == "openrouter" and "deepseek" in p.model)
+    earlier = NOW - timedelta(hours=1)
+    log = _log(store.dir.parent / "log.jsonl", [_priced_call(earlier, ds.provider, ds.model, 0, 100_000_000)])
+    assert manager(store, script, log=log).go().status == "COMPLETE"

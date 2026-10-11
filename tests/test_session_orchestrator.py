@@ -85,6 +85,8 @@ class ByProvider:
                         "precedent_ids": [],
                     }
                 ],
+                # D-112: every submission asks for its statute and its lessons; answered before the next one
+                "lookups": [{"kind": "STATUTE", "query": STATUTE}, {"kind": "LESSONS", "query": "<advice>"}],
             }
         elif name == "ArgumentExtraction":
             body = {"checklists": []}
@@ -108,6 +110,7 @@ class ByProvider:
                 ],
                 "overall_result": "RESPONDENT",
                 "overall_reasons": "<reasons>",
+                "lookups": [],
                 "advocacy": [{"issue_id": "I1", "petitioner": dims, "respondent": dims}],
             }
         else:

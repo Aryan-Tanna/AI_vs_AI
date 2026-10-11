@@ -40,7 +40,7 @@ models:
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
   auditor:         {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: gemini, family: gemini, name: gemini-3.5-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: gemini_api6, routing: null}  # [D-096] back on Gemini: Qwen 3.8 Flash looped in its reasoning on DEV_0004's entity list (65,536 reasoning tokens, no answer); Gemini clerked DEV_0001-0003; free key
+  clerk_primary:   {provider: gemini, family: gemini, name: gemini-3.5-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: gemini_api7, routing: null}  # [D-096] back on Gemini: Qwen 3.8 Flash looped in its reasoning on DEV_0004's entity list (65,536 reasoning tokens, no answer); Gemini clerked DEV_0001-0003; free key
   clerk_secondary: {provider: openrouter, family: deepseek, name: deepseek/deepseek-v4.1-flash, temperature: 0,   max_output_tokens: 8192, reasoning_effort: null, reasoning_enabled: null, api_key_env: paidAPI, routing: {order: [DeepInfra, Parasail], allow_fallbacks: false, require_parameters: true, quantizations: [fp8]}}  # cap 2048 -> 8192: DeepSeek reasons by default [D-087]
   reflection:      {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: paidAPI, routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
@@ -67,18 +67,18 @@ prompts:
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   reflection_lessons: {id: reflection/lessons, version: 1}   # [SPEC F1-F7, D-077]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
-  judge_decide: {id: judges/decide, version: 3}         # [D-071] one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]
-  judge_revise: {id: judges/revise, version: 2}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]
+  judge_decide: {id: judges/decide, version: 4}         # [D-071] one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
+  judge_revise: {id: judges/revise, version: 3}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]; v3 answers to lookups [D-112]
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
     TEXTUALIST: {id: judges/persona_textualist, version: 1}
     PURPOSIVIST: {id: judges/persona_purposivist, version: 1}
     PROCEDURALIST: {id: judges/persona_proceduralist, version: 2}   # [D-105] v2 DRAFT: decides the merits when no procedural point arises; rules are never issue IDs. Awaits your approval
   single_llm: {id: baselines/single_llm, version: 1}    # [D-072] the single-LLM baseline on the same case file
-  agent_rules: {id: agents/rules, version: 1}           # [D-079] the same for both sides: knowledge-base and record rules
+  agent_rules: {id: agents/rules, version: 2}           # [D-079] the same for both sides: knowledge-base and record rules; v2 lookups [D-112]
   agent_role: {id: agents/role, version: 1}             # [SPEC E6] the only template whose values differ by side
   agent_plan: {id: agents/plan, version: 1}             # [D-053] private strategy phase, research plan
   agent_notes: {id: agents/notes, version: 1}           # [D-053] private strategy phase, plan after research
-  agent_turn: {id: agents/turn, version: 1}             # [D-079] one submission
+  agent_turn: {id: agents/turn, version: 2}             # [D-079] one submission; v2 answers to lookups and the lookups field [D-112]
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call
@@ -88,6 +88,8 @@ llm:
   cache_enabled: true
   cache_path: .cache/llm_cache.sqlite
   log_path: .cache/logs/llm_calls.jsonl
+  trace_enabled: true                    # [D-110] session traces for the courtroom viewer; never read by any model
+  trace_dir: runs/live                   # git-ignored (runs/); one JSONL per session
   chars_per_token: 4                     # [PLACEHOLDER, D-077] estimate for prompt budgets where no tokenizer exists for the model
 
 embedding:
@@ -113,6 +115,9 @@ session:
   parallel_closings: true                # [D-011]
   max_turn_tokens: 600                   # [MEASURED 2026-10-09, D-082] same for both sides [SPEC E1]; text + claims + reasoning must fit the lawyer's 2,048-token output cap
   lawyer_input_tokens: 20000             # [D-105] your decision 2026-10-11: was 6000, a free-tier Groq limit (R-011); lawyers saw condensed transcripts from turn 2 (R-039)
+  lookups_per_turn: 3                    # [D-112, PLACEHOLDER] knowledge-base requests a submission may make, answered before the side's next one
+  lookup_tokens: 1500                    # [D-112, PLACEHOLDER] the answers share this budget (part of lawyer_input_tokens)
+  lookup_lessons_k: 3                    # [D-112, PLACEHOLDER] lessons one LESSONS lookup returns
   research_queries: 3                    # [PLACEHOLDER, D-053] searches per side in the strategy phase, the same for both
   words_per_token: 0.75                  # [PLACEHOLDER] turns max_turn_tokens into the word guide shown to lawyers
 
@@ -153,6 +158,7 @@ judging:
   check_reasons_with_layer1: false       # [D-093] your decision 2026-10-10: the bench is a shadow bench; THEMIS stays on the lawyers. Free ID checks remain (check_opinion)
   orders_per_persona: 2                  # [D-105] your decision 2026-10-11: each judge decides twice, sides swapped (INTENT); reverses D-093
   show_audit_notes: true                 # [D-078] THEMIS-GLOBAL's point map and contradictions, never its scores; ablate on dev to check bias
+  lookups_per_opinion: 2                 # [D-112, PLACEHOLDER] statute or own-lesson lookups per opinion, answered in its one revision round
   show_audit_contradictions: false       # [D-105] your decision 2026-10-11: unconfirmed self-contradictions are not shown to the judges
   # Report limits, fixed before measuring [D-024]; Step 11 reports against them, nothing is re-run automatically [D-071].
   max_order_swap_disagreement_rate: 0.2  # [PLACEHOLDER] share of a persona's cases whose two orders disagree on the result
@@ -161,8 +167,9 @@ judging:
 
 memory:
   require_human_reviewed_case: true      # [D-094] your instruction 2026-10-10: unreviewed cases write and re-weight no lessons
-  pinned_token_budget: 250               # [SPEC E6]
-  pinned_k: 5                            # [PLACEHOLDER]
+  pinned_token_budget: 800               # [SPEC E6; D-111] was 250 (2-3 lessons); 10 lessons need about 600-800
+  pinned_k: 5                            # [PLACEHOLDER; D-111 your choice 2026-10-12] the top 5 by weight
+  explore_k: 5                           # [D-111 your choice 2026-10-12] plus 5 drawn at random (seeded) from the rest, so unused lessons get tested
   decay_lambda: 0.98                     # [SPEC F4]
   retire_below_confidence: 0.2           # [SPEC F4]
   dedup_embedding_threshold: 0.90        # [PLACEHOLDER] SPEC F3 warns 0.90 can merge opposite lessons
@@ -198,6 +205,19 @@ runner:                                  # [D-073] Step 13
     BASELINE: [{role: judge, requests: 1}]
     EVALUATE: []
     REFLECT: [{role: reflection, requests: 2}]
+  # Money guard [D-109]. Your budget 2026-10-12: $20 on the OpenRouter account, $3.91 spent, so $16.09 left; the 20-case
+  # pilot may spend at most this much, leaving the rest for clerking and the checks before it.
+  spend_cap_usd: 9.0                     # [D-109] per run, from the call log since the run was planned
+  stage_cost_usd: {SESSION: 0.60, BASELINE: 0.03, EVALUATE: 0.0, REFLECT: 0.10}   # [MEASURED DEV_0002 $0.40, DEV_0007 $0.39 per session; margin for retries]
+  prices:                                # [MEASURED 2026-10-12 from openrouter.ai/api/v1/models] USD per million tokens
+    - {provider: openrouter, model: deepseek/deepseek-v4.1-flash, input_usd_per_m: 0.30, output_usd_per_m: 1.20}
+    - {provider: openrouter, model: qwen/qwen3.8-flash, input_usd_per_m: 0.15, output_usd_per_m: 0.47}
+    - {provider: openrouter, model: qwen/qwen3.8-27b, input_usd_per_m: 0.04, output_usd_per_m: 2.30}
+    - {provider: openrouter, model: google/gemini-3.5-flash, input_usd_per_m: 1.50, output_usd_per_m: 9.00}
+    - {provider: gemini, model: gemini-3.5-flash, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys
+    - {provider: gemini, model: gemini-2.5-flash, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys
+    - {provider: groq, model: openai/gpt-oss-120b, input_usd_per_m: 0.0, output_usd_per_m: 0.0}  # free tier
+    - {provider: groq, model: qwen/qwen3.8-27b, input_usd_per_m: 0.0, output_usd_per_m: 0.0}     # free tier
 
 splits:
   test_count: 100                        # [INTENT]
@@ -224,6 +244,7 @@ clerk:
   max_paragraph_number_jump: 2           # [PLACEHOLDER] a court number this far ahead still opens a paragraph (skips are flagged); bigger jumps are quotations
   # SPEC A1: the presumption is narrowed to exhibits; contested facts stay contested.
   presumptions: ["Exhibits are presumed genuine and duly executed; do not object that a document was not produced.", "Facts marked CONTESTED remain disputed.", "Nothing is known about an exhibit beyond its known_contents."]
+  repair_max_output_tokens: 24576        # [D-109] a normal repair answer is about 17k tokens; DEV_0007's looped to 65,536 on a paid route
   repair_rounds: 1                       # [PLACEHOLDER] extractor repair rounds after failed checks; problems left after them block the case [D-060]
   entailment_batch_chars: 12000         # [PLACEHOLDER] items + sources per entailment request; fits Groq's ~7k-token input limit [R-011, D-056]
   leakage_ngram: 12                      # [PLACEHOLDER] a run of this many words shared with the reasoning (and not with agent-visible text) is leakage; 8 flagged legal boilerplate on DEV_0002/0003 [D-060]

@@ -38,6 +38,11 @@ class Lesson(StoredModel):
     created_in_run: NonEmptyStr
     # The reward of the case that last used it (SPEC F4: confidence rises when the next use does at least as well).
     last_reward: UnitScore | None = None
+    # D-111: the law the source case saw, per statute (`versioning.statute_version`), and the year it was decided. A
+    # lesson is pinned only into a case that sees the same version of each statute it shares; the year is for the owner
+    # and never shown to an agent. Lessons written before D-111 carry neither and match every version.
+    law_versions: dict[str, str] = Field(default_factory=dict)
+    source_year: int | None = None
 
     @model_validator(mode="after")
     def _routing(self) -> Lesson:

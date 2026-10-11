@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from pydantic import ValidationError
 
@@ -41,6 +41,8 @@ class Context:
     errors_by_side: dict[str, set[str]]  # hard-error codes each side incurred
     initial_confidence: float
     case_seq: int
+    law_versions: dict[str, str] = field(default_factory=dict)  # D-111: the law the case saw, per statute
+    source_year: int | None = None  # D-111: the year the source case was decided (owner-facing only)
 
 
 @dataclass(frozen=True)
@@ -116,6 +118,8 @@ def check(candidate: LessonCandidate, n: int, ctx: Context) -> Verdict:
             last_retrieved_case_seq=ctx.case_seq,
             status="ACTIVE",
             created_in_run=ctx.run_id,
+            law_versions={s: ctx.law_versions[s] for s in candidate.statute_ids if s in ctx.law_versions},
+            source_year=ctx.source_year,
         )
     except ValidationError as exc:
         return Verdict(None, f"schema: {exc.errors()[0]['msg']}")

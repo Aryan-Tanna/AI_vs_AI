@@ -52,5 +52,10 @@ class ContentBlockedError(ProviderRequestError):
     """The provider refused to answer (safety block)."""
 
 
+class CacheMissError(LLMError):
+    """Cache-only mode (`LEXARENA_CACHE_ONLY=1`, D-110): the answer is not cached, and no provider is called, so a
+    replay can never spend money."""
+
+
 class SchemaValidationError(LLMError):
     """The model kept returning output that does not match the schema."""

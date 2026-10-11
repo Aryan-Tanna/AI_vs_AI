@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from lexarena.memory.pinning import select
+from lexarena.memory.pinning import pin, select
 from lexarena.memory.weights import after_use, weakened, weight
 from lexarena.reflection.dedup import place
 from lexarena.reflection.filters import Context, check
@@ -83,9 +83,38 @@ def test_pinning_filters_by_party_status_and_statute_then_ranks_by_weight() -> N
 def test_pinning_obeys_the_same_count_and_token_budget_for_everyone() -> None:
     pool = [lesson(n) for n in range(1, 20)]  # literal-ok: more lessons than K
     chosen = select(pool, party_status="FINANCIAL_CREDITOR", statutes={"<statute A>"}, case_seq=1, cfg=CFG)
-    assert len(chosen) == M.pinned_k
+    assert len(chosen) == M.pinned_k + M.explore_k
     long = [lesson(n, lesson="x" * int(M.pinned_token_budget * CFG.llm.chars_per_token)) for n in range(1, 4)]
     assert select(long, party_status="FINANCIAL_CREDITOR", statutes={"<statute A>"}, case_seq=1, cfg=CFG) == []
+
+
+def test_top_lessons_rank_by_weight_and_the_explore_draw_is_reproducible_and_disjoint() -> None:
+    """D-111: the top `pinned_k` by weight, then `explore_k` drawn at random (seeded) from the rest."""
+    pool = [lesson(n, severity=1 + n % 5) for n in range(1, 30)]  # literal-ok: more lessons than K
+    kw: dict[str, Any] = {"party_status": "FINANCIAL_CREDITOR", "statutes": {"<statute A>"}, "cfg": CFG}
+    first, again = pin(pool, case_seq=3, **kw), pin(pool, case_seq=3, **kw)
+    assert [x.lesson_id for x in first.explore] == [x.lesson_id for x in again.explore]
+    top = {x.lesson_id for x in first.top}
+    assert len(top) == M.pinned_k and not top & {x.lesson_id for x in first.explore}
+    assert top == {x.lesson_id for x in select(pool, case_seq=3, **kw)[: M.pinned_k]}
+    later = pin(pool, case_seq=4, **kw)
+    assert {x.lesson_id for x in later.top} == top  # the ranking does not depend on the draw
+
+
+def test_a_lesson_learnt_under_another_version_of_the_law_is_not_pinned() -> None:
+    """D-111: a lesson from a case decided under one version of a provision never reaches a case under another."""
+    old_law = lesson(1).model_copy(update={"law_versions": {"<statute A>": "v-2019"}})
+    same = lesson(2).model_copy(update={"law_versions": {"<statute A>": "v-2025"}})
+    unversioned = lesson(3)  # written before D-111: matches any version
+    chosen = select(
+        [old_law, same, unversioned],
+        party_status="FINANCIAL_CREDITOR",
+        statutes={"<statute A>"},
+        case_seq=1,
+        cfg=CFG,
+        law_versions={"<statute A>": "v-2025"},
+    )
+    assert sorted(x.lesson_id for x in chosen) == ["L-2", "L-3"]
 
 
 # ---------------------------------------------------------------- candidate filters
@@ -147,6 +176,15 @@ def test_a_good_candidate_becomes_a_lesson_keyed_by_party_status() -> None:
         M.initial_confidence,
     )
     assert x.provenance.source_paras == ["P4"] and x.last_retrieved_case_seq == 3
+
+
+def test_a_new_lesson_carries_the_law_version_and_year_of_its_case() -> None:
+    """D-111: stamped from what the session saw, only for the statutes the lesson names."""
+    from dataclasses import replace
+
+    c = replace(ctx(), law_versions={"<statute A>": "v-A", "<statute B>": "v-B"}, source_year=2019)
+    x = check(candidate(), 1, c).lesson
+    assert x is not None and x.law_versions == {"<statute A>": "v-A"} and x.source_year == 2019
 
 
 @pytest.mark.parametrize(

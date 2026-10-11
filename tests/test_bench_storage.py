@@ -84,7 +84,10 @@ def test_unstable_bench_is_recorded_as_unstable(procs: tuple[SessionProcess, Sea
     stored = session.orchestrator().sessions.record_bench_verdict(
         sid, decisions=decisions, bench=verdict, themis_global=REPORT
     )
-    assert (stored.winner, stored.bench and stored.bench.unstable_reason) == ("UNSTABLE", "UNBROKEN_TIE")
+    assert (stored.winner, stored.bench and stored.bench.unstable_reason) == (
+        "UNSTABLE",
+        "EVEN_SPLIT",
+    )  # D-105: no style tie-break
 
 
 def test_only_the_orchestrator_records_the_bench(procs: tuple[SessionProcess, SealedProcess]) -> None:

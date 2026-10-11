@@ -193,6 +193,9 @@ class LLMConfig(Strict):
     cache_enabled: bool
     cache_path: str
     log_path: str
+    # D-110: the owner's session trace (answers, reasoning, THEMIS checks, opinions) for the courtroom viewer.
+    trace_enabled: bool
+    trace_dir: str
     chars_per_token: PositiveFloat  # D-077: budget estimate where the model has no local tokenizer
 
 
@@ -231,6 +234,10 @@ class SessionConfig(Strict):
     max_turn_tokens: PositiveInt
     lawyer_input_tokens: PositiveInt  # D-079: per-call budget; the transcript condenses to fit
     research_queries: PositiveInt  # D-053: strategy-phase searches per side
+    # D-112: each side's knowledge-base lookups, answered before its next submission; the same caps for both sides.
+    lookups_per_turn: int = Field(ge=0)
+    lookup_tokens: PositiveInt  # all answers to one submission's lookups share this budget
+    lookup_lessons_k: PositiveInt  # lessons returned by one LESSONS lookup
     words_per_token: PositiveFloat
 
 
@@ -304,6 +311,7 @@ class JudgingConfig(Strict):
     orders_per_persona: Literal[1, 2]  # literal-ok: the two allowed order counts (D-093), not a tuning value
     show_audit_notes: bool  # D-078: the auditor's map of the transcript, never its scores
     show_audit_contradictions: bool  # D-105: unconfirmed self-contradictions are left out of the judges' notes
+    lookups_per_opinion: int = Field(ge=0)  # D-112: knowledge-base lookups a judge may ask for; 0 turns them off
     max_order_swap_disagreement_rate: UnitInterval  # report limit (D-024, D-071)
     persona_role_max_win_rate: UnitInterval  # SPEC E1 persona bias flag
     persona_role_min_cases: PositiveInt  # SPEC E1
@@ -326,6 +334,7 @@ class MemoryConfig(Strict):
     require_human_reviewed_case: bool  # D-094: no lessons from a case the owner has not reviewed
     pinned_token_budget: PositiveInt
     pinned_k: PositiveInt
+    explore_k: int = Field(ge=0)  # D-111: lessons drawn at random from the rest of the eligible pool, same rule for all
     decay_lambda: UnitInterval
     retire_below_confidence: UnitInterval
     dedup_embedding_threshold: UnitInterval
@@ -363,6 +372,24 @@ class StageRequests(Strict):
         return {r.role: r.requests for r in getattr(self, stage)}
 
 
+class ModelPrice(Strict):
+    """What one (provider, model) pair costs, in US dollars per million tokens. A free key is a row of zeros."""
+
+    provider: NonEmptyStr
+    model: NonEmptyStr
+    input_usd_per_m: Annotated[float, Field(ge=0)]
+    output_usd_per_m: Annotated[float, Field(ge=0)]
+
+
+class StageCost(Strict):
+    """The most one stage is expected to cost, in US dollars (checked before it starts, D-109)."""
+
+    SESSION: Annotated[float, Field(ge=0)]
+    BASELINE: Annotated[float, Field(ge=0)]
+    EVALUATE: Annotated[float, Field(ge=0)]
+    REFLECT: Annotated[float, Field(ge=0)]
+
+
 class RunnerConfig(Strict):
     runs_dir: NonEmptyStr
     allowed_splits: list[Literal["DEV", "TRAIN", "VALIDATION", "TEST"]] = Field(min_length=1)
@@ -371,6 +398,11 @@ class RunnerConfig(Strict):
     ablations: list[NonEmptyStr]
     quotas: list[QuotaLimit]
     stage_requests: StageRequests
+    # Money (D-109): a run pauses before a stage when what it has spent plus that stage's expected cost would pass the
+    # cap. Spend is priced from the call log by (provider, model); a paid call with no price row pauses the run.
+    spend_cap_usd: PositiveFloat
+    stage_cost_usd: StageCost
+    prices: list[ModelPrice] = Field(min_length=1)
 
 
 class SplitsConfig(Strict):
@@ -388,6 +420,7 @@ class ClerkConfig(Strict):
     running_text_min_chars: PositiveInt
     entailment_batch_chars: PositiveInt
     repair_rounds: int = Field(ge=0)
+    repair_max_output_tokens: PositiveInt  # D-109: the repair step's own output cap, below the extractor's
     leakage_ngram: PositiveInt
     grounds_max_ratio: float = Field(gt=1)
     presumptions: list[NonEmptyStr] = Field(min_length=1)

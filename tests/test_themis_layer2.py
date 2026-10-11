@@ -263,7 +263,7 @@ def verification(*codes: str, warnings: int = 0) -> Verification:
 
 
 def draft(n: int) -> LawyerDraft:
-    return LawyerDraft(text=f"<draft {n}>", issues_addressed=["I1"], claims=[])
+    return LawyerDraft(text=f"<draft {n}>", issues_addressed=["I1"], claims=[], lookups=[])
 
 
 def test_retry_feeds_back_exact_codes_and_ids_then_passes() -> None:
@@ -336,6 +336,7 @@ def test_the_whole_check_runs_layer_1_and_layer_2() -> None:
         text=ARGUMENT,
         issues_addressed=["I1"],
         claims=[claim(record_ids=["EX-1"]), claim(type="LAW", statute_id=STATUTE, precedent_ids=["P1"])],
+        lookups=[],
     )
     v = ThemisLocal(llm, PROMPTS, CFG, WordEmbedder()).check(d, ctx, session_id="S")
     assert [c for c, _ in v.claims] == ["T03-C1", "T03-C2"]
@@ -379,6 +380,7 @@ def _short_circuit_case(short_circuit: bool) -> tuple[Verification, int]:
         text=ARGUMENT,
         issues_addressed=["I1"],
         claims=[claim(record_ids=["F999"]), claim(type="LAW", statute_id=STATUTE, precedent_ids=["P1"])],
+        lookups=[],
     )
     v = ThemisLocal(llm, PROMPTS, CFG, WordEmbedder()).check(d, ctx, session_id="S", short_circuit=short_circuit)
     return v, len(verifier.requests)

@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import date
-from typing import Literal, get_args
+from typing import Any, Literal, get_args
 
 from pydantic import Field, model_validator
 
@@ -218,11 +218,29 @@ class IssueAdvocacyDraft(StoredModel):
     respondent: DimensionScores
 
 
+class JudgeLookup(StoredModel):
+    """A judge's request to its own knowledge base (D-112): a provision as it stood on the case dates (STATUTE), or the
+    bench's own lessons (LESSONS). No precedent search: the bench decides on the authorities counsel cited (SPEC I3)."""
+
+    kind: Literal["STATUTE", "LESSONS"]
+    query: str
+
+
 class OpinionDraft(StoredModel):
     issue_decisions: list[IssueDecisionDraft]
     overall_result: Side
     overall_reasons: str
     advocacy: list[IssueAdvocacyDraft]
+    lookups: list[JudgeLookup]  # D-112: may be empty; answered in the judge's one revision round
+
+    @model_validator(mode="before")
+    @classmethod
+    def _stored_before_lookups(cls, data: Any) -> Any:
+        # Opinions stored before D-112 have no lookups. The field stays required in the model's JSON schema (strict
+        # structured output needs every field required); only stored documents get the empty default here.
+        if isinstance(data, dict) and "lookups" not in data:
+            return {**data, "lookups": []}
+        return data
 
 
 # ---------------------------------------------------------------- persona prompt approval (CLAUDE.md §4.8)
