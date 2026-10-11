@@ -94,6 +94,7 @@ Numbers quoted here come from `scripts/audit_raw.py` (run 2026-10-05) unless sta
 | R-044 | 2026-10-12 | **Lookups and 10 lessons are untested on a live model.** Schemas and prompts changed the night before (LawyerDraft.lookups, OpinionDraft.lookups, new prompt versions); offline and integration tests pass with scripted models only. Whether DeepSeek returns `message.reasoning` through DeepInfra/Parasail is also unverified (the viewer copes without it). | Medium | Medium | Morning: smoke calls and one DEV_0007 session before the pilot; set `lookups_per_turn: 0` and `lookups_per_opinion: 0` if they misbehave. | OPEN |
 | R-045 | 2026-10-12 | **Pilot lessons stay in live memory.** Lessons from the pilot (dev cases, partly Claude-triaged) would be read by Phase 2 if left. | Medium | Low | Before Phase 2 decide: start the 500 from empty memory (remove by `created_in_run`) or keep owner-reviewed pilot lessons only. | OPEN |
 
+| R-046 | 2026-10-12 | **Law-version hash covers the whole Law DB record.** `statute_version` hashes the record plus applied overlays, so a later correction to a section's summary or checklist (law unchanged) would orphan every lesson on that statute. | Low | Medium | The pilot is unaffected (Law DB frozen). Before the 500, hash only what varies by date (applied overlay values and in-force status). | OPEN |
 ## Suggestions
 
 | ID | Date | Suggestion | Benefit | Cost | Serves (INTENT goal or SPEC section) | Status |
