@@ -84,6 +84,7 @@ def evaluated_session(session: SessionProcess, sealed: SealedProcess) -> str:
 def candidate(**change: Any) -> dict[str, Any]:
     base = {
         "lesson_type": "ADVOCACY",
+        "mistake": "MISSED_EVIDENCE",
         "for_whom": "PETITIONER",
         "statute_ids": ["<statute id>"],
         "error_code": None,
@@ -156,4 +157,30 @@ def test_an_unreviewed_case_writes_no_lesson_and_spends_no_call(
     result = engine.reflect(stores, private, sid, run_id="R1")  # type: ignore[arg-type]
     assert result.session.state == SessionState.REFLECTED
     assert result.written == [] and result.updated == [] and provider.requests == []
-    assert any("not human-reviewed" in r for r in result.rejected)
+    assert any("neither owner-reviewed" in r for r in result.rejected)
+
+
+def test_a_claude_triaged_case_teaches_only_when_the_config_accepts_triage_and_says_so(
+    procs: tuple[SessionProcess, SealedProcess, Namespace],
+) -> None:
+    """D-114: the pilot's override of D-094. A triaged case writes lessons marked CLAUDE_TRIAGE; with the switch off it
+    teaches nothing."""
+    session, sealed, _ = procs
+    cases = sealed.clerk().cases
+    original = cases.get(CASE)
+    cases.put(original.model_copy(update={"build": original.build.model_copy(update={"claude_triaged": True})}))
+    try:
+        off = GATED.model_copy(update={"memory": GATED.memory.model_copy(update={"accept_claude_triage": False})})
+        engine, provider = reflection({"lessons": [candidate()]}, off)
+        stores = sealed.reflection()
+        private = {side: sealed.reflection(side).private_turns for side in ("PETITIONER", "RESPONDENT")}
+        refused = engine.reflect(stores, private, evaluated_session(session, sealed), run_id="R1")  # type: ignore[arg-type]
+        assert refused.written == [] and provider.requests == []
+        on = GATED.model_copy(update={"memory": GATED.memory.model_copy(update={"accept_claude_triage": True})})
+        engine, _ = reflection({"lessons": [candidate(trigger="a triaged case's own trigger")]}, on)
+        taught = engine.reflect(stores, private, evaluated_session(session, sealed), run_id="R2")  # type: ignore[arg-type]
+        assert taught.written
+        written = [x for x in session.orchestrator().lawyer_memory.all() if x.lesson_id in taught.written]
+        assert written and all(x.source_review == "CLAUDE_TRIAGE" for x in written)
+    finally:
+        cases.put(original)

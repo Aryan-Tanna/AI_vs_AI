@@ -332,6 +332,7 @@ class JudgingConfig(Strict):
 
 class MemoryConfig(Strict):
     require_human_reviewed_case: bool  # D-094: no lessons from a case the owner has not reviewed
+    accept_claude_triage: bool  # D-114: your override for the pilot: a Claude-triaged case may teach lessons too
     pinned_token_budget: PositiveInt
     pinned_k: PositiveInt
     explore_k: int = Field(ge=0)  # D-111: lessons drawn at random from the rest of the eligible pool, same rule for all

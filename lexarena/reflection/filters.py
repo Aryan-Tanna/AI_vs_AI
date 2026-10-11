@@ -17,6 +17,7 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from typing import Literal
 
 from pydantic import ValidationError
 
@@ -43,6 +44,7 @@ class Context:
     case_seq: int
     law_versions: dict[str, str] = field(default_factory=dict)  # D-111: the law the case saw, per statute
     source_year: int | None = None  # D-111: the year the source case was decided (owner-facing only)
+    source_review: Literal["OWNER", "CLAUDE_TRIAGE"] | None = None  # D-114
 
 
 @dataclass(frozen=True)
@@ -119,6 +121,8 @@ def check(candidate: LessonCandidate, n: int, ctx: Context) -> Verdict:
             status="ACTIVE",
             created_in_run=ctx.run_id,
             law_versions={s: ctx.law_versions[s] for s in candidate.statute_ids if s in ctx.law_versions},
+            mistake=candidate.mistake,
+            source_review=ctx.source_review,
             source_year=ctx.source_year,
         )
     except ValidationError as exc:

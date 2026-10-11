@@ -153,6 +153,7 @@ def ctx() -> Context:
 def candidate(**change: Any) -> LessonCandidate:
     base: dict[str, Any] = {
         "lesson_type": "ADVOCACY",
+        "mistake": "MISSED_EVIDENCE",
         "for_whom": "PETITIONER",
         "statute_ids": ["<statute A>", "<invented statute>"],
         "error_code": None,
@@ -185,6 +186,7 @@ def test_a_new_lesson_carries_the_law_version_and_year_of_its_case() -> None:
     c = replace(ctx(), law_versions={"<statute A>": "v-A", "<statute B>": "v-B"}, source_year=2019)
     x = check(candidate(), 1, c).lesson
     assert x is not None and x.law_versions == {"<statute A>": "v-A"} and x.source_year == 2019
+    assert x.mistake == "MISSED_EVIDENCE"  # D-113: the checklist's kind of mistake travels with the lesson
 
 
 @pytest.mark.parametrize(

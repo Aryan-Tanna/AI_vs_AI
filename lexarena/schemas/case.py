@@ -56,6 +56,9 @@ class Build(StoredModel):
     extraction_flags: list[ExtractionFlag]
     human_reviewed: bool
     clerk_version: NonEmptyStr
+    # D-114: Claude Code checked the split against the judgment (scripts/check_split.py) and found nothing blocking.
+    # Never the same as the owner's review: kept apart so every analysis can tell them apart.
+    claude_triaged: bool = False
 
 
 # ---------------------------------------------------------------- agent view

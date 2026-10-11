@@ -49,6 +49,11 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     approve = clerk.add_parser("approve", help="mark a clerked case as reviewed by you")
     approve.add_argument("case_id")
     approve.add_argument("--by", required=True)
+    triage = clerk.add_parser(
+        "triage", help="record that Claude Code checked the split and found nothing blocking (never the owner's review)"
+    )
+    triage.add_argument("case_id")
+    triage.add_argument("--report", type=Path, required=True, help="the check_split report the triage rests on")
 
 
 def _manifest_entry(pdf: Path) -> dict[str, Any]:
@@ -128,9 +133,23 @@ def _approve(case_id: str, by: str) -> int:
     return 0
 
 
+def _triage(case_id: str, report: Path) -> int:
+    """D-114: kept apart from `approve`; whether a triaged case may teach lessons is `memory.accept_claude_triage`."""
+    if not report.is_file():
+        raise SystemExit(f"{report}: no such report; run scripts/check_split.py first")
+    with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+        cases = proc.clerk().cases
+        case = cases.get(case_id)
+        cases.put(case.model_copy(update={"build": case.build.model_copy(update={"claude_triaged": True})}))
+    print(f"{case_id}: marked Claude-triaged on {report}")
+    return 0
+
+
 def run(args: argparse.Namespace, config_path: Path) -> int:
     if args.action == "run":
         return _run(args.file, args.case_id, config_path)
     if args.action == "show":
         return _show(args.case_id)
+    if args.action == "triage":
+        return _triage(args.case_id, args.report)
     return _approve(args.case_id, args.by)

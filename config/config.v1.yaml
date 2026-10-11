@@ -65,7 +65,7 @@ prompts:
   themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 1}   # [D-105] second narrow check before a record-fidelity rejection
   themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
-  reflection_lessons: {id: reflection/lessons, version: 1}   # [SPEC F1-F7, D-077]
+  reflection_lessons: {id: reflection/lessons, version: 2}   # [SPEC F1-F7, D-077]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
   judge_decide: {id: judges/decide, version: 4}         # [D-071] one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
   judge_revise: {id: judges/revise, version: 3}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]; v3 answers to lookups [D-112]
@@ -166,6 +166,7 @@ judging:
   persona_role_min_cases: 50             # [SPEC E1] ... over at least this many decided cases is flagged
 
 memory:
+  accept_claude_triage: true            # [D-114] OVERRIDE of D-094 for the 20-case pilot, your instruction 2026-10-12 ("its okay that you overlook the cases when they are split"); lessons record which review they came from
   require_human_reviewed_case: true      # [D-094] your instruction 2026-10-10: unreviewed cases write and re-weight no lessons
   pinned_token_budget: 800               # [SPEC E6; D-111] was 250 (2-3 lessons); 10 lessons need about 600-800
   pinned_k: 5                            # [PLACEHOLDER; D-111 your choice 2026-10-12] the top 5 by weight
@@ -205,9 +206,9 @@ runner:                                  # [D-073] Step 13
     BASELINE: [{role: judge, requests: 1}]
     EVALUATE: []
     REFLECT: [{role: reflection, requests: 2}]
-  # Money guard [D-109]. Your budget 2026-10-12: $20 on the OpenRouter account, $3.91 spent, so $16.09 left; the 20-case
-  # pilot may spend at most this much, leaving the rest for clerking and the checks before it.
-  spend_cap_usd: 9.0                     # [D-109] per run, from the call log since the run was planned
+  # Money guard [D-109]. Your budget 2026-10-12: $20 on the OpenRouter account, $3.91 spent, so $16.09 left. The 20-case
+  # pilot (about $0.45 a case measured) may spend at most this much, leaving about $5 for clerking and the morning checks.
+  spend_cap_usd: 11.0                    # [D-109] per run, from the call log since the run was planned
   stage_cost_usd: {SESSION: 0.60, BASELINE: 0.03, EVALUATE: 0.0, REFLECT: 0.10}   # [MEASURED DEV_0002 $0.40, DEV_0007 $0.39 per session; margin for retries]
   prices:                                # [MEASURED 2026-10-12 from openrouter.ai/api/v1/models] USD per million tokens
     - {provider: openrouter, model: deepseek/deepseek-v4.1-flash, input_usd_per_m: 0.30, output_usd_per_m: 1.20}

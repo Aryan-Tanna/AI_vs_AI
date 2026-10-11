@@ -233,7 +233,11 @@ def check_citations(
     out: Layer2Result,
     *,
     session_id: str,
+    memo: dict[tuple[str, str], tuple[str, str]] | None = None,
 ) -> None:
+    """`memo` (D-115): verdicts already given in this session, by (proposition, precedent). A retry that repeats a
+    claim with the same precedent reuses the verdict instead of asking again; the verdict depends only on that pair."""
+    memo = {} if memo is None else memo
     ratios: dict[str, str] = {}
     pairs: list[tuple[str, str]] = []
     unverifiable: dict[str, list[str]] = {}
@@ -246,17 +250,26 @@ def check_citations(
                     continue
                 ratios[uid] = _ratio_text(got)
             pairs.append((claim_id, uid))
-    verdicts: dict[tuple[str, str], tuple[str, str]] = {}
-    if pairs:
-        text_of = dict(claims)
+    text_of = dict(claims)
+
+    def key(cid: str, uid: str) -> tuple[str, str]:
+        return squeeze(text_of[cid].text), uid
+
+    verdicts = {(cid, uid): memo[key(cid, uid)] for cid, uid in pairs if key(cid, uid) in memo}
+    ask = [(cid, uid) for cid, uid in pairs if (cid, uid) not in verdicts]
+    if ask:
         items = "\n\n".join(
             f"ITEM claim_id={cid} precedent_uid={uid}\nPROPOSITION: {text_of[cid].text}\nRATIO: {ratios[uid]}"
-            for cid, uid in pairs
+            for cid, uid in ask
         )
         ref = cfg.prompts.themis_entailment
         prompt = prompts.render(ref.id, ref.version, items=items)
         batch = llm.complete_json(role=ROLE, user=prompt, schema=EntailmentBatch, session_id=session_id).value
-        verdicts = {(v.claim_id, v.precedent_uid): (v.verdict, v.ratio_quote) for v in batch.verdicts}
+        asked = set(ask)
+        for v in batch.verdicts:
+            if (v.claim_id, v.precedent_uid) in asked:
+                verdicts[(v.claim_id, v.precedent_uid)] = (v.verdict, v.ratio_quote)
+                memo[key(v.claim_id, v.precedent_uid)] = (v.verdict, v.ratio_quote)
     for claim_id, claim in claims:
         uids = list(dict.fromkeys(claim.precedent_ids))
         if not uids:

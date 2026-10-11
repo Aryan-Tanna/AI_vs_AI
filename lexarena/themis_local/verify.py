@@ -101,6 +101,7 @@ class ThemisLocal:
         self._llm = llm
         self._prompts = prompts
         self._cfg = cfg
+        self._entailment_memo: dict[tuple[str, str], tuple[str, str]] = {}  # D-115: per side, per session
         self._embedder = embedder
 
     def check(
@@ -149,7 +150,16 @@ class ThemisLocal:
             l2,
             session_id=session_id,
         )
-        check_citations(self._llm, self._prompts, self._cfg, claims, ctx.fetch_precedent, l2, session_id=session_id)
+        check_citations(
+            self._llm,
+            self._prompts,
+            self._cfg,
+            claims,
+            ctx.fetch_precedent,
+            l2,
+            session_id=session_id,
+            memo=self._entailment_memo,
+        )
         out.hard_errors += l2.hard_errors
         out.warnings += l2.warnings
         out.assessments = l2.assessments

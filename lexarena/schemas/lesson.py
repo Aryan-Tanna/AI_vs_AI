@@ -43,6 +43,8 @@ class Lesson(StoredModel):
     # and never shown to an agent. Lessons written before D-111 carry neither and match every version.
     law_versions: dict[str, str] = Field(default_factory=dict)
     source_year: int | None = None
+    source_review: Literal["OWNER", "CLAUDE_TRIAGE"] | None = None  # D-114: which review let the source case teach
+    mistake: str | None = None  # D-113: the reflection checklist's kind of mistake (None before D-113)
 
     @model_validator(mode="after")
     def _routing(self) -> Lesson:

@@ -132,8 +132,9 @@ class Reflection:
         }
         # A case the owner has not reviewed against its judgment teaches nothing (CLAUDE.md §4: the owner reviews clerk
         # output before a case is used). DEV_0001 showed why: a one-sided record taught contested law as a rule (D-094).
-        if self._cfg.memory.require_human_reviewed_case and not case.build.human_reviewed:
-            result.rejected.append("case not human-reviewed: no lesson written or re-weighted (D-094)")
+        triage_ok = self._cfg.memory.accept_claude_triage and case.build.claude_triaged
+        if self._cfg.memory.require_human_reviewed_case and not (case.build.human_reviewed or triage_ok):
+            result.rejected.append("case neither owner-reviewed nor accepted triage: no lesson written (D-094, D-114)")
             result.session = stores.sessions.record_lessons(session_id, [])
             return result
         memories: dict[str, LessonRepository] = {"LAWYER": stores.lawyer_memory, "JUDGE": stores.judge_memory}
@@ -194,6 +195,11 @@ class Reflection:
             initial_confidence=self._cfg.memory.initial_confidence,
             case_seq=case_seq,
             law_versions=session.law_versions,
+            source_review="OWNER"
+            if case.build.human_reviewed
+            else "CLAUDE_TRIAGE"
+            if case.build.claude_triaged
+            else None,
             source_year=av.metadata.simulation_date.year,
         )
         accepted: list[Lesson] = []

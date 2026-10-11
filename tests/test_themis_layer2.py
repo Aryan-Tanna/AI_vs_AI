@@ -191,6 +191,25 @@ def test_a_supported_citation_is_verified_in_one_batched_call() -> None:
     assert len(verifier.requests) == 1 and RATIO in verifier.requests[0].messages[-1].content
 
 
+def test_a_retry_that_repeats_a_claim_and_precedent_reuses_the_verdict() -> None:
+    """D-115: the entailment verdict depends only on the proposition and the precedent, so a retry repeating them
+    (under a new claim ID) costs no call; a new proposition is still asked."""
+    memo: dict[tuple[str, str], tuple[str, str]] = {}
+    llm, _, verifier = client(
+        [], [{"verdicts": [verdict("T01-C1", "P1", "SUPPORTS")]}, {"verdicts": [verdict("T01-C2", "P1", "SUPPORTS")]}]
+    )
+    first = [("T01-C1", claim(type="LAW", text="<proposition A>", precedent_ids=["P1"]))]
+    check_citations(llm, PROMPTS, CFG, first, fetch, Layer2Result(), session_id="S", memo=memo)
+    retry = [
+        ("T01-C1", claim(type="LAW", text="<proposition A>", precedent_ids=["P1"])),
+        ("T01-C2", claim(type="LAW", text="<proposition B>", precedent_ids=["P1"])),
+    ]
+    out = Layer2Result()
+    check_citations(llm, PROMPTS, CFG, retry, fetch, out, session_id="S", memo=memo)
+    assert [a.citation_tier for a in out.assessments] == ["VERIFIED", "VERIFIED"]
+    assert len(verifier.requests) == 2 and "<proposition A>" not in verifier.requests[1].messages[-1].content
+
+
 def test_the_fidelity_reviewer_sees_who_the_parties_are() -> None:
     """DEV2_E2E_1: "Company-T is an operational creditor" was rejected as not in the record because the reviewer
     was shown the facts but not the parties list the lawyers see."""
