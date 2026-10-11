@@ -238,6 +238,10 @@ Run from the repo root. Secrets live only in three git-ignored files (template i
 | Single-LLM baseline; evaluate a session; metrics over outcomes | `.venv/Scripts/lexarena baseline single --case-id ID --out F`, `lexarena evaluate session SID`, `lexarena evaluate report --outcomes F...` |
 | Runs: plan, execute or resume, status, report | `.venv/Scripts/lexarena run plan RUN --mode LEARN\|FROZEN\|EMPTY [--dry-run]`, `run go RUN [--max-cases N]`, `run status RUN`, `run report RUN` |
 | Clerk-review viewer (needs `uv sync --group ui`) | `.venv/Scripts/streamlit run lexarena/ui/app.py` |
+| Courtroom viewer, live session traces (D-110; local only) | `cd web && npm install && npm run build && npm run start`, then open http://127.0.0.1:3005 |
+| Rebuild the trace of a session run before D-110 | `.venv/Scripts/python scripts/export_trace.py SESSION_ID` |
+| Replay from the cache only, never calling a provider | `LEXARENA_CACHE_ONLY=1 .venv/Scripts/lexarena session run ...` |
+| Check a clerked case's split; record Claude's triage (D-114) | `.venv/Scripts/python scripts/check_split.py CASE > reports/review/CASE_split.txt`, `.venv/Scripts/lexarena clerk triage CASE --report reports/review/CASE_split.txt` |
 
 **On a new machine:** clone, `uv sync --python 3.12`, `.venv/Scripts/python scripts/make_env.py`, copy your API keys into `.env.local`, `docker compose --env-file .env.docker up -d`, then `lexarena law load`, `lexarena review load` and `lexarena precedents load`. MongoDB and Qdrant are rebuilt from the files in git; nothing else needs copying.
 

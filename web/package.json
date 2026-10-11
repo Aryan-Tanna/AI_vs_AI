@@ -1,0 +1,22 @@
+{
+  "name": "lexarena-courtroom",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev -H 127.0.0.1 -p 3005",
+    "build": "next build",
+    "start": "next start -H 127.0.0.1 -p 3005",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "15.5.27",
+    "react": "19.1.9",
+    "react-dom": "19.1.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.29",
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5",
+    "typescript": "5.8.3"
+  }
+}
