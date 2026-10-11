@@ -83,8 +83,20 @@ def record_index(case: AgentCaseView) -> dict[str, str]:
 
 def render_record(case: AgentCaseView) -> str:
     r = case.record
-    # The parties as the lawyers see them (pseudonym and legal status), so who is who is never "not in the record".
+    # Everything the lawyers are told as fact (D-104, D-108): the parties, the background, the procedural history and
+    # the lower forum's order, as well as the record items. A statement drawn from any of these is in the record.
     lines = [f"PARTY {p.pseudonym}: {p.status}" for p in case.parties]
+    lines.append(f"BACKGROUND: {case.factual_background}")
+    lines += [
+        f"PROCEDURAL STEP {s.step} ({s.date.isoformat()}, {s.forum}): {s.event} [from {s.fact_id}]"
+        for s in case.procedural_history
+    ]
+    lower = case.lower_forum_order
+    if lower.exists:
+        lines.append(
+            f"LOWER FORUM ORDER ({lower.forum}): {lower.result}. Reasons: {lower.reasons_summary or 'not stated'}"
+        )
+        lines += [f"LOWER FORUM DIRECTION: {d}" for d in lower.directions]
     lines += [f"[{f.fact_id}] {f.text}" for f in r.stipulated_facts]
     lines += [
         f"[{c.fact_id}] CONTESTED: {c.question} | petitioner: {c.petitioner_version} | respondent: "

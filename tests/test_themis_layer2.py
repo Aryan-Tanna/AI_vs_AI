@@ -202,6 +202,22 @@ def test_the_fidelity_reviewer_sees_who_the_parties_are() -> None:
         assert f"{p.pseudonym}: {p.status}" in text
 
 
+def test_the_fidelity_reviewer_sees_the_lower_order_history_and_background() -> None:
+    """DEV7_E2E_1: the appellant was rejected 3 times for stating the lower forum's reason, which the lower-order
+    summary the lawyers see gives word for word; the reviewer was never shown it (D-108). The appellant attacks the
+    lower order, so the gap fell on one side."""
+    from lexarena.themis_local.layer2 import render_record
+
+    case = agent_view()
+    text = render_record(case)
+    assert case.factual_background in text
+    for s in case.procedural_history:
+        assert s.event in text
+    lower = case.lower_forum_order
+    if lower.exists:
+        assert (lower.reasons_summary or "") in text and all(d in text for d in lower.directions)
+
+
 # ---------------------------------------------------------------- repetition
 
 
