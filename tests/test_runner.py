@@ -25,6 +25,8 @@ from lexarena.schemas.run import STAGES, MemoryMode, RunLedger, RunManifest, Sta
 from tests.conftest import CONFIG_V1
 
 CFG = load_config(CONFIG_V1)
+# The tests run on a placeholder clock, so money counts from each run's own start unless a test sets a fixed one.
+CFG = CFG.model_copy(update={"runner": CFG.runner.model_copy(update={"spend_counted_from": None})})
 # A measured free-tier limit on the judge's key, set here so the quota tests don't depend on which keys production
 # config happens to pace (a paid key has none).
 JUDGE_QUOTA = QuotaLimit(
@@ -430,4 +432,31 @@ def test_money_spent_before_the_run_was_planned_does_not_count(tmp_path: Path) -
     ds = next(p for p in CFG.runner.prices if p.provider == "openrouter" and "deepseek" in p.model)
     earlier = NOW - timedelta(hours=1)
     log = _log(store.dir.parent / "log.jsonl", [_priced_call(earlier, ds.provider, ds.model, 0, 100_000_000)])
-    assert manager(store, script, log=log).go().status == "COMPLETE"
+    per_run = CFG.model_copy(update={"runner": CFG.runner.model_copy(update={"spend_counted_from": None})})
+    assert manager(store, script, log=log, cfg=per_run).go().status == "COMPLETE"
+
+
+def test_a_fixed_start_makes_batches_share_one_cap(tmp_path: Path) -> None:
+    """D-109: with `runner.spend_counted_from` set, money spent before a batch was planned still counts."""
+    store, script = ledger(tmp_path), Script()
+    ds = next(p for p in CFG.runner.prices if p.provider == "openrouter" and "deepseek" in p.model)
+    earlier = NOW - timedelta(hours=1)
+    log = _log(store.dir.parent / "log.jsonl", [_priced_call(earlier, ds.provider, ds.model, 0, 100_000_000)])
+    shared = CFG.model_copy(
+        update={"runner": CFG.runner.model_copy(update={"spend_counted_from": NOW - timedelta(days=1)})}
+    )
+    led = manager(store, script, log=log, cfg=shared).go()
+    assert led.status == "PAUSED" and "spend before SESSION" in (led.pause_reason or "")
+
+
+def test_memory_from_a_later_case_refuses_an_earlier_run() -> None:
+    """D-116: across pilot batches, a lesson learnt from a later-decided case must never reach an earlier case."""
+    from lexarena.runner.plan import check_no_future_lessons
+
+    cases = [CaseRef("A", "DEV", D1), CaseRef("B", "DEV", D2)]
+    check_no_future_lessons(cases, "LEARN", {"L-1": D1})  # learnt from a case no later than the first: fine
+    with pytest.raises(PlanRefusedError, match="after this run's first case"):
+        check_no_future_lessons(cases, "LEARN", {"L-1": D2})
+    with pytest.raises(PlanRefusedError, match="date unknown"):
+        check_no_future_lessons(cases, "FROZEN", {"L-1": None})
+    check_no_future_lessons(cases, "EMPTY", {"L-1": D2})  # an empty-memory run reads no lessons

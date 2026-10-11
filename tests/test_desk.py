@@ -88,3 +88,55 @@ def test_the_same_count_and_budget_cap_for_every_side() -> None:
 
 def test_no_lookups_says_how_to_ask() -> None:
     assert desk().serve([]).text == NO_LOOKUPS
+
+
+def test_a_statute_one_side_looked_up_stays_out_of_the_shared_sections() -> None:
+    """D-112 with SPEC E6: after one side looks up a provision the case did not have, both sides' shared inputs are
+    still identical; the provision is in that side's side-specific part only, and in its own law for THEMIS."""
+    from typing import cast
+
+    from lexarena.agents.knowledge import ExperienceBase, LawyerKnowledge, RegulationMemory
+    from lexarena.agents.lawyer import FOUND_HEADING, Lawyer
+    from lexarena.llm.client import LLMClient
+    from lexarena.prompts import PromptStore
+    from lexarena.schemas.agent import LawyerDraft
+    from lexarena.schemas.base import Side
+    from lexarena.storage.temporal import StatuteView
+    from lexarena.themis_local.verify import LawContext
+    from tests.conftest import PROMPTS_ROOT
+    from tests.judge_fixtures import agent_view
+
+    other = "<statute B>"
+    case = agent_view()
+    found = statute_view(other)
+
+    def resolve(q: str) -> StatuteView | None:
+        return found if q == other else None
+
+    lawyers: dict[Side, Lawyer] = {}
+    sides: list[Side] = ["PETITIONER", "RESPONDENT"]
+    for side in sides:
+        law = LawContext(views={STATUTE: statute_view(STATUTE)}, alternatives=None, predicates={})
+        lawyers[side] = Lawyer(
+            side,
+            case,
+            LawyerKnowledge(RegulationMemory(law), library([]), ExperienceBase([])),
+            cast(LLMClient, None),
+            PromptStore(PROMPTS_ROOT),
+            CFG,
+            session_id="S",
+            desk=KnowledgeDesk(
+                statute=resolve,
+                library=library([]),
+                lessons=lambda q, k: [],
+                cfg=CFG,
+            ),
+        )
+    asks = LawyerDraft(text="<t>", issues_addressed=[], claims=[], lookups=[ask("STATUTE", other)])
+    lawyers["PETITIONER"].answer_lookups(asks)
+    p = lawyers["PETITIONER"].assemble_turn(3, "REBUTTAL", [], None)
+    r = lawyers["RESPONDENT"].assemble_turn(3, "REBUTTAL", [], None)
+    assert p.shared == r.shared
+    assert FOUND_HEADING in p.side_specific["lookups"] and FOUND_HEADING not in r.side_specific["lookups"]
+    assert other in lawyers["PETITIONER"].knowledge.regulation.law.views
+    assert other not in lawyers["RESPONDENT"].knowledge.regulation.law.views

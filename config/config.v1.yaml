@@ -208,7 +208,8 @@ runner:                                  # [D-073] Step 13
     REFLECT: [{role: reflection, requests: 2}]
   # Money guard [D-109]. Your budget 2026-10-12: $20 on the OpenRouter account, $3.91 spent, so $16.09 left. The 20-case
   # pilot (about $0.45 a case measured) may spend at most this much, leaving about $5 for clerking and the morning checks.
-  spend_cap_usd: 11.0                    # [D-109] per run, from the call log since the run was planned
+  spend_cap_usd: 11.0                    # [D-109] from the call log, since spend_counted_from (or since the run was planned)
+  spend_counted_from: 2026-10-12T00:00:00+00:00   # [D-109] the pilot's batches share the one cap: everything from today counts
   stage_cost_usd: {SESSION: 0.60, BASELINE: 0.03, EVALUATE: 0.0, REFLECT: 0.10}   # [MEASURED DEV_0002 $0.40, DEV_0007 $0.39 per session; margin for retries]
   prices:                                # [MEASURED 2026-10-12 from openrouter.ai/api/v1/models] USD per million tokens
     - {provider: openrouter, model: deepseek/deepseek-v4.1-flash, input_usd_per_m: 0.30, output_usd_per_m: 1.20}

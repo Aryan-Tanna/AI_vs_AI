@@ -108,7 +108,8 @@ class RunManager:
         )
         if short:
             return f"PAUSED:quota before {record.stage} of {job.case_id}: " + "; ".join(short)
-        money = over_budget(self._cfg, record.stage, spent_since(self._log, self._cfg, ledger.manifest.created_at))
+        since = self._cfg.runner.spend_counted_from or ledger.manifest.created_at
+        money = over_budget(self._cfg, record.stage, spent_since(self._log, self._cfg, since))
         if money:  # never skipped, not even with the quota preflight off (D-109)
             return f"PAUSED:spend before {record.stage} of {job.case_id}: {money}"
         self._store.case_dir(job.case_id).mkdir(parents=True, exist_ok=True)

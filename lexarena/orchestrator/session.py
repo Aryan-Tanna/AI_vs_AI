@@ -225,8 +225,8 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
         }
     )
     orch.sessions.create(session)
-    # The owner's trace (D-110): the pseudonymised agent view (with its decision date, for the viewer), never sealed
-    # data; no model reads it.
+    # The owner's trace (D-110): the agent view exactly as the agents get it (pseudonymised, decision date removed by
+    # the repository), never sealed data; no model reads it.
     trace.event(
         "case_opened",
         case_id=case_id,

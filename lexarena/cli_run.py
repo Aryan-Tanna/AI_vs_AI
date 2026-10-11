@@ -22,7 +22,7 @@ from lexarena.config import config_sha256, load_config
 from lexarena.runner.ledger import LedgerStore
 from lexarena.runner.manager import RunManager, new_job
 from lexarena.runner.memory import ExperienceMemory
-from lexarena.runner.plan import CaseRef, PlanRefusedError, check_plan, run_order
+from lexarena.runner.plan import CaseRef, PlanRefusedError, check_no_future_lessons, check_plan, run_order
 from lexarena.runner.quota import usage_since, window_start
 from lexarena.runner.report import build_report, to_markdown
 from lexarena.runner.stages import DEFAULT_SPECS, SubprocessExecutor
@@ -72,7 +72,9 @@ def _plan(args: argparse.Namespace, cfg: AppConfig, config_path: Path) -> int:
         raise SystemExit(f"unknown ablations {unknown}; allowed: {cfg.runner.ablations}")
     splits = set(args.split or ["DEV"])
     with SessionProcess.from_env_files([DEFAULT_ENV_FILE]) as proc:
-        index = proc.orchestrator().cases.index()
+        orch = proc.orchestrator()
+        index = orch.cases.index()
+        lessons = [*orch.lawyer_memory.all(), *orch.judge_memory.all()]  # a missing collection reads as empty
     refs = [CaseRef(cid, cast(Split, split), day) for cid, split, day in index if split in splits]
     if args.case_id:
         missing = sorted(set(args.case_id) - {r.case_id for r in refs})
@@ -80,8 +82,10 @@ def _plan(args: argparse.Namespace, cfg: AppConfig, config_path: Path) -> int:
             raise SystemExit(f"cases not found in the chosen splits: {missing}")
         refs = [r for r in refs if r.case_id in set(args.case_id)]
     mode = cast(MemoryMode, args.mode)
+    decided = {cid: day for cid, _, day in index}
     try:
         check_plan(refs, mode, cfg.runner, sorted(splits))
+        check_no_future_lessons(refs, mode, {x.lesson_id: decided.get(x.provenance.case_id) for x in lessons})
     except PlanRefusedError as exc:
         raise SystemExit(str(exc)) from exc
     ordered = run_order(refs)

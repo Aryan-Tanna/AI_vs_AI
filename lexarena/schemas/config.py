@@ -7,6 +7,7 @@ Validators enforce invariants from CLAUDE.md and SPEC I3-7, not tuning choices.
 from __future__ import annotations
 
 import math
+from datetime import datetime
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -402,6 +403,9 @@ class RunnerConfig(Strict):
     # Money (D-109): a run pauses before a stage when what it has spent plus that stage's expected cost would pass the
     # cap. Spend is priced from the call log by (provider, model); a paid call with no price row pauses the run.
     spend_cap_usd: PositiveFloat
+    # D-109: when set, spend counts from this moment for every run, so a pilot run in batches shares one cap; when null,
+    # each run counts from when it was planned.
+    spend_counted_from: datetime | None
     stage_cost_usd: StageCost
     prices: list[ModelPrice] = Field(min_length=1)
 

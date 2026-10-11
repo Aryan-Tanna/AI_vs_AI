@@ -17,7 +17,7 @@ from dataclasses import dataclass
 
 from lexarena.agents.desk import NO_LOOKUPS, KnowledgeDesk
 from lexarena.agents.knowledge import LawyerKnowledge, render_cards
-from lexarena.judges.packet import COUNSEL, render_case, render_issues
+from lexarena.judges.packet import COUNSEL, render_case, render_issues, render_statutes
 from lexarena.llm.client import LLMClient
 from lexarena.prompts import PromptStore, RenderedPrompt
 from lexarena.schemas.agent import LawyerDraft, ResearchPlan, StrategyNotes
@@ -30,6 +30,7 @@ from lexarena.schemas.transcript import PublishedTurn
 ROLE = "lawyer"
 CONDENSED = "[earlier turns condensed to their claims]"
 DROPPED = "[earliest turns omitted to fit the budget]"
+FOUND_HEADING = "PROVISIONS YOU LOOKED UP (citable like the regulation memory)"
 
 
 @dataclass(frozen=True)
@@ -93,6 +94,8 @@ class Lawyer:
         self.notes: StrategyNotes | None = None
         self.held: list[PrecedentCard] = []
         self._desk = desk
+        # D-112: the provisions both sides start with stay shared; what this side looked up is side-specific.
+        self._base_statutes = set(knowledge.regulation.law.views)
         self.lookup_answers = NO_LOOKUPS  # D-112: answers to the lookups of this side's last published submission
 
     # ------------------------------------------------------------ assembly
@@ -106,7 +109,9 @@ class Lawyer:
             "rules": self._render("agent_rules").text,
             "case": render_case(self._case, exhibit_contents=self._exhibits),
             "issues": render_issues(self._case),
-            "statutes": self.knowledge.regulation.render(),
+            "statutes": render_statutes(
+                {k: v for k, v in self.knowledge.regulation.law.views.items() if k in self._base_statutes}
+            ),
         }
 
     def _role(self) -> str:
@@ -130,7 +135,7 @@ class Lawyer:
             "lessons": self.knowledge.experience.render(),
             "plan": self.notes.model_dump_json() if self.notes else "(no plan)",
             "authorities": render_cards(self.held),
-            "lookups": self.lookup_answers,
+            "lookups": self._lookups_section(),
         }
         s = self._cfg.session
         fixed = {
@@ -168,6 +173,12 @@ class Lawyer:
         self.notes = notes.model_copy(update={"authorities_held": held})
         self.held = [found[uid] for uid in held]
         return self.notes
+
+    def _lookups_section(self) -> str:
+        found = {k: v for k, v in self.knowledge.regulation.law.views.items() if k not in self._base_statutes}
+        if not found:
+            return self.lookup_answers
+        return f"{self.lookup_answers}\n\n{FOUND_HEADING}\n{render_statutes(found)}"
 
     def answer_lookups(self, draft: LawyerDraft) -> str:
         """Serve the lookups of this side's published submission (D-112): statutes found join its regulation memory,

@@ -11,7 +11,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date
 
@@ -51,6 +51,26 @@ def check_plan(cases: Sequence[CaseRef], mode: MemoryMode, cfg: RunnerConfig, re
         raise PlanRefusedError("a case appears twice in the plan")
     if not cases:
         raise PlanRefusedError("the plan has no cases")
+
+
+def check_no_future_lessons(
+    cases: Sequence[CaseRef], mode: MemoryMode, lesson_sources: Mapping[str, date | None]
+) -> None:
+    """A run that reads memory never starts before the newest case memory has learnt from (D-116): a lesson from a
+    case decided later would carry knowledge from the future into an earlier case. `lesson_sources`: each lesson ID's
+    source-case decision date (None when that case is unknown, which is refused too: its date cannot be checked)."""
+    if mode == "EMPTY" or not cases or not lesson_sources:
+        return
+    unknown = sorted(lid for lid, day in lesson_sources.items() if day is None)
+    if unknown:
+        raise PlanRefusedError(f"lessons from cases not in the case index (date unknown): {unknown[:5]}")
+    newest = max(day for day in lesson_sources.values() if day is not None)
+    first = min(c.decided_on for c in cases)
+    if first < newest:
+        raise PlanRefusedError(
+            f"memory holds lessons from a case decided {newest}, after this run's first case ({first}): "
+            "run cases in date order across batches, or start from empty memory"
+        )
 
 
 def assign_splits(dated: Sequence[tuple[str, date, str]], cfg: SplitsConfig) -> dict[str, Split]:
