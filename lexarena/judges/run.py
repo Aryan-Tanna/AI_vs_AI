@@ -214,7 +214,11 @@ class Bench:
             first_side=COUNSEL[first],
             second_side=COUNSEL[second],
             submissions=render_submissions(inputs.case, inputs.turns, order),
-            audit_notes=render_audit_notes(inputs.audit if self._cfg.judging.show_audit_notes else None, order),
+            audit_notes=render_audit_notes(
+                inputs.audit if self._cfg.judging.show_audit_notes else None,
+                order,
+                contradictions=self._cfg.judging.show_audit_contradictions,
+            ),
             **shared,
         )
         draft = self._ask(original, allowed, session_id)

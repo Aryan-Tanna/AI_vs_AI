@@ -76,6 +76,18 @@ class Layer2Review(StoredModel):
     opponent_points: list[OpponentPoint]
 
 
+class FidelityCheck(StoredModel):
+    item: int  # the number of the statement in the confirmation prompt
+    verdict: Literal["CONFIRMED", "NOT_CONFIRMED"]
+    reason: str
+
+
+class FidelityConfirmation(StoredModel):
+    """The second, narrow check before a record-fidelity hard error (D-105): only the statements the review flagged."""
+
+    checks: list[FidelityCheck]
+
+
 class EntailmentVerdict(StoredModel):
     claim_id: str
     precedent_uid: str

@@ -168,11 +168,13 @@ def test_judging_weights_must_sum_to_one(tmp_path: Path) -> None:
         load_config(_write(tmp_path, raw))
 
 
-def test_verdict_is_the_bench_majority_with_the_score_as_tie_break() -> None:
-    """D-048, D-051: the bench's reasoned majority decides; the advocacy score only breaks a tie."""
+def test_verdict_is_the_bench_majority_and_an_even_split_stays_unstable() -> None:
+    """D-048, D-051, D-105: the bench's reasoned majority decides; the advocacy score never decides an even split,
+    and each judge decides in both presentation orders."""
     judging = load_config(CONFIG_V1).judging
     assert judging.verdict_rule == "BENCH_MAJORITY"
-    assert judging.tie_break == "ADVOCACY_SCORE"
+    assert judging.tie_break == "NONE"
+    assert judging.orders_per_persona == 2
     assert judging.abstain_on_order_swap_disagreement is True
     assert judging.min_deciding_judges > 1
 

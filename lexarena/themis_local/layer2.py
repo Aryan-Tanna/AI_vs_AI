@@ -33,7 +33,7 @@ from lexarena.schemas.agent import DraftClaim
 from lexarena.schemas.case import AgentCaseView
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.retrieval import PrecedentExcerpt, PrecedentView
-from lexarena.schemas.themis import EntailmentBatch, Layer2Review
+from lexarena.schemas.themis import EntailmentBatch, FidelityConfirmation, FidelityIssue, Layer2Review
 from lexarena.schemas.transcript import ClaimAssessment, ThemisWarning
 
 ROLE = "verifier"
@@ -145,13 +145,13 @@ def review_fidelity(
     record = record_index(case)
     text = squeeze(argument)
     minimum = cfg.themis_local.extraction_min_confidence
+    candidates: list[tuple[FidelityIssue, list[str]]] = []
     for issue in review.fidelity_issues:
         ids = [rid for rid in issue.record_ids if rid in record]
         verbatim = bool(issue.quote.strip()) and squeeze(issue.quote) in text
         names_exhibit = issue.kind != "EXHIBIT_CONTENT_FABRICATED" or any(record[i] == "EXHIBIT" for i in ids)
-        code = "ERR_FACT_NOT_IN_RECORD" if issue.kind == "NOT_IN_RECORD" else "ERR_EXHIBIT_CONTENT_FABRICATED"
         if verbatim and ids and names_exhibit and issue.confidence >= minimum:
-            out.hard_errors.append(Problem(code, f'"{issue.quote.strip()}": {issue.explanation}', ids))
+            candidates.append((issue, ids))
         else:
             out.warnings.append(
                 ThemisWarning(
@@ -162,8 +162,47 @@ def review_fidelity(
                     f"confidence={issue.confidence}): {issue.explanation}",
                 )
             )
+    rejected = _confirm(llm, prompts, cfg, case, candidates, session_id=session_id)
+    for (issue, ids), reason in zip(candidates, rejected, strict=True):
+        if reason is None:
+            code = "ERR_FACT_NOT_IN_RECORD" if issue.kind == "NOT_IN_RECORD" else "ERR_EXHIBIT_CONTENT_FABRICATED"
+            out.hard_errors.append(Problem(code, f'"{issue.quote.strip()}": {issue.explanation}', ids))
+        else:
+            out.warnings.append(
+                ThemisWarning(
+                    code=UNMAPPED,
+                    field="record_fidelity",
+                    quote=issue.quote,
+                    detail=f"{issue.kind} not confirmed by the second check: {reason}",
+                )
+            )
     if opponent and review.opponent_points:
         out.responsiveness = sum(p.addressed for p in review.opponent_points) / len(review.opponent_points)
+
+
+def _confirm(
+    llm: LLMClient,
+    prompts: PromptStore,
+    cfg: AppConfig,
+    case: AgentCaseView,
+    candidates: list[tuple[FidelityIssue, list[str]]],
+    *,
+    session_id: str,
+) -> list[str | None]:
+    """For each would-be rejection: None to reject, or the second check's reason not to (D-105). One narrow call sees
+    only the flagged statements and the record. A statement it does not answer keeps the first verdict (fail closed),
+    so a fabrication cannot pass because the second call skipped it."""
+    if not candidates or not cfg.themis_local.confirm_fidelity_rejections:
+        return [None] * len(candidates)
+    items = "\n".join(
+        f'{n}. "{issue.quote.strip()}" (record items {", ".join(ids)}; first reviewer: {issue.explanation})'
+        for n, (issue, ids) in enumerate(candidates, 1)
+    )
+    ref = cfg.prompts.themis_fidelity_confirm
+    prompt = prompts.render(ref.id, ref.version, record=render_record(case), items=items)
+    answer = llm.complete_json(role=ROLE, user=prompt, schema=FidelityConfirmation, session_id=session_id).value
+    cleared = {c.item: c.reason for c in answer.checks if c.verdict == "NOT_CONFIRMED"}
+    return [cleared.get(n) for n in range(1, len(candidates) + 1)]
 
 
 # ---------------------------------------------------------------- 3. citations
@@ -256,15 +295,15 @@ def _cosine(a: list[float], b: list[float]) -> float:
 def check_repetition(
     embedder: Embedder, argument: str, earlier: list[str], cfg: AppConfig, out: Layer2Result, *, closing: bool = False
 ) -> None:
-    """Similarity to the side's own earlier turns. A closing summarises by design, so for a closing even a near-copy is
-    only a warning (R-037, D-103); for every other turn above the hard threshold it is ERR_REPEATED_ARGUMENT."""
+    """Similarity to the side's own earlier turns. ERR_REPEATED_ARGUMENT only when `repetition_hard_error` is on (off in
+    v1, D-105: honest same-case turns score 0.91-0.96) and the turn is not a closing (D-103); otherwise a warning."""
     if not earlier:
         return
     vectors = embedder.embed([argument, *earlier])
     best = max(_cosine(vectors[0], v) for v in vectors[1:])
     out.repetition = best
     t = cfg.themis_local
-    if best > t.repetition_hard_threshold and not closing:
+    if best > t.repetition_hard_threshold and t.repetition_hard_error and not closing:
         out.hard_errors.append(
             Problem("ERR_REPEATED_ARGUMENT", f"the argument repeats an earlier turn of yours (similarity {best:.2f})")
         )

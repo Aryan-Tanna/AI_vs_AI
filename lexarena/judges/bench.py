@@ -10,7 +10,8 @@ The bench (`decide_bench`):
 - fewer deciding personas than `judging.min_deciding_judges`: UNSTABLE (TOO_FEW_DECIDING_JUDGES). The advocacy score
   is never asked, so it cannot quietly become the verdict (D-051);
 - otherwise the majority of deciding personas, with dissent recorded;
-- an even split goes to the advocacy score (`judging.tie_break`): the side ahead by at least `judging.tie_margin`
+- an even split is UNSTABLE (EVEN_SPLIT) when `judging.tie_break` is NONE (D-105: the advocacy score measures style,
+  not law). With ADVOCACY_SCORE it goes to the advocacy score: the side ahead by at least `judging.tie_margin`
   wins; within the margin the accuracy component decides by the same margin (SPEC E1); within that too, UNSTABLE
   (UNBROKEN_TIE). Never a guess.
 - each issue: a strict majority of the personas deciding it, with at least `min_deciding_judges` deciding; otherwise
@@ -218,6 +219,8 @@ def decide_bench(decisions: list[JudgeDecision], issue_ids: list[str], cfg: Judg
     if votes["PETITIONER"] != votes["RESPONDENT"]:
         winner: Side = "PETITIONER" if votes["PETITIONER"] > votes["RESPONDENT"] else "RESPONDENT"
         decided_by = "MAJORITY"
+    elif cfg.tie_break == "NONE":
+        return unstable("EVEN_SPLIT")
     else:
         tie_winner = _ahead(advocacy, cfg.tie_margin) or _ahead(accuracy, cfg.tie_margin)
         if tie_winner is None:

@@ -64,8 +64,13 @@ def review(issues: list[dict[str, Any]], points: list[tuple[str, bool]] | None =
     return {"fidelity_issues": issues, "opponent_points": [{"point": p, "addressed": a} for p, a in points or []]}
 
 
-def run_review(answer: dict[str, Any], opponent: str | None = "<opponent>") -> Layer2Result:
-    llm, _, verifier = client([], [answer])
+CONFIRM_ALL = {"checks": [{"item": 1, "verdict": "CONFIRMED", "reason": "<r>"}]}
+
+
+def run_review(
+    answer: dict[str, Any], opponent: str | None = "<opponent>", confirm: dict[str, Any] | None = CONFIRM_ALL
+) -> Layer2Result:
+    llm, _, verifier = client([], [answer] + ([confirm] if confirm is not None else []))
     out = Layer2Result()
     review_fidelity(llm, PROMPTS, CFG, agent_view(), ARGUMENT, opponent, out, session_id="S")
     assert verifier.requests[0].model.temperature == 0
@@ -109,14 +114,39 @@ def test_a_fabricated_exhibit_quoted_verbatim_is_caught() -> None:
     ],
 )
 def test_unconfirmed_fidelity_findings_only_warn(bad: dict[str, Any]) -> None:
-    out = run_review(review([bad]))
+    out = run_review(review([bad]), confirm=None)  # never reaches the second check
     assert out.hard_errors == [] and [w.code for w in out.warnings] == ["UNMAPPED"]
 
 
+def test_a_flag_the_second_check_rejects_only_warns() -> None:
+    """D-105 (review B2): DEV2_E2E_1 rejected '100% CoC approval', an inference the review prompt excludes."""
+    found = issue("NOT_IN_RECORD", "The debtor wrote the letter", ["F1"])
+    out = run_review(review([found]), confirm={"checks": [{"item": 1, "verdict": "NOT_CONFIRMED", "reason": "<r>"}]})
+    assert out.hard_errors == [] and [w.code for w in out.warnings] == ["UNMAPPED"]
+    assert "second check" in (out.warnings[0].detail or "")
+
+
+def test_a_flag_the_second_check_skips_still_rejects() -> None:
+    """Fail closed: a statement the confirmation omits keeps the first reviewer's verdict (no hallucination path)."""
+    found = issue("NOT_IN_RECORD", "The debtor wrote the letter", ["F1"])
+    out = run_review(review([found]), confirm={"checks": []})
+    assert [p.code for p in out.hard_errors] == ["ERR_FACT_NOT_IN_RECORD"]
+
+
+def test_the_second_check_sees_only_the_flagged_statements() -> None:
+    found = issue("NOT_IN_RECORD", "The debtor wrote the letter", ["F1"])
+    llm, _, verifier = client([], [review([found]), CONFIRM_ALL])
+    review_fidelity(llm, PROMPTS, CFG, agent_view(), ARGUMENT, None, Layer2Result(), session_id="S")
+    sent = verifier.requests[1].messages[-1].content
+    assert "1. " in sent and "The debtor wrote the letter" in sent and ARGUMENT not in sent
+
+
 def test_responsiveness_is_the_share_of_opponent_points_answered() -> None:
-    out = run_review(review([], [("<a>", True), ("<b>", False), ("<c>", True), ("<d>", True)]))
+    out = run_review(review([], [("<a>", True), ("<b>", False), ("<c>", True), ("<d>", True)]), confirm=None)
     assert out.responsiveness == 0.75
-    assert run_review(review([], [("<a>", False)]), opponent=None).responsiveness is None  # nothing to answer yet
+    assert (
+        run_review(review([], [("<a>", False)]), opponent=None, confirm=None).responsiveness is None
+    )  # nothing to answer yet
 
 
 # ---------------------------------------------------------------- citations
@@ -175,19 +205,32 @@ def test_the_fidelity_reviewer_sees_who_the_parties_are() -> None:
 # ---------------------------------------------------------------- repetition
 
 
-def test_repeating_an_earlier_turn_is_a_hard_error_and_near_repeats_warn() -> None:
+HARD_REPETITION = CFG.model_copy(
+    update={"themis_local": CFG.themis_local.model_copy(update={"repetition_hard_error": True})}
+)
+
+
+def test_repetition_only_warns_under_the_v1_config() -> None:
+    """D-105 (review B1): whole-text similarity cannot tell repetition from same-case argument (0.91-0.96 measured
+    between honest turns), so it never rejects a draft."""
     out = Layer2Result()
     check_repetition(WordEmbedder(), ARGUMENT, [ARGUMENT], CFG, out)
+    assert out.hard_errors == [] and [w.code for w in out.warnings] == ["WARN_REPETITION"]
+
+
+def test_repeating_an_earlier_turn_is_a_hard_error_and_near_repeats_warn() -> None:
+    out = Layer2Result()
+    check_repetition(WordEmbedder(), ARGUMENT, [ARGUMENT], HARD_REPETITION, out)
     assert [p.code for p in out.hard_errors] == ["ERR_REPEATED_ARGUMENT"]
     fresh = Layer2Result()
-    check_repetition(WordEmbedder(), ARGUMENT, [], CFG, fresh)
+    check_repetition(WordEmbedder(), ARGUMENT, [], HARD_REPETITION, fresh)
     assert fresh.hard_errors == [] and fresh.repetition is None
 
 
 def test_a_closing_that_repeats_an_earlier_turn_only_warns() -> None:
     """R-037, D-103: a closing summarises by design, so repetition there is a warning, never a rejection."""
     out = Layer2Result()
-    check_repetition(WordEmbedder(), ARGUMENT, [ARGUMENT], CFG, out, closing=True)
+    check_repetition(WordEmbedder(), ARGUMENT, [ARGUMENT], HARD_REPETITION, out, closing=True)
     assert out.hard_errors == [] and [w.code for w in out.warnings] == ["WARN_REPETITION"]
 
 
@@ -261,6 +304,7 @@ def test_the_whole_check_runs_layer_1_and_layer_2() -> None:
             review(
                 [issue("NOT_IN_RECORD", "The letter also promised payment of Rs 9 crore.", ["EX-1"])], [("<p>", True)]
             ),
+            CONFIRM_ALL,  # the second check agrees (D-105)
             {"verdicts": [verdict("T03-C2", "P1", "SUPPORTS")]},
         ],
     )
@@ -281,7 +325,7 @@ def test_the_whole_check_runs_layer_1_and_layer_2() -> None:
     assert [c for c, _ in v.claims] == ["T03-C1", "T03-C2"]
     assert [p.code for p in v.hard_errors] == ["ERR_FACT_NOT_IN_RECORD"]
     assert v.responsiveness == 1.0 and v.assessments[0].citation_tier == "VERIFIED"
-    assert len(verifier.requests) == 3
+    assert len(verifier.requests) == 4
 
 
 # ---------------------------------------------------------------- short circuit (D-100)

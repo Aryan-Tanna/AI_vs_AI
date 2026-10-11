@@ -220,7 +220,9 @@ def render_submissions(case: AgentCaseView, turns: list[PublishedTurn], order: P
 # ---------------------------------------------------------------- auditor's notes (D-078)
 
 
-def render_audit_notes(report: ThemisGlobalReport | None, order: PresentationOrder) -> str:
+def render_audit_notes(
+    report: ThemisGlobalReport | None, order: PresentationOrder, *, contradictions: bool = True
+) -> str:
     """THEMIS-GLOBAL's map of the transcript for the bench: where each side's points are and where they were answered,
     and confirmed self-contradictions, in the same side order as the submissions. Never its scores (SPEC E1)."""
     if report is None:
@@ -237,7 +239,7 @@ def render_audit_notes(report: ThemisGlobalReport | None, order: PresentationOrd
             where = f"answered or conceded in turn {answered}" if answered else "no later answer noted"
             issue = p.get("issue_id") or "-"
             lines.append(f'- turn {p.get("turn")} ({issue}): "{p.get("quote")}"; {where}')
-        own = [c for c in report.contradictions if c.get("speaker") == side]
+        own = [c for c in report.contradictions if c.get("speaker") == side] if contradictions else []
         lines += [f"- contradiction between claims {c.get('claim_a')} and {c.get('claim_b')}" for c in own]
         blocks.append("\n".join(lines if len(lines) > 1 else [*lines, NONE]))
     return "\n\n".join(blocks)

@@ -123,13 +123,27 @@ def test_two_to_one_majority_records_the_dissent() -> None:
     assert v.votes == {"PETITIONER": 2, "RESPONDENT": 1}
 
 
+ADVOCACY_TIE = CFG.model_copy(update={"tie_break": "ADVOCACY_SCORE"})
+
+
+def test_an_even_split_is_unstable_under_the_v1_config() -> None:
+    """D-105 (review A2): the advocacy score measures style, not law, so an even split is never decided by it."""
+    ds = [
+        judge("TEXTUALIST", "PETITIONER", p_score=0.9, r_score=0.2),
+        judge("PURPOSIVIST", "RESPONDENT", p_score=0.9, r_score=0.2),
+    ]
+    v = decide_bench(ds, ISSUES, CFG)
+    assert (v.status, v.unstable_reason, v.winner) == ("UNSTABLE", "EVEN_SPLIT", None)
+    assert v.advocacy is not None  # still reported as the secondary measure
+
+
 def test_even_split_goes_to_the_advocacy_score() -> None:
     ds = [
         judge("TEXTUALIST", "PETITIONER", p_score=0.9, r_score=0.2),
         judge("PURPOSIVIST", "RESPONDENT", p_score=0.9, r_score=0.2),
         judge("PROCEDURALIST", ("PETITIONER", "RESPONDENT"), p_score=0.9, r_score=0.2),
     ]
-    v = decide_bench(ds, ISSUES, CFG)
+    v = decide_bench(ds, ISSUES, ADVOCACY_TIE)
     assert (v.winner, v.decided_by, v.abstaining_judges) == ("PETITIONER", "TIE_BREAK", ["PROCEDURALIST"])
     assert v.dissenting_judges == ["PURPOSIVIST"]
 
@@ -142,7 +156,7 @@ def test_even_split_within_the_margin_goes_to_accuracy() -> None:
     p = scores(0.5).model_copy(update={"accuracy": 0.5 - lead, "consistency": 0.5 + lead * w.accuracy / w.consistency})
     r = scores(0.5)
     ds = [judge("TEXTUALIST", "PETITIONER", p_dims=p, r_dims=r), judge("PURPOSIVIST", "RESPONDENT", p_dims=p, r_dims=r)]
-    v = decide_bench(ds, ISSUES, CFG)
+    v = decide_bench(ds, ISSUES, ADVOCACY_TIE)
     assert v.advocacy is not None
     assert v.advocacy["PETITIONER"] == pytest.approx(v.advocacy["RESPONDENT"])
     assert (v.winner, v.decided_by) == ("RESPONDENT", "TIE_BREAK")
@@ -150,7 +164,7 @@ def test_even_split_within_the_margin_goes_to_accuracy() -> None:
 
 def test_even_split_with_no_score_difference_is_unstable() -> None:
     ds = [judge("TEXTUALIST", "PETITIONER"), judge("PURPOSIVIST", "RESPONDENT")]
-    v = decide_bench(ds, ISSUES, CFG)
+    v = decide_bench(ds, ISSUES, ADVOCACY_TIE)
     assert (v.status, v.unstable_reason, v.winner) == ("UNSTABLE", "UNBROKEN_TIE", None)
 
 

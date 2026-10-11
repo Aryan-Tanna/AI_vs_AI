@@ -186,7 +186,7 @@ def test_order_disagreement_and_tie_break_through_the_service(tmp_path: Path) ->
     v = result.verdict
     assert v.abstaining_judges == ["PROCEDURALIST"]
     assert v.votes == {"PETITIONER": 1, "RESPONDENT": 1}
-    assert (v.status, v.unstable_reason) == ("UNSTABLE", "UNBROKEN_TIE")  # equal scores: never a guess
+    assert (v.status, v.unstable_reason) == ("UNSTABLE", "EVEN_SPLIT")  # D-105: an even split is never decided
 
 
 def test_the_model_facing_schema_is_strict_json_friendly() -> None:
@@ -232,7 +232,7 @@ def test_judges_see_the_auditor_map_in_order_but_never_its_scores(tmp_path: Path
     first, second = sent(judge, 0), sent(judge, 1)
     for text in (first, second):
         assert '"<petitioner point>"; answered or conceded in turn 2' in text
-        assert "contradiction between claims T02-C1 and T04-C1" in text
+        assert "contradiction between claims" not in text  # D-105: unconfirmed contradictions are withheld
         for score in ("0.123456", "0.654321", "0.987654", "0.111111"):
             assert score not in text
     notes = first[first.index("AUDITOR'S NOTES") :]

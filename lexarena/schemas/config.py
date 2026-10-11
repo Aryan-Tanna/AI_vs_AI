@@ -136,6 +136,7 @@ class PromptsConfig(Strict):
     clerk_agent_view_repair: PromptRef
     themis_extract: PromptRef
     themis_layer2: PromptRef
+    themis_fidelity_confirm: PromptRef  # D-105: confirm before a record-fidelity rejection
     themis_entailment: PromptRef
     themis_global_audit: PromptRef
     reflection_lessons: PromptRef
@@ -260,6 +261,8 @@ class ThemisLocalConfig(Strict):
     retry_cap: PositiveInt
     extraction_min_confidence: UnitInterval
     repetition_hard_threshold: UnitInterval
+    repetition_hard_error: bool  # D-105: false makes repetition a warning on every turn
+    confirm_fidelity_rejections: bool  # D-105: a second narrow call must agree before ERR_FACT_NOT_IN_RECORD
     repetition_warn_threshold: UnitInterval
     score_weights: ScoreWeights
     penalty_cap: UnitInterval
@@ -294,12 +297,13 @@ class JudgingConfig(Strict):
     order_swap_max_gap: UnitInterval
     tie_margin: UnitInterval
     verdict_rule: Literal["BENCH_MAJORITY"]  # D-048
-    tie_break: Literal["ADVOCACY_SCORE"]  # D-048: the score decides only an equal split of deciding judges
+    tie_break: Literal["ADVOCACY_SCORE", "NONE"]  # D-048; D-105: NONE leaves an even split UNSTABLE
     abstain_on_order_swap_disagreement: bool  # D-051
     min_deciding_judges: int  # D-051: fewer deciding judges -> UNSTABLE verdict, reported apart, never decided
     check_reasons_with_layer1: bool  # D-071: THEMIS layer 1 checks the law each opinion states
     orders_per_persona: Literal[1, 2]  # literal-ok: the two allowed order counts (D-093), not a tuning value
     show_audit_notes: bool  # D-078: the auditor's map of the transcript, never its scores
+    show_audit_contradictions: bool  # D-105: unconfirmed self-contradictions are left out of the judges' notes
     max_order_swap_disagreement_rate: UnitInterval  # report limit (D-024, D-071)
     persona_role_max_win_rate: UnitInterval  # SPEC E1 persona bias flag
     persona_role_min_cases: PositiveInt  # SPEC E1

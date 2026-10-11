@@ -62,6 +62,7 @@ prompts:
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
   themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
   themis_layer2: {id: themis/layer2_review, version: 1}   # [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
+  themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 1}   # [D-105] second narrow check before a record-fidelity rejection
   themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   reflection_lessons: {id: reflection/lessons, version: 1}   # [SPEC F1-F7, D-077]
@@ -71,7 +72,7 @@ prompts:
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
     TEXTUALIST: {id: judges/persona_textualist, version: 1}
     PURPOSIVIST: {id: judges/persona_purposivist, version: 1}
-    PROCEDURALIST: {id: judges/persona_proceduralist, version: 1}
+    PROCEDURALIST: {id: judges/persona_proceduralist, version: 2}   # [D-105] v2 DRAFT: decides the merits when no procedural point arises; rules are never issue IDs. Awaits your approval
   single_llm: {id: baselines/single_llm, version: 1}    # [D-072] the single-LLM baseline on the same case file
   agent_rules: {id: agents/rules, version: 1}           # [D-079] the same for both sides: knowledge-base and record rules
   agent_role: {id: agents/role, version: 1}             # [SPEC E6] the only template whose values differ by side
@@ -111,7 +112,7 @@ session:
   alternating_turns: 8                   # [D-011]
   parallel_closings: true                # [D-011]
   max_turn_tokens: 600                   # [MEASURED 2026-10-09, D-082] same for both sides [SPEC E1]; text + claims + reasoning must fit the lawyer's 2,048-token output cap
-  lawyer_input_tokens: 6000              # [MEASURED R-011: Groq rejects >7,000 input tokens] budget per lawyer call; older turns condense first [D-055, D-079]
+  lawyer_input_tokens: 20000             # [D-105] your decision 2026-10-11: was 6000, a free-tier Groq limit (R-011); lawyers saw condensed transcripts from turn 2 (R-039)
   research_queries: 3                    # [PLACEHOLDER, D-053] searches per side in the strategy phase, the same for both
   words_per_token: 0.75                  # [PLACEHOLDER] turns max_turn_tokens into the word guide shown to lawyers
 
@@ -119,6 +120,8 @@ themis_local:
   retry_cap: 3                           # [SPEC D8]
   extraction_min_confidence: 0.7         # [SPEC D1]
   repetition_hard_threshold: 0.95        # [SPEC D8]
+  repetition_hard_error: false           # [D-105] your decision 2026-10-11: repetition only warns (honest same-case turns score 0.91-0.96)
+  confirm_fidelity_rejections: true      # [D-105] your decision 2026-10-11: a second narrow check must agree before a record-fidelity rejection
   repetition_warn_threshold: 0.85        # [PLACEHOLDER, D-075] similarity to own earlier turn that warns (SPEC D8: below the hard threshold is a warning)
   score_weights: {rule: 0.5, llm: 0.5}   # [PLACEHOLDER]
   penalty_cap: 0.30                      # [SPEC D6]
@@ -144,12 +147,13 @@ judging:
   order_swap_max_gap: 0.15               # [SPEC E1] fixed before measuring [D-024]
   tie_margin: 0.02                       # [SPEC E1] now applies to the secondary advocacy score [D-048]
   verdict_rule: BENCH_MAJORITY           # [D-048] supersedes SPEC E1 "higher aggregate wins"
-  tie_break: ADVOCACY_SCORE              # [D-048] only when deciding judges split evenly
+  tie_break: NONE                        # [D-105] your decision 2026-10-11: an even split is UNSTABLE; advocacy (style) never decides the law (was ADVOCACY_SCORE, D-048)
   abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
   min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
   check_reasons_with_layer1: false       # [D-093] your decision 2026-10-10: the bench is a shadow bench; THEMIS stays on the lawyers. Free ID checks remain (check_opinion)
-  orders_per_persona: 1                  # [D-093] your decision 2026-10-10: one order per persona, alternated by persona and case; order bias measured run-wide
+  orders_per_persona: 2                  # [D-105] your decision 2026-10-11: each judge decides twice, sides swapped (INTENT); reverses D-093
   show_audit_notes: true                 # [D-078] THEMIS-GLOBAL's point map and contradictions, never its scores; ablate on dev to check bias
+  show_audit_contradictions: false       # [D-105] your decision 2026-10-11: unconfirmed self-contradictions are not shown to the judges
   # Report limits, fixed before measuring [D-024]; Step 11 reports against them, nothing is re-run automatically [D-071].
   max_order_swap_disagreement_rate: 0.2  # [PLACEHOLDER] share of a persona's cases whose two orders disagree on the result
   persona_role_max_win_rate: 0.65        # [SPEC E1] a persona favouring one side above this ...

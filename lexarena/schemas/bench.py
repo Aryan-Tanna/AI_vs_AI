@@ -164,7 +164,7 @@ class BenchVerdict(StoredModel):
     status: Literal["DECIDED", "UNSTABLE"]
     winner: Side | None
     decided_by: Literal["MAJORITY", "TIE_BREAK"] | None
-    unstable_reason: Literal["TOO_FEW_DECIDING_JUDGES", "UNBROKEN_TIE"] | None
+    unstable_reason: Literal["TOO_FEW_DECIDING_JUDGES", "UNBROKEN_TIE", "EVEN_SPLIT"] | None
     votes: dict[Side, int]
     deciding_judges: list[Persona]
     abstaining_judges: list[Persona]

@@ -73,3 +73,21 @@ def test_stored_threshold_is_marked_unverified_without_a_dated_value() -> None:
     text = render_statutes({STATUTE: dated})
     assert "minimum_default_inr = 5 (applies on this case's dates)" in text
     assert "not verified" not in text
+
+
+def test_audit_notes_carry_contradictions_only_when_asked() -> None:
+    """D-105 (review D1): unconfirmed self-contradictions are left out of the judges' notes; the points map stays."""
+    from lexarena.judges.packet import render_audit_notes
+    from lexarena.schemas.session import ThemisGlobalReport
+
+    report = ThemisGlobalReport(
+        consistency={},
+        rebuttal_depth={
+            "points": [{"turn": 2, "speaker": "RESPONDENT", "issue_id": "I1", "quote": "<q>", "answered_in_turn": 3}]
+        },
+        contradictions=[{"speaker": "RESPONDENT", "claim_a": "T02-C1", "claim_b": "T04-C2"}],
+    )
+    with_c = render_audit_notes(report, "PETITIONER_FIRST", contradictions=True)
+    without = render_audit_notes(report, "PETITIONER_FIRST", contradictions=False)
+    assert "T02-C1" in with_c and "T02-C1" not in without
+    assert '"<q>"' in without

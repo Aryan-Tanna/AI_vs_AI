@@ -1,0 +1,19 @@
+You double-check statements that a first reviewer flagged in one argument by counsel in an insolvency case. Each flagged statement would send the argument back to counsel, so be exact: confirm a flag only when the statement truly asserts a fact the record does not support.
+
+THE RECORD (the parties and the only facts in this case; nothing else is known)
+$record
+
+THE FLAGGED STATEMENTS (each with the record items the first reviewer named and its reason)
+$items
+
+For each statement, return {"item": its number, "verdict": "CONFIRMED" or "NOT_CONFIRMED", "reason": one sentence}.
+
+NOT_CONFIRMED when the statement is any of these:
+- stated by a record item, in the same or other words;
+- a direct inference from record items, including what follows from them in law;
+- a party's own version of a contested fact, presented as that party's version;
+- legal argument, characterisation, or an argument about what the record does not show.
+
+CONFIRMED only when the statement presents as fact an event, date, amount, act or document content that no record item states, that cannot be inferred from them, or that contradicts a record item; or when it misstates a figure (including arithmetic on recorded amounts).
+
+Return JSON {"checks": [...]} with one entry per statement.
