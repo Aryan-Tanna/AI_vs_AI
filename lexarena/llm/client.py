@@ -20,7 +20,7 @@ from typing import Any, TypeVar
 from pydantic import BaseModel, ValidationError
 
 from lexarena.llm.cache import ResponseCache, request_key
-from lexarena.llm.errors import LLMError, RateLimitedError, SchemaValidationError
+from lexarena.llm.errors import LLMError, OutputTruncatedError, RateLimitedError, SchemaValidationError
 from lexarena.llm.providers.base import Provider
 from lexarena.llm.types import ChatMessage, LLMRequest, LLMResponse, LLMResult
 from lexarena.prompts import PromptStore, RenderedPrompt
@@ -161,6 +161,14 @@ class LLMClient:
             )
 
         assert last_error is not None
+        if response is None and isinstance(last_error, OutputTruncatedError):
+            # A truncated answer is billed: log its tokens (D-107).
+            response = LLMResponse(
+                text="",
+                input_tokens=last_error.input_tokens,
+                output_tokens=last_error.output_tokens,
+                finish_reason="TRUNCATED",
+            )
         self._emit(
             event,
             outcome=type(last_error).__name__,

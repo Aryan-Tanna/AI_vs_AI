@@ -180,6 +180,19 @@ def test_context_overflow_fails_immediately(cfg: AppConfig, secrets: SecretStore
     assert len(fake.requests) == 1 and sleeps == []
 
 
+def test_a_failed_call_logs_the_tokens_it_was_billed(
+    cfg: AppConfig, secrets: SecretStore, prompts: PromptStore, caplog: pytest.LogCaptureFixture
+) -> None:
+    """D-107: DEV_0007's truncated Gemini calls cost about $0.59 each and logged no tokens at all."""
+    fake = FakeProvider([OutputTruncatedError("hit max_output_tokens", input_tokens=1000, output_tokens=65536)])
+    with caplog.at_level(logging.INFO, logger="lexarena.llm"), pytest.raises(OutputTruncatedError):
+        make_client(cfg, secrets, fake).complete_json(
+            role="verifier", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+        )
+    record = json.loads(caplog.records[-1].getMessage())
+    assert (record["input_tokens"], record["output_tokens"]) == (1000, 65536)
+
+
 def test_truncated_output_fails_immediately(cfg: AppConfig, secrets: SecretStore, prompts: PromptStore) -> None:
     fake = FakeProvider([OutputTruncatedError("hit max_output_tokens"), text_response(VALID)])
     with pytest.raises(OutputTruncatedError):

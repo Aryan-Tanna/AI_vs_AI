@@ -185,10 +185,15 @@ def test_openai_error_mapping(status: int, body: dict[str, Any], headers: dict[s
         assert isinstance(exc.value, RateLimitedError) and exc.value.retry_after_s == 12
 
 
-def test_openai_truncated_output_raises() -> None:
-    body = {"choices": [{"message": {"content": '{"answer": '}, "finish_reason": "length"}], "usage": {}}
-    with pytest.raises(OutputTruncatedError):
+def test_openai_truncated_output_raises_with_the_billed_tokens() -> None:
+    """A truncated answer is still billed: its usage rides on the error so the call log records it (D-107)."""
+    body = {
+        "choices": [{"message": {"content": '{"answer": '}, "finish_reason": "length"}],
+        "usage": {"prompt_tokens": 100, "completion_tokens": 64},
+    }
+    with pytest.raises(OutputTruncatedError) as exc:
         _openai(lambda req: httpx.Response(200, json=body)).complete(_request("p"), api_key="k")
+    assert (exc.value.input_tokens, exc.value.output_tokens) == (100, 64)
 
 
 def test_openai_timeout_is_retryable() -> None:
@@ -300,10 +305,22 @@ def test_gemini_error_mapping(status: int, body: dict[str, Any], error: type) ->
         assert isinstance(exc.value, RateLimitedError) and exc.value.retry_after_s == 30
 
 
-def test_gemini_truncated_output_raises() -> None:
-    body = {"candidates": [{"content": {"parts": [{"text": '{"answer": '}]}, "finishReason": "MAX_TOKENS"}]}
-    with pytest.raises(OutputTruncatedError):
+def test_gemini_truncated_output_raises_with_the_billed_tokens() -> None:
+    body = {
+        "candidates": [{"content": {"parts": [{"text": '{"answer": '}]}, "finishReason": "MAX_TOKENS"}],
+        "usageMetadata": {"promptTokenCount": 30, "candidatesTokenCount": 4, "thoughtsTokenCount": 60},
+    }
+    with pytest.raises(OutputTruncatedError) as exc:
         _gemini(lambda req: httpx.Response(200, json=body)).complete(_request("g"), api_key="k")
+    assert (exc.value.input_tokens, exc.value.output_tokens) == (30, 64)
+
+
+def test_gemini_output_tokens_include_thinking() -> None:
+    """Google bills thinking tokens as output; the log counted only the answer (D-107)."""
+    body = _ok_gemini([{"text": '{"answer": 2}'}])
+    body["usageMetadata"]["thoughtsTokenCount"] = 50
+    resp = _gemini(lambda req: httpx.Response(200, json=body)).complete(_request("g"), api_key="k")
+    assert resp.output_tokens == 54
 
 
 def test_gemini_blocked_prompt_is_not_retryable() -> None:

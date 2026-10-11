@@ -35,7 +35,13 @@ class ContextBudgetExceededError(LLMError):
 
 class OutputTruncatedError(LLMError):
     """The model stopped at its output-token limit. Retrying the same request would truncate again, so it is
-    never retried and never repaired; raise max_output_tokens in config or shrink the task."""
+    never retried and never repaired; raise max_output_tokens in config or shrink the task. The answer was still
+    billed, so its token usage rides on the error for the call log (D-107)."""
+
+    def __init__(self, message: str, *, input_tokens: int | None = None, output_tokens: int | None = None) -> None:
+        super().__init__(message)
+        self.input_tokens = input_tokens
+        self.output_tokens = output_tokens
 
 
 class ProviderRequestError(LLMError):

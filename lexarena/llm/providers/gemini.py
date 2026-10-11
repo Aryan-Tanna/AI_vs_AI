@@ -68,16 +68,21 @@ class GeminiProvider:
             reason = (data.get("promptFeedback") or {}).get("blockReason", "no candidates returned")
             raise ContentBlockedError(f"Gemini returned no answer: {reason}")
         candidate = candidates[0]
+        usage = data.get("usageMetadata") or {}
+        # Thinking tokens are billed as output alongside the answer (D-107).
+        billed = [n for n in (usage.get("candidatesTokenCount"), usage.get("thoughtsTokenCount")) if n is not None]
+        output_tokens = sum(billed) if billed else None
         if candidate.get("finishReason") == TRUNCATED:
             raise OutputTruncatedError(
-                f"{request.model.name} hit max_output_tokens ({request.model.max_output_tokens})"
+                f"{request.model.name} hit max_output_tokens ({request.model.max_output_tokens})",
+                input_tokens=usage.get("promptTokenCount"),
+                output_tokens=output_tokens,
             )
         parts = (candidate.get("content") or {}).get("parts") or []
         text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
-        usage = data.get("usageMetadata") or {}
         return LLMResponse(
             text=text,
             input_tokens=usage.get("promptTokenCount"),
-            output_tokens=usage.get("candidatesTokenCount"),
+            output_tokens=output_tokens,
             finish_reason=candidate.get("finishReason"),
         )

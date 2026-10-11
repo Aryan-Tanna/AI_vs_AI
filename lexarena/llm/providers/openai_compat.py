@@ -63,11 +63,13 @@ class OpenAICompatProvider:
             GENERATION_MARKERS,
         )
         choice = data["choices"][0]
+        usage = data.get("usage") or {}
         if choice.get("finish_reason") == TRUNCATED:
             raise OutputTruncatedError(
-                f"{request.model.name} hit max_output_tokens ({request.model.max_output_tokens})"
+                f"{request.model.name} hit max_output_tokens ({request.model.max_output_tokens})",
+                input_tokens=usage.get("prompt_tokens"),
+                output_tokens=usage.get("completion_tokens"),
             )
-        usage = data.get("usage") or {}
         return LLMResponse(
             text=choice["message"].get("content") or "",
             input_tokens=usage.get("prompt_tokens"),
