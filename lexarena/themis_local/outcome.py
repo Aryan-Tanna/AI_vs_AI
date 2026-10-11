@@ -56,15 +56,16 @@ def _codes(problems: list[Problem]) -> list[str]:
 
 def verify_with_retries(
     write: Callable[[str | None], LawyerDraft],
-    check: Callable[[LawyerDraft], Verification],
+    check: Callable[[LawyerDraft, bool], Verification],
     cfg: ThemisLocalConfig,
 ) -> VerifiedTurn:
-    """`write(feedback)` asks the lawyer for a draft (None on the first attempt); `check` runs THEMIS on it."""
+    """`write(feedback)` asks the lawyer for a draft (None on the first attempt); `check(draft, last)` runs THEMIS on
+    it, where `last` is True on the attempt after which no retry is left (that one must be checked in full)."""
     errors_by_attempt: list[list[str]] = []
     note: str | None = None
     while True:
         draft = write(note)
-        v = check(draft)
+        v = check(draft, len(errors_by_attempt) >= cfg.retry_cap)
         errors_by_attempt.append(_codes(v.hard_errors))
         if not v.hard_errors or len(errors_by_attempt) > cfg.retry_cap:
             break

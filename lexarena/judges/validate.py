@@ -11,6 +11,13 @@ Checks one opinion draft against what the judge was shown, mechanically:
 
 THEMIS layer 1 problems in the judge's stated law are added by the caller (judges/run.py). Problems are fed back once;
 whatever survives the revision makes the opinion INVALID and its persona abstains.
+
+ID lists are repaired in two mechanical ways before checking (`normalize_ids`; R-036, D-099, D-101):
+- surrounding square brackets and whitespace are removed: the prompts cite IDs as "[F2]" in prose;
+- an ID that is not valid as written, but is a shown ID with one extra leading "I", is read as that shown ID. Qwen 3.8
+  Flash doubles the "I" of IDs that start with one ("IIBC_..."), even when told not to and shown the right ID.
+  The repair never fires on a valid ID, and an issue ID ("I1") never maps to a shown ID.
+Anything else (an ID split into characters, an issue ID in a rule list) stays a problem.
 """
 
 from __future__ import annotations
@@ -40,6 +47,42 @@ class Allowed:
     record_ids: set[str]
 
 
+def _bare(rid: str) -> str:
+    stripped = rid.strip()
+    if stripped.startswith("[") and stripped.endswith("]"):
+        stripped = stripped[1:-1].strip()
+    return stripped
+
+
+def _repair(rid: str, shown: set[str]) -> str:
+    bare = _bare(rid)
+    if bare not in shown and bare.startswith("I") and bare[1:] in shown:
+        return bare[1:]
+    return bare
+
+
+def normalize_ids(draft: OpinionDraft, allowed: Allowed) -> tuple[OpinionDraft, int]:
+    """The draft with its rule and record IDs repaired as described above, and how many IDs changed."""
+    rules_shown = allowed.statute_ids | allowed.precedent_uids
+    changed = 0
+    decisions = []
+    for d in draft.issue_decisions:
+        rules = [_repair(r, rules_shown) for r in d.governing_rule_ids]
+        records = [_repair(r, allowed.record_ids) for r in d.record_ids]
+        changed += sum(a != b for a, b in zip(rules, d.governing_rule_ids, strict=True))
+        changed += sum(a != b for a, b in zip(records, d.record_ids, strict=True))
+        decisions.append(d.model_copy(update={"governing_rule_ids": rules, "record_ids": records}))
+    return draft.model_copy(update={"issue_decisions": decisions}), changed
+
+
+def _hint(rid: str, wanted: set[str], issue_ids: set[str]) -> str:
+    """Why an unknown ID is wrong, where code can tell: an issue ID in a rule list, or a shown ID with one stray
+    leading character."""
+    if rid in issue_ids:
+        return f"; {rid} is an issue ID, which belongs only in issue_id"
+    return f'; did you mean "{rid[1:]}"?' if rid[1:] in wanted else ""
+
+
 def check_opinion(draft: OpinionDraft, allowed: Allowed) -> list[str]:
     problems: list[str] = []
     framed = set(allowed.issue_ids)
@@ -54,10 +97,16 @@ def check_opinion(draft: OpinionDraft, allowed: Allowed) -> list[str]:
             problems.append(f"NO_GOVERNING_RULE {d.issue_id}: cite the statute or precedent IDs the finding rests on")
         for rid in d.governing_rule_ids:
             if rid not in rules:
-                problems.append(f"UNKNOWN_RULE_ID {d.issue_id}: {rid} is not a statute or precedent you were shown")
+                problems.append(
+                    f'UNKNOWN_RULE_ID {d.issue_id}: "{rid}" is not a statute or precedent you were shown'
+                    + _hint(rid, rules, framed)
+                )
         for rid in d.record_ids:
             if rid not in allowed.record_ids:
-                problems.append(f"UNKNOWN_RECORD_ID {d.issue_id}: {rid} is not in the record")
+                problems.append(
+                    f'UNKNOWN_RECORD_ID {d.issue_id}: "{rid}" is not in the record'
+                    + _hint(rid, allowed.record_ids, framed)
+                )
         for field, text in (("finding", d.finding), ("application", d.application), ("conclusion", d.conclusion)):
             if not text.strip():
                 problems.append(f"EMPTY_REASON {d.issue_id}: {field} is empty")

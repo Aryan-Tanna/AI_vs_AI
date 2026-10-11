@@ -102,10 +102,22 @@ class ThemisLocal:
         self._cfg = cfg
         self._embedder = embedder
 
-    def check(self, draft: LawyerDraft, ctx: VerifyContext, *, session_id: str) -> Verification:
+    def check(
+        self, draft: LawyerDraft, ctx: VerifyContext, *, session_id: str, short_circuit: bool = False
+    ) -> Verification:
+        """With `short_circuit`, a draft that the free checks in code (record references, repetition) already send
+        back is returned without the paid LLM checks; the next attempt is checked in full. The caller never sets it on
+        the last attempt, so a draft that is published (FLAGGED or not) has always had every check (D-100)."""
         claims = claim_ids(draft, ctx.turn)
         out = Verification(claims=claims)
         law = ctx.law
+        l2 = Layer2Result()
+        check_claim_references(claims, record_index(ctx.case), set(law.views), l2)
+        check_repetition(self._embedder, draft.text, ctx.own_earlier, self._cfg, l2)
+        if short_circuit and l2.hard_errors:
+            out.hard_errors += l2.hard_errors
+            out.warnings += l2.warnings
+            return out
         # Layer 1: the law the argument states, against the dated Law DB and approved predicates (D-062).
         facts = facts_of(ctx.case)
         report = extract_checklists(
@@ -125,9 +137,7 @@ class ThemisLocal:
         out.hard_errors += [Problem(e.code, f"{e.statute_id}: {e.detail}", e.record_ids) for e in layer1.hard_errors]
         out.warnings += report.warnings + layer1.warnings
         out.rule_coverage = _coverage(report.checklists, law.views, self._cfg.themis_local.extraction_min_confidence)
-        # Layer 2.
-        l2 = Layer2Result()
-        check_claim_references(claims, record_index(ctx.case), set(law.views), l2)
+        # Layer 2 (record references and repetition ran above, in code).
         review_fidelity(
             self._llm,
             self._prompts,
@@ -139,7 +149,6 @@ class ThemisLocal:
             session_id=session_id,
         )
         check_citations(self._llm, self._prompts, self._cfg, claims, ctx.fetch_precedent, l2, session_id=session_id)
-        check_repetition(self._embedder, draft.text, ctx.own_earlier, self._cfg, l2)
         out.hard_errors += l2.hard_errors
         out.warnings += l2.warnings
         out.assessments = l2.assessments

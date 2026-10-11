@@ -197,7 +197,7 @@ def test_retry_feeds_back_exact_codes_and_ids_then_passes() -> None:
         notes.append(note)
         return draft(len(notes))
 
-    turn = verify_with_retries(write, lambda d: next(results), CFG.themis_local)
+    turn = verify_with_retries(write, lambda d, last: next(results), CFG.themis_local)
     assert notes[0] is None and "ERR_FACT_NOT_IN_RECORD [T01-C1, F1]" in (notes[1] or "")
     assert (turn.result.outcome, turn.result.attempts, turn.flags) == ("PASS_WITH_NOTES", 2, [])
     assert turn.result.hard_errors_by_attempt == [["ERR_FACT_NOT_IN_RECORD"], []]
@@ -211,20 +211,20 @@ def test_a_hard_error_left_after_the_retry_cap_is_flagged_and_visible() -> None:
         calls.append(1)
         return draft(len(calls))
 
-    turn = verify_with_retries(write, lambda d: verification("ERR_PRECEDENT_MISATTRIBUTED"), CFG.themis_local)
+    turn = verify_with_retries(write, lambda d, last: verification("ERR_PRECEDENT_MISATTRIBUTED"), CFG.themis_local)
     assert len(calls) == CFG.themis_local.retry_cap + 1
     assert turn.result.outcome == "FLAGGED"
     assert [(f.code, f.claim_ids) for f in turn.flags] == [("ERR_PRECEDENT_MISATTRIBUTED", ["T01-C1"])]
 
 
 def test_warnings_alone_never_trigger_a_retry() -> None:
-    turn = verify_with_retries(lambda n: draft(1), lambda d: verification(warnings=3), CFG.themis_local)
+    turn = verify_with_retries(lambda n: draft(1), lambda d, last: verification(warnings=3), CFG.themis_local)
     assert (turn.result.outcome, turn.result.attempts) == ("PASS_WITH_NOTES", 1)
 
 
 def test_only_spec_d8_codes_may_reject() -> None:
     with pytest.raises(UnknownHardErrorError):
-        verify_with_retries(lambda n: draft(1), lambda d: verification("ERR_INVENTED"), CFG.themis_local)
+        verify_with_retries(lambda n: draft(1), lambda d, last: verification("ERR_INVENTED"), CFG.themis_local)
 
 
 def test_feedback_lists_each_problem() -> None:
@@ -264,3 +264,53 @@ def test_the_whole_check_runs_layer_1_and_layer_2() -> None:
     assert [p.code for p in v.hard_errors] == ["ERR_FACT_NOT_IN_RECORD"]
     assert v.responsiveness == 1.0 and v.assessments[0].citation_tier == "VERIFIED"
     assert len(verifier.requests) == 3
+
+
+# ---------------------------------------------------------------- short circuit (D-100)
+
+
+def test_only_the_last_attempt_is_marked_last() -> None:
+    seen: list[bool] = []
+
+    def check(d: LawyerDraft, last: bool) -> Verification:
+        seen.append(last)
+        return verification("ERR_REPEATED_ARGUMENT")
+
+    verify_with_retries(lambda n: draft(1), check, CFG.themis_local)
+    assert seen == [False] * CFG.themis_local.retry_cap + [True]
+
+
+def _short_circuit_case(short_circuit: bool) -> tuple[Verification, int]:
+    llm, _, verifier = client(
+        [],
+        [
+            {"checklists": []},
+            review([], [("<p>", True)]),
+            {"verdicts": [verdict("T03-C2", "P1", "SUPPORTS")]},
+        ],
+    )
+    ctx = VerifyContext(
+        case=agent_view(),
+        law=LawContext(views={STATUTE: statute_view(STATUTE)}, alternatives=None, predicates={}),
+        fetch_precedent=fetch,
+        turn=3,
+        opponent_last="<opponent>",
+        own_earlier=["<a different earlier turn>"],
+    )
+    d = LawyerDraft(
+        text=ARGUMENT,
+        issues_addressed=["I1"],
+        claims=[claim(record_ids=["F999"]), claim(type="LAW", statute_id=STATUTE, precedent_ids=["P1"])],
+    )
+    v = ThemisLocal(llm, PROMPTS, CFG, WordEmbedder()).check(d, ctx, session_id="S", short_circuit=short_circuit)
+    return v, len(verifier.requests)
+
+
+def test_a_draft_the_free_checks_reject_skips_the_paid_checks() -> None:
+    v, calls = _short_circuit_case(short_circuit=True)
+    assert [p.code for p in v.hard_errors] == ["ERR_FACT_NOT_IN_RECORD"] and calls == 0
+
+
+def test_the_last_attempt_always_runs_every_check() -> None:
+    v, calls = _short_circuit_case(short_circuit=False)
+    assert "ERR_FACT_NOT_IN_RECORD" in [p.code for p in v.hard_errors] and calls == 3

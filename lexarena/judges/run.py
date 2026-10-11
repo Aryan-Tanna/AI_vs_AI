@@ -16,6 +16,7 @@ An LLM failure is raised, not turned into an abstention: abstention is a judicia
 from __future__ import annotations
 
 import hashlib
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Protocol
@@ -37,7 +38,7 @@ from lexarena.judges.packet import (
     statutes_for_bench,
 )
 from lexarena.judges.personas import PersonaPrompt, PersonaRegistry
-from lexarena.judges.validate import Allowed, check_opinion, finalize
+from lexarena.judges.validate import Allowed, check_opinion, finalize, normalize_ids
 from lexarena.llm.client import LLMClient
 from lexarena.memory.pinning import render as render_lessons
 from lexarena.prompts import PromptStore, RenderedPrompt
@@ -63,6 +64,7 @@ from lexarena.themis_local.layer1 import CaseFacts, alternative_readings, run_la
 from lexarena.themis_local.verify import LawContext
 
 ROLE = "judge"
+log = logging.getLogger("lexarena.judges")
 JSON_INDENT = 2  # literal-ok: readability of the previous answer shown in the revision prompt
 
 # THEMIS layer 1 on a judge's stated law runs on its own role, sized for an opinion (D-092).
@@ -187,8 +189,12 @@ class Bench:
 
     # ------------------------------------------------------------ calls
 
-    def _ask(self, prompt: RenderedPrompt, session_id: str) -> OpinionDraft:
-        return self._llm.complete_json(role=ROLE, user=prompt, schema=OpinionDraft, session_id=session_id).value
+    def _ask(self, prompt: RenderedPrompt, allowed: Allowed, session_id: str) -> OpinionDraft:
+        draft = self._llm.complete_json(role=ROLE, user=prompt, schema=OpinionDraft, session_id=session_id).value
+        draft, changed = normalize_ids(draft, allowed)
+        if changed:
+            log.info("session %s: %d malformed IDs repaired in a judge's answer (D-101)", session_id, changed)
+        return draft
 
     def _opinion(
         self,
@@ -211,7 +217,7 @@ class Bench:
             audit_notes=render_audit_notes(inputs.audit if self._cfg.judging.show_audit_notes else None, order),
             **shared,
         )
-        draft = self._ask(original, session_id)
+        draft = self._ask(original, allowed, session_id)
         problems = self._problems(draft, allowed, inputs, session_id)
         if not problems:
             return finalize(draft, order, revised=False, problems=[])
@@ -221,8 +227,10 @@ class Bench:
             original=original.text,
             previous=draft.model_dump_json(indent=JSON_INDENT),
             problems="\n".join(f"- {p}" for p in problems),
+            rule_ids=", ".join(sorted(allowed.statute_ids | allowed.precedent_uids)),
+            record_ids=", ".join(sorted(allowed.record_ids)),
         )
-        revised = self._ask(revision, session_id)
+        revised = self._ask(revision, allowed, session_id)
         return finalize(revised, order, revised=True, problems=self._problems(revised, allowed, inputs, session_id))
 
     # ------------------------------------------------------------ the bench

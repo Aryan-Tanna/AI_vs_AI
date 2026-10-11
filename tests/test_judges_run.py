@@ -100,10 +100,30 @@ def test_one_revision_fixes_an_unknown_id(tmp_path: Path) -> None:
     llm, judge, _ = client([bad, opinion_json()] + [opinion_json()] * (CALLS - 1))
     result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
     revision = sent(judge, 1)
-    assert "UNKNOWN_RULE_ID I1: <statute never shown>" in revision and "only chance to revise" in revision
+    assert 'UNKNOWN_RULE_ID I1: "<statute never shown>"' in revision and "only chance to revise" in revision
     first = result.decisions[0].opinions[0]
     assert not isinstance(first, InvalidOpinion) and first.revised
     assert result.verdict.winner == "PETITIONER"
+
+
+def test_a_bracketed_id_needs_no_revision(tmp_path: Path) -> None:
+    """R-036: '[<statute>]' in an ID list is the shown ID, so no revision call is spent on it."""
+    llm, judge, _ = client([opinion_json(rule=f"[{STATUTE}]")] + [opinion_json()] * (CALLS - 1))
+    result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    first = result.decisions[0].opinions[0]
+    assert not isinstance(first, InvalidOpinion) and not first.revised
+    assert first.issue_decisions[0].governing_rule_ids == [STATUTE]
+    assert len(judge.requests) == CALLS
+
+
+def test_the_revision_lists_the_citable_ids_bare(tmp_path: Path) -> None:
+    llm, judge, _ = client(
+        [opinion_json(rule="<statute never shown>"), opinion_json()] + [opinion_json()] * (CALLS - 1)
+    )
+    bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    tail = sent(judge, 1).split("YOUR PREVIOUS ANSWER")[1]
+    assert f"Rule IDs: {STATUTE}" in tail or f", {STATUTE}" in tail
+    assert "F1" in tail.split("Record IDs:")[1]
 
 
 def test_a_problem_left_after_the_revision_makes_the_persona_abstain(tmp_path: Path) -> None:

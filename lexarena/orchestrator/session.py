@@ -230,7 +230,11 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
 
             if NO_THEMIS in opts.ablations:
                 return _no_themis(write(None), turn)
-            return verify_with_retries(write, lambda d: checker.check(d, ctx, session_id=session_id), cfg.themis_local)
+            return verify_with_retries(
+                write,
+                lambda d, last: checker.check(d, ctx, session_id=session_id, short_circuit=not last),
+                cfg.themis_local,
+            )
 
         def publish(turn: int, side: Side, turn_type: str, vt: VerifiedTurn) -> None:
             framed = {i.issue_id for i in case.framed_issues}
