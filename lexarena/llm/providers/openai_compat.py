@@ -40,6 +40,8 @@ class OpenAICompatProvider:
         }
         if request.model.reasoning_effort is not None:
             payload["reasoning_effort"] = request.model.reasoning_effort
+        if request.model.reasoning_enabled is not None:
+            payload["reasoning"] = {"enabled": request.model.reasoning_enabled}
         if request.model.routing is not None:
             payload["provider"] = request.model.routing.model_dump(exclude_none=True)
         if self._config.json_mode == "json_schema":

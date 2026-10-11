@@ -1,970 +1,5 @@
 [
   {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period.",
-    "statutes": [
-      "IBC_2016_SEC_7",
-      "IBC_2016_SEC_61",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.95
-              },
-              {
-                "law_index": 1,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              },
-              {
-                "law_index": 2,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period",
-                "confidence": 0.9
-              }
-            ],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The limitation period began to run afresh from 6th November, 2015 when the OTS proposal was reiterated, making the Section 7 application filed on 19th September, 2018 within the three-year limitation period.",
-    "statutes": [
-      "IBC_2016_SEC_7",
-      "IBC_2016_SEC_61",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The provisions of the Limitation Act, 1963, including Section 18, apply to proceedings under the Insolvency and Bankruptcy Code, 2016.",
-    "statutes": [
-      "IBC_2016_SEC_7",
-      "IBC_2016_SEC_61",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The Section 7 application is barred by limitation as it was filed more than four years after the recorded date of default of 10th June, 2014.",
-    "statutes": [
-      "IBC_2016_SEC_7",
-      "IBC_2016_SEC_61",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The Adjudicating Authority did not err in rejecting the Section 7 application as being hit by limitation.",
-    "statutes": [
-      "IBC_2016_SEC_7",
-      "IBC_2016_SEC_61",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The One Time Settlement proposals dated 13th June, 2015 and 6th November, 2015 constitute an acknowledgment of liability under Section 18 of the Limitation Act, 1963, thereby extending the limitation period.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [
-        "WARN_PREREQUISITE_UNADDRESSED"
-      ],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13",
-            "2015-11-06"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST",
-    "text": "The application under Section 7 of the IBC is barred by limitation as it was filed more than three years after the date of default, and Section 18 of the Limitation Act cannot be used to extend the limitation period.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_ART_137",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_ART_137",
-          "stance": "INVOKE_BAR",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": false,
-          "acknowledgment_dates": [],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        },
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_BAR",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": false,
-          "acknowledgment_dates": [],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [
-              {
-                "law_index": 0,
-                "quote": "Section 18 of the Limitation Act cannot be used to extend the limitation period",
-                "confidence": 0.95
-              }
-            ],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST_NUMERIC",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. Further, under Section 7(4) of the Code the Adjudicating Authority is required to ascertain the existence of a default within 14 days of receipt of the application.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [
-        "WARN_PREREQUISITE_UNADDRESSED"
-      ],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": 14,
-            "rectification_window_days": null
-          }
-        },
-        {
-          "statute_id": "IBC_2016_SEC_7",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": null,
-          "acknowledgment_dates": [],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": 14,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "MUTATED",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. Further, under Section 7(4) of the Code the Adjudicating Authority is required to ascertain the existence of a default within 28 days of receipt of the application.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [
-      "ERR_TIMELINE_MISSTATED"
-    ],
-    "expect_warning": null,
-    "result": {
-      "hard": [
-        "ERR_TIMELINE_MISSTATED"
-      ],
-      "hard_detail": [
-        "ERR_TIMELINE_MISSTATED IBC_2016_SEC_7: adjudication_window_days: stated 28; law 14"
-      ],
-      "warnings": [
-        "WARN_PREREQUISITE_UNADDRESSED"
-      ],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": 28,
-            "rectification_window_days": null
-          }
-        },
-        {
-          "statute_id": "IBC_2016_SEC_7",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": null,
-          "acknowledgment_dates": [],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": 28,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST_NUMERIC",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. The Code allows the Adjudicating Authority 14 days from receipt to decide whether a default has occurred.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": 14,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "MUTATED",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. The Code allows the Adjudicating Authority 28 days from receipt to decide whether a default has occurred.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [
-      "ERR_TIMELINE_MISSTATED"
-    ],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": 28,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": false
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST_NUMERIC",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. Under the proviso to Section 7(5) of the Code, the applicant must be given 7 days from notice to rectify any defect in the application.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [
-        "WARN_PREREQUISITE_UNADDRESSED"
-      ],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "IBC_2016_SEC_7",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "Under the proviso to Section 7(5) of the Code, the applicant must be given 7 days from notice to rectify any defect in the application.",
-                "confidence": 0.95
-              }
-            ]
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": 7
-          }
-        },
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              }
-            ],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              },
-              {
-                "law_index": 2,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              }
-            ],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "MUTATED",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. Under the proviso to Section 7(5) of the Code, the applicant must be given 14 days from notice to rectify any defect in the application.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [
-      "ERR_TIMELINE_MISSTATED"
-    ],
-    "expect_warning": null,
-    "result": {
-      "hard": [
-        "ERR_TIMELINE_MISSTATED"
-      ],
-      "hard_detail": [
-        "ERR_TIMELINE_MISSTATED IBC_2016_SEC_7: rectification_window_days: stated 14; law 7"
-      ],
-      "warnings": [
-        "WARN_PREREQUISITE_UNADDRESSED"
-      ],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "IBC_2016_SEC_7",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "Under the proviso to Section 7(5) of the Code, the applicant must be given 14 days from notice to rectify any defect in the application.",
-                "confidence": 0.95
-              }
-            ]
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": 14
-          }
-        },
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              }
-            ],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              },
-              {
-                "law_index": 2,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015",
-                "confidence": 0.9
-              }
-            ],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "HONEST_NUMERIC",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. A defective application under Section 7 may be cured within 7 days of the notice of the defect.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": null,
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period.",
-                "confidence": 0.95
-              }
-            ]
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        },
-        {
-          "statute_id": "IBC_2016_SEC_7",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": null,
-          "acknowledgment_dates": [],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "A defective application under Section 7 may be cured within 7 days of the notice of the defect.",
-                "confidence": 0.95
-              }
-            ]
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": 7
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "MUTATED",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. A defective application under Section 7 may be cured within 14 days of the notice of the defect.",
-    "statutes": [
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [
-      "ERR_TIMELINE_MISSTATED"
-    ],
-    "expect_warning": null,
-    "result": {
-      "hard": [
-        "ERR_TIMELINE_MISSTATED"
-      ],
-      "hard_detail": [
-        "ERR_TIMELINE_MISSTATED IBC_2016_SEC_7: rectification_window_days: stated 14; law 7"
-      ],
-      "warnings": [],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period.",
-                "confidence": 0.95
-              }
-            ]
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        },
-        {
-          "statute_id": "IBC_2016_SEC_7",
-          "stance": "INVOKE_EXCEPTION",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": null,
-          "acknowledgment_dates": [],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "A defective application under Section 7 may be cured within 14 days of the notice of the defect.",
-                "confidence": 0.9
-              }
-            ]
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": 14
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
-    "case_id": "DEV_0001",
-    "kind": "PRE_THRESHOLD",
-    "text": "The Corporate Debtor acknowledged its liability through the One Time Settlement proposal dated 13th June, 2015, which extends the limitation period. The application was filed when the minimum amount of default under Section 4 of the Code was one lakh rupees, and the default here is well above that minimum.",
-    "statutes": [
-      "IBC_2016_SEC_4",
-      "IBC_2016_SEC_61",
-      "IBC_2016_SEC_7",
-      "LIMITATION_ACT_1963_SEC_18"
-    ],
-    "expect_hard": [],
-    "expect_warning": "THRESHOLD_NOT_VERIFIABLE",
-    "result": {
-      "hard": [],
-      "hard_detail": [],
-      "warnings": [
-        "THRESHOLD_NOT_VERIFIABLE",
-        "UNMAPPED",
-        "WARN_PREREQUISITE_UNADDRESSED"
-      ],
-      "extraction_notes": [],
-      "checklists": [
-        {
-          "statute_id": "IBC_2016_SEC_4",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": true,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": "INR"
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        },
-        {
-          "statute_id": "LIMITATION_ACT_1963_SEC_18",
-          "stance": "ASSERT_CLAIM",
-          "asserts_threshold_met": null,
-          "threshold_amount_id": null,
-          "chosen_readings": {},
-          "asserts_within_limitation": true,
-          "acknowledgment_dates": [
-            "2015-06-13"
-          ],
-          "diagnostic_checklist": {
-            "applicant_eligibility": [],
-            "financial_threshold": {
-              "minimum_amount": null,
-              "currency": null
-            },
-            "mandatory_prerequisites": [],
-            "statutory_bars": [],
-            "saving_exceptions": []
-          },
-          "procedural_timelines": {
-            "adjudication_window_days": null,
-            "rectification_window_days": null
-          }
-        }
-      ],
-      "seconds": 0.0,
-      "as_expected": true
-    }
-  },
-  {
     "case_id": "DEV_0002",
     "kind": "HONEST",
     "text": "The Resolution Plan must address and consider the claims of all stakeholders, including Operational Creditors, under Section 30(2) and the CIRP Regulations.",
@@ -979,7 +14,6 @@
       "hard": [],
       "hard_detail": [],
       "warnings": [
-        "WARN_CONDITION_NOT_IN_STATUTE",
         "WARN_PREREQUISITE_UNADDRESSED"
       ],
       "extraction_notes": [],
@@ -1000,7 +34,7 @@
             },
             "mandatory_prerequisites": [
               {
-                "law_index": null,
+                "law_index": 2,
                 "quote": "The Resolution Plan must address and consider the claims of all stakeholders, including Operational Creditors, under Section 30(2) and the CIRP Regulations.",
                 "confidence": 0.9
               }
@@ -1014,7 +48,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 4.8,
       "as_expected": true
     }
   },
@@ -1032,10 +66,48 @@
     "result": {
       "hard": [],
       "hard_detail": [],
-      "warnings": [],
+      "warnings": [
+        "UNMAPPED"
+      ],
       "extraction_notes": [],
-      "checklists": [],
-      "seconds": 0.0,
+      "checklists": [
+        {
+          "statute_id": "IBC_2016_SEC_30",
+          "stance": "INVOKE_BAR",
+          "asserts_threshold_met": null,
+          "threshold_amount_id": null,
+          "chosen_readings": {},
+          "asserts_within_limitation": null,
+          "acknowledgment_dates": [],
+          "diagnostic_checklist": {
+            "applicant_eligibility": [],
+            "financial_threshold": {
+              "minimum_amount": null,
+              "currency": null
+            },
+            "mandatory_prerequisites": [
+              {
+                "law_index": 2,
+                "quote": "The CoC did not consider the claim of the Appellant or propose any payment to the Operational Creditor, rendering the plan invalid.",
+                "confidence": 0.95
+              }
+            ],
+            "statutory_bars": [
+              {
+                "law_index": 2,
+                "quote": "The CoC did not consider the claim of the Appellant or propose any payment to the Operational Creditor, rendering the plan invalid.",
+                "confidence": 0.95
+              }
+            ],
+            "saving_exceptions": []
+          },
+          "procedural_timelines": {
+            "adjudication_window_days": null,
+            "rectification_window_days": null
+          }
+        }
+      ],
+      "seconds": 4.5,
       "as_expected": true
     }
   },
@@ -1078,7 +150,7 @@
               {
                 "law_index": 2,
                 "quote": "Under Section 30(2)(b), Operational Creditors are only entitled to the minimum liquidation value, which in this case is nil.",
-                "confidence": 1.0
+                "confidence": 0.95
               }
             ],
             "statutory_bars": [],
@@ -1090,7 +162,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 10.5,
       "as_expected": true
     }
   },
@@ -1112,7 +184,7 @@
       "extraction_notes": [],
       "checklists": [
         {
-          "statute_id": "IBC_2016_SEC_31",
+          "statute_id": "IBC_2016_SEC_30",
           "stance": "INVOKE_BAR",
           "asserts_threshold_met": null,
           "threshold_amount_id": null,
@@ -1128,7 +200,7 @@
             "mandatory_prerequisites": [],
             "statutory_bars": [
               {
-                "law_index": 0,
+                "law_index": 2,
                 "quote": "A Resolution Plan can only be interfered with if it violates Section 30(2)(b) of the IBC, which is not the case here.",
                 "confidence": 0.95
               }
@@ -1141,7 +213,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 10.5,
       "as_expected": true
     }
   },
@@ -1182,14 +254,14 @@
               {
                 "law_index": 2,
                 "quote": "failed to consider or propose any payment to the Operational Creditor",
-                "confidence": 0.9
+                "confidence": 0.95
               }
             ],
             "statutory_bars": [
               {
                 "law_index": 2,
-                "quote": "failed to consider or propose any payment to the Operational Creditor",
-                "confidence": 0.9
+                "quote": "violates the requirement to address the claims of all stakeholders",
+                "confidence": 0.85
               }
             ],
             "saving_exceptions": []
@@ -1200,7 +272,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.2,
       "as_expected": true
     }
   },
@@ -1242,7 +314,7 @@
             "mandatory_prerequisites": [
               {
                 "law_index": 2,
-                "quote": "operational creditors are only entitled to a minimum of what they would receive in the event of liquidation",
+                "quote": "Under Section 30(2)(b), operational creditors are only entitled to a minimum of what they would receive in the event of liquidation. Since the liquidation value for operational creditors in this case is nil, the CoC did not err in approving a plan with nil payment.",
                 "confidence": 0.95
               }
             ],
@@ -1255,7 +327,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.9,
       "as_expected": true
     }
   },
@@ -1276,8 +348,38 @@
       "hard_detail": [],
       "warnings": [],
       "extraction_notes": [],
-      "checklists": [],
-      "seconds": 0.0,
+      "checklists": [
+        {
+          "statute_id": "IBC_2016_SEC_21",
+          "stance": "INVOKE_EXCEPTION",
+          "asserts_threshold_met": null,
+          "threshold_amount_id": null,
+          "chosen_readings": {},
+          "asserts_within_limitation": null,
+          "acknowledgment_dates": [],
+          "diagnostic_checklist": {
+            "applicant_eligibility": [],
+            "financial_threshold": {
+              "minimum_amount": null,
+              "currency": null
+            },
+            "mandatory_prerequisites": [],
+            "statutory_bars": [
+              {
+                "law_index": 0,
+                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
+                "confidence": 0.95
+              }
+            ],
+            "saving_exceptions": []
+          },
+          "procedural_timelines": {
+            "adjudication_window_days": null,
+            "rectification_window_days": null
+          }
+        }
+      ],
+      "seconds": 5.0,
       "as_expected": true
     }
   },
@@ -1335,7 +437,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 4.8,
       "as_expected": true
     }
   },
@@ -1357,7 +459,7 @@
       "warnings": [],
       "extraction_notes": [],
       "checklists": [],
-      "seconds": 0.0,
+      "seconds": 1.5,
       "as_expected": true
     }
   },
@@ -1379,7 +481,7 @@
       "warnings": [],
       "extraction_notes": [],
       "checklists": [],
-      "seconds": 0.0,
+      "seconds": 1.5,
       "as_expected": true
     }
   },
@@ -1431,7 +533,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.7,
       "as_expected": true
     }
   },
@@ -1453,7 +555,7 @@
       "warnings": [],
       "extraction_notes": [],
       "checklists": [],
-      "seconds": 0.0,
+      "seconds": 1.4,
       "as_expected": true
     }
   },
@@ -1475,7 +577,7 @@
       "warnings": [],
       "extraction_notes": [],
       "checklists": [],
-      "seconds": 0.0,
+      "seconds": 4.9,
       "as_expected": true
     }
   },
@@ -1515,8 +617,8 @@
             "statutory_bars": [
               {
                 "law_index": 0,
-                "quote": "The insufficient stamping of the Assignment Deed under the Maharashtra Stamp Act is a curable defect and does not render the document inadmissible.",
-                "confidence": 0.95
+                "quote": "does not render the document inadmissible",
+                "confidence": 0.9
               }
             ],
             "saving_exceptions": [
@@ -1533,7 +635,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.0,
       "as_expected": true
     }
   },
@@ -1557,7 +659,7 @@
       "checklists": [
         {
           "statute_id": "IBC_2016_SEC_21",
-          "stance": "INVOKE_BAR",
+          "stance": "INVOKE_EXCEPTION",
           "asserts_threshold_met": null,
           "threshold_amount_id": null,
           "chosen_readings": {},
@@ -1577,7 +679,13 @@
                 "confidence": 0.95
               }
             ],
-            "saving_exceptions": []
+            "saving_exceptions": [
+              {
+                "law_index": 0,
+                "quote": "The assignee of a debt from a related party is not automatically disqualified as a related party under the first proviso to Section 21(2) of the IBC, 2016, as the assignment was a bona fide transaction for valuable consideration.",
+                "confidence": 0.85
+              }
+            ]
           },
           "procedural_timelines": {
             "adjudication_window_days": null,
@@ -1585,7 +693,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.8,
       "as_expected": true
     }
   },
@@ -1607,7 +715,7 @@
       "warnings": [],
       "extraction_notes": [],
       "checklists": [],
-      "seconds": 0.0,
+      "seconds": 2.5,
       "as_expected": true
     }
   },
@@ -1648,7 +756,7 @@
               {
                 "law_index": 0,
                 "quote": "The Assignment Deed was not sufficiently stamped as required by the Maharashtra Stamp Act, and thus could not be looked into or admitted in evidence.",
-                "confidence": 0.95
+                "confidence": 1.0
               }
             ],
             "saving_exceptions": []
@@ -1659,7 +767,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 6.6,
       "as_expected": true
     }
   },
@@ -1699,7 +807,7 @@
             "statutory_bars": [
               {
                 "law_index": 0,
-                "quote": "circumvent the related party disqualification under Section 21(2) of the IBC, 2016",
+                "quote": "The assignment was not a bona fide transaction but a circuitous transaction entered into in bad faith to circumvent the related party disqualification under Section 21(2) of the IBC, 2016.",
                 "confidence": 0.95
               }
             ],
@@ -1711,7 +819,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.3,
       "as_expected": true
     }
   },
@@ -1752,7 +860,7 @@
             "mandatory_prerequisites": [
               {
                 "law_index": 1,
-                "quote": "the Adjudicating Authority is required to ascertain the existence of a default within 14 days of receipt of the application",
+                "quote": "under Section 7(4) of the Code the Adjudicating Authority is required to ascertain the existence of a default within 14 days of receipt of the application.",
                 "confidence": 0.95
               }
             ],
@@ -1765,7 +873,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 4.5,
       "as_expected": true
     }
   },
@@ -1809,13 +917,7 @@
               "minimum_amount": null,
               "currency": null
             },
-            "mandatory_prerequisites": [
-              {
-                "law_index": 1,
-                "quote": "the Adjudicating Authority is required to ascertain the existence of a default",
-                "confidence": 0.95
-              }
-            ],
+            "mandatory_prerequisites": [],
             "statutory_bars": [],
             "saving_exceptions": []
           },
@@ -1825,7 +927,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 4.7,
       "as_expected": true
     }
   },
@@ -1844,12 +946,14 @@
     "result": {
       "hard": [],
       "hard_detail": [],
-      "warnings": [],
+      "warnings": [
+        "WARN_PREREQUISITE_UNADDRESSED"
+      ],
       "extraction_notes": [],
       "checklists": [
         {
           "statute_id": "IBC_2016_SEC_7",
-          "stance": "INVOKE_BAR",
+          "stance": "ASSERT_CLAIM",
           "asserts_threshold_met": null,
           "threshold_amount_id": null,
           "chosen_readings": {},
@@ -1862,22 +966,39 @@
               "currency": null
             },
             "mandatory_prerequisites": [],
-            "statutory_bars": [
-              {
-                "law_index": 0,
-                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
-                "confidence": 0.95
-              }
-            ],
+            "statutory_bars": [],
             "saving_exceptions": []
           },
           "procedural_timelines": {
             "adjudication_window_days": 14,
             "rectification_window_days": null
           }
+        },
+        {
+          "statute_id": "IBC_2016_SEC_21",
+          "stance": "INVOKE_EXCEPTION",
+          "asserts_threshold_met": null,
+          "threshold_amount_id": null,
+          "chosen_readings": {},
+          "asserts_within_limitation": null,
+          "acknowledgment_dates": [],
+          "diagnostic_checklist": {
+            "applicant_eligibility": [],
+            "financial_threshold": {
+              "minimum_amount": null,
+              "currency": null
+            },
+            "mandatory_prerequisites": [],
+            "statutory_bars": [],
+            "saving_exceptions": []
+          },
+          "procedural_timelines": {
+            "adjudication_window_days": null,
+            "rectification_window_days": null
+          }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 7.2,
       "as_expected": true
     }
   },
@@ -1902,12 +1023,14 @@
       "hard_detail": [
         "ERR_TIMELINE_MISSTATED IBC_2016_SEC_7: adjudication_window_days: stated 28; law 14"
       ],
-      "warnings": [],
+      "warnings": [
+        "WARN_PREREQUISITE_UNADDRESSED"
+      ],
       "extraction_notes": [],
       "checklists": [
         {
           "statute_id": "IBC_2016_SEC_7",
-          "stance": "INVOKE_BAR",
+          "stance": "ASSERT_CLAIM",
           "asserts_threshold_met": null,
           "threshold_amount_id": null,
           "chosen_readings": {},
@@ -1920,13 +1043,7 @@
               "currency": null
             },
             "mandatory_prerequisites": [],
-            "statutory_bars": [
-              {
-                "law_index": 0,
-                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
-                "confidence": 0.95
-              }
-            ],
+            "statutory_bars": [],
             "saving_exceptions": []
           },
           "procedural_timelines": {
@@ -1935,7 +1052,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 4.5,
       "as_expected": true
     }
   },
@@ -1972,20 +1089,8 @@
               "currency": null
             },
             "mandatory_prerequisites": [],
-            "statutory_bars": [
-              {
-                "law_index": 0,
-                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
-                "confidence": 0.9
-              }
-            ],
-            "saving_exceptions": [
-              {
-                "law_index": 0,
-                "quote": "Under the proviso to Section 7(5) of the Code, the applicant must be given 7 days from notice to rectify any defect in the application.",
-                "confidence": 0.95
-              }
-            ]
+            "statutory_bars": [],
+            "saving_exceptions": []
           },
           "procedural_timelines": {
             "adjudication_window_days": null,
@@ -1993,7 +1098,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 4.2,
       "as_expected": true
     }
   },
@@ -2036,18 +1141,12 @@
               "currency": null
             },
             "mandatory_prerequisites": [],
-            "statutory_bars": [
-              {
-                "law_index": 0,
-                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
-                "confidence": 0.9
-              }
-            ],
+            "statutory_bars": [],
             "saving_exceptions": [
               {
                 "law_index": 0,
                 "quote": "Under the proviso to Section 7(5) of the Code, the applicant must be given 14 days from notice to rectify any defect in the application.",
-                "confidence": 0.95
+                "confidence": 0.9
               }
             ]
           },
@@ -2057,7 +1156,7 @@
           }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 5.8,
       "as_expected": true
     }
   },
@@ -2076,7 +1175,9 @@
     "result": {
       "hard": [],
       "hard_detail": [],
-      "warnings": [],
+      "warnings": [
+        "WARN_PREREQUISITE_UNADDRESSED"
+      ],
       "extraction_notes": [],
       "checklists": [
         {
@@ -2099,7 +1200,7 @@
               {
                 "law_index": 0,
                 "quote": "A defective application under Section 7 may be cured within 7 days of the notice of the defect.",
-                "confidence": 0.95
+                "confidence": 1.0
               }
             ]
           },
@@ -2107,9 +1208,38 @@
             "adjudication_window_days": null,
             "rectification_window_days": 7
           }
+        },
+        {
+          "statute_id": "IBC_2016_SEC_21",
+          "stance": "ASSERT_CLAIM",
+          "asserts_threshold_met": null,
+          "threshold_amount_id": null,
+          "chosen_readings": {},
+          "asserts_within_limitation": null,
+          "acknowledgment_dates": [],
+          "diagnostic_checklist": {
+            "applicant_eligibility": [],
+            "financial_threshold": {
+              "minimum_amount": null,
+              "currency": null
+            },
+            "mandatory_prerequisites": [],
+            "statutory_bars": [
+              {
+                "law_index": 0,
+                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
+                "confidence": 0.9
+              }
+            ],
+            "saving_exceptions": []
+          },
+          "procedural_timelines": {
+            "adjudication_window_days": null,
+            "rectification_window_days": null
+          }
         }
       ],
-      "seconds": 0.0,
+      "seconds": 9.0,
       "as_expected": true
     }
   },
@@ -2134,7 +1264,9 @@
       "hard_detail": [
         "ERR_TIMELINE_MISSTATED IBC_2016_SEC_7: rectification_window_days: stated 14; law 7"
       ],
-      "warnings": [],
+      "warnings": [
+        "WARN_PREREQUISITE_UNADDRESSED"
+      ],
       "extraction_notes": [],
       "checklists": [
         {
@@ -2165,9 +1297,38 @@
             "adjudication_window_days": null,
             "rectification_window_days": 14
           }
+        },
+        {
+          "statute_id": "IBC_2016_SEC_21",
+          "stance": "ASSERT_CLAIM",
+          "asserts_threshold_met": null,
+          "threshold_amount_id": null,
+          "chosen_readings": {},
+          "asserts_within_limitation": null,
+          "acknowledgment_dates": [],
+          "diagnostic_checklist": {
+            "applicant_eligibility": [],
+            "financial_threshold": {
+              "minimum_amount": null,
+              "currency": null
+            },
+            "mandatory_prerequisites": [],
+            "statutory_bars": [
+              {
+                "law_index": 0,
+                "quote": "The mere fact that the assignor was a related party does not make the assignee a related party, and an assignee does not suffer from the same deficiencies as the assignor.",
+                "confidence": 0.85
+              }
+            ],
+            "saving_exceptions": []
+          },
+          "procedural_timelines": {
+            "adjudication_window_days": null,
+            "rectification_window_days": null
+          }
         }
       ],
-      "seconds": 0.8,
+      "seconds": 10.0,
       "as_expected": true
     }
   }

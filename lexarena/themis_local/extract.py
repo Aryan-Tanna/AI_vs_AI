@@ -31,7 +31,7 @@ from lexarena.schemas.themis import ArgumentExtraction, ChecklistDraft
 from lexarena.schemas.transcript import ClaimedItem, ExtractedChecklist, ThemisWarning
 from lexarena.storage.temporal import StatuteView
 
-ROLE = "verifier"
+ROLE = "extractor"  # reasoning off: a mechanical mirror of the checklist (D-102)
 UNMAPPED = "UNMAPPED"
 NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
 WORD = re.compile(r"[a-z]+")

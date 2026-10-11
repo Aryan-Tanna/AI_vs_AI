@@ -119,7 +119,7 @@ def client(
     verifier = FakeProvider(verifier_responses)
     # The auditor shares the judge script, as when both ran on one provider.
     cfg, providers = fakes_by_role(
-        CFG, {"judge": judge, "auditor": judge, "verifier": verifier, "judge_checker": verifier}
+        CFG, {"judge": judge, "auditor": judge, "verifier": verifier, "extractor": verifier, "judge_checker": verifier}
     )
     llm = LLMClient(
         cfg,

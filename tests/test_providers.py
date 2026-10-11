@@ -36,6 +36,7 @@ def _request(provider: str, json_mode_model: str = "m") -> LLMRequest:
         temperature=0.0,
         max_output_tokens=64,
         reasoning_effort=None,
+        reasoning_enabled=None,
         routing=None,
         api_key_env="K",
     )
@@ -113,6 +114,21 @@ def test_reasoning_effort_is_sent_only_when_set() -> None:
     low = plain.model_copy(update={"model": plain.model.model_copy(update={"reasoning_effort": "low"})})
     _openai(handler).complete(low, api_key="k")
     assert "reasoning_effort" not in bodies[0] and bodies[1]["reasoning_effort"] == "low"
+
+
+def test_reasoning_switch_is_sent_only_when_set() -> None:
+    """D-102: `reasoning_enabled: false` turns a model's hidden reasoning off (OpenRouter `reasoning.enabled`)."""
+    bodies: list[dict[str, Any]] = []
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        bodies.append(json.loads(req.content))
+        return httpx.Response(200, json=_ok_openai('{"answer": 1}'))
+
+    plain = _request("p")
+    _openai(handler).complete(plain, api_key="k")
+    off = plain.model_copy(update={"model": plain.model.model_copy(update={"reasoning_enabled": False})})
+    _openai(handler).complete(off, api_key="k")
+    assert "reasoning" not in bodies[0] and bodies[1]["reasoning"] == {"enabled": False}
 
 
 def test_provider_routing_is_sent_only_when_set() -> None:

@@ -20,6 +20,7 @@ def _req(**changes: Any) -> LLMRequest:
         temperature=0.0,
         max_output_tokens=64,
         reasoning_effort=None,
+        reasoning_enabled=None,
         routing=None,
         api_key_env="K",
     )
@@ -81,7 +82,7 @@ def test_an_unset_optional_model_setting_leaves_the_key_unchanged() -> None:
 
     req = _req()
     legacy = {
-        "model": req.model.model_dump(exclude={"api_key_env", "reasoning_effort", "routing"}),
+        "model": req.model.model_dump(exclude={"api_key_env", "reasoning_effort", "reasoning_enabled", "routing"}),
         "seed": req.seed,
         "schema_name": req.schema_name,
         "schema": req.json_schema,

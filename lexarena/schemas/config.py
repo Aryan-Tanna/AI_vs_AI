@@ -61,6 +61,9 @@ class ModelConfig(Strict):
     max_output_tokens: PositiveInt
     # Reasoning models only (sent as `reasoning_effort`); null for every other model (D-081).
     reasoning_effort: Literal["low", "medium", "high"] | None
+    # false turns a reasoning model's hidden reasoning off (OpenRouter `reasoning.enabled`), for mechanical calls only
+    # (D-102). Unset (null) sends nothing, so the cache keys of every model that does not use it are unchanged.
+    reasoning_enabled: bool | None
     api_key_env: EnvVarName
     # Gateway host pinning; omitted (null) for direct providers, so their cache keys are unchanged.
     routing: ProviderRouting | None
@@ -69,6 +72,9 @@ class ModelConfig(Strict):
 class ModelsConfig(Strict):
     lawyer: ModelConfig
     verifier: ModelConfig
+    # THEMIS-LOCAL layer-1 checklist extraction, a mechanical mirror of the argument: same family rules as the verifier,
+    # reasoning off because the call needs none (D-102). Judgement calls (layer-2 review, entailment) stay on verifier.
+    extractor: ModelConfig
     # THEMIS layer 1 on the judges' stated law: a judge's opinion is longer than a lawyer's turn (D-092).
     judge_checker: ModelConfig
     judge: ModelConfig
@@ -86,7 +92,7 @@ class ModelsConfig(Strict):
     @model_validator(mode="after")
     def _invariants(self) -> ModelsConfig:
         # SPEC I3-7: THEMIS (layer 2 and global) must not share the lawyers' model family.
-        for role in ("verifier", "judge_checker", "auditor"):
+        for role in ("verifier", "extractor", "judge_checker", "auditor"):
             if getattr(self, role).family == self.lawyer.family:
                 raise ValueError(f"models.{role}.family must differ from models.lawyer.family (SPEC I3-7)")
         # Two-model agreement in the clerk (ARCHITECTURE §3) needs independent families.
@@ -97,6 +103,7 @@ class ModelsConfig(Strict):
         # CLAUDE.md: verifiers and extractors run at temperature 0.
         for role in (
             "verifier",
+            "extractor",
             "judge_checker",
             "auditor",
             "clerk_primary",
