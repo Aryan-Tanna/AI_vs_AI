@@ -173,6 +173,13 @@ def test_repeating_an_earlier_turn_is_a_hard_error_and_near_repeats_warn() -> No
     assert fresh.hard_errors == [] and fresh.repetition is None
 
 
+def test_a_closing_that_repeats_an_earlier_turn_only_warns() -> None:
+    """R-037, D-103: a closing summarises by design, so repetition there is a warning, never a rejection."""
+    out = Layer2Result()
+    check_repetition(WordEmbedder(), ARGUMENT, [ARGUMENT], CFG, out, closing=True)
+    assert out.hard_errors == [] and [w.code for w in out.warnings] == ["WARN_REPETITION"]
+
+
 # ---------------------------------------------------------------- outcome policy
 
 

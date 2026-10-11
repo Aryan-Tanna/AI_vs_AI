@@ -251,14 +251,18 @@ def _cosine(a: list[float], b: list[float]) -> float:
     return sum(x * y for x, y in zip(a, b, strict=True)) / norm if norm else 0.0
 
 
-def check_repetition(embedder: Embedder, argument: str, earlier: list[str], cfg: AppConfig, out: Layer2Result) -> None:
+def check_repetition(
+    embedder: Embedder, argument: str, earlier: list[str], cfg: AppConfig, out: Layer2Result, *, closing: bool = False
+) -> None:
+    """Similarity to the side's own earlier turns. A closing summarises by design, so for a closing even a near-copy is
+    only a warning (R-037, D-103); for every other turn above the hard threshold it is ERR_REPEATED_ARGUMENT."""
     if not earlier:
         return
     vectors = embedder.embed([argument, *earlier])
     best = max(_cosine(vectors[0], v) for v in vectors[1:])
     out.repetition = best
     t = cfg.themis_local
-    if best > t.repetition_hard_threshold:
+    if best > t.repetition_hard_threshold and not closing:
         out.hard_errors.append(
             Problem("ERR_REPEATED_ARGUMENT", f"the argument repeats an earlier turn of yours (similarity {best:.2f})")
         )

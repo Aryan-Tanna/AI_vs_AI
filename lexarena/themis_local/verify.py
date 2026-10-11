@@ -52,6 +52,7 @@ class VerifyContext:
     turn: int
     opponent_last: str | None  # the opponent's latest published text, for responsiveness
     own_earlier: list[str]  # this side's earlier published texts, for repetition
+    closing: bool = False  # a closing statement: repetition only warns (R-037, D-103)
 
 
 @dataclass
@@ -113,7 +114,7 @@ class ThemisLocal:
         law = ctx.law
         l2 = Layer2Result()
         check_claim_references(claims, record_index(ctx.case), set(law.views), l2)
-        check_repetition(self._embedder, draft.text, ctx.own_earlier, self._cfg, l2)
+        check_repetition(self._embedder, draft.text, ctx.own_earlier, self._cfg, l2, closing=ctx.closing)
         if short_circuit and l2.hard_errors:
             out.hard_errors += l2.hard_errors
             out.warnings += l2.warnings

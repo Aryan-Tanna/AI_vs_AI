@@ -223,6 +223,7 @@ def run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: S
                 turn=turn,
                 opponent_last=others[-1].published_text if others else None,
                 own_earlier=own,
+                closing=turn_type == CLOSING,
             )
 
             def write(feedback: str | None) -> LawyerDraft:
