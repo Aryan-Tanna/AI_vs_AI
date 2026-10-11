@@ -161,6 +161,17 @@ def test_a_supported_citation_is_verified_in_one_batched_call() -> None:
     assert len(verifier.requests) == 1 and RATIO in verifier.requests[0].messages[-1].content
 
 
+def test_the_fidelity_reviewer_sees_who_the_parties_are() -> None:
+    """DEV2_E2E_1: "Company-T is an operational creditor" was rejected as not in the record because the reviewer
+    was shown the facts but not the parties list the lawyers see."""
+    from lexarena.themis_local.layer2 import render_record
+
+    case = agent_view()
+    text = render_record(case)
+    for p in case.parties:
+        assert f"{p.pseudonym}: {p.status}" in text
+
+
 # ---------------------------------------------------------------- repetition
 
 

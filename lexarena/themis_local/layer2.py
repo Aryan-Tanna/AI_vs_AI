@@ -83,7 +83,9 @@ def record_index(case: AgentCaseView) -> dict[str, str]:
 
 def render_record(case: AgentCaseView) -> str:
     r = case.record
-    lines = [f"[{f.fact_id}] {f.text}" for f in r.stipulated_facts]
+    # The parties as the lawyers see them (pseudonym and legal status), so who is who is never "not in the record".
+    lines = [f"PARTY {p.pseudonym}: {p.status}" for p in case.parties]
+    lines += [f"[{f.fact_id}] {f.text}" for f in r.stipulated_facts]
     lines += [
         f"[{c.fact_id}] CONTESTED: {c.question} | petitioner: {c.petitioner_version} | respondent: "
         f"{c.respondent_version}"
