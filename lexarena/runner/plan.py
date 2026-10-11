@@ -63,7 +63,7 @@ def check_no_future_lessons(
         return
     unknown = sorted(lid for lid, day in lesson_sources.items() if day is None)
     if unknown:
-        raise PlanRefusedError(f"lessons from cases not in the case index (date unknown): {unknown[:5]}")
+        raise PlanRefusedError(f"lessons from cases not in the case index (date unknown): {unknown}")
     newest = max(day for day in lesson_sources.values() if day is not None)
     first = min(c.decided_on for c in cases)
     if first < newest:
