@@ -129,6 +129,14 @@ def test_clerk_models_must_differ_in_family(tmp_path: Path) -> None:
         load_config(_write(tmp_path, raw))
 
 
+def test_clerk_extractor_and_its_checker_must_differ_in_family(tmp_path: Path) -> None:
+    """The entailment check (clerk_secondary) verifies the extractor's facts, so it needs another family (D-121)."""
+    raw = copy.deepcopy(RAW_V1)
+    raw["models"]["clerk_extractor"]["family"] = raw["models"]["clerk_secondary"]["family"]
+    with pytest.raises(ValidationError, match="clerk_extractor"):
+        load_config(_write(tmp_path, raw))
+
+
 def test_drafter_models_must_differ_in_family(tmp_path: Path) -> None:
     raw = copy.deepcopy(RAW_V1)
     raw["models"]["drafter_secondary"]["family"] = raw["models"]["drafter_primary"]["family"]
@@ -145,7 +153,16 @@ def test_vocabulary_must_include_the_decision_date_and_in_force_parameter(tmp_pa
 
 
 @pytest.mark.parametrize(
-    "role", ["verifier", "auditor", "clerk_primary", "clerk_secondary", "drafter_primary", "drafter_secondary"]
+    "role",
+    [
+        "verifier",
+        "auditor",
+        "clerk_primary",
+        "clerk_extractor",
+        "clerk_secondary",
+        "drafter_primary",
+        "drafter_secondary",
+    ],
 )
 def test_verifiers_and_extractors_run_at_temperature_zero(tmp_path: Path, role: str) -> None:
     raw = copy.deepcopy(RAW_V1)

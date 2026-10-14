@@ -179,7 +179,9 @@ def run() -> Any:
     groq = FakeProvider([text_response(json.dumps(x)) for x in (ENTAILMENT, PROBE)])
     names = {m.api_key_env for m in cfg.models.by_role().values()}
     # The clerk's second family also stands in for the lawyer probe.
-    split, providers = fakes_by_role(cfg, {"clerk_primary": gemini, "clerk_secondary": groq, "lawyer": groq})
+    split, providers = fakes_by_role(
+        cfg, {"clerk_primary": gemini, "clerk_extractor": gemini, "clerk_secondary": groq, "lawyer": groq}
+    )
     llm = LLMClient(
         split,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
@@ -265,7 +267,9 @@ def test_one_repair_round_fixes_an_unsupported_item_and_everything_is_checked_ag
     groq = FakeProvider([text_response(json.dumps(x)) for x in (bad, good, PROBE)])
     names = {m.api_key_env for m in cfg.models.by_role().values()}
     # The clerk's second family also stands in for the lawyer probe.
-    split, providers = fakes_by_role(cfg, {"clerk_primary": gemini, "clerk_secondary": groq, "lawyer": groq})
+    split, providers = fakes_by_role(
+        cfg, {"clerk_primary": gemini, "clerk_extractor": gemini, "clerk_secondary": groq, "lawyer": groq}
+    )
     llm = LLMClient(
         split,
         SecretStore(env_file=None, environ={n: "k" for n in names}),

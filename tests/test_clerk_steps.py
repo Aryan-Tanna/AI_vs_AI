@@ -39,11 +39,30 @@ def client(cfg: AppConfig, *answers: dict[str, Any]) -> tuple[LLMClient, FakePro
         cfg,
         SecretStore(env_file=None, environ={n: "k" for n in names}),
         PromptStore(PROMPTS_ROOT),
-        providers={cfg.models.clerk_primary.provider: provider},
+        providers={name: provider for name in cfg.providers},
         cache=None,
         sleep=lambda _: None,
     )
     return llm, provider
+
+
+def test_free_model_splits_and_paid_model_extracts(cfg: AppConfig) -> None:
+    """D-121, your split: names (pseudonyms) and routing (agent view vs sealed) stay on the free clerk_primary;
+    record-fact selection and the other extractions go to clerk_extractor."""
+    llm, provider = client(
+        cfg,
+        {"labels": [{"para_id": "P1", "part": "FACTS"}]},
+        {"entities": []},
+        {"record_fact_ids": []},
+    )
+    prompts = PromptStore(PROMPTS_ROOT)
+    route_paragraphs(llm, prompts, cfg, paras(1), session_id="t")
+    list_entities(llm, prompts, cfg, "<header>", paras(1), session_id="t")
+    select_record_facts(
+        llm, prompts, cfg, [JudgmentParagraph(para_id="P1", court_no="1", page=1, text="<a sentence.>")], session_id="t"
+    )
+    used = [r.model.name for r in provider.requests]
+    assert used == [cfg.models.clerk_primary.name, cfg.models.clerk_primary.name, cfg.models.clerk_extractor.name]
 
 
 def paras(n: int) -> list[JudgmentParagraph]:

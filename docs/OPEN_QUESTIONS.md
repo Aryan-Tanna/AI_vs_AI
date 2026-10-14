@@ -95,6 +95,7 @@ Numbers quoted here come from `scripts/audit_raw.py` (run 2026-10-05) unless sta
 | R-045 | 2026-10-12 | **Pilot lessons stay in live memory.** Lessons from the pilot (dev cases, partly Claude-triaged) would be read by Phase 2 if left. | Medium | Low | Before Phase 2 decide: start the 500 from empty memory (remove by `created_in_run`) or keep owner-reviewed pilot lessons only. | OPEN |
 
 | R-046 | 2026-10-12 | **Law-version hash covers the whole Law DB record.** `statute_version` hashes the record plus applied overlays, so a later correction to a section's summary or checklist (law unchanged) would orphan every lesson on that statute. | Low | Medium | The pilot is unaffected (Law DB frozen). Before the 500, hash only what varies by date (applied overlay values and in-force status). | OPEN |
+| R-047 | 2026-10-15 | **Gemini's free tier counts 503 'high demand' answers against the daily quota.** Measured on DEV_0008: `gemini_api7` returned 429 after about 10 requests that were all 503, with nothing clerked. The client's 4 attempts per call times a retry loop burn a key in about 20 minutes of overload. Mitigation in use: the clerk starts only after a single probe request on one key answers 200 (every 20 minutes). If overloads persist for days, options are a second free model as the clerk primary (needs re-checking extraction quality, and your yes) or a provider-specific lower `max_attempts` for 503. | Open |
 ## Suggestions
 
 | ID | Date | Suggestion | Benefit | Cost | Serves (INTENT goal or SPEC section) | Status |

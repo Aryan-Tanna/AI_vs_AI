@@ -30,7 +30,8 @@ from lexarena.schemas.clerk import (
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.judgment import JudgmentParagraph, JudgmentPart
 
-ROLE = "clerk_primary"
+ROLE = "clerk_primary"  # names and routing: the spoiler-hiding steps (D-121)
+EXTRACT_ROLE = "clerk_extractor"  # record facts, agent view, ground truth, repair (D-121)
 CUT_MARK = "…"
 
 
@@ -159,7 +160,7 @@ def select_record_facts(
     ref = cfg.prompts.clerk_record_facts
     rendered = "\n".join(f"[{s.sentence_id}] {s.text}" for s in sentences)
     prompt = prompts.render(ref.id, ref.version, sentences=rendered)
-    picked = llm.complete_json(role=ROLE, user=prompt, schema=RecordFactIds, session_id=session_id).value
+    picked = llm.complete_json(role=EXTRACT_ROLE, user=prompt, schema=RecordFactIds, session_id=session_id).value
     by_id = {s.sentence_id: s for s in sentences}
     unknown = [i for i in picked.record_fact_ids if i not in by_id]
     if unknown:
@@ -227,7 +228,7 @@ def extract_agent_view(
         statute_ids=", ".join(sorted(statute_ids)),
         text=text,
     )
-    return llm.complete_json(role=ROLE, user=prompt, schema=AgentViewDraft, session_id=session_id).value
+    return llm.complete_json(role=EXTRACT_ROLE, user=prompt, schema=AgentViewDraft, session_id=session_id).value
 
 
 # ---------------------------------------------------------------- sealed ground truth (SPEC H2)
@@ -256,7 +257,7 @@ def extract_ground_truth(
         header=header,
         body=render_paragraphs(paragraphs),
     )
-    return llm.complete_json(role=ROLE, user=prompt, schema=GroundTruthDraft, session_id=session_id).value
+    return llm.complete_json(role=EXTRACT_ROLE, user=prompt, schema=GroundTruthDraft, session_id=session_id).value
 
 
 def repair_agent_view(
@@ -283,7 +284,7 @@ def repair_agent_view(
     )
     # Its own cap (D-109): on DEV_0007 the repair looped to 65,536 output tokens, about $0.59 a call on a paid route.
     return llm.complete_json(
-        role=ROLE,
+        role=EXTRACT_ROLE,
         user=prompt,
         schema=AgentViewDraft,
         session_id=session_id,

@@ -83,7 +83,10 @@ class ModelsConfig(Strict):
     judge_checker: ModelConfig
     judge: ModelConfig
     auditor: ModelConfig
+    # Names for pseudonyms and routing (agent view vs sealed): the spoiler-hiding steps, on a free key (D-121).
     clerk_primary: ModelConfig
+    # Record facts, agent view, ground truth and the agent-view repair (D-121).
+    clerk_extractor: ModelConfig
     clerk_secondary: ModelConfig
     reflection: ModelConfig
     # Step 3: two independent extractors draft side-collection items for human review (D-041).
@@ -102,6 +105,8 @@ class ModelsConfig(Strict):
         # Two-model agreement in the clerk (ARCHITECTURE §3) needs independent families.
         if self.clerk_primary.family == self.clerk_secondary.family:
             raise ValueError("models.clerk_primary.family must differ from models.clerk_secondary.family")
+        if self.clerk_extractor.family == self.clerk_secondary.family:
+            raise ValueError("models.clerk_extractor.family must differ from models.clerk_secondary.family")
         if self.drafter_primary.family == self.drafter_secondary.family:
             raise ValueError("models.drafter_primary.family must differ from models.drafter_secondary.family")
         # CLAUDE.md: verifiers and extractors run at temperature 0.
@@ -111,6 +116,7 @@ class ModelsConfig(Strict):
             "judge_checker",
             "auditor",
             "clerk_primary",
+            "clerk_extractor",
             "clerk_secondary",
             "drafter_primary",
             "drafter_secondary",
