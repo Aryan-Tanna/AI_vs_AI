@@ -53,6 +53,8 @@ def usage_since(log_path: Path, cfg: AppConfig, since: datetime) -> dict[Bucket,
             bucket = bucket_of(cfg, event.get("role", ""))
             if bucket is None:
                 continue
+            if event.get("api_key_env"):
+                bucket = (bucket[0], str(event["api_key_env"]))  # a spare key served it (D-118)
             requests[bucket] += int(event.get("attempts") or 0)
             tokens[bucket] += int(event.get("input_tokens") or 0) + int(event.get("output_tokens") or 0)
     return {b: Usage(requests[b], tokens[b]) for b in set(requests) | set(tokens)}

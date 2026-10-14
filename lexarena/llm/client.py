@@ -72,7 +72,8 @@ class LLMClient:
         model = models[role]
         if max_output_tokens is not None and max_output_tokens < model.max_output_tokens:
             model = model.model_copy(update={"max_output_tokens": max_output_tokens})
-        api_key = self._secrets.get(model.api_key_env)
+        key_envs = [model.api_key_env, *model.fallback_key_envs]
+        api_key = self._secrets.get(key_envs[0])
         provider = self._providers[model.provider]
 
         prompts = [p for p in (system, user) if p is not None]
@@ -99,6 +100,7 @@ class LLMClient:
             "schema": schema.__name__,
             "prompts": [{"id": p.prompt_id, "sha256": p.sha256} for p in prompts],
             "cache_key": key,
+            "api_key_env": key_envs[0],  # the variable's name, never its value; the key that served the call (D-118)
         }
 
         entry = self._cache.get_entry(key) if self._cache else None
@@ -137,10 +139,20 @@ class LLMClient:
                 response = provider.complete(request, api_key)
             except LLMError as exc:
                 last_error = exc
-                failed.append({"attempt": attempts, "error": type(exc).__name__})
+                failed.append({"attempt": attempts, "error": type(exc).__name__, "api_key_env": event["api_key_env"]})
+                hint = exc.retry_after_s if isinstance(exc, RateLimitedError) else None
+                spent = isinstance(exc, RateLimitedError) and (
+                    (hint is not None and hint > llm.backoff_max_s) or attempts >= llm.max_attempts
+                )
+                if spent and len(key_envs) > 1:
+                    # This key's quota is spent: the next spare key starts with a fresh attempt budget (D-118).
+                    key_envs.pop(0)
+                    event["api_key_env"] = key_envs[0]
+                    api_key = self._secrets.get(key_envs[0])
+                    attempts, transient_failures = 0, 0
+                    continue
                 if not exc.retryable or attempts >= llm.max_attempts:
                     break
-                hint = exc.retry_after_s if isinstance(exc, RateLimitedError) else None
                 if hint is not None and hint > llm.backoff_max_s:
                     break  # the server wants a longer wait than we allow (e.g. a spent daily quota): fail now
                 self._sleep(

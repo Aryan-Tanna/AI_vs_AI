@@ -22,7 +22,24 @@ SCANNED = [
     *sorted((REPO_ROOT / "prompts").rglob("*.txt")),
     *sorted((REPO_ROOT / "config").glob("*.yaml")),
 ]
-NAME_STOPWORDS = {"of", "and", "the", "vs", "ltd", "pvt", "anr", "ors", "on", "mr", "india", "limited", "private"}
+# "through its": cause-title connective ("X Through Its Resolution Professional"), not a name.
+NAME_STOPWORDS = {
+    "of",
+    "and",
+    "the",
+    "vs",
+    "ltd",
+    "pvt",
+    "anr",
+    "ors",
+    "on",
+    "mr",
+    "india",
+    "limited",
+    "private",
+    "through",
+    "its",
+}
 
 
 def _law_ids() -> set[str]:

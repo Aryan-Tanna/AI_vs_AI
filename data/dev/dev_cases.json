@@ -4,7 +4,9 @@
   "DEV_CASE": "In scope (NCLAT appeal, or SC appeal under s.62, D-061); may be clerked and simulated",
   "SHORT_ORDER": "In scope but 2-3 pages; probably too thin for a 10-turn session (R-005)",
   "SC_AUTHORITY": "Supreme Court judgment kept only as a verified authority: a landmark models have memorised, or not an appeal (a writ petition)",
-  "DUPLICATE": "Same judgment as another file"
+  "DUPLICATE": "Same judgment as another file",
+  "OUT_OF_SCOPE": "Not an IBC proceeding (D-001); never clerked",
+  "NO_MERITS": "One-page order disposing of the appeal without deciding it (withdrawn or not prosecuted); nothing to argue"
  },
  "files": [
   {
@@ -206,6 +208,144 @@
    "decided": "2021-11-23",
    "status": "DEV_CASE",
    "note": "Owner-supplied test case (2026-10-10). Reported SC landmark on s.60(5)(c): memorization risk; results reported apart"
+  },
+  {
+   "file": "pilot_2026_10_15/Ammeet_Kamal_Agarwal_vs_Ssarvi_Resolution_Services_Llp_on_3_August_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-08-03",
+   "status": "DEV_CASE"
+  },
+  {
+   "file": "pilot_2026_10_15/Mr_Akshay_Singhal_Ors_vs_Mr_Keshav_Khaneja_Resolution_on_6_August_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-08-06",
+   "status": "DEV_CASE",
+   "note": "5 pages; may be thin (R-005)"
+  },
+  {
+   "file": "pilot_2026_10_15/Middle_East_Management_Services_Llp_vs_Mr_Birendra_Kumar_Agarwal_Ors_Ors_on_18_August_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-08-18",
+   "status": "DEV_CASE",
+   "note": "4 pages, oral order; may be thin (R-005)"
+  },
+  {
+   "file": "pilot_2026_10_15/Vinay_Gupta_Erstwhile_Director_vs_Oswal_Minerals_Limited_Anr_Ors_on_21_August_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-08-21",
+   "status": "DEV_CASE",
+   "note": "Decides Company Appeals (AT) (Ins.) 1038 and 1032 together"
+  },
+  {
+   "file": "pilot_2026_10_15/Vipul_Himatlal_Shah_Anr_vs_Teco_Industries_Anr_on_18_May_2022.PDF",
+   "forum": "NCLAT",
+   "decided": "2022-05-18",
+   "status": "DEV_CASE"
+  },
+  {
+   "file": "pilot_2026_10_15/A A Estates Private Limited Through Its Resolution.pdf",
+   "forum": "SC",
+   "decided": "2025-11-28",
+   "status": "DEV_CASE",
+   "note": "s.14 moratorium and termination of a development agreement; 49 pages incl. SCR headnote"
+  },
+  {
+   "file": "pilot_2026_10_15/Amit Nehra & Anr..pdf",
+   "forum": "SC",
+   "decided": "2025-09-09",
+   "status": "DEV_CASE",
+   "note": "Allottees' claim under an approved plan"
+  },
+  {
+   "file": "pilot_2026_10_15/Livein Aqua Solutions Private Limited.pdf",
+   "forum": "SC",
+   "decided": "2025-11-24",
+   "status": "DEV_CASE",
+   "note": "s.7(5)(b) defective affidavit"
+  },
+  {
+   "file": "pilot_2026_10_15/Mansi Brar Fernandes.pdf",
+   "forum": "SC",
+   "decided": "2025-09-12",
+   "status": "DEV_CASE",
+   "note": "Widely reported (speculative allottees under s.7): memorization risk; results reported apart"
+  },
+  {
+   "file": "pilot_2026_10_15/UV Asset Reconstruction Company Limited.pdf",
+   "forum": "SC",
+   "decided": "2026-01-06",
+   "status": "DEV_CASE",
+   "note": "s.7 against an alleged guarantor; turns on s.126 Contract Act"
+  },
+  {
+   "file": "pilot_2026_10_15/Poonam_Gupta_Anr_vs_Lifestyle_Fitness_Pvt_Ltd_on_9_December_2021.PDF",
+   "forum": "NCLAT",
+   "decided": "2021-12-09",
+   "status": "NO_MERITS",
+   "note": "Dismissed as not pressed"
+  },
+  {
+   "file": "pilot_2026_10_15/Sai_Peace_And_Prosperity_Apartment_vs_Ask_Investment_Manager_P_Ltd_on_15_December_2021.PDF",
+   "forum": "NCLAT",
+   "decided": "2021-12-15",
+   "status": "NO_MERITS",
+   "note": "Dismissed for want of prosecution"
+  },
+  {
+   "file": "pilot_2026_10_15/Keshav_Ashok_Punj_vs_Union_Of_India_Ministry_Of_Corporate_on_7_August_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-08-07",
+   "status": "OUT_OF_SCOPE",
+   "note": "Companies Act s.469 (NCLT Rules), not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/Bhavna_Sanjay_Mistry_vs_Jupiter_Comtex_Pvt_Ltd_Ors_Ors_on_7_October_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-10-07",
+   "status": "OUT_OF_SCOPE",
+   "note": "Companies Act ss.241-242 oppression, not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/Mehul_Narayan_Thakkar_vs_Rukshmani_Syntex_Private_Limited_Ors_on_18_August_2026.PDF",
+   "forum": "NCLAT",
+   "decided": "2026-08-18",
+   "status": "OUT_OF_SCOPE",
+   "note": "Companies Act ss.241, 242, 246 oppression, not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/Hindustan Petroleum Corporation Ltd..pdf",
+   "forum": "SC",
+   "decided": "2025-12-09",
+   "status": "OUT_OF_SCOPE",
+   "note": "Arbitration Act s.11, not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/MMTC Limited.pdf",
+   "forum": "SC",
+   "decided": "2025-11-03",
+   "status": "OUT_OF_SCOPE",
+   "note": "Arbitration Act ss.34/37 and CPC s.47, not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/Sri Lakshmi Hotel Pvt. Limited & Anr..pdf",
+   "forum": "SC",
+   "decided": "2025-11-18",
+   "status": "OUT_OF_SCOPE",
+   "note": "Arbitration Act ss.34/37, not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/he State of West Bengal.pdf",
+   "forum": "SC",
+   "decided": "2025-12-10",
+   "status": "OUT_OF_SCOPE",
+   "note": "Criminal appeal (PC Act, CrPC s.102), not IBC"
+  },
+  {
+   "file": "pilot_2026_10_15/aa1efa07b1b17a85830eae79cd26fa2f91a9e1fe2204b644896a2f9e839a7a381792003863.pdf",
+   "forum": "SC",
+   "decided": "2026-01-12",
+   "status": "OUT_OF_SCOPE",
+   "note": "Ansal Crown Heights Flat Buyers v. Ansal Crown Infrabuild: consumer-forum execution appeal; IBC s.14 only as a side point"
   }
  ]
 }

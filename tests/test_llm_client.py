@@ -333,3 +333,73 @@ def test_cache_only_mode_never_calls_a_provider(
     with pytest.raises(CacheMissError):
         replay.complete_json(role="lawyer", user=user, schema=DaysAnswer, session_id="S2")
     assert len(fake.requests) == 1
+
+
+def _with_fallback_keys(cfg: AppConfig, role: str, spares: tuple[str, ...]) -> AppConfig:
+    model = getattr(cfg.models, role).model_copy(update={"fallback_key_envs": spares})
+    return cfg.model_copy(update={"models": cfg.models.model_copy(update={role: model})})
+
+
+def test_a_spent_daily_quota_moves_to_the_next_free_key(secrets: SecretStore, prompts: PromptStore) -> None:
+    """D-118: a free key whose daily quota is spent hands the call to the role's next key, without sleeping."""
+    base = load_config(CONFIG_V1)
+    cfg = _with_fallback_keys(base, "clerk_secondary", ("SPARE_A", "SPARE_B"))
+    keys = SecretStore(env_file=None, environ={**{n: f"key-for-{n}" for n in _names(cfg)}})
+    sleeps: list[float] = []
+    spent = RateLimitedError("daily quota", retry_after_s=cfg.llm.backoff_max_s + 1)
+    fake = FakeProvider([spent, spent, text_response(VALID)])
+    result = make_client(cfg, keys, fake, sleeps=sleeps).complete_json(
+        role="clerk_secondary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+    )
+    assert result.value.answer == 365
+    assert fake.api_keys == [f"key-for-{cfg.models.clerk_secondary.api_key_env}", "key-for-SPARE_A", "key-for-SPARE_B"]
+    assert sleeps == []
+
+
+def test_the_logged_key_is_the_one_that_answered(
+    secrets: SecretStore, prompts: PromptStore, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Quota pacing charges each call to the key variable that served it (D-118); names only, never key values."""
+    base = load_config(CONFIG_V1)
+    cfg = _with_fallback_keys(base, "clerk_secondary", ("SPARE_A",))
+    keys = SecretStore(env_file=None, environ={n: f"key-for-{n}" for n in _names(cfg)})
+    spent = RateLimitedError("daily quota", retry_after_s=cfg.llm.backoff_max_s + 1)
+    with caplog.at_level(logging.INFO, logger="lexarena.llm"):
+        make_client(cfg, keys, FakeProvider([spent, text_response(VALID)])).complete_json(
+            role="clerk_secondary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+        )
+    line = json.loads(caplog.records[-1].getMessage())
+    assert line["api_key_env"] == "SPARE_A"
+    assert line["failed_attempts"] == [
+        {"attempt": 1, "error": "RateLimitedError", "api_key_env": cfg.models.clerk_secondary.api_key_env}
+    ]
+    assert "key-for-" not in json.dumps(line)
+
+
+def test_when_every_key_is_spent_the_rate_limit_is_raised(secrets: SecretStore, prompts: PromptStore) -> None:
+    base = load_config(CONFIG_V1)
+    cfg = _with_fallback_keys(base, "clerk_secondary", ("SPARE_A",))
+    keys = SecretStore(env_file=None, environ={n: f"key-for-{n}" for n in _names(cfg)})
+    spent = RateLimitedError("daily quota", retry_after_s=cfg.llm.backoff_max_s + 1)
+    fake = FakeProvider([spent, spent, text_response(VALID)])
+    with pytest.raises(RateLimitedError):
+        make_client(cfg, keys, fake).complete_json(
+            role="clerk_secondary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+        )
+    assert len(fake.requests) == 2
+
+
+def test_other_errors_never_switch_keys(secrets: SecretStore, prompts: PromptStore) -> None:
+    """Only a spent quota moves to a spare key; an overloaded server is the same for every key."""
+    base = load_config(CONFIG_V1)
+    cfg = _with_fallback_keys(base, "clerk_secondary", ("SPARE_A",))
+    keys = SecretStore(env_file=None, environ={n: f"key-for-{n}" for n in _names(cfg)})
+    fake = FakeProvider([ProviderUnavailableError("503"), text_response(VALID)])
+    make_client(cfg, keys, fake).complete_json(
+        role="clerk_secondary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+    )
+    assert set(fake.api_keys) == {f"key-for-{cfg.models.clerk_secondary.api_key_env}"}
+
+
+def _names(cfg: AppConfig) -> set[str]:
+    return {k for m in cfg.models.by_role().values() for k in (m.api_key_env, *m.fallback_key_envs)}

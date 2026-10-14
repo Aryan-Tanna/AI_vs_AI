@@ -183,6 +183,16 @@ def test_usage_counts_attempts_and_tokens_and_ignores_cache_hits_and_old_calls(t
     assert len(used) == 1
 
 
+def test_usage_is_charged_to_the_key_that_served_the_call(tmp_path: Path) -> None:
+    """A call a spare key answered (D-118) uses that key's quota, not the role's first key."""
+    log = _log(
+        tmp_path / "log.jsonl",
+        [{"ts": NOW.isoformat(), "role": "judge", "outcome": "ok", "attempts": 1, "api_key_env": "SPARE_A"}],
+    )
+    used = usage_since(log, CFG, NOW - timedelta(hours=CFG.runner.quota_window_hours))
+    assert set(used) == {(CFG.models.judge.name, "SPARE_A")}
+
+
 def test_shortfall_when_a_stage_needs_more_than_is_left(tmp_path: Path) -> None:
     bucket = (JUDGE_QUOTA.model, JUDGE_QUOTA.api_key_env)
     from lexarena.runner.quota import Usage

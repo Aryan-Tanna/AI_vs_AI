@@ -66,6 +66,9 @@ class ModelConfig(Strict):
     # (D-102). Unset (null) sends nothing, so the cache keys of every model that does not use it are unchanged.
     reasoning_enabled: bool | None
     api_key_env: EnvVarName
+    # Spare free keys, tried in order when a key's quota is spent (HTTP 429 with no short wait), D-118. Empty for paid
+    # routes. Never part of the cache key: which key served a call cannot change the answer.
+    fallback_key_envs: tuple[EnvVarName, ...]
     # Gateway host pinning; omitted (null) for direct providers, so their cache keys are unchanged.
     routing: ProviderRouting | None
 

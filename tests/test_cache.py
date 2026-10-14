@@ -23,6 +23,7 @@ def _req(**changes: Any) -> LLMRequest:
         reasoning_enabled=None,
         routing=None,
         api_key_env="K",
+        fallback_key_envs=(),
     )
     fields: dict[str, Any] = {
         "model": model,
@@ -82,7 +83,15 @@ def test_an_unset_optional_model_setting_leaves_the_key_unchanged() -> None:
 
     req = _req()
     legacy = {
-        "model": req.model.model_dump(exclude={"api_key_env", "reasoning_effort", "reasoning_enabled", "routing"}),
+        "model": req.model.model_dump(
+            exclude={
+                "api_key_env",
+                "fallback_key_envs",
+                "reasoning_effort",
+                "reasoning_enabled",
+                "routing",
+            }
+        ),
         "seed": req.seed,
         "schema_name": req.schema_name,
         "schema": req.json_schema,

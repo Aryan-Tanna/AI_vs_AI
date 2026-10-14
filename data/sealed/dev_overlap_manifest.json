@@ -77,6 +77,27 @@
       "title_contains": "Ayyagari Viswanadha Sarma",
       "dev_case": "New_Okhla_Industrial_Development_vs_Ayyagari_Viswanadha_Sarma_Resolution_on_30_June_2026",
       "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2026_NCLAT_DEL_86",
+      "decision_date": "2026-08-03",
+      "title_contains": "Ssarvi",
+      "dev_case": "Ammeet_Kamal_Agarwal_vs_Ssarvi_Resolution_Services_Llp_on_3_August_2026",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2026_NCLAT_DEL_1038",
+      "decision_date": "2026-08-21",
+      "title_contains": "Oswal Minerals",
+      "dev_case": "Vinay_Gupta_Erstwhile_Director_vs_Oswal_Minerals_Limited_Anr_Ors_on_21_August_2026",
+      "relation": "SAME_CASE"
+    },
+    {
+      "precedent_id": "2022_NCLAT_DEL_470",
+      "decision_date": "2022-05-18",
+      "title_contains": "Teco Industries",
+      "dev_case": "Vipul_Himatlal_Shah_Anr_vs_Teco_Industries_Anr_on_18_May_2022",
+      "relation": "SAME_CASE"
     }
   ],
   "connected_not_moved": {
@@ -85,7 +106,8 @@
       "SAME_CD": "Another proceeding about the same corporate debtor",
       "SAME_DISPUTE": "The main appeal that the dev order (a recall application) concerns",
       "SAME_COMPANY": "Another proceeding about the same company (non-IBC)",
-      "GROUP_COMPANY": "A group company of the dev corporate debtor"
+      "GROUP_COMPANY": "A group company of the dev corporate debtor",
+      "ORDER_UNDER_APPEAL": "The NCLAT judgment that a Supreme Court dev case decides the appeal from"
     },
     "entries": [
       {
@@ -178,13 +200,28 @@
         "title_contains": "Rama Investment Company",
         "dev_case": "Ankit_Mittal_vs_Ankita_Pratisthan_Ltd_Ors_on_29_November_2019",
         "relation": "SAME_DISPUTE"
+      },
+      {
+        "precedent_id": "2024_NCLAT_DEL_975",
+        "decision_date": "2024-01-24",
+        "title_contains": "UV Asset Reconstruction",
+        "dev_case": "UV Asset Reconstruction Company Limited (SC, 6 January 2026)",
+        "relation": "ORDER_UNDER_APPEAL"
+      },
+      {
+        "precedent_id": "2020_NCLAT_DEL_83",
+        "decision_date": "2020-11-17",
+        "title_contains": "Mansi Brar Fernandes",
+        "dev_case": "Mansi Brar Fernandes (SC, 12 September 2025)",
+        "relation": "ORDER_UNDER_APPEAL"
       }
     ]
   },
   "reviewed_not_relevant": [
     "Authorities cited inside dev judgments (matched only by appeal number): different disputes, legitimately citable.",
     "2026_NCLAT_DEL_110 and 2026_NCLAT_DEL_187 (Truvisory Insolvency Professionals): other matters of the appellant IPE; not the same dispute or corporate debtor.",
-    "2025_NCLAT_DEL_2373 and 2025_NCLAT_DEL_1103_1084 (Divyesh Desai as RP of other corporate debtors): not the dev case's corporate debtor (Trend Electronics)."
+    "2025_NCLAT_DEL_2373 and 2025_NCLAT_DEL_1103_1084 (Divyesh Desai as RP of other corporate debtors): not the dev case's corporate debtor (Trend Electronics).",
+    "2026-10-15 pilot cases: precedents decided after a case's own date that only cite it (e.g. 12 NCLAT orders of 2025-10-17 naming Amit Nehra; Mansi Brar cited in 2025-11 and 2026 orders) are removed by the date cut-off. Birendra Kumar Agarwal hits are other matters of the same liquidator, different corporate debtors."
   ],
   "no_match_found": [
     "Armour Security vs Ambience (corporate debtor Ambience Pvt Ltd)",
@@ -194,6 +231,10 @@
     "Col A. Khanna vs Delhi Gymkhana (the order itself is not in the DB; its connected records are listed above)",
     "Satish Kumar Gupta vs EPFO (the order itself is not in the DB; its connected records are listed above)",
     "Encote Energy vs V. Venkatachalam",
-    "Vinod Kumar Jain vs Siddha Domicile"
+    "Vinod Kumar Jain vs Siddha Domicile",
+    "Akshay Singhal vs Keshav Khaneja",
+    "A A Estates vs Kher Nagar Sukhsadan CHS (order under appeal not found by name)",
+    "Amit Nehra vs Pawan Kumar Garg (order under appeal not found by name)",
+    "Livein Aqua vs HDFC Bank"
   ]
 }
