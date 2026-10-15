@@ -1,0 +1,50 @@
+Traceback (most recent call last):
+  File "C:\Users\aryan\AppData\Local\Temp\claude\C--IPD-AIvsAI\b0cce15d-2517-40a0-aa6c-cf68c4a3cd98\scratchpad\clerk_pilot.py", line 53, in <module>
+    rc = subprocess.run([EXE, "clerk", "run", "--file", f"pilot_2026_10_15/{name}", "--case-id", case_id],
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aryan\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aryan\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\aryan\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified
+DEV_0008 FAILED rc=1; see reports\dev_runs\clerk_DEV_0008.log
+DEV_0009 FAILED rc=1; see reports\dev_runs\clerk_DEV_0009.log
+DEV_0010 FAILED rc=1; see reports\dev_runs\clerk_DEV_0010.log
+DEV_0011 FAILED rc=1; see reports\dev_runs\clerk_DEV_0011.log
+DEV_0012 FAILED rc=1; see reports\dev_runs\clerk_DEV_0012.log
+DEV_0013 FAILED rc=1; see reports\dev_runs\clerk_DEV_0013.log
+DEV_0008 Gemini overloaded (try 1); waiting 600s
+DEV_0008 Gemini overloaded (try 2); waiting 600s
+DEV_0008 Gemini overloaded (try 3); waiting 600s
+DEV_0008 Gemini overloaded (try 4); waiting 600s
+--- relaunch 20:43 ---
+DEV_0008 Gemini overloaded (try 1); waiting 1200s
+--- relaunch on gemini-3.8-flash 20:59 ---
+--- relaunch D-121 split 21:06 ---
+DEV_0008 FAILED rc=1; see reports\dev_runs\clerk_DEV_0008.log
+--- relaunch D-122 all free 07:57 ---
+DEV_0008 STOP: paid clerk call [{'role': 'clerk_extractor', 'provider': 'openrouter', 'model': 'deepseek/deepseek-v4.1-flash', 'outcome': 'ok'}, {'role': 'clerk_extractor', 'provider': 'openrouter', 'model': 'deepseek/deepseek-v4.1-flash', 'outcome': 'ok'}, {'role': 'clerk_extractor', 'provider': 'openrouter', 'model': 'deepseek/deepseek-v4.1-flash', 'outcome': 'ok'}]
+--- relaunch D-123 backups 08:10 ---
+DEV_0008 done stored
+DEV_0008 split report written
+DEV_0009 done stored
+DEV_0009 split report written
+DEV_0010 FAILED rc=1; see reports\dev_runs\clerk_DEV_0010.log
+=== driver v2 (D-125) ===
+09:00 gemini probe 503 - waiting 1800s
+09:30 gemini probe 503 - waiting 1800s
+10:00 gemini probe 503 - waiting 1800s
+10:30 gemini probe 503 - waiting 1800s
+11:01 gemini probe 503 - waiting 1800s
+11:32 DEV_0008 FAILED rc=1; see reports\dev_runs\clerk_DEV_0008.log
+11:33 DEV_0009 FAILED rc=1; see reports\dev_runs\clerk_DEV_0009.log
+=== driver v2 relaunch after mongo restart ===
+11:34 gemini probe 503 - waiting 1800s
+=== driver v2 relaunch (owner: retry) ===
+16:00 gemini probe ReadTimeout - waiting 1800s
+16:30 gemini probe 503 - waiting 1800s
+17:00 gemini probe 503 - waiting 1800s

@@ -1,0 +1,28 @@
+# DEV_0008
+
+routing: {'FACTS': 5, 'SUBMISSIONS_P': 2, 'SUBMISSIONS_R': 3, 'ANALYSIS': 6, 'CONCLUSION': 2}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 1
+  [P13.S2] On the contrary the record maintained by the Information Utility NESL shows that the loan of Rs.19,40,81,000/- was given by the financial creditor to the corporate debtor at 14% rate of interest and an amount of Rs.26,49,46,085/- is outstanding (attached at pp.74-75 of the appeal paperbook, Vol.I).
+verbatim overlap with sealed text: FOUND (inspect)
+  P13: 3 shared 8-word runs
+  P14: 4 shared 8-word runs
+  finding I2: 2 shared 8-word runs
+      'gives rise to deemed authentication of debt and' in: agent_view.framed_issues.1.question: Whether the record of Information Utility Company-E gives rise to deemed authentication of debt and default where notices were sent to directors' e-mail addresses instead of the corporate debtor's address in Authority-D 
+      'rise to deemed authentication of debt and default' in: agent_view.framed_issues.1.question: Whether the record of Information Utility Company-E gives rise to deemed authentication of debt and default where notices were sent to directors' e-mail addresses instead of the corporate debtor's address in Authority-D 
+  finding I3: 3 shared 8-word runs
+      'admission of an application under section 7 of' in: agent_view.framed_issues.2.question: Whether the pendency of a prior civil suit between the parties for declaration and damages precludes admission of an application under Section 7 of the IBC.
+      'an application under section 7 of the ibc' in: agent_view.record.stipulated_facts.4.text: Company-X filed an application under Section 7 of the IBC against Company-G regarding alleged default in repayment of financial debt on 04.02.2020.
+      'of an application under section 7 of the' in: agent_view.framed_issues.2.question: Whether the pendency of a prior civil suit between the parties for declaration and damages precludes admission of an application under Section 7 of the IBC.
+  conclusion: 32 shared 8-word runs
+      '03 2022 passed by nclt ahmedabad in cp' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the Impugned Order dated 16.03.2022 passed by NCLT Ahmedabad in CP(IB) No. 177/NCLT/AHM/2020
+      'application under section 7 of the ibc filed' in: agent_view.reliefs_sought.PETITIONER.1: Dismiss the application under Section 7 of the IBC filed by Company-X
+      'nclt ahm 2020 dismiss the application under section' in: (spans fields)
+outcome words in agent view: 1
+  ...Section 7 of the IBC.", "statutes": ["IBC_2016_SEC_7"], "raised_by": "PETITIONER"}], "reliefs_sought": {"PETITIONER": ["Set aside the Impugned Order dated 16.03.2022 passed by NCLT Ahmedaba...
+balance: OK
+record: 9 stipulated, 2 contested, 4 exhibits, 4 amounts; issues 3
+excluded precedents: []
+clerk flags: ['RUNNING_TEXT_REMOVED', 'EXTRACTION_REPAIRED']
+memorization probe: NOT_IDENTIFIED
+

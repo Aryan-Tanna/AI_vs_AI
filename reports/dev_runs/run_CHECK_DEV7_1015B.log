@@ -1,0 +1,26 @@
+{
+  "run_id": "CHECK_DEV7_1015B",
+  "status": "PAUSED",
+  "pause_reason": "spend before BASELINE of DEV_0007: calls with no price row in runner.prices: gemini gemini-3.8-flash",
+  "cases": {
+    "DEV_0007": {
+      "SESSION": "DONE",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    }
+  }
+}
+{
+  "run_id": "CHECK_DEV7_1015B",
+  "status": "COMPLETE",
+  "pause_reason": null,
+  "cases": {
+    "DEV_0007": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "SKIPPED"
+    }
+  }
+}

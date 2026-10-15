@@ -1,0 +1,36 @@
+# DEV_0009
+
+routing: {'HEADER': 1, 'FACTS': 9, 'SUBMISSIONS_P': 6, 'SUBMISSIONS_R': 5, 'LOWER_ORDER': 7, 'ISSUES': 1, 'ANALYSIS': 10, 'CONCLUSION': 4}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 13
+  [P30.S1] At the outset, it is not in dispute that the Appellants are bona fide homebuyers, having booked an apartment with the Corporate Debtor as far back as 2010, and having executed a Buyer’s Agreement on 27.05.2011.
+  [P30.S2] A sum of Rs. 57,56,684/-, constituting almost entirety of the sale consideration, stands paid.
+  [P31.S1] The case of the Appellants rests on two principal pillar(s): first, that their claim was initially submitted on 11.01.2019 in physical form at the project office at Mohali; and second, that pursuant to the Resolution Professional’s email dated 31.01.2020 inviting homebuyers who had not filed their claim, to do so, they resubmitted their Form-CA on 07.02.2020 by way of an e-mail.
+  [P31.S2] Their claim was thereafter duly verified, admitted and incorporated in the list of financial creditors published on 30.04.2020 at Serial No. 636.
+  [P32.S1] The Respondent(s) have strenuously disputed the alleged filing of 11.01.2019, contending that no such claim was received at the notified address, and further that the Form-CA itself computes interest up to 07.02.2020.
+  [P33.S1] The admitted and undisputed position remains that the Appellants claim was resubmitted on 07.02.2020; that it was duly verified by the Resolution Professional; and that it was incorporated in the published list of creditors dated 30.04.2020.
+  [P35.S2] Clause 18.4(ii) stipulates that where the claim has been filed and admitted by the Resolution Professional, and the allotment letter issued, the claim shall be honored in full.
+  [P35.S3] Clause 18.4(vi)(a) sets out the payment plan for existing allottees, providing for handover of units or execution of conveyance.
+  [P35.S4] By contrast, Clause 18.4(xi) is residuary in nature, applying where no claim has been filed, or if filed, not verified by the Resolution Professional, or if verified, not communicated to the Resolution Applicant; such allottees are extended only a reduced benefit of refund of 50% of the principal amount deposited.
+  [P35.S5] Clause 18.4(xix) clarifies that belated claims filed between submission of the plan and its approval by the Adjudicating Authority are to be dealt with ‘in the manner elucidated above and relevant to their case’.
+  [P36.S2] Their claim was filed, verified, and informed to the Successful Resolution Applicant, as is evidenced by the entry at Serial No. 636 in the list of creditors dated 30.04.2020, admitting their claim to the extent of Rs. 57,56,684/.
+  [P38.S2] It concerns an allottee whose claim was verified and admitted by the Resolution Professional and reflected in the list of financial creditors well before approval of the Plan by the Adjudicating Authority.
+  [P39.S2] The Appellants had paid nearly the entire sale consideration as far back as 2011.
+verbatim overlap with sealed text: FOUND (inspect)
+  P31: 9 shared 8-word runs
+  P34: 1 shared 8-word runs
+  P35: 3 shared 8-word runs
+  P36: 1 shared 8-word runs
+  P40: 5 shared 8-word runs
+  conclusion: 67 shared 8-word runs
+      '00 001 in block d ireo rise gardenia' in: agent_view.record.exhibits.0.known_contents.0: Purchase of Apartment No. GBD-00-001 in Block D, IREO Rise (Gardenia), Sector 99, Mohali
+      'direct execution of the conveyance deed and handover' in: agent_view.reliefs_sought.PETITIONER.0: Direct execution of the conveyance deed and handover of physical possession of Apartment No. GBD-00-001 in Block D, IREO Rise (Gardenia), Mohali, or an equivalent alternative unit, or payment of the admitted amount refle
+      'of the conveyance deed and handover of physical' in: agent_view.reliefs_sought.PETITIONER.0: Direct execution of the conveyance deed and handover of physical possession of Apartment No. GBD-00-001 in Block D, IREO Rise (Gardenia), Mohali, or an equivalent alternative unit, or payment of the admitted amount refle
+outcome words in agent view: 1
+  ...r an equivalent alternative unit, or payment of the admitted amount reflected in the list of creditors with interest", "Set aside the judgment and final order of the NCLAT dated 10.01.2025 ...
+balance: OK
+record: 15 stipulated, 1 contested, 6 exhibits, 3 amounts; issues 1
+excluded precedents: ['2022_NCLAT_DEL_1065']
+clerk flags: ['RUNNING_TEXT_REMOVED', 'EXTRACTION_REPAIRED', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY']
+memorization probe: IDENTIFIED
+

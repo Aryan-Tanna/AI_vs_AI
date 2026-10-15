@@ -1,0 +1,13 @@
+{
+  "run_id": "DEV2_E2E_1",
+  "status": "COMPLETE",
+  "pause_reason": null,
+  "cases": {
+    "DEV_0002": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    }
+  }
+}

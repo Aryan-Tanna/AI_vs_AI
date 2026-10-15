@@ -1,0 +1,26 @@
+# DEV_0007
+
+routing: {'HEADER': 1, 'FACTS': 4, 'LOWER_ORDER': 1, 'SUBMISSIONS_P': 2, 'SUBMISSIONS_R': 1, 'ANALYSIS': 5, 'ISSUES': 1, 'CONCLUSION': 2}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 1
+  [P15.S125] Notably, the intervention application was filed only at the appellate stage and not before the NCLT.
+verbatim overlap with sealed text: FOUND (inspect)
+  P15: 4 shared 8-word runs
+  finding I1: 5 shared 8-word runs
+      'admitted into the corporate insolvency resolution process under' in: agent_view.framed_issues.0.question: Whether the corporate debtor should be admitted into the Corporate Insolvency Resolution Process under Section 7 of the Insolvency and Bankruptcy Code, 2016.
+      'corporate insolvency resolution process under section 7 of' in: agent_view.framed_issues.0.question: Whether the corporate debtor should be admitted into the Corporate Insolvency Resolution Process under Section 7 of the Insolvency and Bankruptcy Code, 2016.
+      'insolvency resolution process under section 7 of the' in: agent_view.framed_issues.0.question: Whether the corporate debtor should be admitted into the Corporate Insolvency Resolution Process under Section 7 of the Insolvency and Bankruptcy Code, 2016.
+  conclusion: 38 shared 8-word runs
+      '01 07 2025 passed by nclat restore the' in: (spans fields)
+      'by nclat restore the order dated 06 11' in: (spans fields)
+      'order dated 01 07 2025 passed by nclat' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the judgment and order dated 01.07.2025 passed by NCLAT
+outcome words in agent view: 3
+  ...CLAT.", "source_paras": ["P3", "P5", "P15.S125"]}, {"fact_id": "F15", "text": "On 01.07.2025, NCLAT allowed the appeal, set aside NCLT order, directed admission of Section 7 petition agains...
+  ...e, "forum": "National Company Law Appellate Tribunal, Principal Bench, New Delhi", "result": "ALLOWED", "directions": ["Set aside the order dated 06.11.2024 passed by the NCLT", "Direct adm...
+  ... "statutes": ["IBC_2016_SEC_7", "NCLAT_RULES2016_R11"], "raised_by": "PETITIONER"}], "reliefs_sought": {"PETITIONER": ["Set aside the judgment and order dated 01.07.2025 passed by NCLAT", "...
+balance: OK
+record: 15 stipulated, 1 contested, 4 exhibits, 7 amounts; issues 2
+excluded precedents: ['2017_NCLAT_274', '2017_NCLAT_DEL_71', '2018_NCLAT_DEL_169', '2020_NCLAT_DEL_1073', '2020_NCLAT_DEL_651', '2020_NCLAT_DEL_683', '2020_NCLAT_DEL_705', '2021_NCLAT_CHE_214', '2021_NCLAT_CHE_226', '2021_NCLAT_DEL_1186', '2021_NCLAT_DEL_52', '2022_NCLAT_DEL_1124', '2022_NCLAT_DEL_356', '2023_NCLAT_DEL_517', '2024_NCLAT_DEL_153', '2025_NCLAT_CHE_295', '2025_NCLAT_CH_362', '2025_NCLAT_DEL_1026', '2025_NCLAT_DEL_1186', '2025_NCLAT_DEL_1314', '2025_NCLAT_DEL_1450', '2025_NCLAT_DEL_1450_DUP', '2025_NCLAT_DEL_146', '2025_NCLAT_DEL_2261', '2026_NCLAT_DEL_266']
+clerk flags: ['EXTRACTION_REPAIRED', 'PARTY_POSITION_STATUS_MISMATCH', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY']
+memorization probe: NOT_IDENTIFIED
+
