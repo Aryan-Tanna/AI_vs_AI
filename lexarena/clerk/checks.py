@@ -33,6 +33,14 @@ AMOUNT = re.compile(r"(?P<num>\d[\d,]*(?:\.\d+)?)\s*(?:/-)?\s*(?P<unit>crores?|c
 # ---------------------------------------------------------------- literal values
 
 
+# [D-124] A court registration number: "No. 177/NCLT/AHM/2020", "No.42 of 2019", "Nos. 12 and 14 of 2020". A number
+# tied to a year; party designations ("Respondent No. 1") have none.
+REGISTRATION_NUMBER = re.compile(
+    r"\bNos?\.\s*\d{1,6}(?:\s*(?:,|and|&)\s*\d{1,6})*(?:\s*(?:of|/)\s*(?:19|20)\d{2}\b|/[A-Za-z][\w/()\-]*?(?:19|20)\d{2}\b)",
+    re.IGNORECASE,
+)
+
+
 def _date_forms(d: date) -> list[re.Pattern[str]]:
     month = MONTHS[d.month - 1]
     day = rf"0?{d.day}(?:st|nd|rd|th)?"
@@ -129,6 +137,10 @@ def leakage_problems(
     problems: list[str] = []
     if case_number and re.sub(r"\s+", " ", case_number).lower() in re.sub(r"\s+", " ", text).lower():
         problems.append("the case number appears in the agent view")
+    if hits := REGISTRATION_NUMBER.findall(text):
+        # Any court registration number ("No. 177/NCLT/AHM/2020"), not only the appeal's own: a lower forum's
+        # number identifies the case just as well (D-124).
+        problems.append(f"a case registration number appears in the agent view: {hits[:SHOWN]}")
     members = [NamedEntity(name=b, variants=[], kind="PERSON", cause_title_role=None) for b in bench]
     if hits := residual_names(text, members, generic_words):
         problems.append(f"bench member names appear in the agent view: {hits}")

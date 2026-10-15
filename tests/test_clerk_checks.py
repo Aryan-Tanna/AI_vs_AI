@@ -102,3 +102,49 @@ def test_leakage_problems_cover_case_number_bench_date_and_issue_words() -> None
 def test_unbalanced_opening_grounds_are_flagged() -> None:
     view = build(draft()).view
     assert grounds_balance(view, max_ratio=3.0) is not None  # one ground for the petitioner, none for the respondent
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["the order in CP(IB) No. 177/NCLT/AHM/2020", "in Company Petition No.42 of 2019", "I.A. Nos. 12 and 14 of 2020"],
+)
+def test_any_registration_number_in_the_agent_view_is_refused(text: str) -> None:
+    """The extractor is told never to include a case or appeal number (agent_view prompt); the lower forum's number
+    slipped through on DEV_0008 because only the appeal's own number was searched (D-124)."""
+    view = build(draft()).view
+    view.factual_background += f" {text}."
+    found = leakage_problems(
+        view,
+        case_number="",
+        bench=[],
+        decision_date=date(2002, 1, 1),
+        entities=[],
+        authority_names=[],
+        reasoning=[],
+        visible=[],
+        cfg_markers=[],
+        evaluative_words=[],
+        generic_words=[],
+        ngram=6,
+    )
+    assert any("registration number" in p for p in found)
+
+
+def test_party_designations_sections_and_figures_are_not_registration_numbers() -> None:
+    view = build(draft()).view
+    view.factual_background += " Respondent No. 1 sent notice under Section 8 for Rs. 100 on 03.02.2001; No. 2 replied."
+    found = leakage_problems(
+        view,
+        case_number="",
+        bench=[],
+        decision_date=date(2002, 1, 1),
+        entities=[],
+        authority_names=[],
+        reasoning=[],
+        visible=[],
+        cfg_markers=[],
+        evaluative_words=[],
+        generic_words=[],
+        ngram=6,
+    )
+    assert not any("registration number" in p for p in found)
