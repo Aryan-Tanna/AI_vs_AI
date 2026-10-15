@@ -248,7 +248,7 @@ def test_the_clerk_runs_only_on_free_keys() -> None:
     to, must be priced at zero, so the clerk cannot drift back onto a paid route unnoticed (the 2026-10-11 mistake)."""
     cfg = load_config(CONFIG_V1)
     free = {(p.provider, p.model) for p in cfg.runner.prices if p.input_usd_per_m == 0 and p.output_usd_per_m == 0}
-    for role in ("clerk_primary", "clerk_secondary"):
+    for role in ("clerk_primary", "clerk_extractor", "clerk_secondary"):
         model = getattr(cfg.models, role)
         assert (model.provider, model.name) in free, role
         assert "paidAPI" not in (model.api_key_env, *model.fallback_key_envs), role
