@@ -69,6 +69,9 @@ class ModelConfig(Strict):
     # Spare free keys, tried in order when a key's quota is spent (HTTP 429 with no short wait), D-118. Empty for paid
     # routes. Never part of the cache key: which key served a call cannot change the answer.
     fallback_key_envs: tuple[EnvVarName, ...]
+    # Other models on the same provider, tried in order when this one is still overloaded (HTTP 503) after its retries
+    # (D-123). Each answer is cached and logged under the model that gave it, and passes the same checks.
+    fallback_models: tuple[NonEmptyStr, ...]
     # Gateway host pinning; omitted (null) for direct providers, so their cache keys are unchanged.
     routing: ProviderRouting | None
 

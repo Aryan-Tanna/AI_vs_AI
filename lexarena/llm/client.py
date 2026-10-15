@@ -21,11 +21,18 @@ from pydantic import BaseModel, ValidationError
 
 from lexarena import trace
 from lexarena.llm.cache import ResponseCache, request_key
-from lexarena.llm.errors import CacheMissError, LLMError, OutputTruncatedError, RateLimitedError, SchemaValidationError
+from lexarena.llm.errors import (
+    CacheMissError,
+    LLMError,
+    OutputTruncatedError,
+    ProviderUnavailableError,
+    RateLimitedError,
+    SchemaValidationError,
+)
 from lexarena.llm.providers.base import Provider
 from lexarena.llm.types import ChatMessage, LLMRequest, LLMResponse, LLMResult
 from lexarena.prompts import PromptStore, RenderedPrompt
-from lexarena.schemas.config import AppConfig
+from lexarena.schemas.config import AppConfig, ModelConfig
 from lexarena.secrets import SecretStore
 
 T = TypeVar("T", bound=BaseModel)
@@ -72,6 +79,33 @@ class LLMClient:
         model = models[role]
         if max_output_tokens is not None and max_output_tokens < model.max_output_tokens:
             model = model.model_copy(update={"max_output_tokens": max_output_tokens})
+        # D-123: a model still overloaded after its retries hands the call to the role's next model (same provider).
+        names = [model.name, *model.fallback_models]
+        for n, name in enumerate(names):
+            try:
+                return self._complete_one(
+                    model.model_copy(update={"name": name, "fallback_models": ()}),
+                    role=role,
+                    user=user,
+                    schema=schema,
+                    session_id=session_id,
+                    system=system,
+                )
+            except ProviderUnavailableError:
+                if n == len(names) - 1:
+                    raise
+        raise AssertionError("unreachable")
+
+    def _complete_one(
+        self,
+        model: ModelConfig,
+        *,
+        role: str,
+        user: RenderedPrompt,
+        schema: type[T],
+        session_id: str,
+        system: RenderedPrompt | None,
+    ) -> LLMResult[T]:
         key_envs = [model.api_key_env, *model.fallback_key_envs]
         api_key = self._secrets.get(key_envs[0])
         provider = self._providers[model.provider]

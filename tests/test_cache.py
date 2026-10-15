@@ -24,6 +24,7 @@ def _req(**changes: Any) -> LLMRequest:
         routing=None,
         api_key_env="K",
         fallback_key_envs=(),
+        fallback_models=(),
     )
     fields: dict[str, Any] = {
         "model": model,
@@ -87,6 +88,7 @@ def test_an_unset_optional_model_setting_leaves_the_key_unchanged() -> None:
             exclude={
                 "api_key_env",
                 "fallback_key_envs",
+                "fallback_models",
                 "reasoning_effort",
                 "reasoning_enabled",
                 "routing",

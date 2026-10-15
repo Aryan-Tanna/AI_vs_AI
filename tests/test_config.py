@@ -250,5 +250,6 @@ def test_the_clerk_runs_only_on_free_keys() -> None:
     free = {(p.provider, p.model) for p in cfg.runner.prices if p.input_usd_per_m == 0 and p.output_usd_per_m == 0}
     for role in ("clerk_primary", "clerk_extractor", "clerk_secondary"):
         model = getattr(cfg.models, role)
-        assert (model.provider, model.name) in free, role
+        for name in (model.name, *model.fallback_models):
+            assert (model.provider, name) in free, (role, name)
         assert "paidAPI" not in (model.api_key_env, *model.fallback_key_envs), role

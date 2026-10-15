@@ -40,6 +40,7 @@ def _request(provider: str, json_mode_model: str = "m") -> LLMRequest:
         routing=None,
         api_key_env="K",
         fallback_key_envs=(),
+        fallback_models=(),
     )
     return LLMRequest(
         model=model,

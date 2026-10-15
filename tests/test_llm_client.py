@@ -403,3 +403,57 @@ def test_other_errors_never_switch_keys(secrets: SecretStore, prompts: PromptSto
 
 def _names(cfg: AppConfig) -> set[str]:
     return {k for m in cfg.models.by_role().values() for k in (m.api_key_env, *m.fallback_key_envs)}
+
+
+def _with_fallback_models(cfg: AppConfig, role: str, names: tuple[str, ...]) -> AppConfig:
+    model = getattr(cfg.models, role).model_copy(update={"fallback_models": names})
+    return cfg.model_copy(update={"models": cfg.models.model_copy(update={role: model})})
+
+
+def test_an_overloaded_model_hands_the_call_to_the_next_free_model(
+    secrets: SecretStore, prompts: PromptStore, caplog: pytest.LogCaptureFixture
+) -> None:
+    """D-123: after its retries, a model still answering 503 passes the call to the role's next model; the log says
+    which model answered."""
+    cfg = _with_fallback_models(load_config(CONFIG_V1), "clerk_primary", ("<backup-model>",))
+    busy = [ProviderUnavailableError("503")] * cfg.llm.max_attempts
+    fake = FakeProvider([*busy, text_response(VALID)])
+    with caplog.at_level(logging.INFO, logger="lexarena.llm"):
+        result = make_client(cfg, secrets, fake).complete_json(
+            role="clerk_primary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+        )
+    assert result.value.answer == 365
+    assert [r.model.name for r in fake.requests][-1] == "<backup-model>"
+    assert {r.model.name for r in fake.requests[:-1]} == {cfg.models.clerk_primary.name}
+    events = [json.loads(r.getMessage()) for r in caplog.records if r.name == "lexarena.llm"]
+    assert [(e["model"], e["outcome"]) for e in events] == [
+        (cfg.models.clerk_primary.name, "ProviderUnavailableError"),
+        ("<backup-model>", "ok"),
+    ]
+
+
+def test_a_backup_model_answer_is_cached_under_the_backup_model(
+    tmp_path: Path, secrets: SecretStore, prompts: PromptStore
+) -> None:
+    """An answer from the backup is never served later as the first model's answer."""
+    cfg = _with_fallback_models(load_config(CONFIG_V1), "clerk_primary", ("<backup-model>",))
+    cache = ResponseCache(tmp_path / "c.sqlite")
+    busy = [ProviderUnavailableError("503")] * cfg.llm.max_attempts
+    make_client(cfg, secrets, FakeProvider([*busy, text_response(VALID)]), cache=cache).complete_json(
+        role="clerk_primary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+    )
+    fresh = FakeProvider([text_response('{"answer": 1, "unit": "days"}')])
+    again = make_client(cfg, secrets, fresh, cache=cache).complete_json(
+        role="clerk_primary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+    )
+    assert again.value.answer == 1 and fresh.requests[0].model.name == cfg.models.clerk_primary.name
+
+
+def test_other_errors_never_switch_models(secrets: SecretStore, prompts: PromptStore) -> None:
+    cfg = _with_fallback_models(load_config(CONFIG_V1), "clerk_primary", ("<backup-model>",))
+    fake = FakeProvider([OutputTruncatedError("cut", input_tokens=1, output_tokens=1)] * 9)
+    with pytest.raises(OutputTruncatedError):
+        make_client(cfg, secrets, fake).complete_json(
+            role="clerk_primary", user=prompts.render("smoke/dummy", 1), schema=DaysAnswer, session_id="S1"
+        )
+    assert {r.model.name for r in fake.requests} == {cfg.models.clerk_primary.name}
