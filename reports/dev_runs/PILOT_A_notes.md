@@ -132,3 +132,27 @@ fine ($5.12 of its $50 limit). Not switched to other hosts mid-pilot: another ho
 which would change THEMIS between cases. A resumer waits 20 minutes and resumes after each rate-limit pause (12 tries
 at most; log reports/dev_runs/resume_loop.log). DEV_0011 re-runs from turn 1 because its opening prompt changed (D-140).
 DEV_0010 result: bench RESPONDENT = real; single-LLM PETITIONER (wrong); first case where the bench beat the baseline.
+
+## Claude's full audits (2026-10-19 night; owner: "verify all the arguments, all the thinking, everything")
+
+Method per case: every published turn, every THEMIS check (each attempt and its reasons), every lookup and answer,
+all six opinions, the verdict, the transcript audit and the lessons, read in full; every model's hidden reasoning
+scanned by script (attempts to identify the real case, outside law, real party names from the source title, loops)
+with every hit read; and an independent no-LLM cross-check of every record ID, statute, precedent (exact UID and
+date before the case) and every date and amount in a factual claim against its cited record items.
+
+Cross-check, DEV_0008 to DEV_0011: 510 lawyer claims, 394 precedent citations, 179 statute citations; 0 bad record
+IDs, 0 statutes outside the Law DB, 0 precedents decided on or after the case date, 0 dates or amounts missing from
+their cited items. One citation by bare precedent ID (DEV_0009 T2) is ambiguous: precedent IDs are not unique in the
+precedent DB (2018_NCLAT_DEL_57, 2020_NCLAT_DEL_513, 2020_NCLAT_DEL_1005, 2024_NCLAT_DEL_197 each hold two different
+judgments; 2020_NCLAT_DEL_1003, 1004 and 1005#371d... are the same judgment three times). The system resolves only
+exact UIDs, so a bare ID fails safe (unverifiable, never the wrong judgment). Owner's data to clean.
+
+Found and fixed: D-141 (THEMIS false rejection of a party's own relief, DEV_0010 T7); D-142 (judges reasoning from
+remembered law and trying to identify the real case: DEV_0008 Purposivist, DEV_0010 Textualist and Proceduralist,
+DEV_0011 Textualist); D-143 (DEV_0010's Proceduralist named the real appellant in its reasoning: the case is moved
+to the memorised group although the clerk's probe said NOT_IDENTIFIED; the probe under-detects).
+Seen, not changed: retrieval returns off-topic precedents for some queries (word match on "threshold"); DEV_0011 T5
+THEMIS called a loose description of two precedents "the opposite" (borderline strict; the revision passed);
+DEV_0010 verdict right for different reasons (issue alignment 0/2); the Textualist's overall result flipped with the
+order in DEV_0010 and it abstained as designed.
