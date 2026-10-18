@@ -16,12 +16,14 @@ from dataclasses import dataclass, field
 from statistics import fmean
 
 from lexarena.embedding import Embedder
+from lexarena.judges.packet import render_audit_notes
 from lexarena.llm.client import LLMClient
 from lexarena.memory.weights import after_use
 from lexarena.prompts import PromptStore
 from lexarena.reflection.dedup import Placement, place
 from lexarena.reflection.filters import Context, check
 from lexarena.schemas.base import SIDES, Side
+from lexarena.schemas.bench import ORDERS
 from lexarena.schemas.config import AppConfig
 from lexarena.schemas.ground_truth import CaseGroundTruth
 from lexarena.schemas.lesson import Lesson
@@ -151,7 +153,17 @@ class Reflection:
                 if lesson.memory == "JUDGE":
                     reward = rewards["BENCH"]
                 else:
-                    served = [s for s in SIDES if status_of[s] == lesson.party_status]
+                    # D-139: the side that used it, by the same family rule that pinned it
+                    fam = self._cfg.memory.family_of()
+                    served = [
+                        s
+                        for s in SIDES
+                        if status_of[s] == lesson.party_status
+                        or (
+                            fam.get(status_of[s]) is not None
+                            and fam.get(status_of[s]) == fam.get(lesson.party_status or "")
+                        )
+                    ]
                     values = [r for s in served if (r := rewards[s]) is not None]
                     reward = max(values) if values else None
                 if reward is not None:
@@ -174,6 +186,9 @@ class Reflection:
             petitioner=_side_block("PETITIONER", turns, private["PETITIONER"], session),
             respondent=_side_block("RESPONDENT", turns, private["RESPONDENT"], session),
             max_lessons=str(self._cfg.memory.max_lessons_per_case),
+            # D-139: THEMIS-GLOBAL's map of the hearing, which points each side made and which went unanswered, so
+            # lessons can rest on the hearing's actual give-and-take; contradictions are shown as unconfirmed.
+            audit=render_audit_notes(session.themis_global, ORDERS[0], contradictions=True),
         )
         candidates = self._llm.complete_json(
             role=ROLE, user=prompt, schema=LessonCandidates, session_id=session_id
@@ -187,6 +202,7 @@ class Reflection:
             names=[*truth.anonymization_map, *truth.anonymization_map.values(), *(p.pseudonym for p in av.parties)],
             generic_name_words={w.lower() for w in self._cfg.clerk.generic_name_words},
             base_rate_markers=self._cfg.memory.base_rate_markers,
+            legal_conclusion_markers=self._cfg.memory.legal_conclusion_markers,
             known_statutes={*av.metadata.statutes_invoked, *(a.statute_id for a in truth.statutory_analysis)},
             errors_by_side={
                 side: {c for p in private[side] for attempt in p.themis_local.hard_errors_by_attempt for c in attempt}

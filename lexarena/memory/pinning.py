@@ -55,15 +55,28 @@ def usable(
     party_status: str | None,
     statutes: set[str],
     law_versions: Mapping[str, str] | None = None,
+    families: Mapping[str, str] | None = None,
+    unkeyed: set[str] | None = None,
 ) -> list[Lesson]:
-    """The lessons a reader may use in this case: the filter of step 1 (also used by the agents' LESSONS lookups)."""
+    """The lessons a reader may use in this case: the filter of step 1 (also used by the agents' LESSONS lookups).
+    `families` (D-139): party status -> family; a lesson of another status in the same family is usable too.
+    `unkeyed` (D-139): statute IDs that never key a lesson (the appeal provisions); a lesson keyed only on them is a
+    general lesson."""
     versions = law_versions or {}
+    fam = families or {}
+    skip = unkeyed or set()
+
+    def same_side(status: str | None) -> bool:
+        if party_status is None or status == party_status:
+            return True
+        return status is not None and fam.get(status) is not None and fam.get(status) == fam.get(party_status)
+
     return [
         x
         for x in lessons
         if x.status == "ACTIVE"
-        and (party_status is None or x.party_status == party_status)
-        and (not x.statute_ids or statutes & set(x.statute_ids))
+        and same_side(x.party_status)
+        and (not (keys := set(x.statute_ids) - skip) or statutes & keys)
         and same_law(x, versions)
     ]
 
@@ -76,9 +89,17 @@ def pin(
     case_seq: int,
     cfg: AppConfig,
     law_versions: Mapping[str, str] | None = None,
+    unkeyed: set[str] | None = None,
 ) -> Pinned:
     m = cfg.memory
-    eligible = usable(lessons, party_status=party_status, statutes=statutes, law_versions=law_versions)
+    eligible = usable(
+        lessons,
+        party_status=party_status,
+        statutes=statutes - (unkeyed or set()),
+        law_versions=law_versions,
+        families=m.family_of(),
+        unkeyed=unkeyed,
+    )
     spent = 0.0
 
     def fits(lesson: Lesson) -> bool:

@@ -378,6 +378,18 @@ class MemoryConfig(Strict):
     confidence_step: UnitInterval
     max_lessons_per_case: PositiveInt
     base_rate_markers: list[NonEmptyStr]
+    # D-139: lessons are strategy and method, never a statement of the law; a lesson with any of these is rejected.
+    legal_conclusion_markers: list[NonEmptyStr]
+    # D-139: provisions of these Law DB jurisdiction types (the appeal provisions) never key a lesson: they attach to
+    # every appeal, so a lesson keyed on them would be pinned into unrelated cases.
+    unkeyed_jurisdiction_types: list[NonEmptyStr]
+    # D-139: lawyer lessons transfer within a family of party statuses (same rule for both sides); a status in no
+    # family matches only itself.
+    party_status_families: list[list[NonEmptyStr]]
+
+    def family_of(self) -> dict[str, str]:
+        """Party status -> its family's first status (the family's name)."""
+        return {status: family[0] for family in self.party_status_families for status in family}
 
 
 class EvaluationConfig(Strict):
@@ -503,6 +515,15 @@ class AppConfig(Strict):
         # A submission, its claims list and the model's reasoning share the lawyer's output cap (D-082).
         if self.session.max_turn_tokens >= self.models.lawyer.max_output_tokens:
             raise ValueError("session.max_turn_tokens must leave room in models.lawyer.max_output_tokens")
+        return self
+
+    @model_validator(mode="after")
+    def _families_are_known_and_disjoint(self) -> AppConfig:
+        seen: list[str] = [s for family in self.memory.party_status_families for s in family]
+        unknown = sorted(set(seen) - set(self.vocabulary.party_statuses))
+        twice = sorted({s for s in seen if seen.count(s) > 1})
+        if unknown or twice:
+            raise ValueError(f"memory.party_status_families: unknown statuses {unknown}, in two families {twice}")
         return self
 
     @model_validator(mode="after")

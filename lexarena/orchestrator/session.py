@@ -168,7 +168,11 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
     judge_stores = proc.judge(scope)
     case = judge_stores.case.agent_view(case_id)
     law = law_for_bench(case, [], orch.law, as_of, cfg)
+    # D-139: appeal provisions attach to every appeal, so they never decide which lessons a case gets.
+    unkeyed = orch.law.statute_ids_of_types(cfg.memory.unkeyed_jurisdiction_types)
     statutes = set(law.views)
+    lesson_statutes = statutes - unkeyed
+    families = cfg.memory.family_of()
 
     # Experience base: read only, same selection rule and budget for both sides (E6, F6).
     use_memory = opts.mode != "EMPTY" and NO_MEMORY not in opts.ablations
@@ -180,15 +184,22 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
         s: pin(
             lawyer_pool,
             party_status=status_of[s],
-            statutes=statutes,
+            statutes=lesson_statutes,
             case_seq=opts.case_seq,
             cfg=cfg,
             law_versions=law_seen,
+            unkeyed=unkeyed,
         )
         for s in SIDES
     }
     judge_pick = pin(
-        judge_pool, party_status=None, statutes=statutes, case_seq=opts.case_seq, cfg=cfg, law_versions=law_seen
+        judge_pool,
+        party_status=None,
+        statutes=lesson_statutes,
+        case_seq=opts.case_seq,
+        cfg=cfg,
+        law_versions=law_seen,
+        unkeyed=unkeyed,
     )
     pinned = {s: picks[s].all for s in SIDES}
     judge_lessons = judge_pick.all
@@ -277,7 +288,14 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
                 statute=statute_resolver(orch.law, as_of, known, svc.aliases, side_law[side]),
                 library=library,
                 lessons=lesson_search(
-                    usable(lawyer_pool, party_status=status_of[side], statutes=statutes, law_versions=law_seen),
+                    usable(
+                        lawyer_pool,
+                        party_status=status_of[side],
+                        statutes=lesson_statutes,
+                        law_versions=law_seen,
+                        families=families,
+                        unkeyed=unkeyed,
+                    ),
                     exclude={x.lesson_id for x in pinned[side]},
                     embedder=svc.embedder,
                 ),
@@ -433,7 +451,13 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
                     statute=statute_resolver(orch.law, as_of, orch.law.statute_ids(), svc.aliases, bench_law),
                     library=judge_library,
                     lessons=lesson_search(
-                        usable(judge_pool, party_status=None, statutes=statutes, law_versions=law_seen),
+                        usable(
+                            judge_pool,
+                            party_status=None,
+                            statutes=lesson_statutes,
+                            law_versions=law_seen,
+                            unkeyed=unkeyed,
+                        ),
                         exclude={x.lesson_id for x in judge_lessons},
                         embedder=svc.embedder,
                     ),

@@ -142,6 +142,12 @@ class LawRepository:
         require(self._principal, Store.LAW_DB, Op.READ)
         return {d["_id"] for d in self._law.find({}, projection={"_id": True})}
 
+    def statute_ids_of_types(self, jurisdiction_types: list[str]) -> set[str]:
+        """Statute IDs whose Law DB `jurisdiction_type` is one of these (D-139: provisions that never key a lesson)."""
+        require(self._principal, Store.LAW_DB, Op.READ)
+        found = self._law.find({"record.jurisdiction_type": {"$in": jurisdiction_types}}, projection={"_id": True})
+        return {d["_id"] for d in found}
+
     def predicates(self, statute_id: str) -> list[PredicateEntry]:
         """APPROVED predicates for a statute; STALE and other statuses are never served."""
         require(self._principal, Store.PREDICATE_REGISTRY, Op.READ)

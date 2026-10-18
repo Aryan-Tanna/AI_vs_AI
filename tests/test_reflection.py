@@ -80,6 +80,32 @@ def test_pinning_filters_by_party_status_and_statute_then_ranks_by_weight() -> N
     assert [x.lesson_id for x in chosen] == ["L-2", "L-1", "L-5"]
 
 
+def test_lessons_transfer_within_a_party_status_family_only() -> None:
+    """D-139: a HOMEBUYER side reads FINANCIAL_CREDITOR lessons (same family); a debtor-side lesson never."""
+    pool = [lesson(1), lesson(2, party_status="CORPORATE_DEBTOR"), lesson(3, party_status="HOMEBUYER")]
+    chosen = select(pool, party_status="HOMEBUYER", statutes={"<statute A>"}, case_seq=1, cfg=CFG)
+    assert sorted(x.lesson_id for x in chosen) == ["L-1", "L-3"]
+    # Both sides of a dispute read by the same rule: the debtor side gets only its own family's lesson.
+    other = select(pool, party_status="SUSPENDED_DIRECTOR", statutes={"<statute A>"}, case_seq=1, cfg=CFG)
+    assert [x.lesson_id for x in other] == ["L-2"]
+
+
+def test_an_appeal_provision_never_decides_which_lessons_a_case_gets() -> None:
+    """D-139: a lesson keyed only on an unkeyed provision is general; a case's unkeyed provision matches nothing."""
+    pool = [lesson(1, statute_ids=["<appeal>"]), lesson(2, statute_ids=["<appeal>", "<statute B>"])]
+    chosen = select(pool, party_status="FINANCIAL_CREDITOR", statutes={"<appeal>", "<statute A>"}, case_seq=1, cfg=CFG)
+    assert [x.lesson_id for x in chosen] == ["L-2", "L-1"] or [x.lesson_id for x in chosen] == ["L-1", "L-2"]
+    unkeyed = pin(
+        pool,
+        party_status="FINANCIAL_CREDITOR",
+        statutes={"<appeal>", "<statute A>"},
+        case_seq=1,
+        cfg=CFG,
+        unkeyed={"<appeal>"},
+    ).all
+    assert [x.lesson_id for x in unkeyed] == ["L-1"]  # L-2 needs <statute B>, which the case does not have
+
+
 def test_pinning_obeys_the_same_count_and_token_budget_for_everyone() -> None:
     pool = [lesson(n) for n in range(1, 20)]  # literal-ok: more lessons than K
     chosen = select(pool, party_status="FINANCIAL_CREDITOR", statutes={"<statute A>"}, case_seq=1, cfg=CFG)
@@ -143,6 +169,7 @@ def ctx() -> Context:
         names=[*t.anonymization_map, *t.anonymization_map.values()],
         generic_name_words={w.lower() for w in CFG.clerk.generic_name_words},
         base_rate_markers=M.base_rate_markers,
+        legal_conclusion_markers=M.legal_conclusion_markers,
         known_statutes={"<statute A>"},
         errors_by_side={"PETITIONER": {"ERR_TIMELINE_MISSTATED"}, "RESPONDENT": set()},
         initial_confidence=M.initial_confidence,
@@ -199,6 +226,8 @@ def test_a_new_lesson_carries_the_law_version_and_year_of_its_case() -> None:
         ({"lesson": "Bank-Y should lead with dates."}, "names a party"),
         ({"trigger": "a dispute with Harvest over offers"}, "names a party"),  # a distinctive word of a real name
         ({"lesson": "Financial creditors usually win these appeals."}, "base rate"),
+        ({"lesson": "The court held that a ledger entry is enough."}, "legal conclusion"),  # D-139
+        ({"lesson": "Approval by the authority is the binding point, so argue from it."}, "legal conclusion"),
         ({"lesson_type": "LEGAL_RULE"}, "bench"),
         ({"lesson_type": "ADVOCACY", "for_whom": "BENCH"}, "bench"),
         ({"lesson_type": "PROCEDURAL_ERROR", "error_code": "ERR_PRECEDENT_MISATTRIBUTED"}, "never incurred"),

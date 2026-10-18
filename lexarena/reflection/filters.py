@@ -6,6 +6,8 @@ A candidate is rejected, with the reason recorded, when:
 - it names a party, a pseudonym or any distinctive word of a real name (I3-9, F7); generic words that appear in many
   names (`clerk.generic_name_words`) are not names on their own;
 - it states a base rate (`memory.base_rate_markers`, I3-5);
+- it states a legal conclusion (`memory.legal_conclusion_markers`, D-139): lessons are strategy and method; the law
+  comes only from the Law DB and the precedents, read fresh in each case;
 - a PROCEDURAL_ERROR lesson names a code that side never incurred, or a LEGAL_RULE lesson is not for the bench, or an
   ADVOCACY lesson is for the bench;
 - the lesson schema itself refuses it (memory routing, severity range).
@@ -45,6 +47,7 @@ class Context:
     law_versions: dict[str, str] = field(default_factory=dict)  # D-111: the law the case saw, per statute
     source_year: int | None = None  # D-111: the year the source case was decided (owner-facing only)
     source_review: Literal["OWNER", "CLAUDE_TRIAGE"] | None = None  # D-114
+    legal_conclusion_markers: list[str] = field(default_factory=list)  # D-139
 
 
 @dataclass(frozen=True)
@@ -95,6 +98,12 @@ def check(candidate: LessonCandidate, n: int, ctx: Context) -> Verdict:
     marker = next((m for m in ctx.base_rate_markers if m.lower() in low), None)
     if marker:
         return Verdict(None, f"states a base rate ({marker!r})")
+    # The trigger may describe the other side's argument ("the debtor argues the claim is time-barred"); only the advice
+    # itself must not state the law.
+    advice = candidate.lesson.lower()
+    conclusion = next((m for m in ctx.legal_conclusion_markers if m.lower() in advice), None)
+    if conclusion:
+        return Verdict(None, f"states a legal conclusion ({conclusion!r}); lessons are strategy, not law (D-139)")
     bench = candidate.for_whom == "BENCH"
     if (candidate.lesson_type == "LEGAL_RULE") != bench:
         return Verdict(None, "LEGAL_RULE lessons are for the bench, and only they are")

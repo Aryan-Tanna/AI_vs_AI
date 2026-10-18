@@ -134,6 +134,8 @@ def test_lessons_are_filtered_stored_and_the_session_reflected(
     assert len(result.written) == 2 and any("names a party" in r for r in result.rejected)
     sent = provider.requests[0].messages[-1].content
     assert "<sentinel>" in sent  # reflection reads the real findings, after the verdict
+    assert "THE VERIFIER'S MAP OF THE HEARING" in sent  # D-139: THEMIS-GLOBAL's point map informs the lessons
+    assert "never about what the law is" in sent  # D-139: strategy and method only
     lawyer = session.orchestrator().lawyer_memory.all()  # the session side reads with the read-only key
     assert [x.party_status for x in lawyer] == ["FINANCIAL_CREDITOR"]
     assert session.orchestrator().judge_memory.all()[0].lesson_type == "LEGAL_RULE"
