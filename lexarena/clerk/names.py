@@ -75,7 +75,8 @@ def _pattern(form: str) -> re.Pattern[str]:
     body = r"\.?,?\s+".join(re.escape(t) for t in tokens)
     # A trailing full stop belongs to the name only when the form ends in one ("Ltd."); otherwise it ends a sentence.
     tail = r"\.?" if form.rstrip().endswith(".") else ""
-    return re.compile(rf"(?<![\w-]){PREFIX}{body}{tail}(?![\w-])", re.IGNORECASE)
+    # D-136: a hyphen joining the name to a following word ("<name>-Suspended Director") still ends the name.
+    return re.compile(rf"(?<![\w-]){PREFIX}{body}{tail}(?!\w)(?!-\d)", re.IGNORECASE)
 
 
 class Pseudonymizer:
@@ -134,9 +135,10 @@ def residual_names(text: str, entities: list[NamedEntity], generic_words: Iterab
         if _is_acronym(t) and t.lower() not in generic
     }
     hits: list[str] = []
-    for word in TOKEN.findall(text):
-        bare = word.removesuffix("'s")
-        found = bare in acronyms or (bare[:1].isupper() and bare.lower() in distinctive)
-        if found and bare not in hits:
-            hits.append(bare)
+    for token in TOKEN.findall(text):
+        for word in [token, *token.split("-")] if "-" in token else [token]:  # D-136: "<name>-Suspended"
+            bare = word.removesuffix("'s")
+            found = bare in acronyms or (bare[:1].isupper() and bare.lower() in distinctive)
+            if found and bare not in hits:
+                hits.append(bare)
     return hits

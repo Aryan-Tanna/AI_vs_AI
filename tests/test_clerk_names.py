@@ -151,3 +151,11 @@ def test_residual_scan_catches_an_all_capitals_word_of_a_name() -> None:
     """DEV_0009: 'IREO Rise (Gardenia)' kept the group's name; the scan skipped all-capital words of names (D-128)."""
     group = NamedEntity(name="IREO Fiveriver Private Limited", variants=[], kind="COMPANY", cause_title_role=None)
     assert residual_names("the project IREO Rise (Gardenia)", [group], GENERIC) == ["IREO"]
+
+
+def test_a_name_joined_to_the_next_word_by_a_hyphen_is_replaced_and_scanned() -> None:
+    """DEV_0017 P2: '<name>-Suspended Director' kept the real name; the scan read the joined form as one word (D-136)."""
+    p = pseudo(VANDU)
+    out = p.apply("Ostrel Vandu-Suspended Director filed the appeal")
+    assert "Vandu" not in out and "Ostrel" not in out and out.endswith("-Suspended Director filed the appeal")
+    assert residual_names("Mr. Vandu-Suspended Director", [VANDU], GENERIC) == ["Vandu"]
