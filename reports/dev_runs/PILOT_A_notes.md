@@ -123,3 +123,12 @@ Bench PETITIONER = real PETITIONER. I1 aligned, I2 not (bench RESPONDENT, real P
 PETITIONER. Sentence-level self-repetition: LEX-P 8%, LEX-D 21% (DEV_0008 on old prompts: 37% and 36%). Whole-turn
 similarity is ~0.90 even between opposing sides (0.899 here, 0.908 on DEV_0008), so it cannot measure repetition.
 Reflection paused once on an upstream rate limit (Qwen via OpenRouter); resumed.
+
+## Upstream rate limits (2026-10-18 evening)
+
+Qwen 3.8 Flash on its pinned host (Alibaba, via OpenRouter, `allow_fallbacks: false`) returned "Provider returned
+error" rate limits three times (reflection 15:35, verifier 18:28, extractor 18:39 UTC). The OpenRouter key itself is
+fine ($5.12 of its $50 limit). Not switched to other hosts mid-pilot: another host can serve another quantization,
+which would change THEMIS between cases. A resumer waits 20 minutes and resumes after each rate-limit pause (12 tries
+at most; log reports/dev_runs/resume_loop.log). DEV_0011 re-runs from turn 1 because its opening prompt changed (D-140).
+DEV_0010 result: bench RESPONDENT = real; single-LLM PETITIONER (wrong); first case where the bench beat the baseline.
