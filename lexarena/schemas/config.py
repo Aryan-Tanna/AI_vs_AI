@@ -380,6 +380,8 @@ class MemoryConfig(Strict):
     base_rate_markers: list[NonEmptyStr]
     # D-139: lessons are strategy and method, never a statement of the law; a lesson with any of these is rejected.
     legal_conclusion_markers: list[NonEmptyStr]
+    # D-140: words that carry a figure without a digit ("one crore"); a lesson never carries a figure.
+    figure_words: list[NonEmptyStr]
     # D-139: provisions of these Law DB jurisdiction types (the appeal provisions) never key a lesson: they attach to
     # every appeal, so a lesson keyed on them would be pinned into unrelated cases.
     unkeyed_jurisdiction_types: list[NonEmptyStr]

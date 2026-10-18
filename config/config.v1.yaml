@@ -78,7 +78,7 @@ prompts:
   themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 1}   # [D-105] second narrow check before a record-fidelity rejection
   themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
-  reflection_lessons: {id: reflection/lessons, version: 3}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]
+  reflection_lessons: {id: reflection/lessons, version: 4}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]; v4 law by role only, knockouts first [D-140]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
   judge_decide: {id: judges/decide, version: 4}         # [D-071] one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
   judge_revise: {id: judges/revise, version: 3}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]; v3 answers to lookups [D-112]
@@ -92,7 +92,7 @@ prompts:
   agent_plan: {id: agents/plan, version: 1}             # [D-053] private strategy phase, research plan
   agent_notes: {id: agents/notes, version: 1}           # [D-053] private strategy phase, plan after research
   agent_turn: {id: agents/turn, version: 3}             # [D-079] one submission; v2 answers to lookups [D-112]; v3 one instruction per turn type, no part labels, verifier note [D-135]
-  agent_turn_opening: {id: agents/turn_opening, version: 1}     # [D-135] the same for both sides
+  agent_turn_opening: {id: agents/turn_opening, version: 2}     # [D-135] the same for both sides; v2 decisive provisions first [D-140]
   agent_turn_rebuttal: {id: agents/turn_rebuttal, version: 1}   # [D-135] new points only; lookups for new support
   agent_turn_closing: {id: agents/turn_closing, version: 1}     # [D-135]
   agent_repetition_note: {id: agents/repetition_note, version: 1}   # [D-135] this side's own verifier warning, shown to it alone
@@ -199,6 +199,7 @@ memory:
   # [D-139] your instruction 2026-10-18: lessons help strategy, they never carry a view of the law. A lesson stating a
   # legal conclusion is rejected (backstop to the reflection prompt; the law comes only from the Law DB and precedents).
   legal_conclusion_markers: ["held that", "holds that", "the court held", "the court found", "the law is", "the correct reading", "the correct construction", "is the binding point", "must be read as", "is settled law", "as a rule of law"]   # checked on the lesson text, not the trigger (which may describe the other side's argument)
+  figure_words: [crore, crores, lakh, lakhs, lac, lacs, rupee, rupees, per cent, percent]   # [D-140] a figure written in words; with any digit, a lesson naming one is rejected
   unkeyed_jurisdiction_types: [APPELLATE_REMEDY]   # [D-139] Law DB jurisdiction_type of the appeal provisions
   party_status_families:                 # [D-139] which party statuses share lawyer lessons (strategy transfers within a family; same rule for both sides)
     - [FINANCIAL_CREDITOR, OPERATIONAL_CREDITOR, HOMEBUYER, ALLOTTEE, BANK, WORKMAN, EMPLOYEE]        # creditor side

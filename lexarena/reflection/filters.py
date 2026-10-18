@@ -6,6 +6,7 @@ A candidate is rejected, with the reason recorded, when:
 - it names a party, a pseudonym or any distinctive word of a real name (I3-9, F7); generic words that appear in many
   names (`clerk.generic_name_words`) are not names on their own;
 - it states a base rate (`memory.base_rate_markers`, I3-5);
+- it names a specific provision, precedent, amount, period or date (any digit or ID-shaped token, D-140);
 - it states a legal conclusion (`memory.legal_conclusion_markers`, D-139): lessons are strategy and method; the law
   comes only from the Law DB and the precedents, read fresh in each case;
 - a PROCEDURAL_ERROR lesson names a code that side never incurred, or a LEGAL_RULE lesson is not for the bench, or an
@@ -28,6 +29,7 @@ from lexarena.schemas.lesson import Lesson
 from lexarena.schemas.reflection import LessonCandidate
 
 EXCLUDED_DRIVER = "EVIDENCE"
+SPECIFIC = re.compile(r"\d|\b[A-Z][A-Z0-9]*_[A-Z0-9_]+\b")  # D-140: any digit, or an ID-shaped token
 MIN_NAME_WORD = 4  # literal-ok: shorter name fragments ("Ltd", "Co") are too common to mark a name
 
 
@@ -48,6 +50,7 @@ class Context:
     source_year: int | None = None  # D-111: the year the source case was decided (owner-facing only)
     source_review: Literal["OWNER", "CLAUDE_TRIAGE"] | None = None  # D-114
     legal_conclusion_markers: list[str] = field(default_factory=list)  # D-139
+    figure_words: list[str] = field(default_factory=list)  # D-140
 
 
 @dataclass(frozen=True)
@@ -98,6 +101,14 @@ def check(candidate: LessonCandidate, n: int, ctx: Context) -> Verdict:
     marker = next((m for m in ctx.base_rate_markers if m.lower() in low), None)
     if marker:
         return Verdict(None, f"states a base rate ({marker!r})")
+    # D-140: a lesson points at the law by its role; it never carries a provision number, precedent, amount, period or
+    # date, which must be looked up for each case and its dates.
+    if hit := SPECIFIC.search(text):
+        return Verdict(
+            None, f"names a specific provision, precedent, figure or date ({hit.group(0)!r}); refer to it by role"
+        )
+    if word := next((w for w in ctx.figure_words if re.search(rf"\b{re.escape(w)}\b", low)), None):
+        return Verdict(None, f"names a specific figure ({word!r}); refer to it by role")
     # The trigger may describe the other side's argument ("the debtor argues the claim is time-barred"); only the advice
     # itself must not state the law.
     advice = candidate.lesson.lower()

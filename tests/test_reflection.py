@@ -170,6 +170,7 @@ def ctx() -> Context:
         generic_name_words={w.lower() for w in CFG.clerk.generic_name_words},
         base_rate_markers=M.base_rate_markers,
         legal_conclusion_markers=M.legal_conclusion_markers,
+        figure_words=M.figure_words,
         known_statutes={"<statute A>"},
         errors_by_side={"PETITIONER": {"ERR_TIMELINE_MISSTATED"}, "RESPONDENT": set()},
         initial_confidence=M.initial_confidence,
@@ -227,6 +228,10 @@ def test_a_new_lesson_carries_the_law_version_and_year_of_its_case() -> None:
         ({"trigger": "a dispute with Harvest over offers"}, "names a party"),  # a distinctive word of a real name
         ({"lesson": "Financial creditors usually win these appeals."}, "base rate"),
         ({"lesson": "The court held that a ledger entry is enough."}, "legal conclusion"),  # D-139
+        ({"lesson": "Check the threshold of one crore before the merits."}, "specific"),  # a figure in words
+        ({"lesson": "Cite Section 7 first."}, "specific"),  # D-140: a provision number
+        ({"lesson": "Rely on 2020_NCLAT_DEL_1 for the rule."}, "specific"),  # a precedent ID
+        ({"trigger": "a claim filed after 180 days"}, "specific"),  # a period, in the trigger too
         ({"lesson": "Approval by the authority is the binding point, so argue from it."}, "legal conclusion"),
         ({"lesson_type": "LEGAL_RULE"}, "bench"),
         ({"lesson_type": "ADVOCACY", "for_whom": "BENCH"}, "bench"),

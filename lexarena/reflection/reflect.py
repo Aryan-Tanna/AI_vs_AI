@@ -203,6 +203,7 @@ class Reflection:
             generic_name_words={w.lower() for w in self._cfg.clerk.generic_name_words},
             base_rate_markers=self._cfg.memory.base_rate_markers,
             legal_conclusion_markers=self._cfg.memory.legal_conclusion_markers,
+            figure_words=self._cfg.memory.figure_words,
             known_statutes={*av.metadata.statutes_invoked, *(a.statute_id for a in truth.statutory_analysis)},
             errors_by_side={
                 side: {c for p in private[side] for attempt in p.themis_local.hard_errors_by_attempt for c in attempt}
