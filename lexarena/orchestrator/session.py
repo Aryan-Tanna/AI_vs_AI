@@ -56,6 +56,7 @@ from lexarena.storage.factory import SessionProcess
 from lexarena.storage.policy import Role
 from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_global.audit import audit_transcript
+from lexarena.themis_local.layer2 import WARN_REPETITION as REPETITION_WARNING
 from lexarena.themis_local.outcome import VerifiedTurn, verify_with_retries
 from lexarena.themis_local.verify import LawContext, ThemisLocal, Verification, VerifyContext, claim_ids
 from lexarena.versioning import combine, law_versions, precedent_snapshot
@@ -391,6 +392,9 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
             )
             stores[side][0].memory.append(TURN_PREFIX + vt.draft.text)
             published.append(pub)
+            # D-135: this side's own repetition warning goes to this side's next submission only.
+            repeated = [w.detail for w in vt.result.warnings if w.code == REPETITION_WARNING and w.detail]
+            lawyers[side].repetition_note = "; ".join(repeated) or None
             if turn_type != CLOSING:  # D-112: answered before this side's next submission; a closing has none
                 answers = lawyers[side].answer_lookups(vt.draft)
                 trace.event(

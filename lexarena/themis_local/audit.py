@@ -82,6 +82,9 @@ class _Checks:
         return failed, held
 
 
+PREREQUISITE_UNADDRESSED = "WARN_PREREQUISITE_UNADDRESSED"
+
+
 def _dated_threshold(view: StatuteView, cfg: ThemisLocalConfig) -> float | None:
     return _numeric({a.parameter: a.value for a in view.applied}.get(cfg.threshold_overlay_parameter))
 
@@ -210,9 +213,7 @@ def _audit_items(view: StatuteView, claim: ExtractedChecklist, cfg: ThemisLocalC
         missing = [i for i in required if i not in addressed]
         if missing:
             out.warnings.append(
-                ThemisWarning(
-                    code="WARN_PREREQUISITE_UNADDRESSED", field="mandatory_prerequisites", law_indices=missing
-                )
+                ThemisWarning(code=PREREQUISITE_UNADDRESSED, field="mandatory_prerequisites", law_indices=missing)
             )
 
 

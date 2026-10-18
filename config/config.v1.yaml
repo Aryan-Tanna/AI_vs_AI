@@ -91,7 +91,11 @@ prompts:
   agent_role: {id: agents/role, version: 1}             # [SPEC E6] the only template whose values differ by side
   agent_plan: {id: agents/plan, version: 1}             # [D-053] private strategy phase, research plan
   agent_notes: {id: agents/notes, version: 1}           # [D-053] private strategy phase, plan after research
-  agent_turn: {id: agents/turn, version: 2}             # [D-079] one submission; v2 answers to lookups and the lookups field [D-112]
+  agent_turn: {id: agents/turn, version: 3}             # [D-079] one submission; v2 answers to lookups [D-112]; v3 one instruction per turn type, no part labels, verifier note [D-135]
+  agent_turn_opening: {id: agents/turn_opening, version: 1}     # [D-135] the same for both sides
+  agent_turn_rebuttal: {id: agents/turn_rebuttal, version: 1}   # [D-135] new points only; lookups for new support
+  agent_turn_closing: {id: agents/turn_closing, version: 1}     # [D-135]
+  agent_repetition_note: {id: agents/repetition_note, version: 1}   # [D-135] this side's own verifier warning, shown to it alone
 
 llm:
   max_attempts: 4                        # [PLACEHOLDER] provider retries + schema repairs, per call

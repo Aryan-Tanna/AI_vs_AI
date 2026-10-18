@@ -21,6 +21,7 @@ from lexarena.schemas.config import AppConfig
 from lexarena.schemas.predicate import PredicateEntry
 from lexarena.schemas.transcript import ClaimAssessment, ExtractedChecklist, ThemisWarning
 from lexarena.storage.temporal import StatuteView
+from lexarena.themis_local.audit import PREREQUISITE_UNADDRESSED
 from lexarena.themis_local.extract import extract_checklists
 from lexarena.themis_local.layer1 import CaseFacts, run_layer1
 from lexarena.themis_local.layer2 import (
@@ -103,6 +104,40 @@ class ThemisLocal:
         self._cfg = cfg
         self._entailment_memo: dict[tuple[str, str], tuple[str, str]] = {}  # D-115: per side, per session
         self._embedder = embedder
+        # D-135: mandatory prerequisites are tracked over the whole hearing for this side; the warning is raised once,
+        # at its closing, for prerequisites of a claim it asserted and never addressed in any submission.
+        self._asserted: set[str] = set()
+        self._addressed: dict[str, set[int]] = {}
+
+    def _note_prerequisites(self, checklists: list[ExtractedChecklist]) -> None:
+        minimum = self._cfg.themis_local.extraction_min_confidence
+        for c in checklists:
+            if c.stance == "ASSERT_CLAIM":
+                self._asserted.add(c.statute_id)
+            self._addressed.setdefault(c.statute_id, set()).update(
+                i.law_index
+                for i in c.diagnostic_checklist.mandatory_prerequisites
+                if i.law_index is not None and i.confidence >= minimum and i.quote.strip()
+            )
+
+    def _unaddressed(self, views: dict[str, StatuteView]) -> list[ThemisWarning]:
+        out = []
+        for statute_id in sorted(self._asserted):
+            view = views.get(statute_id)
+            if view is None:
+                continue
+            required = range(len(view.record.diagnostic_checklist.mandatory_prerequisites))
+            missing = [i for i in required if i not in self._addressed.get(statute_id, set())]
+            if missing:
+                out.append(
+                    ThemisWarning(
+                        code=PREREQUISITE_UNADDRESSED,
+                        field="mandatory_prerequisites",
+                        law_indices=missing,
+                        detail=f"{statute_id}: not addressed in any submission of the hearing",
+                    )
+                )
+        return out
 
     def check(
         self, draft: LawyerDraft, ctx: VerifyContext, *, session_id: str, short_circuit: bool = False
@@ -137,7 +172,10 @@ class ThemisLocal:
         )
         out.checklists = report.checklists
         out.hard_errors += [Problem(e.code, f"{e.statute_id}: {e.detail}", e.record_ids) for e in layer1.hard_errors]
-        out.warnings += report.warnings + layer1.warnings
+        out.warnings += [w for w in report.warnings + layer1.warnings if w.code != PREREQUISITE_UNADDRESSED]
+        self._note_prerequisites(report.checklists)
+        if ctx.closing:
+            out.warnings += self._unaddressed(law.views)
         out.rule_coverage = _coverage(report.checklists, law.views, self._cfg.themis_local.extraction_min_confidence)
         # Layer 2 (record references and repetition ran above, in code).
         review_fidelity(

@@ -52,6 +52,13 @@ def _ledger(turn: PublishedTurn) -> str:
     return f"Turn {turn.turn} ({turn.turn_type}) {COUNSEL[turn.speaker]}, claims: {claims}"
 
 
+TURN_INSTRUCTION = {  # D-135: only the current turn type's instruction is shown, so no part labels leak into speech
+    "OPENING": "agent_turn_opening",
+    "REBUTTAL": "agent_turn_rebuttal",
+    "CLOSING": "agent_turn_closing",
+}
+
+
 def condense(turns: list[PublishedTurn], fits: Callable[[str], bool]) -> str:
     """The longest faithful rendering that fits: full turns, then oldest-first ledgers, then oldest-first drops."""
     if not turns:
@@ -93,6 +100,9 @@ class Lawyer:
         self._exhibits = exhibit_contents
         self.notes: StrategyNotes | None = None
         self.held: list[PrecedentCard] = []
+        # D-135: this side's own verifier's repetition warning on its last published turn (its private data, never
+        # the opponent's); shown with its next submission only.
+        self.repetition_note: str | None = None
         self._desk = desk
         # D-112: the provisions both sides start with stay shared; what this side looked up is side-specific.
         self._base_statutes = set(knowledge.regulation.law.views)
@@ -143,6 +153,10 @@ class Lawyer:
             **side,
             "turn": str(turn),
             "turn_type": turn_type,
+            "turn_instruction": self._render(TURN_INSTRUCTION[turn_type]).text.strip(),
+            "verifier_note": self._render("agent_repetition_note", detail=self.repetition_note).text.strip() + "\n"
+            if self.repetition_note
+            else "",
             "max_words": str(int(s.max_turn_tokens * s.words_per_token)),
             "max_lookups": str(s.lookups_per_turn),
             "feedback": f"\nThe verifier rejected your previous draft. Fix exactly these problems:\n{feedback}\n"
@@ -185,7 +199,11 @@ class Lawyer:
         precedents found join the authorities it holds, and the answers are shown with its next submission."""
         if self._desk is None:
             return self.lookup_answers
-        answer = self._desk.serve(draft.lookups)
+        answer = self._desk.serve(
+            draft.lookups,
+            held_statutes=set(self.knowledge.regulation.law.views),
+            held_precedents={c.precedent_uid for c in self.held},
+        )
         self.knowledge.regulation.law.views.update(answer.statutes)
         for card in answer.cards:
             if all(c.precedent_uid != card.precedent_uid for c in self.held):

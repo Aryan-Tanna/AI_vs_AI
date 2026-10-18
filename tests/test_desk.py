@@ -140,3 +140,21 @@ def test_a_statute_one_side_looked_up_stays_out_of_the_shared_sections() -> None
     assert FOUND_HEADING in p.side_specific["lookups"] and FOUND_HEADING not in r.side_specific["lookups"]
     assert other in lawyers["PETITIONER"].knowledge.regulation.law.views
     assert other not in lawyers["RESPONDENT"].knowledge.regulation.law.views
+
+
+def test_what_the_side_already_holds_is_answered_as_nothing_new() -> None:
+    """D-135: LEX-D re-asked for a statute it held (DEV_0008 turn 8); the desk says so instead of serving it again."""
+    answer = desk().serve(
+        [ask("STATUTE", STATUTE), ask("AUTHORITY_SEARCH", "a hit")],
+        held_statutes={STATUTE},
+        held_precedents={"U1"},
+    )
+    assert answer.statutes == {} and answer.cards == []
+    assert "already in your regulation memory" in answer.text and "nothing new" in answer.text
+
+
+def test_holding_rules_are_the_same_for_both_sides() -> None:
+    """The desk has no notion of side: the same lookups and holdings give the same answer (non-negotiable 3)."""
+    a = desk().serve([ask("AUTHORITY_SEARCH", "a hit")], held_statutes=set(), held_precedents=set())
+    b = desk().serve([ask("AUTHORITY_SEARCH", "a hit")], held_statutes=set(), held_precedents=set())
+    assert a.text == b.text and [c.precedent_uid for c in a.cards] == ["U1"]

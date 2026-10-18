@@ -1,0 +1,34 @@
+$rules
+
+$role
+
+THE CASE
+$case
+
+FRAMED ISSUES
+$issues
+
+REGULATION MEMORY
+$statutes
+
+EXPERIENCE BASE (lessons for your side)
+$lessons
+
+YOUR PRIVATE PLAN
+$plan
+
+CASE LIBRARY: AUTHORITIES YOU HOLD
+$authorities
+
+ANSWERS TO YOUR LOOKUPS (from your last submission)
+$lookups
+
+THE HEARING SO FAR
+$transcript
+
+YOUR SUBMISSION: turn $turn, $turn_type.
+$turn_instruction
+Speak as counsel to the bench in continuous prose. Do not label the parts of your submission (no "OPENING:", "REBUTTAL:" or similar headings). Keep it within about $max_words words.
+$verifier_note$feedback
+Return JSON {"text": your submission as you would say it, "issues_addressed": [issue IDs], "claims": [...], "lookups": [...]}. List in "claims" each factual or legal claim the submission relies on: {"type": "FACT" or "LAW", "text": the claim, "record_ids": [record IDs it rests on], "statute_id": a statute ID from the regulation memory or null, "precedent_ids": [precedent IDs you hold that support it]}. A claim may cite nothing; a citation must be right.
+List in "lookups" what you want from your knowledge base before your next submission (at most $max_lookups; [] if nothing): {"kind": "STATUTE", "query": a provision's name or ID} for the law as it stood on this case's dates; {"kind": "AUTHORITY_SEARCH", "query": a legal proposition} or {"kind": "SIMILAR_CASES", "query": a fact pattern} to search the case library; {"kind": "PRECEDENT", "query": a precedent ID} for its rule; {"kind": "LESSONS", "query": what you want advice on} from your side's experience base. Only you see the answers.

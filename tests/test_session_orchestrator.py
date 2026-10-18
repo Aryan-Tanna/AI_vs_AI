@@ -53,6 +53,7 @@ class ByProvider:
     requests: list[LLMRequest] = field(default_factory=list)
     drafts: int = 0
     fail_at_draft: int | None = None
+    repeat_side: str | None = None  # D-135: this side submits the same text every turn
 
     def complete(self, request: LLMRequest, api_key: str) -> LLMResponse:
         self.requests.append(request)
@@ -73,8 +74,12 @@ class ByProvider:
 
                 raise RateLimitedError("quota", retry_after_s=10**6)  # literal-ok: longer than any backoff
             words = " ".join(f"w{self.drafts}x{i}" for i in range(12))  # literal-ok: distinct words per draft
+            if self.repeat_side and f"You represent the {self.repeat_side}" in request.messages[-1].content:
+                words = "REPEAT"
             body = {
-                "text": f"Submission {self.drafts}: {words}.",
+                "text": "The same submission every time."
+                if words == "REPEAT"
+                else f"Submission {self.drafts}: {words}.",
                 "issues_addressed": ["I1", "I9"],
                 "claims": [
                     {
@@ -191,6 +196,25 @@ def test_a_whole_session(world: tuple[SessionProcess, Namespace], tmp_path: Path
     assert all(SIM_DATE not in m.content for r in provider.requests for m in r.messages)
     # Session memory is cleared at the end (SPEC I1).
     assert proc.orchestrator().session_memory._store == {}
+
+
+def test_each_turn_sees_only_its_own_instruction_and_its_own_verifier_note(
+    world: tuple[SessionProcess, Namespace], tmp_path: Path
+) -> None:
+    """D-135: one instruction per turn type (no part labels leak into speech); a side's repetition warning is shown
+    to that side's next submission and never to the other side."""
+    proc, _ = world
+    provider = ByProvider(repeat_side="Petitioner")
+    run_session(proc, CASE, OPTS, services(tmp_path, provider))
+    drafts = [r.messages[-1].content for r in provider.requests if r.schema_name == "LawyerDraft"]
+    starts = {"OPENING": "Open your case", "REBUTTAL": "Answer the other side's latest", "CLOSING": "Close your case"}
+    for prompt in drafts:
+        kind = next(k for k in starts if f", {k}." in prompt)
+        assert starts[kind] in prompt and all(v not in prompt for k, v in starts.items() if k != kind)
+        assert "- OPENING:" not in prompt and "Do not label the parts" in prompt
+    noted = [p for p in drafts if "Note from the verifier" in p]
+    assert noted and all("You represent the Petitioner" in p for p in noted)
+    assert not any("Note from the verifier" in p for p in drafts if "You represent the Respondent" in p)
 
 
 def test_a_failure_aborts_the_session(world: tuple[SessionProcess, Namespace], tmp_path: Path) -> None:

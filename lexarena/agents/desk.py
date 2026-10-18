@@ -51,7 +51,13 @@ class KnowledgeDesk:
         self._lessons = lessons
         self._cfg = cfg
 
-    def _one(self, lookup: KnowledgeLookup | JudgeLookup, out: DeskAnswer) -> str:
+    def _one(
+        self,
+        lookup: KnowledgeLookup | JudgeLookup,
+        out: DeskAnswer,
+        held_statutes: set[str],
+        held_precedents: set[str],
+    ) -> str:
         q = lookup.query.strip()
         head = f"LOOKUP {lookup.kind} '{q}':"
         if not q:
@@ -60,13 +66,20 @@ class KnowledgeDesk:
             view = self._statute(q)
             if view is None:
                 return f"{head} no provision in the Law DB matches it, or it was not in force on this case's dates"
+            if view.statute_id in held_statutes:  # D-135: say so, rather than serve the same text again
+                return f"{head} [{view.statute_id}] is already in your regulation memory, as shown above; nothing new"
             out.statutes[view.statute_id] = view
             return f"{head} now in your regulation memory\n{render_statutes({view.statute_id: view})}"
         if lookup.kind in ("AUTHORITY_SEARCH", "SIMILAR_CASES"):
             kind = "authority" if lookup.kind == "AUTHORITY_SEARCH" else "facts"
-            cards = self._library.research([ResearchQuery(kind=kind, query=q, statutes=[])], 1)
+            hits = self._library.research([ResearchQuery(kind=kind, query=q, statutes=[])], 1)
+            cards = [c for c in hits if c.precedent_uid not in held_precedents]  # D-135: only what is new to this side
             out.cards += cards
-            return f"{head} {len(cards)} found, now among the authorities you hold\n{render_cards(cards)}"
+            already = len(hits) - len(cards)
+            if not cards:
+                return f"{head} nothing new: the {already} authorities found are already among yours"
+            more = f" ({already} more found that you already hold)" if already else ""
+            return f"{head} {len(cards)} new found{more}, now among the authorities you hold\n{render_cards(cards)}"
         if lookup.kind == "PRECEDENT":
             got = self._library.fetch(q, "ratio")
             if got is None:
@@ -76,14 +89,21 @@ class KnowledgeDesk:
         lines = "\n".join(lesson_line(x) for x in found) or "(no lesson in your experience base matches)"
         return f"{head}\n{lines}"
 
-    def serve(self, lookups: Sequence[KnowledgeLookup | JudgeLookup]) -> DeskAnswer:
+    def serve(
+        self,
+        lookups: Sequence[KnowledgeLookup | JudgeLookup],
+        *,
+        held_statutes: set[str] | None = None,
+        held_precedents: set[str] | None = None,
+    ) -> DeskAnswer:
+        """`held_*`: what the asking side already has (D-135); a lookup for it is answered as nothing new."""
         s = self._cfg.session
         out = DeskAnswer(text="")
         budget = s.lookup_tokens * self._cfg.llm.chars_per_token
         parts: list[str] = []
         used = 0
         for lookup in lookups[: s.lookups_per_turn]:
-            text = self._one(lookup, out)
+            text = self._one(lookup, out, held_statutes or set(), held_precedents or set())
             if used + len(text) > budget:
                 room = int(budget - used)
                 parts.append(text[:room] + "\n" + OMITTED if room > 0 else OMITTED)
