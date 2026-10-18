@@ -197,3 +197,27 @@ when it says CONTRADICTS (entailment.v1: "For SUPPORTS and NOT_ADDRESSED give ra
 verdict needs no evidence and a surface match ("enhanced threshold ... after notification") can pass. Only a
 contradiction is a hard error by design (SPEC D8, verify-don't-obstruct). Calibration proposal for after the pilot:
 require the supporting passage for SUPPORTS too, and treat SUPPORTS without one as NOT_ADDRESSED.
+
+## DEV_0013 (PILOT_C) result
+
+Bench RESPONDENT 3-0, unanimous in both presentation orders, no abstention; both issues RESPONDENT. Real outcome
+RESPONDENT on both issues: verdict and 2/2 issues aligned. Single-LLM baseline RESPONDENT. Every opinion cites the
+guarantee section and two precedents with record IDs; four opinions used their one revision.
+THEMIS (old prompts, before D-145): 3 drafts rejected, same pattern: two said an exhibit "contains no" clause where the
+record lists only what it does contain (defensible: nothing else is known; "the record shows no such clause" passes),
+one rejected "the documents are admitted" (borderline strict: exhibits are presumed genuine).
+Cross-check: 142 claims, 60 precedent and 53 statute citations, 0 problems (IDs, dates, future precedents). No case
+name in any published turn or opinion outside the precedents served.
+Independent check of what THEMIS passed (142 claims): 119 supported, 20 statute-only; flags verified by Claude:
+- T8 RESPONDENT "the second [issue] was not reached": WRONG; the lower order says the NCLAT decided its second issue and
+  "nonetheless dismissed the appeal on its first view". A real THEMIS miss; not decisive (judges decided I1 on the
+  instrument's text).
+- T6 RESPONDENT cites a s.60(5) summary-jurisdiction ratio for s.7: an analogy, borderline, not a clear misattribution.
+- T9 PETITIONER "triggered by default, not by a prior demand": the cited ratio says liability is "triggered upon
+  default" but also that formal invocation is a sine qua non (in the personal-guarantor rules); partly supported,
+  borderline.
+Name scan: flagged a bank party; false alarm (its name was in served precedent titles); fixed D-147.
+Lessons: 6 written (4 creditor, 1 debtor, 1 judge), strategy only, no names or figures, law named only indirectly;
+L-01 says "request the document", which a closed record does not allow (R-050).
+DEV_0011 THEMIS replay on the D-145 prompts: planted errors 3/3 caught; T6 over-strict rejection gone; T5 still
+rejected (borderline, unchanged).

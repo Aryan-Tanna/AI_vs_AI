@@ -21,16 +21,26 @@ MIN_NAME_WORD = 4  # literal-ok: shorter fragments ("Ltd", "Co") are too common 
 NAME_WORDS_FOR_RECALL = 2  # literal-ok: two distinct words of one real name = the model named that party
 
 
-def recalled_names(texts: Iterable[str], real_names: Iterable[str], generic_words: Iterable[str]) -> list[str]:
+def recalled_names(
+    texts: Iterable[str],
+    real_names: Iterable[str],
+    generic_words: Iterable[str],
+    shown_texts: Iterable[str] = (),
+) -> list[str]:
     """D-145 (D-143 made automatic): real party names a model wrote in this session's reasoning or outputs. A name
     counts when written in full, or when two distinct distinctive words of it appear as written in the name (same
-    capitalisation), so ordinary words that happen to be in a name ("Capital") do not count on their own."""
+    capitalisation), so ordinary words that happen to be in a name ("Capital") do not count on their own. A name that
+    appears in what the session showed the models (`shown_texts`: precedent titles and lookup answers) is not memory
+    (D-147: in DEV_0013 a bank party's name came from precedent titles the lawyers were served)."""
+    shown = "\n".join(shown_texts).lower()
     generic = {w.lower() for w in generic_words}
     text = "\n".join(texts)
     low = text.lower()
     hits: list[str] = []
     for name in real_names:
         full = " ".join(name.split())
+        if full.lower() in shown:
+            continue
         words = [
             w for w in re.findall(r"[A-Za-z][A-Za-z'.-]+", name) if len(w) >= MIN_NAME_WORD and w.lower() not in generic
         ]
@@ -59,6 +69,7 @@ def evaluate_session(
     single_llm: BaselinePrediction | None = None,
     model_texts: list[str] | None = None,
     generic_words: Iterable[str] = (),
+    shown_texts: list[str] | None = None,
 ) -> EvaluationResult:
     """`model_texts`: every model's reasoning and output in this session (its trace), scanned for the real names
     after the verdict (D-145); a case a model named is reported with the memorised cases."""
@@ -68,7 +79,7 @@ def evaluate_session(
     case = stores.cases.get(session.case_id)
     truth = stores.ground_truth.get(session.case_id, session_id=session_id)  # refuses before the verdict
     framed = [i.issue_id for i in case.agent_view.framed_issues]
-    recalled = recalled_names(model_texts or [], truth.anonymization_map.values(), generic_words)
+    recalled = recalled_names(model_texts or [], truth.anonymization_map.values(), generic_words, shown_texts or [])
     evaluation = evaluate(session.bench, truth, framed)
     stored = stores.sessions.record_evaluation(session_id, evaluation)
     outcome = CaseOutcome(

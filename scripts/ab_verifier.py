@@ -145,7 +145,7 @@ def run_arm(trace: Path, effort: str) -> Path:
 
         # Mutations of the case's own pleaded ground: each must raise its error.
         ground = case.opening_positions.PETITIONER[0]
-        base = LawyerDraft(text=ground.ground, issues_addressed=[ground.issue_id], claims=[])
+        base = LawyerDraft(text=ground.ground, issues_addressed=[ground.issue_id], claims=[], lookups=[])
         mutations: list[tuple[str, LawyerDraft, str]] = []
         if case.record.exhibits:
             ex = case.record.exhibits[0].exhibit_id

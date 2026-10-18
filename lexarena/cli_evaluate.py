@@ -79,8 +79,9 @@ def _trace_dir(config_path: Path) -> Path | None:
     return REPO_ROOT / cfg.llm.trace_dir if cfg.llm.trace_enabled else None
 
 
-def _model_texts(config_path: Path, session_id: str) -> list[str]:
-    """Every model's reasoning and output in the session's trace (D-110), for the post-verdict name scan (D-145)."""
+def _model_texts(config_path: Path, session_id: str, *, shown: bool = False) -> list[str]:
+    """Every model's reasoning and output in the session's trace (D-110), for the post-verdict name scan (D-145); with
+    `shown`, what the session showed the models instead: lookup answers and held authorities (D-147)."""
     folder = _trace_dir(config_path)
     path = folder / f"{session_id}.jsonl" if folder is not None else None
     if path is None or not path.is_file():
@@ -88,7 +89,9 @@ def _model_texts(config_path: Path, session_id: str) -> list[str]:
     texts: list[str] = []
     for line in path.read_text(encoding="utf-8").splitlines():
         record = json.loads(line) if line.strip() else {}
-        if record.get("kind") == "llm":
+        if shown:
+            texts += [str(record.get(k) or "") for k in ("answers", "held") if record.get(k)]
+        elif record.get("kind") == "llm":
             texts += [str(record.get(k) or "") for k in ("reasoning", "output")]
     return texts
 
@@ -106,6 +109,7 @@ def _session(session_id: str, baseline: Path | None, out: Path | None, config_pa
             session_id,
             single,
             model_texts=_model_texts(config_path, session_id),
+            shown_texts=_model_texts(config_path, session_id, shown=True),
             generic_words=cfg.clerk.generic_name_words,
         )
     _write(out, result.outcome.to_document())

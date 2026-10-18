@@ -22,3 +22,12 @@ def test_one_ordinary_word_of_a_name_is_not() -> None:
 def test_two_distinct_words_of_one_name_as_written_are() -> None:
     assert recalled_names(["Tata ... the Capital account"], NAMES, GENERIC) == ["Tata Capital Housing Finance Limited"]
     assert recalled_names(["tata ... capital"], NAMES, GENERIC) == []  # not written as the name is
+
+
+def test_a_name_the_session_showed_the_models_is_not_a_recall() -> None:
+    """DEV_0013: a party that is a large bank also appeared in precedent titles the lawyers were served; naming what
+    one was shown is not memory (D-147)."""
+    names = ["Northern Cooperative Bank", "Ravindra Kolhatkar"]
+    texts = ["- Northern Cooperative Bank v. Some Liquidator (2018)", "Ravindra Kolhatkar maybe"]
+    shown = ["[2025_NCLAT_DEL_1#x] Northern Cooperative Bank vs. Another & Anr."]
+    assert recalled_names(texts, names, GENERIC, shown_texts=shown) == ["Ravindra Kolhatkar"]
