@@ -34,11 +34,10 @@ from lexarena.clerk.text import BLOCK_MARK
 from lexarena.config import load_config
 from lexarena.drafting.pdf import pdf_pages_blocks
 from lexarena.llm.errors import HandoffPendingError
-from lexarena.llm.providers.handoff import pending_prompts
 from lexarena.prompts import PromptStore
 from lexarena.schemas.case import ExtractionFlag
 from lexarena.schemas.clerk import NamedEntity
-from lexarena.schemas.config import HANDOFF_ROLES, HandoffProviderConfig
+from lexarena.schemas.config import HANDOFF_ROLES
 from lexarena.statute_ids import load_statute_aliases
 from lexarena.storage.errors import SealedError
 from lexarena.storage.factory import SealedProcess
@@ -140,11 +139,11 @@ def _run(pdf: Path, case_id: str, config_path: Path, *, handoff: bool = False, r
                 precedent_payloads=stores.precedents.all_payloads(OVERLAP_FIELDS),
             )
         except HandoffPendingError as exc:
-            exchange = cfg.providers[cfg.models.clerk_handoff.provider]
-            assert isinstance(exchange, HandoffProviderConfig)
-            folder = Path(exchange.exchange_dir)
-            pending = [p.as_posix() for p in pending_prompts(folder if folder.is_absolute() else REPO_ROOT / folder)]
-            print(json.dumps({"case_id": case_id, "stored": False, "handoff_pending": pending or [exc.prompt_file]}))
+            # Only this run's prompt: the folder is shared by cases clerked in parallel, and listing every pending
+            # prompt led an agent to answer another case's (D-134).
+            prompt = Path(exc.prompt_file)
+            shown = (prompt if prompt.is_absolute() else REPO_ROOT / prompt).as_posix()
+            print(json.dumps({"case_id": case_id, "stored": False, "handoff_pending": [shown]}))
             return HANDOFF_PENDING
         if handoff and outcome.case is not None:
             build = outcome.case.build
