@@ -180,3 +180,20 @@ inconsistencies as hard errors.
 Bench order bias: in DEV_0010 and DEV_0011 one judge's result flipped with presentation order and both times the side
 presented FIRST won (primacy on close questions). Abstention removed both, so no verdict changed; the hearing
 metrics' first-presented-wins count tracks it.
+
+## What THEMIS let through: independent second check (DEV_0008-0011)
+
+Method: a separate Claude agent (another model family from THEMIS's Qwen) judged every PUBLISHED claim against the
+case material and the cited precedents' ratios; Claude then verified every flag against the source before counting it.
+| Case | Claims | Supported | Statute-only (not checkable) | Confirmed misses | Notes |
+| --- | --- | --- | --- | --- | --- |
+| DEV_0008 | 134 | 129 | 4 | 1 overstatement | T1: "the record does not show ... an interest stipulation", but F6/EX-1 show the IU loan "at a 14 percent rate of interest"; later turns corrected it themselves |
+| DEV_0009 | 121 | 116 | 4 | 0 | the reviewer's one flag (T4 "the Appellants' own case treats 07.02.2020 as operative") is borderline: the appellant had conceded it "for argument" in T3, which the packet did not include |
+| DEV_0010 | 138 | 121 | 12 | 2 precedent misattributions | Prafulla Gadge (2022_NCLAT_DEL_498) is about the 24.03.2020 Section 4 Rs 1 crore notification; the petitioner used it for the 2019 Ordinance's allottee threshold. THEMIS: T05-C2 and T07-C17 SUPPORTS (missed); T03-C6 and T09-C14 NOT_ADDRESSED (warned). Swaminarayan (2025_NCLAT_DEL_885) stretched by the respondent (borderline). The bench was not misled: it decided I2 against the petitioner and one opinion named the mismatch |
+| DEV_0011 | 117 | 112 | 5 | 0 | F9 dates the notice 10.09.2023, F3/EX-1 10.10.2023: an inconsistency inside the judgment, which the agents themselves noticed |
+Totals: 510 claims, 0 invented facts, 0 invented precedents or later precedents (cross-check), 3 confirmed misses
+(1 overstatement, 2 misattributions; about 1 in 170). Why: THEMIS's precedent check asks for the ratio's words only
+when it says CONTRADICTS (entailment.v1: "For SUPPORTS and NOT_ADDRESSED give ratio_quote: ''"), so a SUPPORTS
+verdict needs no evidence and a surface match ("enhanced threshold ... after notification") can pass. Only a
+contradiction is a hard error by design (SPEC D8, verify-don't-obstruct). Calibration proposal for after the pilot:
+require the supporting passage for SUPPORTS too, and treat SUPPORTS without one as NOT_ADDRESSED.
