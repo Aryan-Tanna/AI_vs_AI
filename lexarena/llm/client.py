@@ -107,8 +107,8 @@ class LLMClient:
         system: RenderedPrompt | None,
     ) -> LLMResult[T]:
         key_envs = [model.api_key_env, *model.fallback_key_envs]
-        api_key = self._secrets.get(key_envs[0])
         provider = self._providers[model.provider]
+        api_key = self._secrets.get(key_envs[0]) if getattr(provider, "needs_key", True) else ""
 
         prompts = [p for p in (system, user) if p is not None]
         messages = ([ChatMessage(role="system", content=system.text)] if system else []) + [

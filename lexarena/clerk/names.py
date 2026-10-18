@@ -6,6 +6,7 @@
 - Replacement runs before any extraction, on the paragraphs the agent-view extractor will read: longest form
   first, whole words, ignoring case, tolerant of full stops and an "M/s" or honorific prefix. Acronyms (all
   capitals) match case-sensitively, so ordinary words are never hit.
+- E-mail addresses and web domains are masked first: they carry names in lower case (D-128).
 - `residual_names` re-reads the result against the original names' distinctive words (not the variant list), so a
   form the variant list missed still shows up as a leak.
 """
@@ -29,6 +30,12 @@ KIND_WORD: dict[EntityKind, str] = {
 PREFIX = r"(?:(?:M/s|Messrs|Mr|Mrs|Ms|Shri|Smt|Sri|Dr)\.?\s+)?"
 TOKEN = re.compile(r"[A-Za-z0-9&][\w&'-]*")
 MIN_ACRONYM = 3  # literal-ok: shorter capital runs (e.g. "RP", "CD") are ordinary abbreviations, not names
+# [D-128] An e-mail address or web domain: names hide in them in lower case ("a.shah@companyname.com").
+EMAIL_OR_DOMAIN = re.compile(
+    r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+|\bwww\.[\w-]+(?:\.[\w-]+)+|\b[a-z][\w-]*\.(?:co\.in|com|net|org|in|biz|info)\b",
+    re.IGNORECASE,
+)
+ADDRESS_MASK = "[address removed]"
 
 
 def _letters(count: int, rng: random.Random) -> list[str]:
@@ -92,6 +99,7 @@ class Pseudonymizer:
         self._rules = [(_pattern(f), p) for f, p in forms]
 
     def apply(self, text: str) -> str:
+        text = EMAIL_OR_DOMAIN.sub(ADDRESS_MASK, text)  # D-128: before names, which a lower-case address hides
         for pattern, pseudonym in self._rules:
             text = pattern.sub(pseudonym, text)
         return text

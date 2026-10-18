@@ -130,6 +130,51 @@ def test_any_registration_number_in_the_agent_view_is_refused(text: str) -> None
     assert any("registration number" in p for p in found)
 
 
+@pytest.mark.parametrize(
+    "text", ["notices went to a.b.shah@examplewire.com", "see www.examplewire.co.in", "at examplewire.com"]
+)
+def test_an_email_address_or_web_domain_in_the_agent_view_is_refused(text: str) -> None:
+    """DEV_0008 F7 quoted two directors' e-mail addresses, carrying a real name and the company's name in lower case,
+    which the name check (capitalised words) cannot see (D-128)."""
+    view = build(draft()).view
+    view.factual_background += f" {text}."
+    found = leakage_problems(
+        view,
+        case_number="",
+        bench=[],
+        decision_date=date(2002, 1, 1),
+        entities=[],
+        authority_names=[],
+        reasoning=[],
+        visible=[],
+        cfg_markers=[],
+        evaluative_words=[],
+        generic_words=[],
+        ngram=6,
+    )
+    assert any("e-mail address or web domain" in p for p in found)
+
+
+def test_section_numbers_and_abbreviations_are_not_web_domains() -> None:
+    view = build(draft()).view
+    view.factual_background += " Under Section 5.8 and Reg. 21, the I.U. record (e.g. p.74) and Rs.26.49 crore."
+    found = leakage_problems(
+        view,
+        case_number="",
+        bench=[],
+        decision_date=date(2002, 1, 1),
+        entities=[],
+        authority_names=[],
+        reasoning=[],
+        visible=[],
+        cfg_markers=[],
+        evaluative_words=[],
+        generic_words=[],
+        ngram=6,
+    )
+    assert not any("web domain" in p for p in found)
+
+
 def test_party_designations_sections_and_figures_are_not_registration_numbers() -> None:
     view = build(draft()).view
     view.factual_background += " Respondent No. 1 sent notice under Section 8 for Rs. 100 on 03.02.2001; No. 2 replied."

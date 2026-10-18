@@ -29,7 +29,11 @@ from lexarena.clerk.review import render_review
 from lexarena.clerk.text import BLOCK_MARK
 from lexarena.config import load_config
 from lexarena.drafting.pdf import pdf_pages_blocks
+from lexarena.llm.errors import HandoffPendingError
+from lexarena.llm.providers.handoff import pending_prompts
 from lexarena.prompts import PromptStore
+from lexarena.schemas.case import ExtractionFlag
+from lexarena.schemas.config import HandoffProviderConfig
 from lexarena.statute_ids import load_statute_aliases
 from lexarena.storage.factory import SealedProcess
 
@@ -44,6 +48,11 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     run = clerk.add_parser("run", help="clerk one dev judgment (spends LLM quota)")
     run.add_argument("--file", type=Path, required=True, help="the PDF, under data/dev")
     run.add_argument("--case-id", required=True, help="opaque case ID, e.g. DEV_0001 (never from names or numbers)")
+    run.add_argument(
+        "--handoff",
+        action="store_true",
+        help="pilot only (D-127): a Claude Code agent answers the primary and extractor prompts through files",
+    )
     show = clerk.add_parser("show", help="the sealed record, through the REVIEW role, before the first session")
     show.add_argument("case_id")
     approve = clerk.add_parser("approve", help="mark a clerked case as reviewed by you")
@@ -67,29 +76,53 @@ def _manifest_entry(pdf: Path) -> dict[str, Any]:
     return entry
 
 
-def _run(pdf: Path, case_id: str, config_path: Path) -> int:
+HANDOFF_PENDING = 3  # literal-ok: process exit code, a prompt is waiting for its answer file (D-127)
+HANDOFF_FLAG = ExtractionFlag(
+    code="CLERKED_BY_CLAUDE",
+    detail="names, routing, record facts, agent view and ground truth answered by Claude Code (D-127, pilot only)",
+    resolution="Claude also triages: the owner spot-checks this case against the judgment before it teaches",
+)
+
+
+def _run(pdf: Path, case_id: str, config_path: Path, *, handoff: bool = False) -> int:
     cfg = load_config(config_path)
+    if handoff:
+        cfg = cfg.with_clerk_handoff()
     configure_llm_logging(cfg)
     entry = _manifest_entry(pdf)
     data = pdf.read_bytes()
     pages = pdf_pages_blocks(data, BLOCK_MARK)
     with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
         stores = proc.clerk()
-        outcome = clerk_judgment(
-            pages,
-            source_file=entry["file"],
-            source_bytes=data,
-            case_id=case_id,
-            forum=entry["forum"],
-            decided=date.fromisoformat(entry["decided"]),
-            split_name="DEV",
-            llm=build_llm_client(cfg),
-            prompts=PromptStore(PROMPTS_ROOT),
-            cfg=cfg,
-            known_statutes=stores.law.statute_ids(),
-            aliases=load_statute_aliases(REPO_ROOT / "data" / "statute_aliases.json"),
-            precedent_payloads=stores.precedents.all_payloads(OVERLAP_FIELDS),
-        )
+        try:
+            outcome = clerk_judgment(
+                pages,
+                source_file=entry["file"],
+                source_bytes=data,
+                case_id=case_id,
+                forum=entry["forum"],
+                decided=date.fromisoformat(entry["decided"]),
+                split_name="DEV",
+                llm=build_llm_client(cfg),
+                prompts=PromptStore(PROMPTS_ROOT),
+                cfg=cfg,
+                known_statutes=stores.law.statute_ids(),
+                aliases=load_statute_aliases(REPO_ROOT / "data" / "statute_aliases.json"),
+                precedent_payloads=stores.precedents.all_payloads(OVERLAP_FIELDS),
+            )
+        except HandoffPendingError as exc:
+            exchange = cfg.providers[cfg.models.clerk_handoff.provider]
+            assert isinstance(exchange, HandoffProviderConfig)
+            folder = Path(exchange.exchange_dir)
+            pending = [p.as_posix() for p in pending_prompts(folder if folder.is_absolute() else REPO_ROOT / folder)]
+            print(json.dumps({"case_id": case_id, "stored": False, "handoff_pending": pending or [exc.prompt_file]}))
+            return HANDOFF_PENDING
+        if handoff and outcome.case is not None:
+            build = outcome.case.build
+            outcome.case = outcome.case.model_copy(
+                update={"build": build.model_copy(update={"extraction_flags": [*build.extraction_flags, HANDOFF_FLAG]})}
+            )
+            outcome.flags.append(HANDOFF_FLAG)
         REVIEW_DIR.mkdir(parents=True, exist_ok=True)
         review = REVIEW_DIR / f"{case_id}.md"
         review.write_text(render_review(outcome, entry["file"]), encoding="utf-8")
@@ -147,7 +180,7 @@ def _triage(case_id: str, report: Path) -> int:
 
 def run(args: argparse.Namespace, config_path: Path) -> int:
     if args.action == "run":
-        return _run(args.file, args.case_id, config_path)
+        return _run(args.file, args.case_id, config_path, handoff=args.handoff)
     if args.action == "show":
         return _show(args.case_id)
     if args.action == "triage":

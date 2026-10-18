@@ -59,3 +59,12 @@ class CacheMissError(LLMError):
 
 class SchemaValidationError(LLMError):
     """The model kept returning output that does not match the schema."""
+
+
+class HandoffPendingError(LLMError):
+    """The file-exchange provider (D-127) wrote a prompt that has no answer yet. Never retried: the caller stops, an
+    agent writes the answer file, and the same command is run again (earlier answers come from the cache)."""
+
+    def __init__(self, message: str, *, prompt_file: str) -> None:
+        super().__init__(message)
+        self.prompt_file = prompt_file

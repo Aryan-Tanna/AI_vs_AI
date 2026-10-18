@@ -17,7 +17,7 @@ from collections.abc import Iterable
 from datetime import date
 from decimal import Decimal
 
-from lexarena.clerk.names import residual_names
+from lexarena.clerk.names import EMAIL_OR_DOMAIN, residual_names
 from lexarena.clerk.scan import citation_hits, court_voice_hits
 from lexarena.schemas.case import AgentView, ExtractionFlag
 from lexarena.schemas.clerk import NamedEntity
@@ -141,6 +141,8 @@ def leakage_problems(
         # Any court registration number ("No. 177/NCLT/AHM/2020"), not only the appeal's own: a lower forum's
         # number identifies the case just as well (D-124).
         problems.append(f"a case registration number appears in the agent view: {hits[:SHOWN]}")
+    if hits := EMAIL_OR_DOMAIN.findall(text):
+        problems.append(f"an e-mail address or web domain appears in the agent view: {hits[:SHOWN]}")
     members = [NamedEntity(name=b, variants=[], kind="PERSON", cause_title_role=None) for b in bench]
     if hits := residual_names(text, members, generic_words):
         problems.append(f"bench member names appear in the agent view: {hits}")

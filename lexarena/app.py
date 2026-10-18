@@ -12,9 +12,10 @@ from lexarena.llm.cache import ResponseCache
 from lexarena.llm.client import LLMClient
 from lexarena.llm.providers.base import Provider
 from lexarena.llm.providers.gemini import GeminiProvider
+from lexarena.llm.providers.handoff import HandoffProvider
 from lexarena.llm.providers.openai_compat import OpenAICompatProvider
 from lexarena.prompts import PromptStore
-from lexarena.schemas.config import AppConfig, GeminiProviderConfig
+from lexarena.schemas.config import AppConfig, GeminiProviderConfig, HandoffProviderConfig
 from lexarena.secrets import SecretStore
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -29,6 +30,8 @@ def build_providers(config: AppConfig, http: httpx.Client) -> dict[str, Provider
     for name, provider_config in config.providers.items():
         if isinstance(provider_config, GeminiProviderConfig):
             providers[name] = GeminiProvider(provider_config, http)
+        elif isinstance(provider_config, HandoffProviderConfig):
+            providers[name] = HandoffProvider(provider_config, REPO_ROOT)
         else:
             providers[name] = OpenAICompatProvider(provider_config, http)
     return providers

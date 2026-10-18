@@ -136,3 +136,12 @@ def test_a_name_of_generic_words_with_a_real_acronym_is_still_pseudonymised() ->
     p = Pseudonymizer(assign_pseudonyms([sbi], case_key="CASE-X", seed=7), GENERIC | {"state"})
     [bank] = p.assigned
     assert p.apply("State Bank of India appealed; SBI said") == f"{bank.pseudonym} appealed; {bank.pseudonym} said"
+
+
+def test_email_addresses_and_domains_are_masked_before_names() -> None:
+    """D-128: a lower-case address carries a real name the name rules never match ("a.shah@companywire.com")."""
+    p = Pseudonymizer([], generic_words=[])
+    out = p.apply("Notices went to a.shah@companywire.com and www.companywire.co.in on 03.02.2001 under Section 5.8.")
+    assert "shah" not in out and "companywire" not in out
+    assert out.count("[address removed]") == 2
+    assert "03.02.2001" in out and "Section 5.8" in out

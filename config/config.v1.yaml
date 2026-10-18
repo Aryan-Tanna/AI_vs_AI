@@ -29,6 +29,10 @@ providers:                               # [D-087] most roles on OpenRouter; Gem
     json_mode: json_schema               # responseJsonSchema
     timeout_s: 300                       # [PLACEHOLDER] long judgments take ~30 s [MEASURED]
 
+  claude_handoff:                        # [D-127] pilot only: a Claude Code agent answers clerk prompts through files
+    kind: handoff
+    exchange_dir: .cache/handoff         # git-ignored: clerk prompts carry real names
+
   groq:                                  # [D-118] direct Groq API, free keys; the clerk's secondary only
     kind: openai_compatible
     base_url: https://api.groq.com/openai/v1
@@ -47,9 +51,10 @@ models:
   # THEMIS-GLOBAL: reads the whole transcript, so it needs long context.
   auditor:         {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: paidAPI, fallback_models: [], fallback_key_envs: [], routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
   # Clerk two-model agreement: independent families (ARCHITECTURE §3).
-  clerk_primary:   {provider: gemini, family: gemini, name: gemini-2.5-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: gemini_api, fallback_models: [], fallback_key_envs: [gemini_api3, gemini_api4], routing: null}  # [D-126] 2.5 Flash on the 3 keys that can use it (3.8 overloaded all day); [D-120] 3.8 Flash: 3.5 Flash was 503-overloaded for a day; [D-118] spare free keys; [D-096] back on Gemini: Qwen 3.8 Flash looped in its reasoning on DEV_0004's entity list (65,536 reasoning tokens, no answer); Gemini clerked DEV_0001-0003; free key
-  clerk_extractor: {provider: gemini, family: gemini, name: gemini-2.5-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: gemini_api, fallback_models: [], fallback_key_envs: [gemini_api3, gemini_api4], routing: null}  # [D-126] 2.5 Flash on the 3 keys that can use it (3.8 overloaded all day); [D-122] free Gemini, your choice 2026-10-15: paid DeepSeek returned an empty record, 'PLACEHOLDER' text and invented dates on DEV_0008 [D-121]
+  clerk_primary:   {provider: gemini, family: gemini, name: gemini-3.8-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: gemini_api7, fallback_models: [], fallback_key_envs: [gemini_api6, gemini_api5, gemini_api4, gemini_api3, gemini_api2, gemini_api], routing: null}  # [D-120] 3.8 Flash: 3.5 Flash was 503-overloaded for a day; [D-118] spare free keys; [D-096] back on Gemini: Qwen 3.8 Flash looped in its reasoning on DEV_0004's entity list (65,536 reasoning tokens, no answer); Gemini clerked DEV_0001-0003; free key
+  clerk_extractor: {provider: gemini, family: gemini, name: gemini-3.8-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: gemini_api7, fallback_models: [], fallback_key_envs: [gemini_api6, gemini_api5, gemini_api4, gemini_api3, gemini_api2, gemini_api], routing: null}  # [D-122] free Gemini, your choice 2026-10-15: paid DeepSeek returned an empty record, 'PLACEHOLDER' text and invented dates on DEV_0008 [D-121]
   clerk_secondary: {provider: groq, family: gpt-oss, name: openai/gpt-oss-120b, temperature: 0, max_output_tokens: 2048, reasoning_effort: null, reasoning_enabled: null, api_key_env: Groq_API1, fallback_models: [], fallback_key_envs: [Groq_API2, Groq_API3, Groq_API4, Groq_API5, Groq_API6, Groq_API7], routing: null}  # [D-118] back on free Groq (owner: no paid API in the clerk); 2048 as on DEV_0001-0003: Groq counts input plus the cap against 8,000 tokens a minute
+  clerk_handoff:   {provider: claude_handoff, family: claude, name: claude-opus-5-5, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: NO_KEY, fallback_models: [], fallback_key_envs: [], routing: null}  # [D-127] pilot only, `clerk run --handoff` when free Gemini is down; replaces clerk_primary and clerk_extractor; clerk_secondary (Groq) still checks it
   reflection:      {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0,   max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: paidAPI, fallback_models: [], fallback_key_envs: [], routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
   # Step 3 drafting of overlay rows and predicates for your review: two independent families [D-041].
   drafter_primary:   {provider: openrouter, family: qwen, name: qwen/qwen3.8-flash, temperature: 0, max_output_tokens: 65536, reasoning_effort: null, reasoning_enabled: null, api_key_env: paidAPI, fallback_models: [], fallback_key_envs: [], routing: {order: [Alibaba], allow_fallbacks: false, require_parameters: true, quantizations: null}}  # [D-087]
@@ -226,7 +231,7 @@ runner:                                  # [D-073] Step 13
     - {provider: openrouter, model: google/gemini-3.5-flash, input_usd_per_m: 1.50, output_usd_per_m: 9.00}
     - {provider: gemini, model: gemini-3.5-flash, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys
     - {provider: gemini, model: gemini-3.8-flash, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys [D-120]
-    - {provider: gemini, model: gemini-2.5-flash, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys [D-126]
+    - {provider: claude_handoff, model: claude-opus-5-5, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # pilot clerk via Claude Code, no API spend [D-127]
     - {provider: gemini, model: gemini-3-flash-preview, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys, clerk backup [D-123]
     - {provider: gemini, model: gemini-3.5-flash-lite, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys, clerk backup [D-123]
     - {provider: gemini, model: gemini-2.5-flash, input_usd_per_m: 0.0, output_usd_per_m: 0.0}   # free keys

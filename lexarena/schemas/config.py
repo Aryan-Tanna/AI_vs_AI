@@ -41,7 +41,16 @@ class GeminiProviderConfig(Strict):
     timeout_s: PositiveFloat
 
 
-ProviderConfig = Annotated[OpenAICompatProviderConfig | GeminiProviderConfig, Field(discriminator="kind")]
+class HandoffProviderConfig(Strict):
+    """A Claude Code agent answering through files (D-127): pilot clerk only, never a session role."""
+
+    kind: Literal["handoff"]
+    exchange_dir: NonEmptyStr  # relative to the repo root; git-ignored (clerk prompts carry real names)
+
+
+ProviderConfig = Annotated[
+    OpenAICompatProviderConfig | GeminiProviderConfig | HandoffProviderConfig, Field(discriminator="kind")
+]
 
 
 class ProviderRouting(Strict):
@@ -91,6 +100,9 @@ class ModelsConfig(Strict):
     # Record facts, agent view, ground truth and the agent-view repair (D-121).
     clerk_extractor: ModelConfig
     clerk_secondary: ModelConfig
+    # D-127: pilot only. `lexarena clerk run --handoff` puts it in place of clerk_primary and clerk_extractor when the
+    # free model is down; clerk_secondary still checks its facts.
+    clerk_handoff: ModelConfig
     reflection: ModelConfig
     # Step 3: two independent extractors draft side-collection items for human review (D-041).
     drafter_primary: ModelConfig
@@ -110,6 +122,8 @@ class ModelsConfig(Strict):
             raise ValueError("models.clerk_primary.family must differ from models.clerk_secondary.family")
         if self.clerk_extractor.family == self.clerk_secondary.family:
             raise ValueError("models.clerk_extractor.family must differ from models.clerk_secondary.family")
+        if self.clerk_handoff.family in (self.clerk_secondary.family, self.lawyer.family):
+            raise ValueError("models.clerk_handoff.family must differ from models.clerk_secondary and models.lawyer")
         if self.drafter_primary.family == self.drafter_secondary.family:
             raise ValueError("models.drafter_primary.family must differ from models.drafter_secondary.family")
         # CLAUDE.md: verifiers and extractors run at temperature 0.
@@ -121,6 +135,7 @@ class ModelsConfig(Strict):
             "clerk_primary",
             "clerk_extractor",
             "clerk_secondary",
+            "clerk_handoff",
             "drafter_primary",
             "drafter_secondary",
         ):
@@ -466,6 +481,12 @@ class AppConfig(Strict):
     drafting: DraftingConfig
     clerk: ClerkConfig
     seed: int
+
+    def with_clerk_handoff(self) -> AppConfig:
+        """The clerk's primary and extractor answered by the handoff model (D-127); every other role unchanged."""
+        h = self.models.clerk_handoff
+        models = self.models.model_copy(update={"clerk_primary": h, "clerk_extractor": h})
+        return self.model_copy(update={"models": models})
 
     @model_validator(mode="after")
     def _turn_fits_the_lawyer(self) -> AppConfig:
