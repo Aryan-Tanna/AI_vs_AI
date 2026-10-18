@@ -125,6 +125,14 @@ def residual_names(text: str, entities: list[NamedEntity], generic_words: Iterab
         if t.lower() not in generic and not _is_acronym(t) and len(t) >= MIN_ACRONYM
     }
     acronyms = {f for e in entities for f in (*e.variants, acronym(e.name)) if _is_acronym(f)}
+    # An all-capitals word inside a name ("IREO Fiveriver ...") is distinctive too, matched case-sensitively (D-128).
+    acronyms |= {
+        t
+        for e in entities
+        for form in (e.name, *e.variants)
+        for t in TOKEN.findall(form)
+        if _is_acronym(t) and t.lower() not in generic
+    }
     hits: list[str] = []
     for word in TOKEN.findall(text):
         bare = word.removesuffix("'s")

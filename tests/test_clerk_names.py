@@ -145,3 +145,9 @@ def test_email_addresses_and_domains_are_masked_before_names() -> None:
     assert "shah" not in out and "companywire" not in out
     assert out.count("[address removed]") == 2
     assert "03.02.2001" in out and "Section 5.8" in out
+
+
+def test_residual_scan_catches_an_all_capitals_word_of_a_name() -> None:
+    """DEV_0009: 'IREO Rise (Gardenia)' kept the group's name; the scan skipped all-capital words of names (D-128)."""
+    group = NamedEntity(name="IREO Fiveriver Private Limited", variants=[], kind="COMPANY", cause_title_role=None)
+    assert residual_names("the project IREO Rise (Gardenia)", [group], GENERIC) == ["IREO"]
