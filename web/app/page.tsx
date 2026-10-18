@@ -45,10 +45,63 @@ export default function Home() {
 
   if (!data) return <p className="muted">{err ?? "Opening the court…"}</p>;
   const spent = data.sessions.reduce((s, x) => s + x.costUsd, 0);
+  // One row per case: its latest hearing (sessions arrive newest first) and how many it has had.
+  const cases = new Map<string, { latest: Summary; count: number }>();
+  for (const s of data.sessions) {
+    const seen = cases.get(s.caseId);
+    if (seen) seen.count += 1;
+    else cases.set(s.caseId, { latest: s, count: 1 });
+  }
+  const caseRows = [...cases.values()].sort((a, b) => a.latest.caseId.localeCompare(b.latest.caseId));
 
   return (
     <>
       <div className="section-title" style={{ marginTop: 6 }}>
+        <h2>Cases</h2>
+        <span className="rule" />
+        <span className="small muted">{caseRows.length} cases heard · every hearing is kept on disk (runs/live)</span>
+      </div>
+      {caseRows.length === 0 && <p className="muted small">No case has been heard yet.</p>}
+      {caseRows.length > 0 && (
+        <div className="card pad tablewrap">
+          <table className="t">
+            <thead>
+              <tr>
+                <th>Case</th>
+                <th>Latest hearing</th>
+                <th>Status</th>
+                <th>Bench</th>
+                <th>Real court</th>
+                <th>Turns</th>
+                <th>Cost</th>
+                <th>Hearings</th>
+              </tr>
+            </thead>
+            <tbody>
+              {caseRows.map(({ latest: s, count }) => (
+                <tr key={s.caseId}>
+                  <td><a href={`/session/${s.id}`}><b>{s.caseId}</b></a></td>
+                  <td className="tiny mono">{s.runId}</td>
+                  <td>{statusPill(s)}</td>
+                  <td>{winnerPill(s.winner, s.benchStatus)}</td>
+                  <td>
+                    {s.realMatch === null ? (
+                      <span className="tiny muted">not evaluated</span>
+                    ) : (
+                      <span className={`pill ${s.realMatch ? "ok" : "bad"}`}>{s.realMatch ? "matches" : "differs"}</span>
+                    )}
+                  </td>
+                  <td className="small">{s.turnsPublished}</td>
+                  <td className="small">${s.costUsd.toFixed(3)}</td>
+                  <td className="small">{count}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="section-title">
         <h2>Runs</h2>
         <span className="rule" />
       </div>
