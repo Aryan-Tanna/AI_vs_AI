@@ -88,3 +88,38 @@ Same LEARN memory as PILOT_A (6 lessons from DEV_0008), D-135 prompts and checks
 DEV_0009, DEV_0010, DEV_0011, DEV_0013, DEV_0007, DEV_0014, DEV_0015, DEV_0016, DEV_0017. Expected ~1.5 h and ~$0.45
 a case. Watch: repetition similarity per turn, lookups after turn 1, "OPENING:" labels, prerequisite warnings only at
 closings, lessons pinned at session start.
+
+## Repetition: read by Claude, turn by turn (owner asked for a check by reading, not only the metric)
+
+**DEV_0008 (old prompts): real repetition, a mutual loop.** From turn 3 every turn re-argues I1, I2, I3 in the same
+order with the same record IDs (F2, F6, EX-4, F7, C2) and mostly the same authorities. LEX-D ends turns 4, 6, 8 and 10
+with an almost identical "CLOSING: I1 ... I2 ... I3 ... Dismiss the appeal and uphold ..." block; LEX-P's I3 paragraph
+("we do not say the suit is an automatic bar ... the AA had to decide it, not assume/infer it") recurs in turns 3, 5, 7
+and 9. New material per turn is thin (turn 5: one precedent on account entries; turn 6: no pre-existing-dispute bar
+under s.7; turn 8: no share-subscription document). They do engage (each turn opens on the other's last point); they
+run out of material. Structural cause: three narrow issues and a small record (9 stipulated, 2 contested, 4
+exhibits) are exhausted by turn 4, but the schedule asks for 8 rounds.
+
+**DEV_0009 (D-135 prompts): a debate that moves.** No part labels. Each turn takes the opponent's newest point and
+adds something: R4 "your own date places the claim after CoC approval"; P5 "CoC approval is not the cut-off, s.31
+binds on AA approval"; R6 "s.31 binds the plan as submitted, it cannot reclassify" + 3 new precedents; P7 "18.4(xix)
+cited only to expose the category error" + 1 new precedent; R8 + 2 new precedents. Both say "I have nothing new on
+C1" instead of re-arguing it; the petitioner's closing opens "I will not repeat the record". The hearing narrows to
+the decisive question (CoC vs AA approval as the cut-off; clause 18.4(xi) vs 18.4(xix)). Core positions are still
+restated, as advocacy does (my estimate ~30%, against ~70-80% in DEV_0008). All 2025 precedents cited were decided
+before the case date (2025-09-09). Possible identifier left in DEV_0009's record: "a Hamlet plot" (likely a project
+name); the case is already reported apart (probe IDENTIFIED).
+
+Option if loops persist on small records: let a side "rest" (a one-line turn) when it has nothing new, or scale the
+number of rebuttal rounds to the record size. Both change the turn schedule (an INTENT choice): owner's decision.
+
+DEV_0009's first PILOT_B attempt failed after its 10 turns: the THEMIS-GLOBAL auditor reasoned to its 65,536-token cap
+with no answer (D-138: reasoning_effort medium). PILOT_B is FAILED by design (a learning run never skips a case);
+the same nine cases run as PILOT_C, and DEV_0009's hearing replays from the cache.
+
+## DEV_0009 (PILOT_C) result
+
+Bench PETITIONER = real PETITIONER. I1 aligned, I2 not (bench RESPONDENT, real PETITIONER). Single-LLM baseline also
+PETITIONER. Sentence-level self-repetition: LEX-P 8%, LEX-D 21% (DEV_0008 on old prompts: 37% and 36%). Whole-turn
+similarity is ~0.90 even between opposing sides (0.899 here, 0.908 on DEV_0008), so it cannot measure repetition.
+Reflection paused once on an upstream rate limit (Qwen via OpenRouter); resumed.
