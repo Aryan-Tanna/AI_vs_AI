@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -24,7 +25,10 @@ from lexarena.app import (
     build_llm_client,
     configure_llm_logging,
 )
+from lexarena.clerk.checks import REGISTRATION_NUMBER
+from lexarena.clerk.names import EMAIL_OR_DOMAIN, residual_names
 from lexarena.clerk.pipeline import clerk_judgment
+from lexarena.clerk.redact import redact_view
 from lexarena.clerk.review import render_review
 from lexarena.clerk.text import BLOCK_MARK
 from lexarena.config import load_config
@@ -33,8 +37,10 @@ from lexarena.llm.errors import HandoffPendingError
 from lexarena.llm.providers.handoff import pending_prompts
 from lexarena.prompts import PromptStore
 from lexarena.schemas.case import ExtractionFlag
+from lexarena.schemas.clerk import NamedEntity
 from lexarena.schemas.config import HandoffProviderConfig
 from lexarena.statute_ids import load_statute_aliases
+from lexarena.storage.errors import SealedError
 from lexarena.storage.factory import SealedProcess
 
 DEV_ROOT = REPO_ROOT / "data" / "dev"
@@ -58,6 +64,18 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     approve = clerk.add_parser("approve", help="mark a clerked case as reviewed by you")
     approve.add_argument("case_id")
     approve.add_argument("--by", required=True)
+    redact = clerk.add_parser(
+        "redact", help="replace a leak in a stored agent view by its pseudonym or a mask, then re-check (D-129)"
+    )
+    redact.add_argument("case_id")
+    redact.add_argument(
+        "--replace",
+        nargs=2,  # literal-ok: a (text, token) pair
+        action="append",
+        required=True,
+        metavar=("TEXT", "TOKEN"),
+        help="repeatable",
+    )
     triage = clerk.add_parser(
         "triage", help="record that Claude Code checked the split and found nothing blocking (never the owner's review)"
     )
@@ -166,6 +184,48 @@ def _approve(case_id: str, by: str) -> int:
     return 0
 
 
+def _redact(case_id: str, replacements: list[tuple[str, str]], config_path: Path) -> int:
+    """D-129: a triage leak fixed without re-clerking. Only this case's pseudonyms or a mask can be written; the leak
+    checks run again (names only while the review window is open); the flag never repeats the replaced text."""
+    cfg = load_config(config_path)
+    with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+        cases = proc.clerk().cases
+        case = cases.get(case_id)
+        view = case.agent_view
+        text = view.model_dump_json()
+        allowed = {p.pseudonym for p in view.parties} | set(
+            re.findall(r"(?:Person|Company|Bank|Authority|Entity)-[A-Z]{1,2}", text)
+        )
+        new_view, touched = redact_view(view, replacements, allowed=allowed)
+        out = new_view.model_dump_json()
+        problems = [f"registration number: {h}" for h in REGISTRATION_NUMBER.findall(out)]
+        problems += [f"address: {h}" for h in EMAIL_OR_DOMAIN.findall(out)]
+        try:
+            truth = proc.review().ground_truth.get_for_review(case_id)
+        except SealedError:
+            names_checked = False
+        else:
+            names_checked = True
+            entities = [
+                NamedEntity(name=n, variants=[], kind="OTHER", cause_title_role=None)
+                for n in truth.anonymization_map.values()
+            ]
+            problems += [f"real name: {h}" for h in residual_names(out, entities, cfg.clerk.generic_name_words)]
+        if problems:
+            print(json.dumps({"case_id": case_id, "redacted": False, "problems": problems}, ensure_ascii=False))
+            return 1
+        flag = ExtractionFlag(
+            code="REDACTED_AFTER_CLERK",
+            detail=f"{len(replacements)} leak(s) replaced by {sorted({t for _, t in replacements})} in {touched}",
+            resolution="redaction only (D-129): no content added; leak checks re-run"
+            + ("" if names_checked else "; names not re-checked (review window closed)"),
+        )
+        build = case.build.model_copy(update={"extraction_flags": [*case.build.extraction_flags, flag]})
+        cases.put(case.model_copy(update={"agent_view": new_view, "build": build}))
+    print(json.dumps({"case_id": case_id, "redacted": True, "fields": touched, "names_checked": names_checked}))
+    return 0
+
+
 def _triage(case_id: str, report: Path) -> int:
     """D-114: kept apart from `approve`; whether a triaged case may teach lessons is `memory.accept_claude_triage`."""
     if not report.is_file():
@@ -183,6 +243,8 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
         return _run(args.file, args.case_id, config_path, handoff=args.handoff)
     if args.action == "show":
         return _show(args.case_id)
+    if args.action == "redact":
+        return _redact(args.case_id, [tuple(r) for r in args.replace], config_path)
     if args.action == "triage":
         return _triage(args.case_id, args.report)
     return _approve(args.case_id, args.by)

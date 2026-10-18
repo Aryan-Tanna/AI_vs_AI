@@ -1,0 +1,11 @@
+# DEV_0007 triage (Claude Code, 2026-10-18)
+
+check_split cannot run: the case has sessions, so the review window is closed (by design).
+Triage rests on:
+- the clerk review file reports/review/DEV_0007.md (2026-10-11) and two sessions on this record
+  (DEV7_E2E_1, CHECK_DEV7_1015B), whose bench decision and both issue holdings matched the real outcome;
+- D-124/R-048: the agent view named two registration numbers (an O.A. number and the NCLAT appeal number under
+  appeal). Both removed on 2026-10-18 by `lexarena clerk redact` (D-129); a fresh scan finds no registration
+  number and no e-mail address or web domain. Names could not be re-checked (window closed); the original clerk
+  run's residual-name check passed.
+Nothing blocking found.
