@@ -28,7 +28,7 @@ from lexarena.app import (
 from lexarena.clerk.checks import REGISTRATION_NUMBER
 from lexarena.clerk.names import EMAIL_OR_DOMAIN, residual_names
 from lexarena.clerk.pipeline import clerk_judgment
-from lexarena.clerk.redact import redact_view
+from lexarena.clerk.redact import drop_key_dates, redact_view
 from lexarena.clerk.review import render_review
 from lexarena.clerk.text import BLOCK_MARK
 from lexarena.config import load_config
@@ -78,9 +78,12 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
         "--replace",
         nargs=2,  # literal-ok: a (text, token) pair
         action="append",
-        required=True,
+        default=[],
         metavar=("TEXT", "TOKEN"),
         help="repeatable",
+    )
+    redact.add_argument(
+        "--drop-key-date", action="append", default=[], metavar="LABEL", help="a key date of another proceeding (D-133)"
     )
     triage = clerk.add_parser(
         "triage", help="record that Claude Code checked the split and found nothing blocking (never the owner's review)"
@@ -192,7 +195,7 @@ def _approve(case_id: str, by: str) -> int:
     return 0
 
 
-def _redact(case_id: str, replacements: list[tuple[str, str]], config_path: Path) -> int:
+def _redact(case_id: str, replacements: list[tuple[str, str]], config_path: Path, drop: list[str] | None = None) -> int:
     """D-129: a triage leak fixed without re-clerking. Only this case's pseudonyms or a mask can be written; the leak
     checks run again (names only while the review window is open); the flag never repeats the replaced text."""
     cfg = load_config(config_path)
@@ -202,9 +205,14 @@ def _redact(case_id: str, replacements: list[tuple[str, str]], config_path: Path
         view = case.agent_view
         text = view.model_dump_json()
         allowed = {p.pseudonym for p in view.parties} | set(
-            re.findall(r"(?:Person|Company|Bank|Authority|Entity)-[A-Z]{1,2}", text)
+            re.findall(r"\b(?:Person|Company|Bank|Authority|Entity)-[A-Z]{1,2}\b", text)
         )
-        new_view, touched = redact_view(view, replacements, allowed=allowed)
+        if not replacements and not drop:
+            raise SystemExit("nothing to do: give --replace and/or --drop-key-date")
+        new_view, touched = redact_view(view, replacements, allowed=allowed) if replacements else (view, [])
+        if drop:
+            new_view = drop_key_dates(new_view, drop)
+            touched.append(f"metadata.key_dates (dropped {sorted(drop)})")
         out = new_view.model_dump_json()
         problems = [f"registration number: {h}" for h in REGISTRATION_NUMBER.findall(out)]
         problems += [f"address: {h}" for h in EMAIL_OR_DOMAIN.findall(out)]
@@ -252,7 +260,7 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
     if args.action == "show":
         return _show(args.case_id)
     if args.action == "redact":
-        return _redact(args.case_id, [tuple(r) for r in args.replace], config_path)
+        return _redact(args.case_id, [tuple(r) for r in args.replace], config_path, args.drop_key_date)
     if args.action == "triage":
         return _triage(args.case_id, args.report)
     return _approve(args.case_id, args.by)

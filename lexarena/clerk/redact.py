@@ -57,3 +57,13 @@ def _strings(node: Any) -> list[str]:
     if isinstance(node, list):
         return [s for v in node for s in _strings(v)]
     return [node] if isinstance(node, str) else []
+
+
+def drop_key_dates(view: AgentView, labels: list[str]) -> AgentView:
+    """Remove key dates that belong to another proceeding (D-133): a wrong FILING date silently picks the wrong law
+    version (`storage/temporal.py`), while a missing one leaves the overlay row unresolved and reported."""
+    present = {kd.label for kd in view.metadata.key_dates}
+    if missing := sorted(set(labels) - present):
+        raise RedactionError(f"no key date labelled {missing}")
+    kept = [kd for kd in view.metadata.key_dates if kd.label not in labels]
+    return view.model_copy(update={"metadata": view.metadata.model_copy(update={"key_dates": kept})})

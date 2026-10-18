@@ -6,7 +6,7 @@ from __future__ import annotations
 import pytest
 
 from lexarena.clerk.names import ADDRESS_MASK
-from lexarena.clerk.redact import NAME_MASK, NUMBER_MASK, RedactionError, redact_view
+from lexarena.clerk.redact import NAME_MASK, NUMBER_MASK, RedactionError, drop_key_dates, redact_view
 from lexarena.schemas.case import AgentView
 from tests.test_clerk_assemble import build, draft
 
@@ -48,3 +48,13 @@ def test_a_value_without_letters_is_refused() -> None:
 def test_a_project_name_can_be_masked() -> None:
     out, _ = redact_view(_view(), [("IREO Rise", NAME_MASK)], allowed=set())
     assert "IREO" not in out.factual_background and NAME_MASK in out.factual_background
+
+
+def test_a_key_date_of_another_proceeding_can_be_dropped_never_added() -> None:
+    view = _view()
+    label = view.metadata.key_dates[0].label
+    out = drop_key_dates(view, [label])
+    assert label not in {kd.label for kd in out.metadata.key_dates}
+    assert len(out.metadata.key_dates) == len(view.metadata.key_dates) - 1
+    with pytest.raises(RedactionError, match="no key date"):
+        drop_key_dates(view, ["NO_SUCH_LABEL"])
