@@ -110,7 +110,7 @@ def bench_metrics(decisions: Sequence[JudgeDecision]) -> BenchMetrics:
 
 
 def _same_statute(a: str, b: str) -> bool:
-    """A section and its sub-provision match ("IBC_2016_SEC_5" and "IBC_2016_SEC_5_8")."""
+    """A section and its sub-provision match ("<ACT>_SEC_5" and "<ACT>_SEC_5_8")."""
     return a == b or a.startswith(b + "_") or b.startswith(a + "_")
 
 
