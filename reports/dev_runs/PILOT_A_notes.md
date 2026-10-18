@@ -156,3 +156,27 @@ Seen, not changed: retrieval returns off-topic precedents for some queries (word
 THEMIS called a loose description of two precedents "the opposite" (borderline strict; the revision passed);
 DEV_0010 verdict right for different reasons (issue alignment 0/2); the Textualist's overall result flipped with the
 order in DEV_0010 and it abstained as designed.
+
+## DEV_0011 (PILOT_C) result
+
+Real outcome MIXED (no verdict comparison, by design). Bench PETITIONER 2-0 (Purposivist abstained); issues 2/2
+aligned (I1 RESPONDENT, I2 PETITIONER). Single-LLM baseline PETITIONER. **Claude's mistake: DEV_0011 was scanned and
+redacted but never marked `clerk triage`, so reflection wrote no lessons ("neither owner-reviewed nor accepted
+triage"); reflection runs once per session, so its lessons are lost.** Marked afterwards; every later case was
+checked and is marked. Reasoning scan: the Textualist asked itself "which is the correct outcome? let's think about
+the actual case" and guessed another company's case; no real party named (judge prompt v4; v5 forbids this).
+DEV_0011 full read: a sharp hearing on whether an NCLT order made in a registration-stage (Rule 63) appeal can be the
+statutory notice to cure, plus an unframed limitation point that all three judges rightly declined to decide.
+THEMIS: 2 drafts rejected, both over-strict: T5 called a loose description of two precedents "the opposite"; T6 was
+rejected for "F5 records only that..." (F5 also says "subject to costs") and for "the only notice and order" where
+F9 names a notice of 10.09.2023 and F3 one of 10.10.2023 -- a date inconsistency inside the judgment itself (the clerk
+had flagged it). Revisions passed. Bench: Purposivist's I2 and overall flipped with the order (abstained as
+designed); 2-0 PETITIONER.
+
+THEMIS rejection tally so far (DEV_0008-0011): 6 rejected drafts; 1 real error caught (DEV_0008 T2), 1 clear false
+rejection (DEV_0010 T7, fixed D-141), 4 over-strict or borderline (DEV_0011 T5, T6x2 on one draft, and the "only"
+pattern). Calibration item after the pilot: the fidelity reviewer treats "only"/exclusive wording and source-internal
+inconsistencies as hard errors.
+Bench order bias: in DEV_0010 and DEV_0011 one judge's result flipped with presentation order and both times the side
+presented FIRST won (primacy on close questions). Abstention removed both, so no verdict changed; the hearing
+metrics' first-presented-wins count tracks it.
