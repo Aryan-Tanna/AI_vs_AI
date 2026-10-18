@@ -30,12 +30,14 @@ from lexarena.baselines.single_llm import predict
 from lexarena.config import load_config
 from lexarena.embedding import FastEmbedder
 from lexarena.evaluator.evaluate import evaluate_session
+from lexarena.evaluator.hearing import hearing_metrics, render_markdown
 from lexarena.evaluator.report import evaluation_report
 from lexarena.judges.run import law_for_bench
 from lexarena.prompts import PromptStore
 from lexarena.reflection.reflect import Reflection
 from lexarena.schemas.base import SIDES
 from lexarena.schemas.evaluation import BaselinePrediction, CaseOutcome
+from lexarena.schemas.metrics import HearingMetrics
 from lexarena.storage.factory import SealedProcess, SessionProcess
 from lexarena.storage.temporal import AsOf
 
@@ -48,6 +50,8 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     session.add_argument("session_id")
     session.add_argument("--baseline", type=Path, help="the single-LLM prediction for the case (JSON)")
     session.add_argument("--out", type=Path, help="write the case outcome here (JSON)")
+    metrics = ev.add_parser("metrics", help="hearing metrics in code for a run's evaluated sessions (D-137)")
+    metrics.add_argument("--run", required=True, help="run ID under runs/")
     report = ev.add_parser("report", help="metrics over evaluated case outcomes")
     report.add_argument("--outcomes", type=Path, nargs="+", required=True, help="outcome files, in the order run")
     report.add_argument("--out", type=Path)
@@ -101,6 +105,44 @@ def _session(session_id: str, baseline: Path | None, out: Path | None, config_pa
             }
         )
     )
+    return 0
+
+
+def _metrics(run_id: str, config_path: Path) -> int:
+    """Read-only, after the verdict: the reflection role reads private turn data and the sealed record only then."""
+    cfg = load_config(config_path)
+    ledger = json.loads((REPO_ROOT / cfg.runner.runs_dir / run_id / "ledger.json").read_text(encoding="utf-8"))
+    sessions = [
+        sid
+        for job in ledger["jobs"]
+        for stage in job["stages"]
+        if stage["stage"] == "SESSION" and stage["status"] == "DONE"
+        for sid in [(stage.get("outputs") or {}).get("session_id")]
+        if sid
+    ]
+    embedder = FastEmbedder(cfg.embedding.model, REPO_ROOT / cfg.embedding.cache_dir, cfg.embedding.batch_size)
+    out: list[HearingMetrics] = []
+    with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+        stores = proc.reflection()
+        for sid in sessions:
+            session = stores.sessions.get(sid)
+            if session.bench is None:
+                continue
+            case = stores.cases.get(session.case_id)
+            out.append(
+                hearing_metrics(
+                    session,
+                    stores.transcript.turns(sid),
+                    {side: proc.reflection(side).private_turns.for_side(sid, side) for side in SIDES},  # own side only
+                    stores.ground_truth.get(session.case_id, session_id=sid),
+                    [i.issue_id for i in case.agent_view.framed_issues],
+                    embedder,
+                )
+            )
+    target = REPO_ROOT / "reports" / "dev_runs" / f"{run_id}_metrics"
+    _write(target.with_suffix(".json"), {"run_id": run_id, "sessions": [m.to_document() for m in out]})
+    target.with_suffix(".md").write_text(render_markdown(run_id, out), encoding="utf-8")
+    print(json.dumps({"run_id": run_id, "sessions": len(out), "report": target.with_suffix(".md").as_posix()}))
     return 0
 
 
@@ -164,4 +206,6 @@ def run(args: argparse.Namespace, config_path: Path) -> int:
         return _baseline(args.case_id, args.out, config_path)
     if args.action == "session":
         return _session(args.session_id, args.baseline, args.out, config_path)
+    if args.action == "metrics":
+        return _metrics(args.run, config_path)
     return _report(args.outcomes, args.out, config_path)

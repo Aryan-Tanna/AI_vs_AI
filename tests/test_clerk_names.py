@@ -154,7 +154,7 @@ def test_residual_scan_catches_an_all_capitals_word_of_a_name() -> None:
 
 
 def test_a_name_joined_to_the_next_word_by_a_hyphen_is_replaced_and_scanned() -> None:
-    """DEV_0017 P2: '<name>-Suspended Director' kept the real name; the scan read the joined form as one word (D-136)."""
+    """DEV_0017 P2: '<name>-Suspended Director' kept the real name; the scan read it as one word (D-136)."""
     p = pseudo(VANDU)
     out = p.apply("Ostrel Vandu-Suspended Director filed the appeal")
     assert "Vandu" not in out and "Ostrel" not in out and out.endswith("-Suspended Director filed the appeal")

@@ -1,0 +1,78 @@
+{
+  "run_id": "PILOT_A",
+  "sessions": [
+    {
+      "session_id": "DEV_0008_PILOT_A_4c092b",
+      "case_id": "DEV_0008",
+      "sides": {
+        "PETITIONER": {
+          "turns": 5,
+          "issue_coverage": 1.0,
+          "rebuttal_depth": 0.84,
+          "consistency": 0.9863013698630136,
+          "hard_errors": 0,
+          "retries": 0,
+          "first_try_rate": 1.0,
+          "flagged_turns": 0,
+          "citation_tiers": {
+            "UNVERIFIABLE": 4,
+            "VERIFIED": 20
+          },
+          "mean_repetition": 0.9357776737573155,
+          "max_repetition": 0.9539653398500897,
+          "prerequisite_warnings": 1
+        },
+        "RESPONDENT": {
+          "turns": 5,
+          "issue_coverage": 1.0,
+          "rebuttal_depth": 0.9487179487179487,
+          "consistency": 1.0,
+          "hard_errors": 1,
+          "retries": 1,
+          "first_try_rate": 0.8,
+          "flagged_turns": 0,
+          "citation_tiers": {
+            "UNVERIFIABLE": 10,
+            "VERIFIED": 13
+          },
+          "mean_repetition": 0.9440507857483027,
+          "max_repetition": 0.9578010410655285,
+          "prerequisite_warnings": 9
+        }
+      },
+      "bench": {
+        "judges": 3,
+        "abstentions": 0,
+        "opinions": 6,
+        "order_flips": 0,
+        "issue_order_flips": 0,
+        "first_presented_wins": 3
+      },
+      "reasoning": {
+        "real_statutes": [
+          "IBC_2016_SEC_5",
+          "IBC_2016_SEC_7"
+        ],
+        "bench_statutes": [
+          "IBC_2016_SEC_5",
+          "IBC_2016_SEC_7"
+        ],
+        "statute_precision": 1.0,
+        "statute_recall": 1.0,
+        "real_precedents": [],
+        "bench_precedents": [
+          "2017_NCLAT_DEL_07",
+          "2017_NCLAT_DEL_71",
+          "2017_NCLAT_DEL_90",
+          "2018_NCLAT_DEL_554",
+          "2018_NCLAT_DEL_83",
+          "2019_NCLAT_DEL_616",
+          "2020_NCLAT_DEL_99",
+          "2022_NCLAT_CHE_117"
+        ],
+        "precedent_precision": 0.0,
+        "precedent_recall": null
+      }
+    }
+  ]
+}
