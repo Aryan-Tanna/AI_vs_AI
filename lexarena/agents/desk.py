@@ -67,7 +67,10 @@ class KnowledgeDesk:
             if view is None:
                 return f"{head} no provision in the Law DB matches it, or it was not in force on this case's dates"
             if view.statute_id in held_statutes:  # D-135: say so, rather than serve the same text again
-                return f"{head} [{view.statute_id}] is already in your regulation memory, as shown above; nothing new"
+                return (  # D-145: lawyers re-asked for sub-section text the Law DB does not hold (DEV_0010, DEV_0011)
+                    f"{head} [{view.statute_id}] is already in your regulation memory, as shown above; nothing new: "
+                    "the Law DB holds no fuller text of it, so asking again cannot return more"
+                )
             out.statutes[view.statute_id] = view
             return f"{head} now in your regulation memory\n{render_statutes({view.statute_id: view})}"
         if lookup.kind in ("AUTHORITY_SEARCH", "SIMILAR_CASES"):

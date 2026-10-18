@@ -8,12 +8,39 @@ transition, which only the evaluator may make.
 
 from __future__ import annotations
 
+import re
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 from lexarena.evaluator.align import evaluate
 from lexarena.schemas.evaluation import BaselinePrediction, CaseOutcome
 from lexarena.schemas.session import Session
 from lexarena.storage.factory import EvaluatorStores
+
+MIN_NAME_WORD = 4  # literal-ok: shorter fragments ("Ltd", "Co") are too common to mark a name
+NAME_WORDS_FOR_RECALL = 2  # literal-ok: two distinct words of one real name = the model named that party
+
+
+def recalled_names(texts: Iterable[str], real_names: Iterable[str], generic_words: Iterable[str]) -> list[str]:
+    """D-145 (D-143 made automatic): real party names a model wrote in this session's reasoning or outputs. A name
+    counts when written in full, or when two distinct distinctive words of it appear as written in the name (same
+    capitalisation), so ordinary words that happen to be in a name ("Capital") do not count on their own."""
+    generic = {w.lower() for w in generic_words}
+    text = "\n".join(texts)
+    low = text.lower()
+    hits: list[str] = []
+    for name in real_names:
+        full = " ".join(name.split())
+        words = [
+            w for w in re.findall(r"[A-Za-z][A-Za-z'.-]+", name) if len(w) >= MIN_NAME_WORD and w.lower() not in generic
+        ]
+        if len(full) >= MIN_NAME_WORD and len(full.split()) > 1 and full.lower() in low:
+            hits.append(name)
+            continue
+        found = {w for w in words if re.search(rf"\b{re.escape(w)}\b", text)}
+        if len(found) >= NAME_WORDS_FOR_RECALL:
+            hits.append(name)
+    return hits
 
 
 class NotEvaluableError(RuntimeError):
@@ -27,14 +54,21 @@ class EvaluationResult:
 
 
 def evaluate_session(
-    stores: EvaluatorStores, session_id: str, single_llm: BaselinePrediction | None = None
+    stores: EvaluatorStores,
+    session_id: str,
+    single_llm: BaselinePrediction | None = None,
+    model_texts: list[str] | None = None,
+    generic_words: Iterable[str] = (),
 ) -> EvaluationResult:
+    """`model_texts`: every model's reasoning and output in this session (its trace), scanned for the real names
+    after the verdict (D-145); a case a model named is reported with the memorised cases."""
     session = stores.sessions.get(session_id)
     if session.bench is None:
         raise NotEvaluableError(f"session {session_id} has no bench verdict (state {session.state})")
     case = stores.cases.get(session.case_id)
     truth = stores.ground_truth.get(session.case_id, session_id=session_id)  # refuses before the verdict
     framed = [i.issue_id for i in case.agent_view.framed_issues]
+    recalled = recalled_names(model_texts or [], truth.anonymization_map.values(), generic_words)
     evaluation = evaluate(session.bench, truth, framed)
     stored = stores.sessions.record_evaluation(session_id, evaluation)
     outcome = CaseOutcome(
@@ -42,7 +76,8 @@ def evaluate_session(
         session_id=session_id,
         split=session.split,
         evidence_dependency=case.build.evidence_dependency,
-        memorization_probe=case.build.memorization_probe,
+        memorization_probe="IDENTIFIED" if recalled else case.build.memorization_probe,
+        recalled_names=recalled,
         bench_status=session.bench.status,
         bench_winner=session.bench.winner,
         real_overall=truth.conclusion.overall_favours,

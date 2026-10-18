@@ -282,3 +282,23 @@ def test_dedup_never_asks_the_model_across_keys_or_below_the_similarity_threshol
     assert place(lesson(2), [1.0, 0.0], [(other_key, [1.0, 0.0])], compare, M).outcome == "INSERTED"
     assert place(lesson(2), [1.0, 0.0], [(lesson(1), [0.0, 1.0])], compare, M).outcome == "INSERTED"
     assert asked == []
+
+
+def test_a_lesson_learns_from_the_side_that_used_it_never_the_better_of_two() -> None:
+    """D-145: with party-status families both sides may read one lesson; reflection used to credit it with the better
+    side's reward. Now: the mean of the sides whose prompt it was pinned into."""
+    from lexarena.reflection.reflect import lesson_reward
+    from tests.builders import session as make_session
+
+    s = make_session("S", "C").model_copy(
+        update={"pinned_by_side": {"PETITIONER": ["L-1"], "RESPONDENT": ["L-1", "L-2"]}}
+    )
+    rewards: dict[str, float | None] = {"PETITIONER": 0.2, "RESPONDENT": 0.8, "BENCH": 0.5}
+    status = {"PETITIONER": "FINANCIAL_CREDITOR", "RESPONDENT": "HOMEBUYER"}
+    fam = CFG.memory.family_of()
+    assert lesson_reward(lesson(1), s, rewards, status, fam) == pytest.approx(0.5)  # both used it: the mean
+    assert lesson_reward(lesson(2), s, rewards, status, fam) == pytest.approx(0.8)  # only the respondent used it
+    judge = lesson(3, lesson_type="LEGAL_RULE", memory="JUDGE", party_status=None)
+    assert lesson_reward(judge, s, rewards, status, fam) == 0.5
+    old = make_session("S", "C")  # before D-145: no per-side record, the family rule decides, still the mean
+    assert lesson_reward(lesson(4), old, rewards, status, fam) == pytest.approx(0.5)

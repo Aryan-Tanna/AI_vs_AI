@@ -126,6 +126,8 @@ class Session(StoredModel):
     # records what it read here and writes nothing to memory; reflection updates the lessons in LEARN runs only.
     case_seq: int | None = Field(default=None, ge=1)
     pinned_lessons: list[NonEmptyStr] = Field(default_factory=list)
+    # D-145: which side's prompt each lawyer lesson was pinned into, so reflection rewards it with that side's result.
+    pinned_by_side: dict[str, list[NonEmptyStr]] = Field(default_factory=dict)
     # D-111: which pinned lessons were the random exploration draw (the rest ranked by weight), and the law version of
     # each statute the case saw, which reflection stamps on the lessons it writes.
     explored_lessons: list[NonEmptyStr] = Field(default_factory=list)

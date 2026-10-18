@@ -297,10 +297,14 @@ def check_citations(
                     )
                 )
                 results.append("CONTRADICTS")
-            elif verdict == "SUPPORTS":
-                results.append("SUPPORTS")
+            elif verdict == "SUPPORTS" and quote.strip() and squeeze(quote) in squeeze(ratios[uid]):
+                results.append("SUPPORTS")  # D-145: support, like contradiction, rests on the ratio's own words
             else:
-                detail = "contradiction not confirmed by a verbatim quote" if verdict == "CONTRADICTS" else verdict
+                detail = (
+                    f"{verdict.lower()} not confirmed by a verbatim quote"
+                    if verdict in ("CONTRADICTS", "SUPPORTS")
+                    else verdict
+                )
                 out.warnings.append(
                     ThemisWarning(code=WARN_PRECEDENT_NOT_ADDRESSED, detail=f"claim {claim_id}, {uid}: {detail}")
                 )

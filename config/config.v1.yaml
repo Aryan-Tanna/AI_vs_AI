@@ -74,9 +74,9 @@ prompts:
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
   clerk_agent_view: {id: clerk/agent_view, version: 4}  # [D-056] v2 roster + sourced grounds, v3 pseudonym rule, v4 status list [D-059]
   themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
-  themis_layer2: {id: themis/layer2_review, version: 1}   # [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
-  themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 1}   # [D-105] second narrow check before a record-fidelity rejection
-  themis_entailment: {id: themis/entailment, version: 1}   # [SPEC D4, D-075] one call per draft for all its precedent citations
+  themis_layer2: {id: themis/layer2_review, version: 2}   # v2 immaterial omissions, record-internal inconsistencies and hearing concessions are not errors [D-145]; [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
+  themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 2}   # v2 same exemptions as layer2 v2 [D-145]; [D-105] second narrow check before a record-fidelity rejection
+  themis_entailment: {id: themis/entailment, version: 2}   # v2 SUPPORTS needs the ratio's own words [D-145]; [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   reflection_lessons: {id: reflection/lessons, version: 4}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]; v4 law by role only, knockouts first [D-140]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different

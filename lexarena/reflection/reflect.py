@@ -64,6 +64,30 @@ def side_reward(side: Side, session: Session, private: list[PrivateTurnData]) ->
     return fmean(parts) if parts else None
 
 
+def lesson_reward(
+    lesson: Lesson,
+    session: Session,
+    rewards: dict[str, float | None],
+    status_of: dict[str, str],
+    families: dict[str, str],
+) -> float | None:
+    """The reward a pinned lesson learns from (SPEC F2, F4). A bench lesson: the bench's. A lawyer lesson: the mean
+    reward of the side(s) whose prompt it was pinned into (D-145), never the better of two sides; sessions from before
+    D-145 fall back to the sides of the lesson's party-status family (D-139)."""
+    if lesson.memory == "JUDGE":
+        return rewards["BENCH"]
+    served = [s for s in SIDES if lesson.lesson_id in session.pinned_by_side.get(s, [])]
+    if not session.pinned_by_side:
+        fam = families.get(lesson.party_status or "")
+        served = [
+            s
+            for s in SIDES
+            if status_of[s] == lesson.party_status or (fam is not None and families.get(status_of[s]) == fam)
+        ]
+    values = [r for s in served if (r := rewards[s]) is not None]
+    return fmean(values) if values else None
+
+
 def _findings(truth: CaseGroundTruth) -> str:
     out = []
     for f in truth.issue_findings:
@@ -150,22 +174,7 @@ class Reflection:
             for lesson, vector in repo.with_vectors():
                 if lesson.lesson_id not in pinned:
                     continue
-                if lesson.memory == "JUDGE":
-                    reward = rewards["BENCH"]
-                else:
-                    # D-139: the side that used it, by the same family rule that pinned it
-                    fam = self._cfg.memory.family_of()
-                    served = [
-                        s
-                        for s in SIDES
-                        if status_of[s] == lesson.party_status
-                        or (
-                            fam.get(status_of[s]) is not None
-                            and fam.get(status_of[s]) == fam.get(lesson.party_status or "")
-                        )
-                    ]
-                    values = [r for s in served if (r := rewards[s]) is not None]
-                    reward = max(values) if values else None
+                reward = lesson_reward(lesson, session, rewards, status_of, self._cfg.memory.family_of())
                 if reward is not None:
                     repo.upsert(after_use(lesson, reward, case_seq, self._cfg.memory), vector)
                     result.updated.append(lesson.lesson_id)

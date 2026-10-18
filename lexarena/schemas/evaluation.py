@@ -51,3 +51,5 @@ class CaseOutcome(StoredModel):
     real_overall: Literal["PETITIONER", "RESPONDENT", "MIXED"]
     issues: list[IssueAlignment]
     single_llm: BaselinePrediction | None
+    # D-145: real party names a model wrote in the session (scanned after the verdict); any makes the case IDENTIFIED.
+    recalled_names: list[NonEmptyStr] = Field(default_factory=list)

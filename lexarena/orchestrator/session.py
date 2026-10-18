@@ -233,6 +233,7 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
             "lessons_written": [],
             "case_seq": opts.case_seq,
             "pinned_lessons": pinned_ids,
+            "pinned_by_side": {s: [x.lesson_id for x in pinned[s]] for s in SIDES},
             "explored_lessons": explored_ids,
             "law_versions": law_seen,
         }

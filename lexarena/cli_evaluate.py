@@ -79,14 +79,35 @@ def _trace_dir(config_path: Path) -> Path | None:
     return REPO_ROOT / cfg.llm.trace_dir if cfg.llm.trace_enabled else None
 
 
+def _model_texts(config_path: Path, session_id: str) -> list[str]:
+    """Every model's reasoning and output in the session's trace (D-110), for the post-verdict name scan (D-145)."""
+    folder = _trace_dir(config_path)
+    path = folder / f"{session_id}.jsonl" if folder is not None else None
+    if path is None or not path.is_file():
+        return []
+    texts: list[str] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        record = json.loads(line) if line.strip() else {}
+        if record.get("kind") == "llm":
+            texts += [str(record.get(k) or "") for k in ("reasoning", "output")]
+    return texts
+
+
 def _session(session_id: str, baseline: Path | None, out: Path | None, config_path: Path) -> int:
     single = (
         BaselinePrediction.model_validate_json(baseline.read_text(encoding="utf-8"))
         if baseline is not None and baseline.is_file()
         else None
     )
+    cfg = load_config(config_path)
     with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
-        result = evaluate_session(proc.evaluator(), session_id, single)
+        result = evaluate_session(
+            proc.evaluator(),
+            session_id,
+            single,
+            model_texts=_model_texts(config_path, session_id),
+            generic_words=cfg.clerk.generic_name_words,
+        )
     _write(out, result.outcome.to_document())
     evaluation = result.session.evaluation
     with trace.session_trace(_trace_dir(config_path), session_id):  # after the verdict only (D-110)

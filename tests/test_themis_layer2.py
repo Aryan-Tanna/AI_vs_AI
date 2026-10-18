@@ -186,9 +186,23 @@ def test_unverifiable_citations_warn_and_never_call_the_verifier() -> None:
 
 def test_a_supported_citation_is_verified_in_one_batched_call() -> None:
     claims = [("T01-C1", claim(type="LAW", precedent_ids=["P1"])), ("T01-C2", claim(type="LAW", precedent_ids=["P1"]))]
-    out, verifier = run_citations(claims, [verdict("T01-C1", "P1", "SUPPORTS"), verdict("T01-C2", "P1", "SUPPORTS")])
+    out, verifier = run_citations(
+        claims, [verdict("T01-C1", "P1", "SUPPORTS", RATIO), verdict("T01-C2", "P1", "SUPPORTS", RATIO)]
+    )
     assert [a.citation_tier for a in out.assessments] == ["VERIFIED", "VERIFIED"]
     assert len(verifier.requests) == 1 and RATIO in verifier.requests[0].messages[-1].content
+
+
+@pytest.mark.parametrize("quote", ["", "a fresh period starts on any promise to pay"])
+def test_support_without_the_ratios_own_words_is_only_a_warning(quote: str) -> None:
+    """D-145: DEV_0010 passed two citations as SUPPORTS where the ratio was about a different threshold; SUPPORTS
+    needed no evidence. Now it needs the ratio's own words; without them it is NOT_ADDRESSED (a warning, never a
+    rejection)."""
+    out, _ = run_citations(
+        [("T01-C1", claim(type="LAW", precedent_ids=["P1"]))], [verdict("T01-C1", "P1", "SUPPORTS", quote)]
+    )
+    assert out.hard_errors == [] and [w.code for w in out.warnings] == ["WARN_PRECEDENT_NOT_ADDRESSED"]
+    assert out.assessments[0].citation_tier == "UNVERIFIABLE" and out.assessments[0].entailment == "NEUTRAL"
 
 
 def test_a_retry_that_repeats_a_claim_and_precedent_reuses_the_verdict() -> None:
@@ -196,7 +210,11 @@ def test_a_retry_that_repeats_a_claim_and_precedent_reuses_the_verdict() -> None
     (under a new claim ID) costs no call; a new proposition is still asked."""
     memo: dict[tuple[str, str], tuple[str, str]] = {}
     llm, _, verifier = client(
-        [], [{"verdicts": [verdict("T01-C1", "P1", "SUPPORTS")]}, {"verdicts": [verdict("T01-C2", "P1", "SUPPORTS")]}]
+        [],
+        [
+            {"verdicts": [verdict("T01-C1", "P1", "SUPPORTS", RATIO)]},
+            {"verdicts": [verdict("T01-C2", "P1", "SUPPORTS", RATIO)]},
+        ],
     )
     first = [("T01-C1", claim(type="LAW", text="<proposition A>", precedent_ids=["P1"]))]
     check_citations(llm, PROMPTS, CFG, first, fetch, Layer2Result(), session_id="S", memo=memo)
@@ -353,7 +371,7 @@ def test_the_whole_check_runs_layer_1_and_layer_2() -> None:
                 [issue("NOT_IN_RECORD", "The letter also promised payment of Rs 9 crore.", ["EX-1"])], [("<p>", True)]
             ),
             CONFIRM_ALL,  # the second check agrees (D-105)
-            {"verdicts": [verdict("T03-C2", "P1", "SUPPORTS")]},
+            {"verdicts": [verdict("T03-C2", "P1", "SUPPORTS", RATIO)]},
         ],
     )
     ctx = VerifyContext(
@@ -397,7 +415,7 @@ def _short_circuit_case(short_circuit: bool) -> tuple[Verification, int]:
         [
             {"checklists": []},
             review([], [("<p>", True)]),
-            {"verdicts": [verdict("T03-C2", "P1", "SUPPORTS")]},
+            {"verdicts": [verdict("T03-C2", "P1", "SUPPORTS", RATIO)]},
         ],
     )
     ctx = VerifyContext(
