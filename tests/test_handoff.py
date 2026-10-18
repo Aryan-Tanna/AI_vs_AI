@@ -105,3 +105,13 @@ def test_the_handoff_model_is_free_and_of_another_family_than_the_checker() -> N
     assert h.temperature == 0
     free = {(p.provider, p.model) for p in cfg.runner.prices if p.input_usd_per_m == 0 and p.output_usd_per_m == 0}
     assert (h.provider, h.name) in free
+
+
+def test_one_role_can_be_handed_off_alone() -> None:
+    """D-131: Gemini's cached names and routing are kept when only the extraction goes to the handoff model."""
+    cfg = load_config(CONFIG_V1)
+    swapped = cfg.with_clerk_handoff(("clerk_extractor",))
+    assert swapped.models.clerk_extractor == cfg.models.clerk_handoff
+    assert swapped.models.clerk_primary == cfg.models.clerk_primary
+    with pytest.raises(ValueError, match="handoff roles"):
+        cfg.with_clerk_handoff(("lawyer",))

@@ -36,7 +36,10 @@ AMOUNT = re.compile(r"(?P<num>\d[\d,]*(?:\.\d+)?)\s*(?:/-)?\s*(?P<unit>crores?|c
 # [D-124] A court registration number: "No. 177/NCLT/AHM/2020", "No.42 of 2019", "Nos. 12 and 14 of 2020". A number
 # tied to a year; party designations ("Respondent No. 1") have none.
 REGISTRATION_NUMBER = re.compile(
-    r"\bNos?\.\s*\d{1,6}(?:\s*(?:,|and|&)\s*\d{1,6})*(?:\s*(?:of|/)\s*(?:19|20)\d{2}\b|/[A-Za-z][\w/()\-]*?(?:19|20)\d{2}\b)",
+    r"\bNos?\.\s*\d{1,6}(?:\s*(?:,|and|&)\s*\d{1,6})*(?:\s*(?:of|/)\s*(?:19|20)\d{2}\b|/[A-Za-z][\w/()\-]*?(?:19|20)\d{2}\b)"
+    # [D-132] written without "No.": "C.P.(IB)/97(AHM)2024", "CP (IB) 97/AHM/2024", "177/NCLT/AHM/2020"
+    r"|\(IB\)\s*[-/]?\s*\d{1,6}\s*[/(]\s*\(?[A-Za-z][\w/()\-]*?(?:19|20)\d{2}\b"
+    r"|\b\d{1,6}\s*(?:/\s*[A-Za-z]{2,}|\(\s*[A-Za-z]{2,}\s*\))(?:\s*/\s*[A-Za-z]{2,})*\s*/?\s*(?:19|20)\d{2}\b",
     re.IGNORECASE,
 )
 

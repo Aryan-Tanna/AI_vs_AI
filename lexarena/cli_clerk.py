@@ -38,7 +38,7 @@ from lexarena.llm.providers.handoff import pending_prompts
 from lexarena.prompts import PromptStore
 from lexarena.schemas.case import ExtractionFlag
 from lexarena.schemas.clerk import NamedEntity
-from lexarena.schemas.config import HandoffProviderConfig
+from lexarena.schemas.config import HANDOFF_ROLES, HandoffProviderConfig
 from lexarena.statute_ids import load_statute_aliases
 from lexarena.storage.errors import SealedError
 from lexarena.storage.factory import SealedProcess
@@ -58,6 +58,12 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
         "--handoff",
         action="store_true",
         help="pilot only (D-127): a Claude Code agent answers the primary and extractor prompts through files",
+    )
+    run.add_argument(
+        "--handoff-role",
+        action="append",
+        choices=HANDOFF_ROLES,
+        help="with --handoff: only these roles (repeatable; default both), keeping the other's cached answers (D-131)",
     )
     show = clerk.add_parser("show", help="the sealed record, through the REVIEW role, before the first session")
     show.add_argument("case_id")
@@ -102,10 +108,12 @@ HANDOFF_FLAG = ExtractionFlag(
 )
 
 
-def _run(pdf: Path, case_id: str, config_path: Path, *, handoff: bool = False) -> int:
+def _run(pdf: Path, case_id: str, config_path: Path, *, handoff: bool = False, roles: list[str] | None = None) -> int:
     cfg = load_config(config_path)
+    if roles and not handoff:
+        raise SystemExit("--handoff-role needs --handoff")
     if handoff:
-        cfg = cfg.with_clerk_handoff()
+        cfg = cfg.with_clerk_handoff(tuple(roles) if roles else HANDOFF_ROLES)
     configure_llm_logging(cfg)
     entry = _manifest_entry(pdf)
     data = pdf.read_bytes()
@@ -240,7 +248,7 @@ def _triage(case_id: str, report: Path) -> int:
 
 def run(args: argparse.Namespace, config_path: Path) -> int:
     if args.action == "run":
-        return _run(args.file, args.case_id, config_path, handoff=args.handoff)
+        return _run(args.file, args.case_id, config_path, handoff=args.handoff, roles=args.handoff_role)
     if args.action == "show":
         return _show(args.case_id)
     if args.action == "redact":

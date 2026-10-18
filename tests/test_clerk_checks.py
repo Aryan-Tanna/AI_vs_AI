@@ -106,7 +106,14 @@ def test_unbalanced_opening_grounds_are_flagged() -> None:
 
 @pytest.mark.parametrize(
     "text",
-    ["the order in CP(IB) No. 177/NCLT/AHM/2020", "in Company Petition No.42 of 2019", "I.A. Nos. 12 and 14 of 2020"],
+    [
+        "the order in CP(IB) No. 177/NCLT/AHM/2020",
+        "in Company Petition No.42 of 2019",
+        "I.A. Nos. 12 and 14 of 2020",
+        "restored C.P.(IB)/97(AHM)2024 to its file",
+        "in CP (IB) 97/AHM/2024",
+        "petition 177/NCLT/AHM/2020",
+    ],
 )
 def test_any_registration_number_in_the_agent_view_is_refused(text: str) -> None:
     """The extractor is told never to include a case or appeal number (agent_view prompt); the lower forum's number
@@ -177,7 +184,10 @@ def test_section_numbers_and_abbreviations_are_not_web_domains() -> None:
 
 def test_party_designations_sections_and_figures_are_not_registration_numbers() -> None:
     view = build(draft()).view
-    view.factual_background += " Respondent No. 1 sent notice under Section 8 for Rs. 100 on 03.02.2001; No. 2 replied."
+    view.factual_background += (
+        " Respondent No. 1 sent notice under Section 8 for Rs. 100 on 03.02.2001 (also 03/02/2001); No. 2 replied"
+        " under Section 7(5)(b), Rule 28(4) and Regulation 21 of 2016 rules."
+    )
     found = leakage_problems(
         view,
         case_number="",

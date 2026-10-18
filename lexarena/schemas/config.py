@@ -20,6 +20,9 @@ PositiveFloat = Annotated[float, Field(gt=0)]
 EnvVarName = Annotated[str, Field(pattern=r"^[A-Za-z_][A-Za-z0-9_]*$")]
 
 
+HANDOFF_ROLES = ("clerk_primary", "clerk_extractor")  # D-127: the clerk roles a Claude Code agent may answer
+
+
 class Strict(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -482,10 +485,13 @@ class AppConfig(Strict):
     clerk: ClerkConfig
     seed: int
 
-    def with_clerk_handoff(self) -> AppConfig:
-        """The clerk's primary and extractor answered by the handoff model (D-127); every other role unchanged."""
+    def with_clerk_handoff(self, roles: tuple[str, ...] = HANDOFF_ROLES) -> AppConfig:
+        """These clerk roles answered by the handoff model (D-127); every other role unchanged. One role only keeps the
+        other's cached answers, e.g. names and routing from Gemini with only the extraction handed off (D-131)."""
+        if not roles or set(roles) - set(HANDOFF_ROLES):
+            raise ValueError(f"handoff roles must be among {HANDOFF_ROLES}")
         h = self.models.clerk_handoff
-        models = self.models.model_copy(update={"clerk_primary": h, "clerk_extractor": h})
+        models = self.models.model_copy(update=dict.fromkeys(roles, h))
         return self.model_copy(update={"models": models})
 
     @model_validator(mode="after")
