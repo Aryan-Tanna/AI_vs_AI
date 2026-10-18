@@ -108,6 +108,12 @@ def render_record(case: AgentCaseView) -> str:
         for e in r.exhibits
     ]
     lines += [f"[{a.amount_id}] AMOUNT {a.label}: INR {a.value_inr}" for a in r.amounts]
+    # D-141: what each side seeks and pleads, and the framed issues, are agent-visible too; a statement of them is in
+    # the record. DEV_0010 turn 7 was rejected for describing the petitioner's own third relief. Both sides alike.
+    lines += [f"FRAMED ISSUE {i.issue_id}: {i.question}" for i in case.framed_issues]
+    for side in ("PETITIONER", "RESPONDENT"):
+        lines += [f"RELIEF SOUGHT BY {side}: {x}" for x in getattr(case.reliefs_sought, side)]
+        lines += [f"OPENING GROUND OF {side} ({g.issue_id}): {g.ground}" for g in case.opening_positions.for_side(side)]
     return "\n".join(lines)
 
 

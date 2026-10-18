@@ -237,6 +237,19 @@ def test_the_fidelity_reviewer_sees_the_lower_order_history_and_background() -> 
         assert (lower.reasons_summary or "") in text and all(d in text for d in lower.directions)
 
 
+def test_the_fidelity_reviewer_sees_both_sides_reliefs_issues_and_grounds() -> None:
+    """DEV_0010 (PILOT_C) turn 7: the petitioner was rejected (ERR_FACT_NOT_IN_RECORD) for describing its own third
+    relief, which the agent view lists; the reviewer was never shown the reliefs (D-141). Both sides alike."""
+    from lexarena.themis_local.layer2 import render_record
+
+    case = agent_view()
+    text = render_record(case)
+    for side in ("PETITIONER", "RESPONDENT"):
+        assert all(r in text for r in getattr(case.reliefs_sought, side))
+        assert all(g.ground in text for g in case.opening_positions.for_side(side))
+    assert all(i.question in text for i in case.framed_issues)
+
+
 # ---------------------------------------------------------------- repetition
 
 
