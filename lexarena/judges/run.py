@@ -113,6 +113,7 @@ class BenchInputs:
     audit: ThemisGlobalReport | None = None  # shown as notes only if judging.show_audit_notes (D-078)
     lessons: list[Lesson] = field(default_factory=list)  # LEGAL_RULE lessons pinned for the bench (D-077)
     desk: KnowledgeDesk | None = None  # D-112: the bench's statute and own-lesson lookups; None turns them off
+    hearing_year: int | None = None  # D-144: the year only; the full decision date stays server-side
 
 
 @dataclass
@@ -152,6 +153,13 @@ class Bench:
         self._personas = personas
         self._allow_unapproved = allow_unapproved_personas
         self._layer1 = layer1 or self._layer1_problems
+
+    def _era(self, year: int | None) -> str:
+        """D-144: the hearing year, the same sentence the lawyers read; empty when no year is given."""
+        if year is None:
+            return ""
+        ref = self._cfg.prompts.hearing_era
+        return self._prompts.render(ref.id, ref.version, year=str(year)).text.strip()
 
     # ------------------------------------------------------------ checks
 
@@ -284,6 +292,7 @@ class Bench:
             "statutes": render_statutes(inputs.law.views),
             "precedents": render_precedents(precedents),
             "lessons": render_lessons(inputs.lessons),
+            "hearing_era": self._era(inputs.hearing_year),
         }
         notes = [
             f"precedent {uid} cited by counsel is not available to the bench"

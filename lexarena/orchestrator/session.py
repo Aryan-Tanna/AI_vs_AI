@@ -165,6 +165,7 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
     full = orch.cases.get(case_id)
     scope = CaseScope.from_case(full)
     as_of = AsOf.for_case(full)
+    hearing_year = full.agent_view.metadata.simulation_date.year  # D-144: only the year reaches any prompt
     judge_stores = proc.judge(scope)
     case = judge_stores.case.agent_view(case_id)
     law = law_for_bench(case, [], orch.law, as_of, cfg)
@@ -311,6 +312,7 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
                 session_id=session_id,
                 exhibit_contents=NO_EXHIBIT_CARDS not in opts.ablations,
                 desk=desk,
+                hearing_year=hearing_year,
             )
             fetch_lib = CaseLibrary.for_role(
                 Role.THEMIS_LOCAL,
@@ -447,6 +449,7 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
                 fetch_precedent=judge_library.tools["get_precedent"],
                 audit=audit,
                 lessons=judge_lessons,
+                hearing_year=hearing_year,
                 desk=KnowledgeDesk(  # D-112: statutes and the bench's own lessons; no search (SPEC I3)
                     statute=statute_resolver(orch.law, as_of, orch.law.statute_ids(), svc.aliases, bench_law),
                     library=judge_library,

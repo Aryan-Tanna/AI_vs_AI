@@ -194,6 +194,10 @@ def test_a_whole_session(world: tuple[SessionProcess, Namespace], tmp_path: Path
 
     # R-018: the simulation date reaches no prompt of any role.
     assert all(SIM_DATE not in m.content for r in provider.requests for m in r.messages)
+    # D-144: only its year does, in the same sentence for both lawyers and every judge.
+    era = f"the hearing takes place in {SIM_DATE[:4]}"
+    judge_prompts = [r.messages[-1].content for r in provider.requests if r.schema_name == "OpinionDraft"]
+    assert era in first_p and era in first_d and judge_prompts and all(era in p for p in judge_prompts)
     # Session memory is cleared at the end (SPEC I1).
     assert proc.orchestrator().session_memory._store == {}
 

@@ -80,14 +80,15 @@ prompts:
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   reflection_lessons: {id: reflection/lessons, version: 4}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]; v4 law by role only, knockouts first [D-140]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
-  judge_decide: {id: judges/decide, version: 5}         # [D-071]; v5 no outside law or case-identification, lessons are methods [D-142]; one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
+  judge_decide: {id: judges/decide, version: 6}         # [D-071]; v6 the hearing year [D-144]; v5 no outside law or case-identification, lessons are methods [D-142]; one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
   judge_revise: {id: judges/revise, version: 3}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]; v3 answers to lookups [D-112]
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
     TEXTUALIST: {id: judges/persona_textualist, version: 1}
     PURPOSIVIST: {id: judges/persona_purposivist, version: 1}
     PROCEDURALIST: {id: judges/persona_proceduralist, version: 2}   # [D-105] v2 DRAFT: decides the merits when no procedural point arises; rules are never issue IDs. Awaits your approval
   single_llm: {id: baselines/single_llm, version: 1}    # [D-072] the single-LLM baseline on the same case file
-  agent_rules: {id: agents/rules, version: 2}           # [D-079] the same for both sides: knowledge-base and record rules; v2 lookups [D-112]
+  agent_rules: {id: agents/rules, version: 3}           # v3 the hearing year [D-144]; [D-079] the same for both sides: knowledge-base and record rules; v2 lookups [D-112]
+  hearing_era: {id: common/hearing_era, version: 1}    # [D-144] the hearing YEAR only, the same text for both sides and the bench; the full date stays server-side
   agent_role: {id: agents/role, version: 1}             # [SPEC E6] the only template whose values differ by side
   agent_plan: {id: agents/plan, version: 1}             # [D-053] private strategy phase, research plan
   agent_notes: {id: agents/notes, version: 1}           # [D-053] private strategy phase, plan after research

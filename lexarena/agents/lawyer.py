@@ -89,6 +89,7 @@ class Lawyer:
         session_id: str,
         exhibit_contents: bool = True,
         desk: KnowledgeDesk | None = None,
+        hearing_year: int | None = None,
     ) -> None:
         self.side = side
         self._case = case
@@ -98,6 +99,7 @@ class Lawyer:
         self._cfg = cfg
         self._session_id = session_id
         self._exhibits = exhibit_contents
+        self._hearing_year = hearing_year  # D-144: the year only; the full decision date stays server-side
         self.notes: StrategyNotes | None = None
         self.held: list[PrecedentCard] = []
         # D-135: this side's own verifier's repetition warning on its last published turn (its private data, never
@@ -116,13 +118,18 @@ class Lawyer:
 
     def _shared(self) -> dict[str, str]:
         return {
-            "rules": self._render("agent_rules").text,
+            "rules": self._render("agent_rules", hearing_era=self._era()).text,
             "case": render_case(self._case, exhibit_contents=self._exhibits),
             "issues": render_issues(self._case),
             "statutes": render_statutes(
                 {k: v for k, v in self.knowledge.regulation.law.views.items() if k in self._base_statutes}
             ),
         }
+
+    def _era(self) -> str:
+        if self._hearing_year is None:
+            return ""
+        return self._render("hearing_era", year=str(self._hearing_year)).text.strip()
 
     def _role(self) -> str:
         parties = [p for p in self._case.parties if p.simulation_side == self.side]

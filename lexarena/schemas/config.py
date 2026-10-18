@@ -180,6 +180,7 @@ class PromptsConfig(Strict):
     agent_plan: PromptRef
     agent_notes: PromptRef
     agent_turn: PromptRef
+    hearing_era: PromptRef  # D-144: the hearing year, for lawyers and the bench
     agent_turn_opening: PromptRef  # D-135: one instruction per turn type
     agent_turn_rebuttal: PromptRef
     agent_turn_closing: PromptRef
