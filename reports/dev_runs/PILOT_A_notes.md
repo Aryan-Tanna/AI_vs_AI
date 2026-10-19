@@ -221,3 +221,17 @@ Lessons: 6 written (4 creditor, 1 debtor, 1 judge), strategy only, no names or f
 L-01 says "request the document", which a closed record does not allow (R-050).
 DEV_0011 THEMIS replay on the D-145 prompts: planted errors 3/3 caught; T6 over-strict rejection gone; T5 still
 rejected (borderline, unchanged).
+
+## DEV_0007 (PILOT_D, first case after D-145..D-147) result
+
+Bench RESPONDENT 3-0 in both orders, no abstention; real RESPONDENT; both issues aligned (LAW-driven). Baseline
+RESPONDENT. Probe NOT_IDENTIFIED, name scan clean.
+THEMIS: 1 draft rejected (T4 RESPONDENT "short payment [F8]": F8 gives amounts paid, not the agreed instalment, and
+C1 contests default) -- correct. Cross-check: 133 claims, 131 precedent and 52 statute citations, 0 problems.
+Independent check (133 claims): 114 supported, 17 statute-only, 0 invented facts, 0 misattributions, 2 OVERSTATED
+(verified by Claude): T5-C3 and T7-C1 PETITIONER turn Kotak Mahindra's ratio ("where the creditor's acceptance
+expressly reserves the right ... revive") from a sufficient condition into a required one and drop its post-
+limitation framing. A THEMIS pass that a stricter reviewer would note; not decisive (the petitioner lost; no
+opinion relied on it). Borderline analogies (Rule 11, allottee threshold) noted, not flagged.
+Lessons: 5 written, strategy only. Reflection rejected one candidate as "names a party ('commercial')": an ordinary
+word that is part of a real party name; the name filter is over-strict on common words (calibration item).
