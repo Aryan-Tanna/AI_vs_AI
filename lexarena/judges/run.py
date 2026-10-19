@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import re
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from typing import Protocol
@@ -26,6 +27,7 @@ from lexarena.agents.desk import KnowledgeDesk
 from lexarena.judges.bench import decide_bench, fold_judge, require_supported
 from lexarena.judges.packet import (
     COUNSEL,
+    NONE,
     SIDE_ORDER,
     PrecedentFetcher,
     cited_precedent_uids,
@@ -33,6 +35,8 @@ from lexarena.judges.packet import (
     record_ids,
     render_audit_notes,
     render_case,
+    render_contradictions,
+    render_hearing_by_issue,
     render_issues,
     render_precedents,
     render_statutes,
@@ -138,6 +142,29 @@ def _stated_law(draft: OpinionDraft) -> str:
     return "\n".join([*parts, draft.overall_reasons])
 
 
+CONTRADICTED = re.compile(r"^PRECEDENT claim (\S+): (.+?) holds the opposite")
+
+
+def _drop_contradicted(draft: OpinionDraft, problems: list[str]) -> tuple[OpinionDraft, list[str]] | None:
+    """D-155: when the only problems left after the revision are precedents whose ratio contradicts the issue, remove
+    them from that issue's governing rules, as long as every issue keeps a rule; otherwise None (the opinion stays
+    invalid). Like counsel's draft published FLAGGED after its retries: the bad citation goes, the decision stays."""
+    pairs = [m.groups() for p in problems if (m := CONTRADICTED.search(p))]
+    if not problems or len(pairs) != len(problems):
+        return None
+    drop: dict[str, set[str]] = {}
+    for issue, uid in pairs:
+        drop.setdefault(issue, set()).add(uid)
+    decisions = []
+    for d in draft.issue_decisions:
+        rules = [r for r in d.governing_rule_ids if r not in drop.get(d.issue_id, set())]
+        if not rules:
+            return None
+        decisions.append(d.model_copy(update={"governing_rule_ids": rules}))
+    names = sorted(f"{issue}: {uid}" for issue, uids in drop.items() for uid in uids)
+    return draft.model_copy(update={"issue_decisions": decisions}), names
+
+
 class Bench:
     def __init__(
         self,
@@ -199,6 +226,21 @@ class Bench:
             report.checklists, views, predicates, facts, self._cfg.themis_local, alternatives=alternatives
         )
         return [f"LAYER1 {e.code} on {e.statute_id}: {e.detail}" for e in result.hard_errors]
+
+    def _hearing(self, inputs: BenchInputs, order: PresentationOrder) -> dict[str, str]:
+        """The submissions and auditor's notes for one presentation order, in the layout `judging.presentation` names
+        (D-155: ISSUE_BY_ISSUE; SIDE_BLOCKS is the earlier layout, kept for comparison)."""
+        j = self._cfg.judging
+        audit = inputs.audit if j.show_audit_notes else None
+        if j.presentation == "ISSUE_BY_ISSUE":
+            return {
+                "submissions": render_hearing_by_issue(inputs.case, inputs.turns, audit, order),
+                "audit_notes": render_contradictions(audit, order) if j.show_audit_contradictions else NONE,
+            }
+        return {
+            "submissions": render_submissions(inputs.case, inputs.turns, order),
+            "audit_notes": render_audit_notes(audit, order, contradictions=j.show_audit_contradictions),
+        }
 
     def _precedent_problems(
         self, draft: OpinionDraft, allowed: Allowed, inputs: BenchInputs, session_id: str
@@ -284,12 +326,7 @@ class Bench:
             max_lookups=str(self._cfg.judging.lookups_per_opinion),
             first_side=COUNSEL[first],
             second_side=COUNSEL[second],
-            submissions=render_submissions(inputs.case, inputs.turns, order),
-            audit_notes=render_audit_notes(
-                inputs.audit if self._cfg.judging.show_audit_notes else None,
-                order,
-                contradictions=self._cfg.judging.show_audit_contradictions,
-            ),
+            **self._hearing(inputs, order),
             **shared,
         )
         draft = self._ask(original, allowed, session_id)
@@ -326,7 +363,12 @@ class Bench:
             record_ids=", ".join(sorted(allowed.record_ids)),
         )
         revised = self._ask(revision, allowed, session_id)
-        return finalize(revised, order, revised=True, problems=self._problems(revised, allowed, inputs, session_id))
+        left = self._problems(revised, allowed, inputs, session_id)
+        kept = _drop_contradicted(revised, left)
+        if kept is not None and not check_opinion(kept[0], allowed):
+            trace.event("judge_precedent_dropped", dropped=kept[1])
+            return finalize(kept[0], order, revised=True, problems=[], dropped=kept[1])
+        return finalize(revised, order, revised=True, problems=left)
 
     # ------------------------------------------------------------ the bench
 

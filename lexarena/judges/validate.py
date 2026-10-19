@@ -128,7 +128,12 @@ def check_opinion(draft: OpinionDraft, allowed: Allowed) -> list[str]:
 
 
 def finalize(
-    draft: OpinionDraft, order: PresentationOrder, *, revised: bool, problems: list[str]
+    draft: OpinionDraft,
+    order: PresentationOrder,
+    *,
+    revised: bool,
+    problems: list[str],
+    dropped: list[str] | None = None,
 ) -> JudgeOpinion | InvalidOpinion:
     """A valid opinion, or an InvalidOpinion holding the draft and every problem that remains."""
     if not problems:
@@ -143,6 +148,7 @@ def finalize(
                     for a in draft.advocacy
                 ],
                 revised=revised,
+                dropped_precedents=dropped or [],
             )
         except ValidationError as exc:  # a shape the checks above do not cover, e.g. a malformed issue ID
             problems = [f"MALFORMED: {e['loc']}: {e['msg']}" for e in exc.errors()]

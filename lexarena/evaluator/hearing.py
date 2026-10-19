@@ -2,9 +2,9 @@
 
 Per side: issue coverage, rebuttal depth and consistency (THEMIS-GLOBAL), verification health (hard errors, retries,
 first-try rate, FLAGGED turns, citation tiers), repetition (share of each turn's sentences copied from the side's own
-earlier turns, the THEMIS measure, D-154), and prerequisite warnings. Bench: abstentions, judges whose two presentation
-orders disagree, and how often the side presented first wins. Reasoning alignment: the statutes and precedents the deciding
-judges rested on against those the real court analysed and followed (precision and recall).
+earlier turns, the THEMIS measure, D-154), and prerequisite warnings. Bench: abstentions, judges whose two
+presentation orders disagree, and how often the side presented first wins. Reasoning alignment: the statutes and
+precedents the deciding judges rested on against those the real court analysed and followed (precision and recall).
 
 Report-only: never shown to agents or judges, never a gate, nothing is tuned on test-set values (non-negotiable 9).
 """

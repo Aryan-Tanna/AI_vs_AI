@@ -77,11 +77,11 @@ prompts:
   themis_extract: {id: themis/extract_checklist, version: 2}   # [SPEC D1, D-062] verifier model, temperature 0; v2 quotes for numeric claims [D-066]
   themis_layer2: {id: themis/layer2_review, version: 2}   # v2 immaterial omissions, record-internal inconsistencies and hearing concessions are not errors [D-145]; [SPEC A2, D5, D-075] record fidelity + responsiveness, one call per draft
   themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 2}   # v2 same exemptions as layer2 v2 [D-145]; [D-105] second narrow check before a record-fidelity rejection
-  themis_entailment: {id: themis/entailment, version: 2}   # v2 SUPPORTS needs the ratio's own words [D-145]; [SPEC D4, D-075] one call per draft for all its precedent citations
+  themis_entailment: {id: themis/entailment, version: 3}  # [D-155] v3: a case-specific outcome is not a rule   # v2 SUPPORTS needs the ratio's own words [D-145]; [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
   reflection_lessons: {id: reflection/lessons, version: 6}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]; v4 law by role only, knockouts first [D-140]; v5 closed record: only moves the agents have [D-149]; v6 learning from the opponent's technique [D-153]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
-  judge_decide: {id: judges/decide, version: 6}         # [D-071]; v6 the hearing year [D-144]; v5 no outside law or case-identification, lessons are methods [D-142]; one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
+  judge_decide: {id: judges/decide, version: 7}         # [D-071]; v7 issue-by-issue hearing [D-155]; v6 the hearing year [D-144]; v5 no outside law or case-identification, lessons are methods [D-142]; one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
   judge_revise: {id: judges/revise, version: 3}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]; v3 answers to lookups [D-112]
   judge_personas:                                       # [SPEC E2] method, not outcome; approval in review/judge_personas [D-071]
     TEXTUALIST: {id: judges/persona_textualist, version: 1}
@@ -178,6 +178,7 @@ judging:
   abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
   min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
   check_reasons_with_layer1: false       # [D-093] your decision 2026-10-10: the bench is a shadow bench; THEMIS stays on the lawyers. Free ID checks remain (check_opinion)
+  presentation: ISSUE_BY_ISSUE          # [D-155] your choice A 2026-10-20: issue by issue, then turn by turn (was SIDE_BLOCKS; 6 of 27 judge-cases flipped with block order)
   check_precedent_support: true         # [D-150] your decision 2026-10-20 (option A, like lawyers): each precedent a judge rests an issue on goes through the lawyers' entailment check (SPEC D4); a quote-backed CONTRADICTS gets the one revision, NOT_ADDRESSED is traced only
   orders_per_persona: 2                  # [D-105] your decision 2026-10-11: each judge decides twice, sides swapped (INTENT); reverses D-093
   show_audit_notes: true                 # [D-078] THEMIS-GLOBAL's point map and contradictions, never its scores; ablate on dev to check bias

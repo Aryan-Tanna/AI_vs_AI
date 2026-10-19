@@ -220,6 +220,60 @@ def render_submissions(case: AgentCaseView, turns: list[PublishedTurn], order: P
     return "\n\n".join(blocks)
 
 
+def render_hearing_by_issue(
+    case: AgentCaseView, turns: list[PublishedTurn], report: ThemisGlobalReport | None, order: PresentationOrder
+) -> str:
+    """D-155 (your choice A): the hearing issue by issue, then turn by turn. For each framed issue, both sides' pleaded
+    grounds (`order` decides which is listed first) and the points made on it in the order argued, each with its
+    verbatim quote and whether it was answered (THEMIS-GLOBAL's map, never its scores); then every turn in the order
+    argued, so each argument is followed by its answer. No side's whole case is read before the other's: in the pilot,
+    reading one side's block first flipped a judge's result in 6 of 27 judge-cases, 4 of them toward that side."""
+    raw = report.rebuttal_depth.get("points", []) if report is not None else []
+    points = [p for p in (raw if isinstance(raw, list) else []) if isinstance(p, dict)]
+
+    def turn_no(p: dict[str, object]) -> int:
+        try:
+            return int(str(p.get("turn")))
+        except ValueError:
+            return 0
+
+    lines: list[str] = []
+    for issue in case.framed_issues:
+        lines += ["", f"=== ISSUE {issue.issue_id}: {issue.question} ==="]
+        for side in SIDE_ORDER[order]:
+            grounds = [g.ground for g in case.opening_positions.for_side(side) if g.issue_id == issue.issue_id]
+            lines.append(f"Grounds pleaded by {COUNSEL[side]}:")
+            lines += [f"- {g}" for g in grounds] or [f"- {NONE}"]
+        if report is not None:
+            lines.append(f"Points made on {issue.issue_id}, in the order argued (auditor's map, not binding):")
+            on_issue = sorted((p for p in points if p.get("issue_id") == issue.issue_id), key=turn_no)
+            for p in on_issue:
+                speaker = p.get("speaker")
+                who = COUNSEL.get(speaker, "counsel") if isinstance(speaker, str) else "counsel"  # type: ignore[call-overload]
+                answered = p.get("answered_in_turn")
+                where = f"answered or conceded in turn {answered}" if answered else "no later answer noted"
+                lines.append(f'- turn {p.get("turn")}, {who}: "{p.get("quote")}"; {where}')
+            if not on_issue:
+                lines.append(f"- {NONE}")
+    lines += ["", "=== THE HEARING, TURN BY TURN, IN THE ORDER ARGUED ==="]
+    for t in sorted(turns, key=lambda x: x.turn):
+        lines += ["", f"{COUNSEL[t.speaker]}, {_render_turn(t)}"]
+    return "\n".join(lines).strip()
+
+
+def render_contradictions(report: ThemisGlobalReport | None, order: PresentationOrder) -> str:
+    """Confirmed self-contradictions only, per side in `order` (the points are in the issue sections above)."""
+    if report is None:
+        return NONE
+    lines = [
+        f"- {COUNSEL[side]}: contradiction between claims {c.get('claim_a')} and {c.get('claim_b')}"
+        for side in SIDE_ORDER[order]
+        for c in report.contradictions
+        if c.get("speaker") == side
+    ]
+    return "\n".join(lines) or NONE
+
+
 # ---------------------------------------------------------------- auditor's notes (D-078)
 
 

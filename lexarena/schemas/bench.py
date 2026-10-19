@@ -76,6 +76,8 @@ class JudgeOpinion(StoredModel):
     overall_reasons: NonEmptyStr
     advocacy: list[IssueAdvocacy] = Field(min_length=1)
     revised: bool  # the validator sent it back once (ARCHITECTURE §5: one revision)
+    # D-155: precedents still contradicted after the revision, removed from that issue's rules ("I2: <uid>").
+    dropped_precedents: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _issues_match(self) -> JudgeOpinion:

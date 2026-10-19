@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -13,7 +14,7 @@ from lexarena.judges.run import Bench
 from lexarena.llm.client import LLMClient
 from lexarena.llm.errors import RateLimitedError
 from lexarena.prompts import PromptStore
-from lexarena.schemas.bench import PERSONAS, InvalidOpinion, OpinionDraft
+from lexarena.schemas.bench import PERSONAS, InvalidOpinion, JudgeOpinion, OpinionDraft
 from tests.conftest import PROMPTS_ROOT
 from tests.fakes import FakeProvider
 from tests.judge_fixtures import (
@@ -64,9 +65,15 @@ def test_a_unanimous_bench(tmp_path: Path) -> None:
     assert any(HIDDEN_PRECEDENT_UID in n for n in result.notes)
 
 
+SIDE_BLOCKS = CFG.model_copy(update={"judging": CFG.judging.model_copy(update={"presentation": "SIDE_BLOCKS"})})
+
+
 def test_prompts_use_counsel_labels_swap_order_and_carry_each_persona(tmp_path: Path) -> None:
+    """The earlier SIDE_BLOCKS layout, kept for comparison (D-155)."""
     llm, judge, _ = client([opinion_json()] * CALLS)
-    bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    Bench(llm, PromptStore(PROMPTS_ROOT), SIDE_BLOCKS, approved(tmp_path), layer1=no_layer1).decide(
+        inputs(), session_id=SESSION_ID
+    )
     reg = approved(tmp_path / "other")
     for n, persona in enumerate(PERSONAS):
         first, second = sent(judge, 2 * n), sent(judge, 2 * n + 1)
@@ -228,7 +235,9 @@ def test_judges_see_the_auditor_map_in_order_but_never_its_scores(tmp_path: Path
     from dataclasses import replace
 
     llm, judge, _ = client([opinion_json()] * CALLS)
-    bench(llm, approved(tmp_path)).decide(replace(inputs(), audit=_audit()), session_id=SESSION_ID)
+    Bench(llm, PromptStore(PROMPTS_ROOT), SIDE_BLOCKS, approved(tmp_path), layer1=no_layer1).decide(
+        replace(inputs(), audit=_audit()), session_id=SESSION_ID
+    )
     first, second = sent(judge, 0), sent(judge, 1)
     for text in (first, second):
         assert '"<petitioner point>"; answered or conceded in turn 2' in text
@@ -331,3 +340,54 @@ def test_the_bench_sees_what_each_cited_precedent_was_decided_under() -> None:
 
     text = render_precedents({"U": PrecedentText("U", "<title>", "2020-01-01", "<ratio>", ("<other Act s.1>",))})
     assert "decided under: <other Act s.1>" in text and "ratio: <ratio>" in text
+
+
+def _two_rules() -> str:
+    doc = json.loads(opinion_json(rule=PRECEDENT_UID))
+    doc["issue_decisions"][0]["governing_rule_ids"] = [STATUTE, PRECEDENT_UID]
+    return json.dumps(doc)
+
+
+def test_a_precedent_still_contradicted_after_the_revision_is_dropped_not_the_opinion(tmp_path: Path) -> None:
+    """D-155: DEV_0016's Purposivist lost a whole opinion over one doubtful citation among seven rules. Like counsel's
+    draft that is published FLAGGED after its retries, the opinion stands on its other rules; the dropped precedent is
+    recorded on it."""
+    llm, _, _ = client(
+        [_two_rules(), _two_rules()] + [opinion_json()] * (CALLS - 1), [entailment("CONTRADICTS", "<ratio text>")]
+    )
+    result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    first = result.decisions[0].opinions[0]
+    assert isinstance(first, JudgeOpinion)
+    assert result.decisions[0].status == "DECIDED" and first.revised
+    assert first.issue_decisions[0].governing_rule_ids == [STATUTE]
+    assert first.dropped_precedents == [f"I1: {PRECEDENT_UID}"]
+
+
+def test_an_issue_resting_only_on_a_contradicted_precedent_still_makes_the_opinion_invalid(tmp_path: Path) -> None:
+    only = opinion_json(rule=PRECEDENT_UID)
+    llm, _, _ = client([only, only] + [opinion_json()] * (CALLS - 1), [entailment("CONTRADICTS", "<ratio text>")])
+    result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    assert result.decisions[0].status == "ABSTAINED"
+
+
+def test_the_hearing_is_shown_issue_by_issue_then_turn_by_turn(tmp_path: Path) -> None:
+    """D-155 (your choice A): no side's whole case is read before the other's. Within each issue the two orders swap
+    which side's grounds come first; the turns always follow in the order argued; each point sits under its issue with
+    its verbatim quote, never the auditor's scores."""
+    from dataclasses import replace
+
+    llm, judge, _ = client([opinion_json()] * CALLS)
+    bench(llm, approved(tmp_path)).decide(replace(inputs(), audit=_audit()), session_id=SESSION_ID)
+    first, second = sent(judge, 0), sent(judge, 1)
+    for text in (first, second):
+        issue = text[text.index("=== ISSUE I1") :]
+        assert "=== SUBMISSIONS OF" not in text
+        assert 'turn 1, Petitioner\'s counsel: "<petitioner point>"; answered or conceded in turn 2' in issue
+        hearing = text[text.index("=== THE HEARING, TURN BY TURN") :]
+        assert hearing.index("Petitioner's counsel, Turn 1") < hearing.index("Respondent's counsel, Turn 2")
+        for score in ("0.123456", "0.654321", "0.987654", "0.111111"):
+            assert score not in text
+    one = first[first.index("=== ISSUE I1") :]
+    two = second[second.index("=== ISSUE I1") :]
+    assert one.index("Grounds pleaded by Petitioner's") < one.index("Grounds pleaded by Respondent's")
+    assert two.index("Grounds pleaded by Respondent's") < two.index("Grounds pleaded by Petitioner's")
