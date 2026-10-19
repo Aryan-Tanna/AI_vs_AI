@@ -42,7 +42,10 @@ def build_llm_client(
     env_file: Path | None = DEFAULT_ENV_FILE,
     use_cache: bool = True,
     http: httpx.Client | None = None,
+    cache_only: bool | None = None,
 ) -> LLMClient:
+    """`cache_only` None follows LEXARENA_CACHE_ONLY (D-110); True forces it (D-149: recovering lessons may only reuse
+    a recorded answer)."""
     cache = ResponseCache(REPO_ROOT / config.llm.cache_path) if (use_cache and config.llm.cache_enabled) else None
     return LLMClient(
         config,
@@ -50,7 +53,8 @@ def build_llm_client(
         PromptStore(PROMPTS_ROOT),
         build_providers(config, http or httpx.Client()),
         cache,
-        cache_only=cache is not None and os.environ.get(CACHE_ONLY_ENV) == "1",
+        cache_only=cache is not None
+        and (cache_only if cache_only is not None else os.environ.get(CACHE_ONLY_ENV) == "1"),
     )
 
 

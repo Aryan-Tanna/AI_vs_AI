@@ -3,7 +3,8 @@
 A candidate is rejected, with the reason recorded, when:
 - it rests on no issue, or on an issue the court decided on EVIDENCE (F5), or on one it made no finding on;
 - its source paragraphs are not the court's paragraphs for those issues (provenance must be real);
-- it names a party, a pseudonym or any distinctive word of a real name (I3-9, F7); generic words that appear in many
+- it names a party, a pseudonym or any distinctive word of a real name written as the name writes it (I3-9, F7;
+  D-149: an ordinary word in lower case is not the name); generic words that appear in many
   names (`clerk.generic_name_words`) are not names on their own;
 - it states a base rate (`memory.base_rate_markers`, I3-5);
 - it names a specific provision, precedent, amount, period or date (any digit or ID-shaped token, D-140);
@@ -60,21 +61,23 @@ class Verdict:
 
 
 def name_words(names: Iterable[str], generic: set[str]) -> set[str]:
+    """Distinctive words of the real names, as each name writes them (D-149: case is kept)."""
     words: set[str] = set()
     for name in names:
         for w in re.findall(r"[A-Za-z][A-Za-z'.-]*", name):
             if len(w) >= MIN_NAME_WORD and w.lower() not in generic:
-                words.add(w.lower())
+                words.add(w)
     return words
 
 
 def _mentions(text: str, names: list[str], words: set[str]) -> str | None:
+    """A full name or pseudonym in any case; a single name word only as the name writes it, or in capitals (D-149):
+    "lease" in prose is the ordinary word, "Lease" or "LEASE" is the party."""
     low = text.lower()
     for name in names:
         if name.strip() and name.lower() in low:
             return name
-    tokens = set(re.findall(r"[a-z][a-z'.-]*", low))
-    hit = sorted(tokens & words)
+    hit = sorted(w for w in words if re.search(rf"\b(?:{re.escape(w)}|{re.escape(w.upper())})\b", text))
     return hit[0] if hit else None
 
 

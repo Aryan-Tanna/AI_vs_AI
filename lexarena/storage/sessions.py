@@ -112,6 +112,21 @@ class SessionRepository:
     def record_lessons(self, session_id: str, lesson_ids: list[str]) -> Session:
         return self._transition(session_id, S.REFLECTED, {"lessons_written": lesson_ids})
 
+    def add_recovered_lessons(self, session_id: str, lesson_ids: list[str]) -> Session:
+        """D-149: lessons recovered after a filter fix join a REFLECTED session's list (REFLECTION only; state kept)."""
+        require(self._principal, Store.SESSIONS, Op.WRITE)
+        if self._principal.role != Role.REFLECTION:
+            raise StateTransitionError(f"recovered lessons are recorded by REFLECTION, not {self._principal}")
+        current = load_session_state(self._db, self._ns, session_id)
+        if current.state != S.REFLECTED:
+            raise StateTransitionError(f"session {session_id} is {current.state}, not REFLECTED")
+        ids = sorted({*current.lessons_written, *lesson_ids})
+        updated = Session.model_validate({**current.model_dump(), "lessons_written": ids})
+        result = self._col.replace_one({"_id": session_id, "state": S.REFLECTED.value}, updated.to_document())
+        if result.matched_count != 1:
+            raise StateTransitionError(f"session {session_id} changed state concurrently; nothing written")
+        return updated
+
     def _transition(self, session_id: str, target: SessionState, update: dict[str, Any]) -> Session:
         require(self._principal, Store.SESSIONS, Op.WRITE)
         current = load_session_state(self._db, self._ns, session_id)

@@ -40,6 +40,10 @@ export type Summary = {
   winner: string | null;
   benchStatus: string | null;
   realMatch: boolean | null;
+  // Set once the evaluation ran, also when there is no verdict comparison (real outcome MIXED, or bench unstable).
+  evaluated: boolean;
+  realOverall: string | null;
+  issueAlignment: number | null;
   costUsd: number;
   calls: number;
   updated: number;
@@ -82,6 +86,9 @@ export function summarize(id: string, recs: Rec[], mtime: number): Summary {
     winner: verdict?.winner ?? null,
     benchStatus: verdict?.status ?? null,
     realMatch: evaluation?.winner_matches_real ?? null,
+    evaluated: Boolean(evaluation),
+    realOverall: evaluation?.real_overall ?? null,
+    issueAlignment: typeof evaluation?.issue_alignment === "number" ? evaluation.issue_alignment : null,
     costUsd: llm.reduce((s, r) => s + callCost(r), 0),
     calls: llm.length,
     updated: mtime,

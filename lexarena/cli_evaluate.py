@@ -4,6 +4,7 @@
     lexarena evaluate report --outcomes FILE [FILE ...] [--out FILE]      outcomes in the order the cases ran
     lexarena baseline single --case-id ID --out FILE                      session process; spends one LLM call
     lexarena reflect session SESSION_ID --run-id RUN                      sealed, REFLECTION role; LEARN runs only
+    lexarena reflect recheck SESSION_ID --run-id RUN --candidate N [...]  D-149: re-check wrongly rejected candidates
 
 `evaluate session` unseals ground truth through the repository (refused before the verdict), records the evaluation
 (VERDICT_RECORDED -> EVALUATED) and writes the case outcome. It is a separate process from any session by design: the
@@ -59,6 +60,12 @@ def add_parsers(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> Non
     one = refl.add_parser("session", help="write lessons from an evaluated session (spends reflection quota)")
     one.add_argument("session_id")
     one.add_argument("--run-id", required=True, help="the run the lessons are created in")
+    again = refl.add_parser(
+        "recheck", help="re-check candidates a filter wrongly rejected, from the recorded answer only (D-149)"
+    )
+    again.add_argument("session_id")
+    again.add_argument("--run-id", required=True, help="the run the session's lessons were created in")
+    again.add_argument("--candidate", type=int, action="append", required=True, help="candidate number (repeatable)")
     base = sub.add_parser("baseline").add_subparsers(dest="action", required=True)
     single = base.add_parser("single", help="the single-LLM baseline on one case file (spends one call)")
     single.add_argument("--case-id", required=True)
@@ -225,7 +232,38 @@ def _reflect(session_id: str, run_id: str, config_path: Path) -> int:
     return 0
 
 
+def _recheck(session_id: str, run_id: str, numbers: list[int], config_path: Path) -> int:
+    """The reflection prompt is answered from the cache only (the original answer); a miss stops with an error and
+    spends nothing. Dedup's comparison may call the model as usual."""
+    cfg = load_config(config_path)
+    configure_llm_logging(cfg)
+    embedder = FastEmbedder(cfg.embedding.model, REPO_ROOT / cfg.embedding.cache_dir, cfg.embedding.batch_size)
+    engine = Reflection(
+        build_llm_client(cfg, cache_only=True), PromptStore(PROMPTS_ROOT), cfg, embedder, build_llm_client(cfg)
+    )
+    with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
+        private = {side: proc.reflection(side).private_turns for side in SIDES}
+        with trace.session_trace(_trace_dir(config_path), session_id), trace.tags(phase="REFLECT"):
+            result = engine.recheck(proc.reflection(), private, session_id, run_id=run_id, numbers=numbers)
+            trace.event(
+                "reflection_recheck", written=result.written, rejected=result.rejected, placements=result.placements
+            )
+    print(
+        json.dumps(
+            {
+                "session_id": session_id,
+                "written": result.written,
+                "rejected": result.rejected,
+                "placements": result.placements,
+            }
+        )
+    )
+    return 0
+
+
 def run(args: argparse.Namespace, config_path: Path) -> int:
+    if args.group == "reflect" and args.action == "recheck":
+        return _recheck(args.session_id, args.run_id, args.candidate, config_path)
     if args.group == "reflect":
         return _reflect(args.session_id, args.run_id, config_path)
     if args.group == "baseline":

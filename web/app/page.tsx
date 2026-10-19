@@ -20,6 +20,26 @@ function winnerPill(w: string | null, status: string | null) {
   return <span className={`pill ${w === "PETITIONER" ? "pet" : "res"}`}>{w === "PETITIONER" ? "Petitioner" : "Respondent"} wins</span>;
 }
 
+// The real court column: a verdict comparison when there is one; otherwise why not, plus issue alignment.
+function realPill(s: Summary, long = false) {
+  if (!s.evaluated) return long ? null : <span className="tiny muted">not evaluated yet</span>;
+  const issues = s.issueAlignment === null ? "" : ` · issues ${(100 * s.issueAlignment).toFixed(0)}%`;
+  if (s.realMatch !== null)
+    return (
+      <span className={`pill ${s.realMatch ? "ok" : "bad"}`}>
+        {s.realMatch ? (long ? "matches the real court" : "matches") : long ? "differs from the real court" : "differs"}
+        {issues}
+      </span>
+    );
+  const why = s.realOverall === "MIXED" ? "real outcome mixed: issues only" : "no bench verdict to compare";
+  return (
+    <span className="pill neutral">
+      {why}
+      {issues}
+    </span>
+  );
+}
+
 export default function Home() {
   const [data, setData] = useState<{ sessions: Summary[]; runs: RunInfo[] } | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -84,13 +104,7 @@ export default function Home() {
                   <td className="tiny mono">{s.runId}</td>
                   <td>{statusPill(s)}</td>
                   <td>{winnerPill(s.winner, s.benchStatus)}</td>
-                  <td>
-                    {s.realMatch === null ? (
-                      <span className="tiny muted">not evaluated</span>
-                    ) : (
-                      <span className={`pill ${s.realMatch ? "ok" : "bad"}`}>{s.realMatch ? "matches" : "differs"}</span>
-                    )}
-                  </td>
+                  <td>{realPill(s)}</td>
                   <td className="small">{s.turnsPublished}</td>
                   <td className="small">${s.costUsd.toFixed(3)}</td>
                   <td className="small">{count}</td>
@@ -171,7 +185,7 @@ export default function Home() {
               <span className="muted">· ${s.costUsd.toFixed(3)}</span>
               <span className="spacer" />
               {winnerPill(s.winner, s.benchStatus)}
-              {s.realMatch !== null && <span className={`pill ${s.realMatch ? "ok" : "bad"}`}>{s.realMatch ? "matches the real court" : "differs from the real court"}</span>}
+              {realPill(s, true)}
             </div>
             <div className="tiny muted mono" style={{ marginTop: 4 }}>{s.id}</div>
           </a>

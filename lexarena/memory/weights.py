@@ -22,11 +22,17 @@ def weight(lesson: Lesson, case_seq: int, cfg: MemoryConfig) -> float:
     return lesson.severity * math.log1p(lesson.frequency) * lesson.confidence * cfg.decay_lambda**age
 
 
+MAX_REWARD = 1.0  # literal-ok: rewards are unit scores; 1.0 is the top of the scale, not a tuning value
+
+
 def after_use(lesson: Lesson, reward: float, case_seq: int, cfg: MemoryConfig) -> Lesson:
     """The lesson after being pinned into case `case_seq`, whose reward was `reward`."""
     confidence = lesson.confidence
     if lesson.last_reward is not None:
-        step = cfg.confidence_step if reward >= lesson.last_reward else -cfg.confidence_step
+        # SPEC F4: up when the reward improves, down when it does not (D-149: a tie is not an improvement, except at
+        # the maximum, which nothing can improve on).
+        improved = reward > lesson.last_reward or reward >= MAX_REWARD
+        step = cfg.confidence_step if improved else -cfg.confidence_step
         confidence = min(1.0, max(0.0, confidence + step))
     return retire_if_weak(
         lesson.model_copy(

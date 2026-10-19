@@ -257,3 +257,27 @@ rejection), so the bench can weigh the stretch.
 Name scan: false alarm (lawyer named unrelated famous cases against a bank and the regulator); fixed D-148.
 Lessons: 6, method only; one judge lesson (check whether a cited provision was omitted or amended before the
 hearing) is general but plainly prompted by this judgment.
+
+## DEV_0015 (PILOT_D) result -- first wrong verdict
+
+Bench PETITIONER 2-1 (Textualist and Proceduralist PETITIONER in both orders; Purposivist RESPONDENT in both, the real
+result). Real RESPONDENT on both issues (I1 LAW, I2 MIXED): verdict wrong, issues 0/2. Baseline PETITIONER (wrong too).
+Run note: the BASELINE stage failed to start (Windows 0xC0000142, low memory); baseline, evaluation and reflection
+were run by hand with the run manager's own commands.
+Why wrong (Claude, from the unsealed judgment): I1 -- the court read s.60(5) widely (directions with a clear nexus to
+the lessor's resolution). The majority rested on Canara Bank v. Valecha (2020_NCLAT_DEL_38154947), a ratio on the
+NCLT's limited power under s.73(4) of the Companies Act, plus 2022_NCLAT_DEL_810 (no recovery court for contract
+claims). The petitioner offered Canara Bank as an analogy; the respondent distinguished it three times; the judges
+took the analogy as the governing rule. Judges' precedent use is checked only for existence, never for support: an
+architecture gap that decided this verdict. The Purposivist used the right authorities (Jhanvi Rajpal; Pawan Vikram
+Sajhwani: s.60(5) wide, RP's custody duty). I2 -- the court turned the appellants' own pleading (they "responded
+promptly" and furnished information "from time to time") into an acceptance of the duty to assist; that pleading is
+in C1 as the petitioner's version, and neither the respondent nor the bench used it against them (an advocacy and
+bench miss, not a record gap).
+THEMIS: 2 rejections, both correct (a "threat of contempt" not in the order; "former" directors where the record says
+suspended). Cross-check: 115 claims, 0 problems. Independent check: 100 supported, 14 statute-only, 0 invented facts,
+0 overstated, 1 misattributed passed (T07-C5: Canara Bank for the limits of s.60(5)).
+Proceduralist reasoning again tried to identify the real case from memory ("I recall a case: ..."; second time after
+DEV_0014's Textualist); no real party named.
+Lessons: 6 (one recovered after the filter fix); I2's lesson for the suspended directors (search the record for the
+side's own admissions) and the judges' layered nexus test match what the court did.

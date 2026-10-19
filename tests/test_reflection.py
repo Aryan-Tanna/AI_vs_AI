@@ -59,6 +59,15 @@ def test_confidence_follows_the_reward_of_the_cases_that_use_it() -> None:
     assert worse.confidence == pytest.approx(M.initial_confidence - M.confidence_step)
 
 
+def test_a_tie_is_not_an_improvement_unless_both_were_perfect() -> None:
+    """D-149, SPEC F4: confidence rises when the reward improves and falls when it does not. Two failed cases in a row
+    (0.0, 0.0) no longer raise it; two perfect ones (1.0, 1.0) still do, as nothing can improve on them."""
+    failed = after_use(after_use(lesson(1), 0.0, 5, M), 0.0, 6, M)
+    assert failed.confidence == pytest.approx(M.initial_confidence - M.confidence_step)
+    perfect = after_use(after_use(lesson(1), 1.0, 5, M), 1.0, 6, M)
+    assert perfect.confidence == pytest.approx(M.initial_confidence + M.confidence_step)
+
+
 def test_a_lesson_below_the_floor_retires() -> None:
     low = lesson(1, confidence=M.retire_below_confidence + M.confidence_step / 2)
     assert weakened(low, M).status == "RETIRED"
@@ -242,6 +251,14 @@ def test_a_new_lesson_carries_the_law_version_and_year_of_its_case() -> None:
 def test_every_rule_rejects_with_a_reason(change: dict[str, Any], reason: str) -> None:
     v = check(candidate(**change), 1, ctx())
     assert v.lesson is None and reason in (v.reason or "")
+
+
+def test_an_ordinary_word_that_is_part_of_a_name_is_not_a_name() -> None:
+    """D-149: DEV_0007 ("commercial") and DEV_0015 ("lease") lost lessons to ordinary words inside a real name. A single
+    name word counts only as the name writes it; lower-case prose use is the ordinary word."""
+    assert check(candidate(lesson="Weigh the harvest of admissions before the merits."), 1, ctx()).lesson is not None
+    assert "names a party" in (check(candidate(lesson="Weigh what Harvest admitted."), 1, ctx()).reason or "")
+    assert "names a party" in (check(candidate(lesson="Weigh what HARVEST admitted."), 1, ctx()).reason or "")
 
 
 def test_generic_name_words_alone_are_not_names() -> None:

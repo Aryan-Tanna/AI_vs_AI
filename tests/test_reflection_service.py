@@ -186,3 +186,36 @@ def test_a_claude_triaged_case_teaches_only_when_the_config_accepts_triage_and_s
         assert written and all(x.source_review == "CLAUDE_TRIAGE" for x in written)
     finally:
         cases.put(original)
+
+
+def test_recheck_recovers_only_a_wrongly_rejected_candidate_once(
+    procs: tuple[SessionProcess, SealedProcess, Namespace],
+) -> None:
+    """D-149: a candidate a filter wrongly rejected is re-checked after the fix and stored; the other candidates and
+    the rewards are untouched, and recovering it again is refused."""
+    session, sealed, _ = procs
+    sid = evaluated_session(session, sealed)
+    answer = {
+        "lessons": [
+            candidate(trigger="the debtor disputes the default on a recheck case"),
+            candidate(trigger="a second trigger on a recheck case", lesson="Weigh the harvest of admissions first."),
+        ]
+    }
+    strict = CFG.model_copy(
+        update={
+            "memory": CFG.memory.model_copy(update={"base_rate_markers": [*CFG.memory.base_rate_markers, "harvest"]})
+        }
+    )
+    stores = sealed.reflection()
+    private = {side: sealed.reflection(side).private_turns for side in ("PETITIONER", "RESPONDENT")}
+    first, _ = reflection(answer, strict)
+    done = first.reflect(stores, private, sid, run_id="RC")  # type: ignore[arg-type]
+    assert len(done.written) == 1 and any("candidate 2" in r for r in done.rejected)
+    fixed, _ = reflection(answer)
+    again = fixed.recheck(stores, private, sid, run_id="RC", numbers=[2])  # type: ignore[arg-type]
+    assert again.updated == [] and len(again.written) == 1 and again.written[0].endswith("-02")
+    assert again.session.state == SessionState.REFLECTED
+    assert set(again.session.lessons_written) == {*done.written, *again.written}
+    twice, _ = reflection(answer)
+    refused = twice.recheck(stores, private, sid, run_id="RC", numbers=[1, 2])  # type: ignore[arg-type]
+    assert refused.written == [] and all("already stored" in r for r in refused.rejected)
