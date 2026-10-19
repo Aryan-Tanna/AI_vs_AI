@@ -481,6 +481,7 @@ class ClerkConfig(Strict):
     evaluative_words: list[NonEmptyStr] = Field(min_length=1)
     route_chars_per_paragraph: PositiveInt
     generic_name_words: list[NonEmptyStr]
+    recall_scan_skips_kinds: list[NonEmptyStr]  # D-148: pseudonym kinds the post-verdict name scan leaves out
     court_voice_markers: list[NonEmptyStr] = Field(min_length=1)
 
 

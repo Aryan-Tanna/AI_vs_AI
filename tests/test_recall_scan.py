@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from lexarena.evaluator.evaluate import recalled_names
+from lexarena.evaluator.evaluate import recalled_names, scanned_names
 
 NAMES = ["Mansi Brar Fernandes", "Tata Capital Housing Finance Limited"]
 GENERIC = ["limited", "finance", "housing"]
@@ -31,3 +31,15 @@ def test_a_name_the_session_showed_the_models_is_not_a_recall() -> None:
     texts = ["- Northern Cooperative Bank v. Some Liquidator (2018)", "Ravindra Kolhatkar maybe"]
     shown = ["[2025_NCLAT_DEL_1#x] Northern Cooperative Bank vs. Another & Anr."]
     assert recalled_names(texts, names, GENERIC, shown_texts=shown) == ["Ravindra Kolhatkar"]
+
+
+def test_institutional_parties_are_not_scanned() -> None:
+    """DEV_0014: a lawyer listed famous unrelated precedents from memory, naming a bank and the regulator that were
+    also parties here; an institution named alone is not recall of this case (D-148)."""
+    amap = {
+        "Bank-A": "Northern Cooperative Bank",
+        "Authority-B": "Board of Regulators",
+        "Person-C": "Ravindra Kolhatkar",
+    }
+    assert scanned_names(amap, ["Bank", "Authority"]) == ["Ravindra Kolhatkar"]
+    assert scanned_names(amap, []) == list(amap.values())

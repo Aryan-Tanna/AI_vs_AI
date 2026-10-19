@@ -290,6 +290,8 @@ clerk:
   route_chars_per_paragraph: 700        # [PLACEHOLDER] each paragraph's opening characters shown to the router (cost, not behaviour)
   # Words that are part of many names, so they never mark a leaked name on their own [D-056].
   generic_name_words: [ltd, limited, pvt, private, company, co, corporation, corp, india, indian, bank, of, the, and, for, services, financial, finance, industries, infrastructure, developers, projects, trading, investment, investments, enterprises, group, asset, assets, reconstruction, holdings, international, mr, ms, mrs, shri, smt, sri, dr, "m/s", messrs, union, state, national, authority, department, board, resolution, professional, liquidator, committee, creditors, organisation, organization, society, association, cooperative, "co-operative", fund, trust, through, its, director, directors, partner, proprietor]
+  # D-148: pseudonym kinds the post-verdict name scan leaves out (named in many unrelated judgments).
+  recall_scan_skips_kinds: [Bank, Authority]
   # The appellate court speaking in its own voice: never in the agent view [SPEC H5-12, D-056].
   court_voice_markers: ["this court has held", "this court is of the", "we are of the view", "we are of the considered view", "in our view", "in our opinion", "we hold that", "we find that", "we are satisfied", "we do not find", "we see no reason", "we are not inclined", "we are inclined", "this tribunal has already held", "this appellate tribunal has", "this tribunal is of the", "the appeal is dismissed", "the appeal is allowed", "the appeals are dismissed", "the appeals are allowed", "appeal stands dismissed", "appeal stands allowed", "in the result", "for the foregoing reasons", "as held below"]
 

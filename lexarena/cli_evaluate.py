@@ -111,6 +111,7 @@ def _session(session_id: str, baseline: Path | None, out: Path | None, config_pa
             model_texts=_model_texts(config_path, session_id),
             shown_texts=_model_texts(config_path, session_id, shown=True),
             generic_words=cfg.clerk.generic_name_words,
+            skip_kinds=cfg.clerk.recall_scan_skips_kinds,
         )
     _write(out, result.outcome.to_document())
     evaluation = result.session.evaluation

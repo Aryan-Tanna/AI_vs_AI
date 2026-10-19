@@ -53,6 +53,14 @@ def recalled_names(
     return hits
 
 
+def scanned_names(anonymization_map: dict[str, str], skip_kinds: Iterable[str]) -> list[str]:
+    """D-148: the real names the scan looks for, leaving out parties whose pseudonym kind (the word before the hyphen,
+    e.g. "Bank-A") is in `clerk.recall_scan_skips_kinds`. Banks and authorities appear in many unrelated judgments a
+    model may name from general memory (DEV_0014), so naming one alone is not recall of this case."""
+    skip = set(skip_kinds)
+    return [name for pseudonym, name in anonymization_map.items() if pseudonym.split("-")[0] not in skip]
+
+
 class NotEvaluableError(RuntimeError):
     """A session the evaluator cannot compare: no bench verdict (pre-D-048), or not yet at VERDICT_RECORDED."""
 
@@ -70,6 +78,7 @@ def evaluate_session(
     model_texts: list[str] | None = None,
     generic_words: Iterable[str] = (),
     shown_texts: list[str] | None = None,
+    skip_kinds: Iterable[str] = (),
 ) -> EvaluationResult:
     """`model_texts`: every model's reasoning and output in this session (its trace), scanned for the real names
     after the verdict (D-145); a case a model named is reported with the memorised cases."""
@@ -79,7 +88,8 @@ def evaluate_session(
     case = stores.cases.get(session.case_id)
     truth = stores.ground_truth.get(session.case_id, session_id=session_id)  # refuses before the verdict
     framed = [i.issue_id for i in case.agent_view.framed_issues]
-    recalled = recalled_names(model_texts or [], truth.anonymization_map.values(), generic_words, shown_texts or [])
+    names = scanned_names(truth.anonymization_map, skip_kinds)
+    recalled = recalled_names(model_texts or [], names, generic_words, shown_texts or [])
     evaluation = evaluate(session.bench, truth, framed)
     stored = stores.sessions.record_evaluation(session_id, evaluation)
     outcome = CaseOutcome(
