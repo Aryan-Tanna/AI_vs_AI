@@ -91,6 +91,10 @@ class PrecedentCard(StoredModel):
     statutes: list[str] = Field(description="Law DB IDs the precedent cites (statutes_normalized)")
     rule: str = Field(description="ratio part 1, the abstract legal rule")
     matched: str = Field(description="the passage that best matched the query")
+    # D-153: the statutes as the precedent itself records them (statutes_cited, which may name Acts outside the Law
+    # DB, e.g. the Companies Act), and the start of its material facts, so a card shows what it was decided under.
+    cited: list[str] = Field(default_factory=list, description="statutes as the precedent records them")
+    facts: str = Field(default="", description="the precedent's material facts, capped")
     score: float
     score_kind: Literal["RERANKER", "VECTOR"]
 
@@ -104,6 +108,7 @@ class PrecedentExcerpt(StoredModel):
     decision_date: str
     part: PrecedentPart
     text: str
+    cited: list[str] = Field(default_factory=list)  # D-153: statutes as the precedent records them
 
 
 class SearchResult(StoredModel):

@@ -13,6 +13,7 @@ LessonFor = Literal["PETITIONER", "RESPONDENT", "BENCH"]
 MistakeKind = Literal[
     "MISSED_EVIDENCE",
     "UNANSWERED_POINT",
+    "OPPONENT_TECHNIQUE",  # D-153: a method the other side used well, for this side's own position (AgentCourt E_adv)
     "WRONG_LAW_VERSION",
     "MISSTATED_LAW",
     "WEAK_AUTHORITY",

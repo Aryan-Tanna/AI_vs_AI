@@ -47,6 +47,7 @@ class PrecedentText:
     case_title: str
     decision_date: str
     text: str
+    cited: tuple[str, ...] = ()  # D-153: statutes as the precedent records them
 
 
 def _unique(values: Iterable[str]) -> list[str]:
@@ -75,7 +76,7 @@ def fetch_precedents(uids: list[str], fetch: PrecedentFetcher) -> dict[str, Prec
     for uid in uids:
         got = fetch(uid, PRECEDENT_PART)
         if isinstance(got, PrecedentExcerpt):
-            found[uid] = PrecedentText(uid, got.case_title, got.decision_date, got.text)
+            found[uid] = PrecedentText(uid, got.case_title, got.decision_date, got.text, tuple(got.cited))
         elif isinstance(got, PrecedentView):
             found[uid] = PrecedentText(uid, got.case_title, got.decision_date, got.ratio_decidendi)
     return found
@@ -186,7 +187,9 @@ def render_precedents(precedents: dict[str, PrecedentText]) -> str:
     if not precedents:
         return NONE
     return "\n\n".join(
-        f"[{p.precedent_uid}] {p.case_title}, decided {p.decision_date}\n    ratio: {p.text}"
+        f"[{p.precedent_uid}] {p.case_title}, decided {p.decision_date}"
+        + (f"\n    decided under: {', '.join(p.cited)}" if p.cited else "")
+        + f"\n    ratio: {p.text}"
         for p in precedents.values()
     )
 

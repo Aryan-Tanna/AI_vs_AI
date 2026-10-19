@@ -173,3 +173,32 @@ def test_held_authorities_survive_brackets_and_bare_ids_but_never_invented_ones(
     got = held_cards(["[A#1]", " A ", "<invented>", "B"], [a, b, twin])
     assert [c.precedent_uid for c in got] == ["A#1"]  # A once; B is ambiguous; the invented one never held
     assert [c.precedent_uid for c in held_cards(["B#2"], [a, b, twin])] == ["B#2"]
+
+
+def test_the_closed_case_library_finds_and_fetches_nothing() -> None:
+    """D-153: the NO_CASE_LIBRARY ablation; research still runs, it simply returns nothing, for both sides alike."""
+    from lexarena.agents.knowledge import CaseLibrary
+    from lexarena.schemas.agent import ResearchQuery
+
+    closed = CaseLibrary.closed()
+    assert closed.can_search
+    assert closed.research([ResearchQuery(kind="authority", query="<q>", statutes=[])], 3) == []
+    assert closed.fetch("<uid>") is None
+
+
+def test_a_card_shows_what_its_precedent_was_decided_under_and_its_facts() -> None:
+    """D-153: DEV_0015's majority used a Companies Act ratio for an IBC question; the card now says so."""
+    from lexarena.agents.knowledge import render_cards
+
+    c = card("U9").model_copy(update={"cited": ["COMPANIES_ACT_2013_SEC_73(4)"], "facts": "<facts>"})
+    text = render_cards([c])
+    assert "decided under: COMPANIES_ACT_2013_SEC_73(4)" in text and "facts: <facts>" in text
+    assert "decided under" not in render_cards([card("U1")])  # nothing invented when a record lists none
+
+
+def test_the_facts_line_skips_party_identities() -> None:
+    from lexarena.retrieval.tools import PARTY_SECTION
+
+    facts = "1. PARTY IDENTITIES: <names>. 2. COMMERCIAL TRANSACTION: <transaction>."
+    assert PARTY_SECTION.sub("", facts, count=1).strip() == "2. COMMERCIAL TRANSACTION: <transaction>."
+    assert PARTY_SECTION.sub("", "<no numbered sections>", count=1) == "<no numbered sections>"

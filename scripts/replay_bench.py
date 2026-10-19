@@ -89,6 +89,8 @@ def main() -> int:
                 top_k=cfg.retrieval.top_k,
                 candidate_pool=cfg.retrieval.candidate_pool,
                 card_text_tokens=cfg.retrieval.card_text_tokens,
+                card_facts_tokens=cfg.retrieval.card_facts_tokens,
+                card_cited_max=cfg.retrieval.card_cited_max,
                 query_instruction=cfg.embedding.query_instruction,
             ),
         )

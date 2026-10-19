@@ -256,6 +256,8 @@ class RetrievalConfig(Strict):
     top_k: PositiveInt
     candidate_pool: PositiveInt
     card_text_tokens: PositiveInt
+    card_facts_tokens: int = Field(ge=0)  # D-153: material-facts line on each card; 0 turns it off
+    card_cited_max: PositiveInt  # D-153: statutes shown on a card's decided-under line
     reranker: RerankerConfig
 
     @model_validator(mode="after")

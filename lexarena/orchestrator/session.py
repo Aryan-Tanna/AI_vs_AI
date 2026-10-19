@@ -63,6 +63,7 @@ from lexarena.versioning import combine, law_versions, precedent_snapshot
 
 OPENING, REBUTTAL, CLOSING = "OPENING", "REBUTTAL", "CLOSING"
 NO_THEMIS, NO_MEMORY, NO_EXHIBIT_CARDS = "NO_THEMIS", "NO_MEMORY", "NO_EXHIBIT_CARDS"
+NO_CASE_LIBRARY, NO_LOOKUPS = "NO_CASE_LIBRARY", "NO_LOOKUPS"  # D-153: per-store ablations, both sides alike
 THEMIS_DISABLED = "THEMIS_DISABLED"
 TURN_PREFIX = "TURN:"
 NOTES_PREFIX = "NOTES:"
@@ -269,6 +270,8 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
                 top_k=cfg.retrieval.top_k,
                 candidate_pool=cfg.retrieval.candidate_pool,
                 card_text_tokens=cfg.retrieval.card_text_tokens,
+                card_facts_tokens=cfg.retrieval.card_facts_tokens,
+                card_cited_max=cfg.retrieval.card_cited_max,
                 query_instruction=cfg.embedding.query_instruction,
             )
 
@@ -284,7 +287,11 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
         for side in SIDES:
             lawyer_stores, themis_stores = stores[side]
             known = lawyer_stores.law.statute_ids()
-            library = CaseLibrary.for_role(Role.LAWYER, tools(lawyer_stores.precedents, known))
+            library = (
+                CaseLibrary.closed()
+                if NO_CASE_LIBRARY in opts.ablations
+                else CaseLibrary.for_role(Role.LAWYER, tools(lawyer_stores.precedents, known))
+            )
             knowledge = LawyerKnowledge(RegulationMemory(side_law[side]), library, ExperienceBase(pinned[side]))
             desk = KnowledgeDesk(
                 statute=statute_resolver(orch.law, as_of, known, svc.aliases, side_law[side]),
@@ -312,7 +319,7 @@ def _run_session(proc: SessionProcess, case_id: str, opts: SessionOptions, svc: 
                 cfg,
                 session_id=session_id,
                 exhibit_contents=NO_EXHIBIT_CARDS not in opts.ablations,
-                desk=desk,
+                desk=None if NO_LOOKUPS in opts.ablations else desk,
                 hearing_year=hearing_year,
             )
             fetch_lib = CaseLibrary.for_role(

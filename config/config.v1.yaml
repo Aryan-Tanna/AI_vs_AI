@@ -79,7 +79,7 @@ prompts:
   themis_fidelity_confirm: {id: themis/fidelity_confirm, version: 2}   # v2 same exemptions as layer2 v2 [D-145]; [D-105] second narrow check before a record-fidelity rejection
   themis_entailment: {id: themis/entailment, version: 2}   # v2 SUPPORTS needs the ratio's own words [D-145]; [SPEC D4, D-075] one call per draft for all its precedent citations
   themis_global_audit: {id: themis_global/audit, version: 1}   # [SPEC E3, E5, D-076] auditor model, whole transcript, one call
-  reflection_lessons: {id: reflection/lessons, version: 5}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]; v4 law by role only, knockouts first [D-140]; v5 closed record: only moves the agents have [D-149]
+  reflection_lessons: {id: reflection/lessons, version: 6}   # [SPEC F1-F7, D-077]; v3 strategy and method only, never the law [D-139]; v4 law by role only, knockouts first [D-140]; v5 closed record: only moves the agents have [D-149]; v6 learning from the opponent's technique [D-153]
   reflection_compare: {id: reflection/compare, version: 1}   # [SPEC F3, D-077] same / opposite / different
   judge_decide: {id: judges/decide, version: 6}         # [D-071]; v6 the hearing year [D-144]; v5 no outside law or case-identification, lessons are methods [D-142]; one opinion per persona and order; v2 auditor's notes and bench memory [D-078]; v3 bare IDs in the ID lists [D-099]; v4 lookups [D-112]
   judge_revise: {id: judges/revise, version: 3}         # [D-071] the one revision (ARCHITECTURE §5); v2 lists the citable IDs bare [D-099]; v3 answers to lookups [D-112]
@@ -124,6 +124,8 @@ retrieval:
   ratio_threshold: 0.75                  # [PLACEHOLDER] SPEC B6 expects a separate value
   top_k: 5                               # [SPEC B7]
   candidate_pool: 30                     # [PLACEHOLDER] vector hits fetched before reranking to top_k [D-055]
+  card_cited_max: 8                      # [D-153, PLACEHOLDER] statutes shown on a card's 'decided under' line, then '+N more'
+  card_facts_tokens: 40                  # [D-153, PLACEHOLDER] the card's facts line (after party identities); 0 = off
   card_text_tokens: 80                   # [PLACEHOLDER] cap on each card's rule and matched passage [D-055]
   reranker:
     enabled: false                       # [D-055] measured worse and 9-11x slower; see reports/step5b_rerank.md
@@ -221,7 +223,7 @@ runner:                                  # [D-073] Step 13
   allowed_splits: [DEV]                  # [D-073] the 500 are a red line until you start Phase 2 (CLAUDE.md §5.4)
   stage_timeout_s: 28800                 # [D-098] 8 h: Qwen 3.8 Flash reasons for minutes per call; 2 h cut DEV_0004 short at turn 8
   quota_window_hours: 24                 # [D-073] trailing window; no provider reset hour needed
-  ablations: [NO_THEMIS, NO_MEMORY, NO_EXHIBIT_CARDS]   # [SPEC G1] switches a run may name; the session stage reads them
+  ablations: [NO_THEMIS, NO_MEMORY, NO_EXHIBIT_CARDS, NO_CASE_LIBRARY, NO_LOOKUPS]   # [SPEC G1] switches a run may name; the session stage reads them; [D-153] per-store ablations as in AgentCourt Fig. 4
   quotas:                                # [MEASURED 2026-10-06, R-011, R-012] free tiers, per (model, key variable)
     - {model: gemini-2.5-flash, api_key_env: gemini_api, requests_per_window: 20, tokens_per_window: null}
     - {model: gemini-3.5-flash, api_key_env: gemini_api2, requests_per_window: 20, tokens_per_window: null}

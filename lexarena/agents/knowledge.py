@@ -25,7 +25,7 @@ from lexarena.memory.pinning import render as render_lessons
 from lexarena.retrieval.tools import RetrievalTools, tools_for
 from lexarena.schemas.agent import ResearchQuery
 from lexarena.schemas.lesson import Lesson
-from lexarena.schemas.retrieval import PrecedentCard
+from lexarena.schemas.retrieval import PrecedentCard, SearchResult
 from lexarena.storage.policy import Role
 from lexarena.themis_local.verify import LawContext
 
@@ -52,6 +52,19 @@ class CaseLibrary:
     @classmethod
     def for_role(cls, role: Role, tools: RetrievalTools) -> CaseLibrary:
         return cls(tools_for(role, tools))
+
+    @classmethod
+    def closed(cls) -> CaseLibrary:
+        """D-153, the NO_CASE_LIBRARY ablation: every search finds nothing and no precedent can be fetched, the same
+        for both sides (AgentCourt's "w/o case" ablation)."""
+
+        def nothing(query: str, statutes: Any = None) -> SearchResult:
+            return SearchResult(hits=[], statute_filter=[], ignored_statutes=[])
+
+        def none(precedent_uid: str, part: str = "ratio") -> None:
+            return None
+
+        return cls({"find_authority": nothing, "find_similar_cases": nothing, "get_precedent": none})
 
     @property
     def can_search(self) -> bool:
@@ -96,6 +109,8 @@ def render_cards(cards: list[PrecedentCard]) -> str:
         return "(none)"
     return "\n".join(
         f"[{c.precedent_uid}] {c.case_title} ({c.forum}, {c.decision_date}): {c.rule}"
+        + (f" | decided under: {', '.join(c.cited)}" if c.cited else "")
+        + (f" | facts: {c.facts}" if c.facts else "")
         + (f" | matched: {c.matched}" if c.matched else "")
         for c in cards
     )

@@ -323,3 +323,11 @@ def test_the_precedent_check_can_be_switched_off(tmp_path: Path) -> None:
         inputs(), session_id=SESSION_ID
     )
     assert verifier.requests == [] and len(judge.requests) == CALLS
+
+
+def test_the_bench_sees_what_each_cited_precedent_was_decided_under() -> None:
+    """D-153: the judges' packet lists the statutes as the precedent records them, beside its ratio."""
+    from lexarena.judges.packet import PrecedentText, render_precedents
+
+    text = render_precedents({"U": PrecedentText("U", "<title>", "2020-01-01", "<ratio>", ("<other Act s.1>",))})
+    assert "decided under: <other Act s.1>" in text and "ratio: <ratio>" in text

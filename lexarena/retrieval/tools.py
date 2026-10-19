@@ -18,6 +18,7 @@ tools SPEC D5 and I3 give it: verifiers and judges fetch by ID, they do not sear
 from __future__ import annotations
 
 import math
+import re
 from collections.abc import Callable
 from typing import Any, Protocol, get_args
 
@@ -63,6 +64,8 @@ PART_FIELDS: dict[str, tuple[str, ...]] = {
     "summary": ("summary",),
 }
 CUT_MARK = "…"
+# D-153: the precedent DB's material facts open with "1. PARTY IDENTITIES: ..." up to the next numbered section.
+PARTY_SECTION = re.compile(r"^\s*1\.\s*PARTY IDENTITIES:.*?(?=\s2\.\s)", re.DOTALL)
 
 
 class RetrievalTools:
@@ -79,6 +82,8 @@ class RetrievalTools:
         candidate_pool: int,
         card_text_tokens: int,
         query_instruction: str,
+        card_facts_tokens: int | None = None,
+        card_cited_max: int | None = None,
     ) -> None:
         self._reader = reader
         self._case = case
@@ -89,6 +94,8 @@ class RetrievalTools:
         self._top_k = top_k
         self._pool = candidate_pool
         self._card_tokens = card_text_tokens
+        self._facts_tokens = card_facts_tokens
+        self._cited_max = card_cited_max
         self._instruction = query_instruction
 
     # ------------------------------------------------------------ helpers
@@ -108,6 +115,20 @@ class RetrievalTools:
         first = token_windows(text, self._embedder.count_tokens, self._card_tokens)[0] if text else ""
         return first if first == text else first + CUT_MARK
 
+    def _cited(self, cited: list[str]) -> list[str]:
+        """D-153: at most `retrieval.card_cited_max` statutes, then a count of the rest."""
+        if self._cited_max is None or len(cited) <= self._cited_max:
+            return cited
+        return [*cited[: self._cited_max], f"+{len(cited) - self._cited_max} more"]
+
+    def _facts(self, material_facts: str) -> str:
+        """D-153: the material facts after the party identities, capped at `retrieval.card_facts_tokens`."""
+        if not self._facts_tokens or not material_facts:
+            return ""
+        text = PARTY_SECTION.sub("", material_facts, count=1).strip()
+        first = token_windows(text, self._embedder.count_tokens, self._facts_tokens)[0] if text else ""
+        return first if first == text else first + CUT_MARK
+
     def _card(self, payload: dict[str, Any], matched: str, score: float, reranked: bool) -> PrecedentCard:
         rule = core_rule(payload["ratio_decidendi"])
         return PrecedentCard(
@@ -120,6 +141,8 @@ class RetrievalTools:
             statutes=payload["statutes_normalized"],
             rule=self._cap(rule),
             matched="" if matched == rule else self._cap(matched),  # never spend tokens on the rule twice
+            cited=self._cited(list(payload.get("statutes_cited") or [])),
+            facts=self._facts(str(payload.get("material_facts") or "")),
             score=score,
             score_kind="RERANKER" if reranked else "VECTOR",
         )
@@ -197,6 +220,7 @@ class RetrievalTools:
             decision_date=payload["decision_date"],
             part=part,
             text="\n".join(payload[f] for f in PART_FIELDS[part]),
+            cited=list(payload.get("statutes_cited") or []),
         )
 
     def get_record_item(self, item_id: str) -> RecordItemResult | None:
