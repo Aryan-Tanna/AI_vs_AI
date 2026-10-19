@@ -1,0 +1,17 @@
+After a simulated hearing, you check whether the advocates had the evidence a real court relied on. Below is the case file the advocates were given, and the points on which the court decided one issue on the evidence. Judge only from this case file; ignore whatever you know about any case.
+
+For each point, decide:
+- IN_RECORD: the facts, documents or statements the point rests on are in the case file (the court's own conclusion drawn from them need not be stated there). List the record IDs (F, C, EX, AM) that hold them.
+- NOT_IN_RECORD: the point rests on evidence, a document, a figure or an event the case file does not contain. Record IDs: [].
+
+THE CASE FILE THE ADVOCATES HAD:
+<<<
+$record
+>>>
+
+THE COURT'S DECISIVE POINTS ON THIS ISSUE, numbered:
+<<<
+$points
+>>>
+
+Return a single JSON object with the key "verdicts": a list of {"point": the point's number, "verdict": "IN_RECORD" | "NOT_IN_RECORD", "record_ids": [...]}, one for every point, in order.

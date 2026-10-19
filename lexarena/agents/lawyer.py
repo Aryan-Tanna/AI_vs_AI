@@ -59,6 +59,23 @@ TURN_INSTRUCTION = {  # D-135: only the current turn type's instruction is shown
 }
 
 
+def held_cards(chosen: list[str], cards: list[PrecedentCard]) -> list[PrecedentCard]:
+    """The research cards a side chose to hold, in its order (D-152). An ID is matched after removing brackets and
+    spacing, by its full precedent_uid or by a bare precedent_id that exactly one returned card carries; anything
+    research did not return is never held."""
+    by_uid = {c.precedent_uid: c for c in cards}
+    ids: dict[str, list[PrecedentCard]] = {}
+    for c in cards:
+        ids.setdefault(c.precedent_id, []).append(c)
+    out: dict[str, PrecedentCard] = {}
+    for raw in chosen:
+        key = raw.strip().strip("[]").strip()
+        hit = by_uid.get(key) or (ids[key][0] if len(ids.get(key, [])) == 1 else None)
+        if hit is not None:
+            out.setdefault(hit.precedent_uid, hit)
+    return list(out.values())
+
+
 def condense(turns: list[PublishedTurn], fits: Callable[[str], bool]) -> str:
     """The longest faithful rendering that fits: full turns, then oldest-first ledgers, then oldest-first drops."""
     if not turns:
@@ -189,10 +206,8 @@ class Lawyer:
         notes = self._llm.complete_json(
             role=ROLE, user=notes_prompt, schema=StrategyNotes, session_id=self._session_id
         ).value
-        found = {c.precedent_uid: c for c in cards}
-        held = [uid for uid in dict.fromkeys(notes.authorities_held) if uid in found]  # only what research returned
-        self.notes = notes.model_copy(update={"authorities_held": held})
-        self.held = [found[uid] for uid in held]
+        self.held = held_cards(notes.authorities_held, cards)  # only what research returned (D-152)
+        self.notes = notes.model_copy(update={"authorities_held": [c.precedent_uid for c in self.held]})
         return self.notes
 
     def _lookups_section(self) -> str:

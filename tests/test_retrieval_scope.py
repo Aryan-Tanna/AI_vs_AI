@@ -138,3 +138,31 @@ def test_tools_end_to_end_through_the_scoped_reader(loaded: tuple[QdrantClient, 
         if p["precedent_id"] == "LATER"
     )
     assert tools.get_precedent(later_uid) is None
+
+
+def test_a_bare_or_bracketed_precedent_id_resolves_only_within_scope_and_only_if_unique(
+    loaded: tuple[QdrantClient, str],
+) -> None:
+    """D-152: lawyers asked for real, in-scope precedents by bare ID or in brackets and were told "not available"
+    (DEV_0009, DEV_0011, DEV_0013). A bare ID now resolves, still inside the cut-off and exclusions; an ID two
+    judgments share stays ambiguous and is refused."""
+    reader, name = loaded
+    r = scoped(reader, name, excluded=("EXCLUDED",))
+    early = r.get("EARLY")
+    assert early is not None and early["precedent_id"] == "EARLY"
+    tools = RetrievalTools(
+        reader=r,
+        case=agent_view(),
+        embedder=WordEmbedder(),
+        reranker=None,
+        known_statutes=set(KNOWN),
+        aliases=StatuteAliasTable(aliases=[]),
+        top_k=3,
+        candidate_pool=10,
+        card_text_tokens=100,
+        query_instruction="",
+    )
+    got = tools.get_precedent(" [EARLY] ")
+    assert got is not None and got.precedent_uid == early["precedent_uid"]
+    assert r.get("LATER") is None and r.get("EXCLUDED") is None  # scope still applies to a bare ID
+    assert r.get("SHARED") is None  # two judgments under one ID: ambiguous, refused

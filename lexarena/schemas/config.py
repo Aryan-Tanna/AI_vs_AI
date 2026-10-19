@@ -163,6 +163,7 @@ class PromptsConfig(Strict):
     clerk_agent_view: PromptRef
     clerk_ground_truth: PromptRef
     clerk_entailment: PromptRef
+    evaluator_evidence: PromptRef  # D-151
     clerk_probe: PromptRef
     clerk_agent_view_repair: PromptRef
     themis_extract: PromptRef
@@ -344,6 +345,7 @@ class JudgingConfig(Strict):
     abstain_on_order_swap_disagreement: bool  # D-051
     min_deciding_judges: int  # D-051: fewer deciding judges -> UNSTABLE verdict, reported apart, never decided
     check_reasons_with_layer1: bool  # D-071: THEMIS layer 1 checks the law each opinion states
+    check_precedent_support: bool  # D-150: a judge's governing precedent must state the rule applied
     orders_per_persona: Literal[1, 2]  # literal-ok: the two allowed order counts (D-093), not a tuning value
     show_audit_notes: bool  # D-078: the auditor's map of the transcript, never its scores
     show_audit_contradictions: bool  # D-105: unconfirmed self-contradictions are left out of the judges' notes

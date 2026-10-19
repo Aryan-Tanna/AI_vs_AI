@@ -319,3 +319,12 @@ def test_a_lesson_learns_from_the_side_that_used_it_never_the_better_of_two() ->
     assert lesson_reward(judge, s, rewards, status, fam) == 0.5
     old = make_session("S", "C")  # before D-145: no per-side record, the family rule decides, still the mean
     assert lesson_reward(lesson(4), old, rewards, status, fam) == pytest.approx(0.5)
+
+
+def test_an_evidence_issue_teaches_only_when_its_evidence_was_in_record() -> None:
+    """D-151: the post-verdict check found the evidence in the advocates' record, so a lesson may rest on the issue."""
+    from dataclasses import replace
+
+    c = candidate(issue_ids=["I2"], source_paras=["P6"])
+    assert "evidence-driven" in (check(c, 1, ctx()).reason or "")
+    assert check(c, 1, replace(ctx(), evidence_in_record={"I2"})).lesson is not None

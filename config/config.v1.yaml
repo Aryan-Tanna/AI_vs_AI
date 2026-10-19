@@ -69,6 +69,7 @@ prompts:
   clerk_route: {id: clerk/route, version: 1}            # [D-056]
   clerk_record_facts: {id: clerk/record_facts, version: 1}   # [D-056 amendment, D-058]
   clerk_ground_truth: {id: clerk/ground_truth, version: 1}   # [D-056]
+  evaluator_evidence: {id: evaluator/evidence_in_record, version: 1}  # [D-151] after the verdict only: did the record hold the evidence an EVIDENCE issue turned on
   clerk_entailment: {id: clerk/entailment, version: 2}  # [D-056] second family; v2 party roster [D-060]
   clerk_agent_view_repair: {id: clerk/agent_view_repair, version: 1}   # [D-060]
   clerk_probe: {id: clerk/probe, version: 1}            # [SPEC A4] asked of the lawyer model
@@ -174,6 +175,7 @@ judging:
   abstain_on_order_swap_disagreement: true   # [D-051] Claude Code's proposal, open to change
   min_deciding_judges: 2                 # [D-051] [PLACEHOLDER] fewer -> UNSTABLE, reported apart
   check_reasons_with_layer1: false       # [D-093] your decision 2026-10-10: the bench is a shadow bench; THEMIS stays on the lawyers. Free ID checks remain (check_opinion)
+  check_precedent_support: true         # [D-150] your decision 2026-10-20 (option A, like lawyers): each precedent a judge rests an issue on goes through the lawyers' entailment check (SPEC D4); a quote-backed CONTRADICTS gets the one revision, NOT_ADDRESSED is traced only
   orders_per_persona: 2                  # [D-105] your decision 2026-10-11: each judge decides twice, sides swapped (INTENT); reverses D-093
   show_audit_notes: true                 # [D-078] THEMIS-GLOBAL's point map and contradictions, never its scores; ablate on dev to check bias
   lookups_per_opinion: 2                 # [D-112, PLACEHOLDER] statute or own-lesson lookups per opinion, answered in its one revision round

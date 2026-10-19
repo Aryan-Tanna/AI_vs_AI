@@ -94,6 +94,10 @@ class IssueAlignment(StoredModel):
     real: Upholds
     driver: Literal["LAW", "EVIDENCE", "MIXED"]
     aligned: bool | None  # None when the bench did not decide the issue
+    # D-151, EVIDENCE issues only: whether the record the advocates had held the evidence the court relied on (None:
+    # not checked), and the record IDs that held it. Never the court's points themselves.
+    evidence_in_record: bool | None = None
+    evidence_record_ids: list[str] = Field(default_factory=list)
 
 
 class Evaluation(StoredModel):

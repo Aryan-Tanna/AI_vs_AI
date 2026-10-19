@@ -31,6 +31,7 @@ from lexarena.baselines.single_llm import predict
 from lexarena.config import load_config
 from lexarena.embedding import FastEmbedder
 from lexarena.evaluator.evaluate import evaluate_session
+from lexarena.evaluator.evidence import evidence_in_record
 from lexarena.evaluator.hearing import hearing_metrics, render_markdown
 from lexarena.evaluator.report import evaluation_report
 from lexarena.judges.run import law_for_bench
@@ -110,6 +111,8 @@ def _session(session_id: str, baseline: Path | None, out: Path | None, config_pa
         else None
     )
     cfg = load_config(config_path)
+    configure_llm_logging(cfg)
+    llm = build_llm_client(cfg)
     with SealedProcess.from_env_files([DEFAULT_ENV_FILE, SEALED_ENV_FILE]) as proc:
         result = evaluate_session(
             proc.evaluator(),
@@ -119,6 +122,9 @@ def _session(session_id: str, baseline: Path | None, out: Path | None, config_pa
             shown_texts=_model_texts(config_path, session_id, shown=True),
             generic_words=cfg.clerk.generic_name_words,
             skip_kinds=cfg.clerk.recall_scan_skips_kinds,
+            evidence_check=lambda view, truth: evidence_in_record(
+                llm, PromptStore(PROMPTS_ROOT), cfg, view, truth, session_id=session_id
+            ),
         )
     _write(out, result.outcome.to_document())
     evaluation = result.session.evaluation

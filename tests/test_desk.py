@@ -158,3 +158,18 @@ def test_holding_rules_are_the_same_for_both_sides() -> None:
     a = desk().serve([ask("AUTHORITY_SEARCH", "a hit")], held_statutes=set(), held_precedents=set())
     b = desk().serve([ask("AUTHORITY_SEARCH", "a hit")], held_statutes=set(), held_precedents=set())
     assert a.text == b.text and [c.precedent_uid for c in a.cards] == ["U1"]
+
+
+def test_held_authorities_survive_brackets_and_bare_ids_but_never_invented_ones() -> None:
+    """D-152: DEV_0013 (both sides) and DEV_0015 (one side) started the hearing with none of their research because
+    the model wrote the IDs in brackets. Brackets, spacing and a bare ID of a card research returned are accepted; an
+    ID research never returned, or a bare ID two returned cards share, is still dropped."""
+    from lexarena.agents.lawyer import held_cards
+
+    a, b = card("A#1"), card("B#2")
+    a = a.model_copy(update={"precedent_id": "A"})
+    b = b.model_copy(update={"precedent_id": "B"})
+    twin = card("B#3").model_copy(update={"precedent_id": "B"})
+    got = held_cards(["[A#1]", " A ", "<invented>", "B"], [a, b, twin])
+    assert [c.precedent_uid for c in got] == ["A#1"]  # A once; B is ambiguous; the invented one never held
+    assert [c.precedent_uid for c in held_cards(["B#2"], [a, b, twin])] == ["B#2"]

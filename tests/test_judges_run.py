@@ -280,3 +280,46 @@ def test_a_judges_lookup_is_answered_in_its_revision_and_the_provision_becomes_c
     assert not isinstance(first, InvalidOpinion) and first.revised
     assert first.issue_decisions[0].governing_rule_ids == [other]
     assert len(judge.requests) == CALLS + 1  # one extra call, only for the judge that asked
+
+
+def entailment(verdict: str, quote: str = "") -> dict[str, Any]:
+    return {"verdicts": [{"claim_id": "I1", "precedent_uid": PRECEDENT_UID, "verdict": verdict, "ratio_quote": quote}]}
+
+
+def test_a_precedent_whose_ratio_says_the_opposite_is_revised(tmp_path: Path) -> None:
+    """D-150, the lawyers' rule: a governing precedent whose ratio contradicts the judge's own finding and conclusion,
+    in the ratio's own words, is fed back once."""
+    contradicted = opinion_json(rule=PRECEDENT_UID)
+    llm, judge, verifier = client(
+        [contradicted, opinion_json()] + [opinion_json()] * (CALLS - 1),
+        [entailment("CONTRADICTS", "<ratio text>")],
+    )
+    result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    assert "PRECEDENT" in sent(judge, 1) and PRECEDENT_UID in sent(judge, 1) and "opposite" in sent(judge, 1)
+    assert result.decisions[0].opinions[0].revised and result.decisions[0].status == "DECIDED"
+    assert "<ratio text>" in verifier.requests[0].messages[-1].content  # checked against the precedent's own ratio
+
+
+def test_a_precedent_that_does_not_address_the_rule_is_not_fed_back(tmp_path: Path) -> None:
+    """D-150: NOT_ADDRESSED stays a note, as for counsel; the strict version made judges abstain over on-point
+    precedents in the DEV_0015 replay."""
+    llm, judge, _ = client([opinion_json(rule=PRECEDENT_UID)] * CALLS, [entailment("NOT_ADDRESSED")])
+    result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    assert len(judge.requests) == CALLS and result.verdict.status == "DECIDED"
+
+
+def test_a_supported_precedent_needs_no_revision(tmp_path: Path) -> None:
+    supported = opinion_json(rule=PRECEDENT_UID)
+    llm, judge, verifier = client([supported] * CALLS, [entailment("SUPPORTS", "<ratio text>")])
+    result = bench(llm, approved(tmp_path)).decide(inputs(), session_id=SESSION_ID)
+    assert len(judge.requests) == CALLS and not result.decisions[0].opinions[0].revised
+    assert len(verifier.requests) == 1  # the same (rule, precedent) pair is asked once per bench, then remembered
+
+
+def test_the_precedent_check_can_be_switched_off(tmp_path: Path) -> None:
+    off = CFG.model_copy(update={"judging": CFG.judging.model_copy(update={"check_precedent_support": False})})
+    llm, judge, verifier = client([opinion_json(rule=PRECEDENT_UID)] * CALLS)
+    Bench(llm, PromptStore(PROMPTS_ROOT), off, approved(tmp_path), layer1=no_layer1).decide(
+        inputs(), session_id=SESSION_ID
+    )
+    assert verifier.requests == [] and len(judge.requests) == CALLS

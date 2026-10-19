@@ -308,6 +308,9 @@ class Reflection:
             if case.build.claude_triaged
             else None,
             source_year=av.metadata.simulation_date.year,
+            evidence_in_record={
+                i.issue_id for i in (session.evaluation.issues if session.evaluation else []) if i.evidence_in_record
+            },
         )
         return candidates, ctx
 

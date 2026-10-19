@@ -21,6 +21,9 @@ INDEXED_KEYWORDS = ("precedent_id", "precedent_uid", "statutes_normalized")
 SCROLL_PAGE = 256  # literal-ok: Qdrant scroll page size
 
 
+AMBIGUITY_PROBE = 2  # literal-ok: fetch two rows so a bare ID shared by two judgments is seen, and refused (D-152)
+
+
 class PrecedentRepository:
     def __init__(self, principal: Principal, client: QdrantClient, collection: str = COLLECTION) -> None:
         self._principal = principal
@@ -157,15 +160,20 @@ class ScopedPrecedentReader:
         return [(dict(p.payload or {}), float(p.score)) for p in found.points]
 
     def get(self, precedent_uid: str) -> dict[str, Any] | None:
-        """One precedent by its unique ID, or None if it does not exist or lies outside the scope."""
+        """One precedent by its unique ID, or None if it does not exist or lies outside the scope.
+
+        D-152: a bare `precedent_id` (no `#hash`), with or without brackets, resolves when exactly one judgment in scope
+        carries it. Lawyers asked for real precedents by bare ID and were told "not available" (DEV_0009, DEV_0011,
+        DEV_0013). Two judgments under one ID stay ambiguous and are refused, never guessed; the cut-off and the
+        exclusion list apply to a bare ID exactly as to a full one."""
         require(self._principal, Store.PRECEDENTS, Op.READ)
+        key = precedent_uid.strip().strip("[]").strip()
+        field = "precedent_uid" if "#" in key else "precedent_id"
         page, _ = self._client.scroll(
             self._collection,
-            scroll_filter=self._filter(
-                [models.FieldCondition(key="precedent_uid", match=models.MatchValue(value=precedent_uid))]
-            ),
-            limit=1,
+            scroll_filter=self._filter([models.FieldCondition(key=field, match=models.MatchValue(value=key))]),
+            limit=AMBIGUITY_PROBE,
             with_payload=True,
             with_vectors=False,
         )
-        return dict(page[0].payload or {}) if page else None
+        return dict(page[0].payload or {}) if len(page) == 1 else None

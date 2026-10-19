@@ -1,7 +1,8 @@
 """Every rule a lesson must pass before it is stored (SPEC F1, F5, F7, I3-5, I3-9; D-077). Pure.
 
 A candidate is rejected, with the reason recorded, when:
-- it rests on no issue, or on an issue the court decided on EVIDENCE (F5), or on one it made no finding on;
+- it rests on no issue, or on an issue the court decided on EVIDENCE the advocates did not have (F5; D-151: an
+  EVIDENCE issue whose evidence the post-verdict check found in their record may teach), or on one with no finding;
 - its source paragraphs are not the court's paragraphs for those issues (provenance must be real);
 - it names a party, a pseudonym or any distinctive word of a real name written as the name writes it (I3-9, F7;
   D-149: an ordinary word in lower case is not the name); generic words that appear in many
@@ -52,6 +53,7 @@ class Context:
     source_review: Literal["OWNER", "CLAUDE_TRIAGE"] | None = None  # D-114
     legal_conclusion_markers: list[str] = field(default_factory=list)  # D-139
     figure_words: list[str] = field(default_factory=list)  # D-140
+    evidence_in_record: set[str] = field(default_factory=set)  # D-151: EVIDENCE issues whose evidence they had
 
 
 @dataclass(frozen=True)
@@ -89,7 +91,7 @@ def check(candidate: LessonCandidate, n: int, ctx: Context) -> Verdict:
     unknown = [i for i in issues if i not in findings]
     if unknown:
         return Verdict(None, f"issues the court made no finding on: {unknown}")
-    evidence = [i for i in issues if findings[i].driver == EXCLUDED_DRIVER]
+    evidence = [i for i in issues if findings[i].driver == EXCLUDED_DRIVER and i not in ctx.evidence_in_record]
     if evidence:
         return Verdict(None, f"evidence-driven issues produce no lesson (SPEC F5): {evidence}")
     allowed_paras = {p for i in issues for p in findings[i].source_paras}

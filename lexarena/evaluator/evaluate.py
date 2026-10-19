@@ -9,11 +9,14 @@ transition, which only the evaluator may make.
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
 
 from lexarena.evaluator.align import evaluate
+from lexarena.evaluator.evidence import EvidenceAvailability
+from lexarena.schemas.case import AgentCaseView
 from lexarena.schemas.evaluation import BaselinePrediction, CaseOutcome
+from lexarena.schemas.ground_truth import CaseGroundTruth
 from lexarena.schemas.session import Session
 from lexarena.storage.factory import EvaluatorStores
 
@@ -79,6 +82,7 @@ def evaluate_session(
     generic_words: Iterable[str] = (),
     shown_texts: list[str] | None = None,
     skip_kinds: Iterable[str] = (),
+    evidence_check: Callable[[AgentCaseView, CaseGroundTruth], Mapping[str, EvidenceAvailability]] | None = None,
 ) -> EvaluationResult:
     """`model_texts`: every model's reasoning and output in this session (its trace), scanned for the real names
     after the verdict (D-145); a case a model named is reported with the memorised cases."""
@@ -90,7 +94,9 @@ def evaluate_session(
     framed = [i.issue_id for i in case.agent_view.framed_issues]
     names = scanned_names(truth.anonymization_map, skip_kinds)
     recalled = recalled_names(model_texts or [], names, generic_words, shown_texts or [])
-    evaluation = evaluate(session.bench, truth, framed)
+    # D-151: after the verdict, with the unsealed truth; only yes/no and record IDs reach the stored evaluation.
+    evidence = evidence_check(stores.cases.agent_view(case.id), truth) if evidence_check is not None else None
+    evaluation = evaluate(session.bench, truth, framed, evidence)
     stored = stores.sessions.record_evaluation(session_id, evaluation)
     outcome = CaseOutcome(
         case_id=case.id,

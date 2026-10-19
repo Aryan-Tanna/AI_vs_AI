@@ -18,6 +18,18 @@ from lexarena.schemas.case import CaseId, IssueId, Split
 from lexarena.schemas.session import IssueAlignment
 
 
+class EvidencePointVerdict(StoredModel):
+    point: int
+    verdict: Literal["IN_RECORD", "NOT_IN_RECORD"]
+    record_ids: list[str]
+
+
+class EvidenceCheck(StoredModel):
+    """D-151: per decisive point of an EVIDENCE issue, whether the advocates' record held what it rests on."""
+
+    verdicts: list[EvidencePointVerdict]
+
+
 class BaselineIssueDraft(StoredModel):
     issue_id: str
     upholds: Upholds

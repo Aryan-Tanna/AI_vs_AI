@@ -44,6 +44,7 @@ from lexarena.judges.validate import Allowed, check_opinion, finalize, normalize
 from lexarena.llm.client import LLMClient
 from lexarena.memory.pinning import render as render_lessons
 from lexarena.prompts import PromptStore, RenderedPrompt
+from lexarena.schemas.agent import DraftClaim
 from lexarena.schemas.bench import (
     ORDERS,
     PERSONAS,
@@ -63,6 +64,7 @@ from lexarena.schemas.transcript import PublishedTurn
 from lexarena.storage.temporal import AsOf, StatuteView
 from lexarena.themis_local.extract import extract_checklists
 from lexarena.themis_local.layer1 import CaseFacts, alternative_readings, run_layer1
+from lexarena.themis_local.layer2 import WARN_PRECEDENT_NOT_ADDRESSED, Layer2Result, check_citations
 from lexarena.themis_local.verify import LawContext
 
 ROLE = "judge"
@@ -153,6 +155,8 @@ class Bench:
         self._personas = personas
         self._allow_unapproved = allow_unapproved_personas
         self._layer1 = layer1 or self._layer1_problems
+        # D-150: entailment verdicts by (stated rule, precedent), so a revision repeating a pair is not asked again.
+        self._entailment_memo: dict[tuple[str, str], tuple[str, str]] = {}
 
     def _era(self, year: int | None) -> str:
         """D-144: the hearing year, the same sentence the lawyers read; empty when no year is given."""
@@ -196,8 +200,62 @@ class Bench:
         )
         return [f"LAYER1 {e.code} on {e.statute_id}: {e.detail}" for e in result.hard_errors]
 
+    def _precedent_problems(
+        self, draft: OpinionDraft, allowed: Allowed, inputs: BenchInputs, session_id: str
+    ) -> list[str]:
+        """D-150: the lawyers' entailment check (SPEC D4, same prompt and verifier model) on each issue's finding and
+        conclusion against the ratio of every precedent in its governing rules, under the lawyers' rule: only a
+        quote-backed CONTRADICTS is a problem for the one revision. NOT_ADDRESSED is recorded in the trace, never fed
+        back: treating it as a problem made judges abstain over on-point precedents (DEV_0015 replay), the
+        over-rejection non-negotiable 7 forbids."""
+        if not self._cfg.judging.check_precedent_support:
+            return []
+        claims = [
+            (
+                d.issue_id,
+                DraftClaim(
+                    type="LAW",
+                    text=f"{d.finding} {d.conclusion}",
+                    record_ids=[],
+                    statute_id=None,
+                    precedent_ids=[r for r in dict.fromkeys(d.governing_rule_ids) if r in allowed.precedent_uids],
+                ),
+            )
+            for d in draft.issue_decisions
+        ]
+        claims = [(cid, c) for cid, c in claims if c.precedent_ids]
+        if not claims:
+            return []
+        out = Layer2Result()
+        check_citations(
+            self._llm,
+            self._prompts,
+            self._cfg,
+            claims,
+            inputs.fetch_precedent,
+            out,
+            session_id=session_id,
+            memo=self._entailment_memo,
+        )
+        problems = [
+            f"PRECEDENT {e.detail}; rest the issue only on rules whose text states what you apply"
+            for e in out.hard_errors
+        ]
+        unaddressed = [
+            w.detail
+            for w in out.warnings
+            if w.code == WARN_PRECEDENT_NOT_ADDRESSED and (w.detail or "").endswith(": NOT_ADDRESSED")
+        ]
+        if unaddressed:
+            trace.event("judge_precedent_not_addressed", details=unaddressed)
+        return problems
+
     def _problems(self, draft: OpinionDraft, allowed: Allowed, inputs: BenchInputs, session_id: str) -> list[str]:
-        return check_opinion(draft, allowed) + self._layer1(draft, inputs, session_id)
+        return (
+            check_opinion(draft, allowed)
+            + self._layer1(draft, inputs, session_id)
+            + self._precedent_problems(draft, allowed, inputs, session_id)
+        )
 
     # ------------------------------------------------------------ calls
 
@@ -274,6 +332,7 @@ class Bench:
 
     def decide(self, inputs: BenchInputs, *, session_id: str) -> BenchResult:
         require_supported(self._cfg.judging)
+        self._entailment_memo = {}
         # Every persona is checked before the first call, so an unapproved prompt never spends quota.
         personas = [self._personas.prompt(p, allow_unapproved=self._allow_unapproved) for p in PERSONAS]
         case = inputs.case
