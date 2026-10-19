@@ -80,3 +80,15 @@ def test_items_are_batched_within_the_character_budget(cfg: AppConfig) -> None:
     llm, provider = client(small, verdicts(["F1"]), verdicts(["EX-1"]), verdicts(["PETITIONER-G1"]))
     check_entailment(llm, PromptStore(PROMPTS_ROOT), small, view, SOURCES, session_id="t")
     assert len(provider.requests) == 3
+
+
+def test_a_bracketed_item_id_is_the_same_item(cfg: AppConfig) -> None:
+    """D-156: Groq answered "[RESPONDENT-G5]" for RESPONDENT-G5 and DEV_0018's clerk run stopped. Brackets and spacing
+    are removed before matching; a verdict for an item that was not asked about, or a missing one, still fails."""
+    view = build(draft()).view
+    llm, _ = client(cfg, verdicts([" [F1]", "EX-1", "[PETITIONER-G1]"], **{" [F1]": "NOT_SUPPORTED"}))
+    problems, _ = check_entailment(llm, PromptStore(PROMPTS_ROOT), cfg, view, SOURCES, session_id="t")
+    assert len(problems) == 1 and problems[0].startswith("F1 ")
+    llm, _ = client(cfg, verdicts(["[F1]", "EX-1", "[F9]"]))
+    with pytest.raises(EntailmentError):
+        check_entailment(llm, PromptStore(PROMPTS_ROOT), cfg, view, SOURCES, session_id="t")

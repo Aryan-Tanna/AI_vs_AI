@@ -99,11 +99,13 @@ def check_entailment(
         items = "\n\n".join(i.render() for i in batch)
         prompt = prompts.render(ref.id, ref.version, parties=roster, items=items)
         result = llm.complete_json(role=ROLE, user=prompt, schema=EntailmentResult, session_id=session_id).value
-        got = Counter(v.item_id for v in result.verdicts)
+        # D-156: an ID returned in brackets or with spacing ("[RESPONDENT-G5]") is the same item.
+        verdicts = [v.model_copy(update={"item_id": v.item_id.strip().strip("[]").strip()}) for v in result.verdicts]
+        got = Counter(v.item_id for v in verdicts)
         wanted = [i.item_id for i in batch]
         if any(got[i] != 1 for i in wanted) or set(got) - set(wanted):
             raise EntailmentError(f"verdicts {dict(got)} do not match items {wanted}")
-        for v in result.verdicts:
+        for v in verdicts:
             if v.verdict == "NOT_SUPPORTED":
                 problems.append(f"{v.item_id} is not supported by its sources ({v.reason})")
             elif v.verdict == "PARTLY":
