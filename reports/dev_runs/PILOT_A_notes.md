@@ -235,3 +235,25 @@ limitation framing. A THEMIS pass that a stricter reviewer would note; not decis
 opinion relied on it). Borderline analogies (Rule 11, allottee threshold) noted, not flagged.
 Lessons: 5 written, strategy only. Reflection rejected one candidate as "names a party ('commercial')": an ordinary
 word that is part of a real party name; the name filter is over-strict on common words (calibration item).
+
+## DEV_0014 (PILOT_D) result
+
+Bench UNSTABLE: Textualist and Purposivist each flipped overall with the presentation order and abstained; one
+deciding judge (Proceduralist, RESPONDENT) is too few. Real RESPONDENT. Issues: I1 unstable (real RESPONDENT), I2
+RESPONDENT = real, I3 RESPONDENT (real NEITHER). Baseline RESPONDENT. Order sensitivity on close questions now in 3 of
+7 cases (DEV_0010, 0011, 0014): the main bench weakness; abstention keeps it out of verdicts but costs decisions.
+Textualist reasoning: "That might be the actual outcome? The case name?" -- guessing the real result despite judge
+prompt v6 (no outside facts used, no name; it abstained). Recurrence of D-142's concern.
+THEMIS: 3 drafts rejected, all correct (T4 and T10 RESPONDENT cited Ramkrishna Electricals, which upheld a refund under
+s.66, for "no s.66 finding needed"; T4 misdescribed EX-2's prayer; T9 PETITIONER "EX-1 records only" when it records
+more). Cross-check: 139 claims, 136 precedent, 75 statute citations, 0 problems.
+Independent check (139): 130 supported, 7 statute-only, 0 invented facts, 0 overstated, 2 flagged misattributed
+(T8-C9, T10-C7: Anoop Kumar's s.8 pre-existing-dispute standard applied to a s.14/66 cheque defence). Claude's
+reading: analogy stated as a general rule, a stretch rather than a holding reversed; THEMIS lets analogy pass by
+design (warning, not hard error). Same pattern in the borderline notes (Vijay Pal Garg, BSE, FINVIN).
+PATTERN across DEV_0007-0014: precedents stretched beyond their context is the most common thing THEMIS lets through.
+No invented facts in any case. Candidate after the pilot: a WARN_PRECEDENT_ANALOGY visible to the judges (not a
+rejection), so the bench can weigh the stretch.
+Name scan: false alarm (lawyer named unrelated famous cases against a bank and the regulator); fixed D-148.
+Lessons: 6, method only; one judge lesson (check whether a cited provision was omitted or amended before the
+hearing) is general but plainly prompted by this judgment.
