@@ -293,11 +293,56 @@ def test_repeating_an_earlier_turn_is_a_hard_error_and_near_repeats_warn() -> No
     assert fresh.hard_errors == [] and fresh.repetition is None
 
 
-def test_a_closing_that_repeats_an_earlier_turn_only_warns() -> None:
-    """R-037, D-103: a closing summarises by design, so repetition there is a warning, never a rejection."""
+class ExactEmbedder:
+    """Identical sentences score 1.0 and different ones 0 (the hashed WordEmbedder scores unrelated texts near 0.9)."""
+
+    dim = 0  # grows with the texts seen; only the protocol needs it
+
+    def __init__(self) -> None:
+        self.seen: dict[str, int] = {}
+
+    def count_tokens(self, text: str) -> int:
+        return len(text.split())
+
+    def embed(self, texts: list[str]) -> list[list[float]]:
+        for t in texts:
+            self.seen.setdefault(t, len(self.seen))
+        size = len(self.seen)
+        return [[1.0 if i == self.seen[t] else 0.0 for i in range(size)] for t in texts]
+
+
+def test_a_closing_is_never_flagged_for_repeating() -> None:
+    """D-154: a closing summarises by design (R-037, D-103); the copied-sentence share is recorded, nothing flagged."""
     out = Layer2Result()
     check_repetition(WordEmbedder(), ARGUMENT, [ARGUMENT], HARD_REPETITION, out, closing=True)
-    assert out.hard_errors == [] and [w.code for w in out.warnings] == ["WARN_REPETITION"]
+    assert out.hard_errors == [] and out.warnings == [] and out.repetition == 1.0
+
+
+def test_repetition_is_the_share_of_sentences_already_said_and_the_warning_quotes_them() -> None:
+    """D-154: whole-turn similarity reads 0.91-0.96 between honest same-case turns; the measure is now the share of a
+    turn's sentences that nearly copy a sentence the side already said. One restated thesis line among new points is
+    not repetition; the warning names the sentences so the side can drop them."""
+    restated = "The debtor wrote the letter in EX-1 admitting the debt."
+    fresh = " ".join(
+        [
+            restated,
+            "Section seven requires only a debt above the threshold and a default by the debtor company.",
+            "The respondent has not pointed to any record item that disputes the date of that default.",
+            "The authorities in the library treat a later part payment as an acknowledgment of the debt.",
+            "The tribunal below therefore applied the correct test when it admitted the application on that record.",
+        ]
+    )
+    out = Layer2Result()
+    check_repetition(ExactEmbedder(), fresh, [ARGUMENT], CFG, out)
+    assert (
+        out.warnings == []
+        and out.repetition is not None
+        and out.repetition < CFG.themis_local.repetition_warn_threshold
+    )
+    again = Layer2Result()
+    check_repetition(ExactEmbedder(), ARGUMENT, [ARGUMENT], CFG, again)
+    assert [w.code for w in again.warnings] == ["WARN_REPETITION"]
+    assert restated in (again.warnings[0].detail or "")
 
 
 # ---------------------------------------------------------------- outcome policy

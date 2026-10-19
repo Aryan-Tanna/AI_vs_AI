@@ -1,9 +1,9 @@
 """Hearing metrics in code, after the verdict (D-137). No model calls except the local embedder for novelty.
 
 Per side: issue coverage, rebuttal depth and consistency (THEMIS-GLOBAL), verification health (hard errors, retries,
-first-try rate, FLAGGED turns, citation tiers), repetition (best similarity of each turn to the side's own earlier
-turns, the THEMIS measure), and prerequisite warnings. Bench: abstentions, judges whose two presentation orders
-disagree, and how often the side presented first wins. Reasoning alignment: the statutes and precedents the deciding
+first-try rate, FLAGGED turns, citation tiers), repetition (share of each turn's sentences copied from the side's own
+earlier turns, the THEMIS measure, D-154), and prerequisite warnings. Bench: abstentions, judges whose two presentation
+orders disagree, and how often the side presented first wins. Reasoning alignment: the statutes and precedents the deciding
 judges rested on against those the real court analysed and followed (precision and recall).
 
 Report-only: never shown to agents or judges, never a gate, nothing is tuned on test-set values (non-negotiable 9).
@@ -24,6 +24,7 @@ from lexarena.schemas.metrics import BenchMetrics, HearingMetrics, ReasoningAlig
 from lexarena.schemas.session import Session
 from lexarena.schemas.transcript import PrivateTurnData, PublishedTurn
 from lexarena.themis_local.audit import PREREQUISITE_UNADDRESSED
+from lexarena.themis_local.layer2 import sentences
 
 RELIED_ON = ("FOLLOWED", "APPLIED")  # precedent treatments that make a precedent part of the court's governing law
 UID_SEPARATOR = "#"  # a precedent UID is "<precedent_id>#<hash>"
@@ -36,12 +37,23 @@ def _cosine(a: list[float], b: list[float]) -> float:
     return sum(x * y for x, y in zip(a, b, strict=True)) / norm if norm else 0.0
 
 
-def repetition_series(texts: list[str], embedder: Embedder) -> list[float]:
-    """For each turn after the first, its best similarity to the same side's earlier turns."""
-    if len(texts) <= 1:
-        return []
-    vectors = embedder.embed(texts)
-    return [max(_cosine(vectors[i], v) for v in vectors[:i]) for i in range(1, len(vectors))]
+def repetition_series(texts: list[str], embedder: Embedder, sentence_similarity: float) -> list[float]:
+    """For each turn after the first, the share of its sentences that nearly copy a sentence of the same side's earlier
+    turns (D-154, the THEMIS measure; whole-turn similarity read 0.91-0.96 between honest turns)."""
+    split = [sentences(t) for t in texts]
+    flat = [s for ss in split for s in ss]
+    vectors = iter(embedder.embed(flat) if flat else [])
+    per_turn = [[next(vectors) for _ in ss] for ss in split]
+    out: list[float] = []
+    for i in range(1, len(texts)):
+        said = [v for vs in per_turn[:i] for v in vs]
+        mine = per_turn[i]
+        if not mine or not said:
+            out.append(0.0)
+            continue
+        copied = sum(1 for v in mine if max(_cosine(v, w) for w in said) >= sentence_similarity)
+        out.append(copied / len(mine))
+    return out
 
 
 def _share(part: int, whole: int) -> float | None:
@@ -62,10 +74,11 @@ def side_metrics(
     private: list[PrivateTurnData],
     framed: list[str],
     embedder: Embedder,
+    sentence_similarity: float,
 ) -> SideMetrics:
     own = [t for t in turns if t.speaker == side]
     addressed = {i for t in own for i in t.issues_addressed}
-    reps = repetition_series([t.published_text for t in own], embedder)
+    reps = repetition_series([t.published_text for t in own], embedder, sentence_similarity)
     results = [p.themis_local for p in private]
     tiers = Counter(a.citation_tier for p in private for a in p.claim_assessments if a.citation_tier is not None)
     return SideMetrics(
@@ -165,11 +178,12 @@ def hearing_metrics(
     truth: CaseGroundTruth,
     framed: list[str],
     embedder: Embedder,
+    sentence_similarity: float,
 ) -> HearingMetrics:
     return HearingMetrics(
         session_id=session.id,
         case_id=session.case_id,
-        sides={s: side_metrics(s, session, turns, private[s], framed, embedder) for s in SIDES},
+        sides={s: side_metrics(s, session, turns, private[s], framed, embedder, sentence_similarity) for s in SIDES},
         bench=bench_metrics(session.judge_decisions),
         reasoning=reasoning_alignment(session.judge_decisions, truth),
     )

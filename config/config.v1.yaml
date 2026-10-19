@@ -145,10 +145,11 @@ session:
 themis_local:
   retry_cap: 3                           # [SPEC D8]
   extraction_min_confidence: 0.7         # [SPEC D1]
-  repetition_hard_threshold: 0.95        # [SPEC D8]
+  repetition_hard_threshold: 0.6         # [D-154, PLACEHOLDER] share of a turn's sentences copied from the side's earlier turns (was whole-turn cosine 0.95, SPEC D8)
   repetition_hard_error: false           # [D-105] your decision 2026-10-11: repetition only warns (honest same-case turns score 0.91-0.96)
   confirm_fidelity_rejections: true      # [D-105] your decision 2026-10-11: a second narrow check must agree before a record-fidelity rejection
-  repetition_warn_threshold: 0.85        # [PLACEHOLDER, D-075] similarity to own earlier turn that warns (SPEC D8: below the hard threshold is a warning)
+  repetition_warn_threshold: 0.25        # [D-154, PLACEHOLDER] share of copied sentences that warns; pilot rebuttals copied 0-15%
+  repetition_sentence_similarity: 0.92   # [D-154, PLACEHOLDER] bge-small cosine at which a sentence counts as a copy
   score_weights: {rule: 0.5, llm: 0.5}   # [PLACEHOLDER]
   penalty_cap: 0.30                      # [SPEC D6]
   threshold_overlay_parameter: minimum_default_inr   # overlay parameter holding the dated minimum default [D-062]

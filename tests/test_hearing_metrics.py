@@ -82,12 +82,13 @@ def test_an_abstaining_judge_adds_no_governing_law() -> None:
 
 
 def test_identical_turns_repeat_fully_and_side_metrics_are_per_side() -> None:
-    assert repetition_series(["same", "same"], WordEmbedder()) == [pytest.approx(1.0)]
-    assert repetition_series(["only one"], WordEmbedder()) == []
+    same = "The same sentence of at least six words."
+    assert repetition_series([same, same], WordEmbedder(), 0.92) == [pytest.approx(1.0)]
+    assert repetition_series(["only one"], WordEmbedder(), 0.92) == []
     s = session("S", "C")
     order: list[tuple[int, Side]] = [(1, "PETITIONER"), (2, "RESPONDENT"), (3, "PETITIONER")]
-    turns = [published_turn("S", "C", t, side) for t, side in order]
+    turns = [published_turn("S", "C", t, side).model_copy(update={"published_text": same}) for t, side in order]
     private = [private_turn("S", "C", t, "PETITIONER", "<w>") for t in (1, 3)]
-    m = side_metrics("PETITIONER", s, turns, private, ["I1", "I2"], WordEmbedder())
+    m = side_metrics("PETITIONER", s, turns, private, ["I1", "I2"], WordEmbedder(), 0.92)
     assert m.turns == 2 and m.issue_coverage == 0.5 and m.first_try_rate == 1.0
     assert m.max_repetition == pytest.approx(1.0) and m.prerequisite_warnings == 2 and m.rebuttal_depth is None

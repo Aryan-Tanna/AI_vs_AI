@@ -15,8 +15,9 @@ Four jobs, on the verifier model (a different family from the lawyers, temperatu
    ratio; NOT_ADDRESSED and unverifiable citations are warnings. VERIFIED when every cited precedent supports the claim.
    The REFERENCED tier needs an index of authorities cited inside precedents (Q-026) and is not built: such citations
    are UNVERIFIABLE, which never rejects.
-4. Repetition (D8): embedding similarity to the agent's own earlier turns; above `repetition_hard_threshold` it is
-   ERR_REPEATED_ARGUMENT, above `repetition_warn_threshold` a warning.
+4. Repetition (D8; D-154): the share of the turn's sentences that nearly copy the agent's own earlier sentences; at
+   `repetition_warn_threshold` a warning that quotes them, above `repetition_hard_threshold` ERR_REPEATED_ARGUMENT
+   only when `repetition_hard_error` is on.
 """
 
 from __future__ import annotations
@@ -42,6 +43,10 @@ UNMAPPED = "UNMAPPED"
 STATUTE_NOT_AVAILABLE = "STATUTE_NOT_AVAILABLE"
 WARN_UNVERIFIABLE_CITATION = "WARN_UNVERIFIABLE_CITATION"
 WARN_PRECEDENT_NOT_ADDRESSED = "WARN_PRECEDENT_NOT_ADDRESSED"
+# D-154: sentence-level repetition. A break after . ; or : before a capital, bracket or parenthesis.
+SENTENCE_BREAK = re.compile(r"(?<=[.;:])\s+(?=[A-Z\[(])")
+MIN_SENTENCE_WORDS = 6  # literal-ok: shorter pieces are connectives ("On I1, briefly:"), not arguments
+REPEAT_QUOTES = 3  # literal-ok: copied sentences quoted in the warning, enough to act on
 WARN_REPETITION = "WARN_REPETITION"
 
 PrecedentFetcher = Callable[..., PrecedentExcerpt | PrecedentView | None]
@@ -327,20 +332,46 @@ def _cosine(a: list[float], b: list[float]) -> float:
     return sum(x * y for x, y in zip(a, b, strict=True)) / norm if norm else 0.0
 
 
+def sentences(text: str) -> list[str]:
+    """A turn's sentences of at least `MIN_SENTENCE_WORDS` words (shorter ones are connectives, not arguments)."""
+    return [p.strip() for p in SENTENCE_BREAK.split(text) if len(p.split()) >= MIN_SENTENCE_WORDS]
+
+
 def check_repetition(
     embedder: Embedder, argument: str, earlier: list[str], cfg: AppConfig, out: Layer2Result, *, closing: bool = False
 ) -> None:
-    """Similarity to the side's own earlier turns. ERR_REPEATED_ARGUMENT only when `repetition_hard_error` is on (off in
-    v1, D-105: honest same-case turns score 0.91-0.96) and the turn is not a closing (D-103); otherwise a warning."""
+    """D-154: the share of this turn's sentences that nearly copy (cosine >= `repetition_sentence_similarity`) a
+    sentence of the side's own earlier turns. Whole-turn similarity read 0.91-0.96 between honest same-case turns
+    (D-105), so it could not tell repetition from argument; a sentence share can. At `repetition_warn_threshold` a
+    warning quoting the copied sentences; ERR_REPEATED_ARGUMENT above `repetition_hard_threshold` only when
+    `repetition_hard_error` is on (off in v1). A closing summarises by design: its share is recorded, never flagged."""
     if not earlier:
         return
-    vectors = embedder.embed([argument, *earlier])
-    best = max(_cosine(vectors[0], v) for v in vectors[1:])
-    out.repetition = best
+    mine = sentences(argument)
+    said = [x for turn in earlier for x in sentences(turn)]
+    if not mine or not said:
+        return
+    vectors = embedder.embed([*mine, *said])
+    new, old = vectors[: len(mine)], vectors[len(mine) :]
     t = cfg.themis_local
-    if best > t.repetition_hard_threshold and t.repetition_hard_error and not closing:
+    copied = [
+        s for s, v in zip(mine, new, strict=True) if max(_cosine(v, w) for w in old) >= t.repetition_sentence_similarity
+    ]
+    share = len(copied) / len(mine)
+    out.repetition = share
+    if closing:
+        return
+    quoted = "; ".join(f'"{c}"' for c in copied[:REPEAT_QUOTES])
+    if share > t.repetition_hard_threshold and t.repetition_hard_error:
         out.hard_errors.append(
-            Problem("ERR_REPEATED_ARGUMENT", f"the argument repeats an earlier turn of yours (similarity {best:.2f})")
+            Problem(
+                "ERR_REPEATED_ARGUMENT", f"{share:.0%} of this turn's sentences repeat your earlier turns: {quoted}"
+            )
         )
-    elif best > t.repetition_warn_threshold:
-        out.warnings.append(ThemisWarning(code=WARN_REPETITION, detail=f"similarity {best:.2f} to an earlier turn"))
+    elif share >= t.repetition_warn_threshold:
+        out.warnings.append(
+            ThemisWarning(
+                code=WARN_REPETITION,
+                detail=f"{share:.0%} of this turn's sentences repeat your earlier turns, e.g. {quoted}",
+            )
+        )

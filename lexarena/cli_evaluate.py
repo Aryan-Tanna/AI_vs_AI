@@ -176,6 +176,7 @@ def _metrics(run_id: str, config_path: Path) -> int:
                     stores.ground_truth.get(session.case_id, session_id=sid),
                     [i.issue_id for i in case.agent_view.framed_issues],
                     embedder,
+                    cfg.themis_local.repetition_sentence_similarity,
                 )
             )
     target = REPO_ROOT / "reports" / "dev_runs" / f"{run_id}_metrics"

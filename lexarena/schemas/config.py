@@ -310,6 +310,7 @@ class ThemisLocalConfig(Strict):
     repetition_hard_error: bool  # D-105: false makes repetition a warning on every turn
     confirm_fidelity_rejections: bool  # D-105: a second narrow call must agree before ERR_FACT_NOT_IN_RECORD
     repetition_warn_threshold: UnitInterval
+    repetition_sentence_similarity: UnitInterval  # D-154: a sentence this similar to one already said is a copy
     score_weights: ScoreWeights
     penalty_cap: UnitInterval
     threshold_overlay_parameter: NonEmptyStr
