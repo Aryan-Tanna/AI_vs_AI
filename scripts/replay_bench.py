@@ -6,6 +6,10 @@ lessons not learned from this case. First drafts whose prompt is unchanged
 come from the response cache; only new checks and revisions call a model. Nothing is written to the session.
 
     .venv/Scripts/python scripts/replay_bench.py SESSION_ID [--out FILE]
+
+Noise check (R-053): `--seed N --personas P [P ...] --max-usd X` re-decides only those personas under another seed
+(so nothing comes from the cache), stopping before any opinion once the replay has spent X. The verdict of a partial
+bench means nothing; read the opinions.
 """
 
 from __future__ import annotations
@@ -13,7 +17,9 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -30,12 +36,15 @@ from lexarena.app import (  # noqa: E402
 from lexarena.cli_judges import PERSONA_ROOT  # noqa: E402
 from lexarena.config import load_config  # noqa: E402
 from lexarena.embedding import FastEmbedder  # noqa: E402
+from lexarena.judges import run as judges_run  # noqa: E402
 from lexarena.judges.personas import PersonaRegistry  # noqa: E402
 from lexarena.judges.run import Bench, BenchInputs, law_for_bench  # noqa: E402
 from lexarena.memory.pinning import usable  # noqa: E402
 from lexarena.orchestrator.session import lesson_search, statute_resolver  # noqa: E402
 from lexarena.prompts import PromptStore  # noqa: E402
 from lexarena.retrieval.tools import RetrievalTools  # noqa: E402
+from lexarena.runner.spend import spent_since  # noqa: E402
+from lexarena.schemas.config import AppConfig  # noqa: E402
 from lexarena.schemas.lesson import Lesson  # noqa: E402
 from lexarena.schemas.retrieval import CaseScope  # noqa: E402
 from lexarena.statute_ids import load_statute_aliases  # noqa: E402
@@ -46,12 +55,39 @@ from lexarena.storage.temporal import AsOf  # noqa: E402
 CONFIG = ROOT / "config" / "config.v1.yaml"
 
 
+def guard_spend(cfg: AppConfig, max_usd: float) -> None:
+    """Check what this replay has spent (priced from the call log, D-109) before each opinion."""
+    start = datetime.now(UTC)
+    log = REPO_ROOT / cfg.llm.log_path
+    opinion = judges_run.Bench._opinion
+
+    def checked(self: Any, *args: Any, **kwargs: Any) -> Any:
+        spent = spent_since(log, cfg, start)
+        if spent.unpriced or spent.usd >= max_usd:
+            raise SystemExit(f"spend guard: ${spent.usd:.3f} of ${max_usd:.2f}, unpriced {spent.unpriced}")
+        print(f"spend so far ${spent.usd:.3f}", file=sys.stderr)
+        return opinion(self, *args, **kwargs)
+
+    judges_run.Bench._opinion = checked  # type: ignore[method-assign]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("session_id")
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--seed", type=int, help="another seed, so every call is fresh (R-053)")
+    ap.add_argument("--personas", nargs="+", help="decide only these personas")
+    ap.add_argument("--max-usd", type=float, help="stop before an opinion once this replay has spent this much")
     a = ap.parse_args()
+    if a.seed is not None and a.max_usd is None:
+        ap.error("--seed makes every call fresh; give --max-usd")
     cfg = load_config(CONFIG)
+    if a.seed is not None:
+        cfg = cfg.model_copy(update={"seed": a.seed})
+    if a.personas:
+        judges_run.PERSONAS = tuple(p for p in judges_run.PERSONAS if p in a.personas)
+    if a.max_usd is not None:
+        guard_spend(cfg, a.max_usd)
     configure_llm_logging(cfg)
     prompts = PromptStore(PROMPTS_ROOT)
     llm = build_llm_client(cfg)
