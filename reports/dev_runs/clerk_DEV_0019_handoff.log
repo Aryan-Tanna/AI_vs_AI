@@ -1,0 +1,17 @@
+{
+  "case_id": "DEV_0019",
+  "stored": false,
+  "problems": [
+    "1 run(s) of 12 words copied from the reasoning: ['was listed at item no under the caption ordinary for further consideration']"
+  ],
+  "flags": [
+    "ENTAILMENT_PARTLY: F2: Bank-T as appellant not indicated in sources; only liquidator identified.",
+    "CLERKED_BY_CLAUDE: names, routing, record facts, agent view and ground truth answered by Claude Code (D-127, pilot only)"
+  ],
+  "excluded_precedents": [
+    "2025_NCLAT_DEL_2373",
+    "2025_NCLAT_DEL_1103_1084"
+  ],
+  "memorization_probe": "NOT_IDENTIFIED",
+  "review_file": "reports/review/DEV_0019.md"
+}

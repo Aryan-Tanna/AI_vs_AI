@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\IPD_AIvsAI\.venv\Scripts\lexarena.exe\__main__.py", line 10, in <module>
+  File "C:\IPD_AIvsAI\lexarena\cli.py", line 158, in main
+    return _dispatch(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli.py", line 177, in _dispatch
+    return cli_clerk.run(args, path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli_clerk.py", line 243, in run
+    return _run(args.file, args.case_id, config_path, handoff=args.handoff)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli_clerk.py", line 116, in _run
+    outcome = clerk_judgment(
+              ^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\clerk\pipeline.py", line 184, in clerk_judgment
+    draft = repair_agent_view(
+            ^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\clerk\steps.py", line 286, in repair_agent_view
+    return llm.complete_json(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 86, in complete_json
+    return self._complete_one(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 257, in _complete_one
+    raise last_error
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 173, in _complete_one
+    response = provider.complete(request, api_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\providers\gemini.py", line 76, in complete
+    raise OutputTruncatedError(
+lexarena.llm.errors.OutputTruncatedError: gemini-3.8-flash hit max_output_tokens (24576)

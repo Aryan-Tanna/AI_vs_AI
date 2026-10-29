@@ -1,0 +1,25 @@
+# DEV_0016
+
+routing: {'HEADER': 1, 'LOWER_ORDER': 5, 'SUBMISSIONS_P': 5, 'SUBMISSIONS_R': 1, 'FACTS': 3, 'ANALYSIS': 1, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 0
+verbatim overlap with sealed text: FOUND (inspect)
+  finding I1: 1 shared 8-word runs
+      'directed inspection and measurement of the property claimed' in: agent_view.record.stipulated_facts.4.text: The order under appeal records that the residuary jurisdiction under Section 60(5) of the Code is primarily meant for issues arising out of or in relation to the insolvency resolution or liquidation process and cannot or
+  conclusion: 11 shared 8-word runs
+      'adjudicating authority dated 09 07 2026 be set' in: agent_view.reliefs_sought.PETITIONER.0: That the order of the Adjudicating Authority dated 09.07.2026 be set aside.
+      'be dismissed and the order under appeal upheld' in: agent_view.reliefs_sought.RESPONDENT.0: That the appeal be dismissed and the order under appeal upheld.
+      'that the appeal be dismissed and the order' in: agent_view.reliefs_sought.RESPONDENT.0: That the appeal be dismissed and the order under appeal upheld.
+outcome words in agent view: 3
+  ...y": "PETITIONER"}], "reliefs_sought": {"PETITIONER": ["That the order of the Adjudicating Authority dated 09.07.2026 be set aside."], "RESPONDENT": ["That the appeal be dismissed and the or...
+  ..."PETITIONER": ["That the order of the Adjudicating Authority dated 09.07.2026 be set aside."], "RESPONDENT": ["That the appeal be dismissed and the order under appeal upheld."]}, "opening_positions":...
+  ...ing Authority dated 09.07.2026 be set aside."], "RESPONDENT": ["That the appeal be dismissed and the order under appeal upheld."]}, "opening_positions": {"PETITIONER": [{"issue_id": "I1"...
+balance: OK
+record: 8 stipulated, 1 contested, 3 exhibits, 0 amounts; issues 2
+excluded precedents: ['2024_NCLAT_DEL_25', '2025_NCLAT_CH_378', '2025_NCLAT_CH_380', '2025_NCLAT_DEL_764', '2026_NCLAT_CH_368', '2026_NCLAT_CH_456']
+clerk flags: ['CLERKED_BY_CLAUDE']
+memorization probe: NOT_IDENTIFIED
+
+
+# Claude triage 2026-10-18: AUTOMATIC SCANS ONLY (owner's instruction: no full split review).
+# names [], registration numbers [], addresses [] on the stored agent view. Not read against the judgment.

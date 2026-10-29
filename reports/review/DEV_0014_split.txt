@@ -1,0 +1,34 @@
+# DEV_0014
+
+routing: {'FACTS': 2, 'LOWER_ORDER': 1, 'SUBMISSIONS_P': 15, 'SUBMISSIONS_R': 14, 'ANALYSIS': 33, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 11
+  [P34.S3] The Adjudicating Authority also directed that a copy of the order be forwarded to the Insolvency and Bankruptcy Board of India ("IBBI") and the Ministry of Corporate Affairs ("MCA") for taking such action as may be considered appropriate under Section 74 of the Code.
+  [P38.S2] Relevant extracts of the same are extracted below: APPLICATION UNDER SECTION 66, 74, AND 60(5) OF THE INSOLVENCY AND BANKRUPTCY CODE, 2016 SECTION 213 OF THE COMPANIES ACT, 2013 AND READ WITH RULE 11 OF THE NATIONAL COMPANY LAW TRIBUNAL RULES, 2016 SEEKING NECESSARY DIRECTIONS IN RESPECT OF CORPORATE INSOLVENCY RESOLUTION PROCESS OF SUPREME TRANSPORT ORGANIZATION PRIVATE LIMITED DETAILS OF APPLICATION 1.
+  [P38.S3] The present application ("Application") is filed by , Resolution Professional , Prashant Jain ("Applicant"/ "IRP") of Supreme Transport Organization Private Limited ("Corporate Debtor"/ "STOPL"), under Section 213 of the Companies Act 2013 read with Section 74 and Section 60(5) of the Insolvency and Bankruptcy Code, 2016 ("IBC/Code") read with Rule 11 of the National Company Law Tribunal Rules, 2016 ("NCLT Rules") seeking reimbursement of the amount withdrawn from the bank account of the Corporate Debtor during the subsistence of the moratorium.'' Company Appeal (AT) (Ins.) No. 86 of 2025
+  [P39.S3] Paragraph 1 of the IA also records the main prayer of the RP seeking reimbursement of the amount withdrawn from the bank account of the Corporate Debtor during the subsistence of the moratorium.
+  [P39.S4] Impugned order has also duly noted the same statutory provisions under which the application was preferred.
+  [P40.S2] In the Memorandum of Appeal, the Appellant himself has described the Impugned Order as one arising out of an application filed under Sections 66, 74 and 60(5) of the Code.
+  [P45.S1] The grounds for the prayer in IA No. 3653 of 2024 are given in para 6 of application which is extracted below: 6.
+  [P47.S2] In view of the above facts and circumstances and submissions made, the Applicant most humbly prays that this Hon'ble Adjudicating Authority may be pleased to: (a) Pass a direction to Secretary or Joint Secretary Ministry of Corporate Affairs or other such person to investigate the affairs more specifically the appropriation of INR 8,05,11,748/- (Eight Crores Five Lakhs Eleven Thousand Seven Hundred Forty-Eight only) amount by the Respondents in violation of Moratorium under section 14 of the Code; (b) Pass an order reversing the appropriation of the amount of INR 8,05,11,748/- (Eight Crores Five Lakhs Eleven Thousand Seven Hundred Forty-Eight only) by the Respondents and further direct the Respondents to contribute the above sum to the Corporate Debtor's bank account; (c) Pass an order directing the Respondents to provide details regarding the disbursal of INR 8,05,11,748/ - (Eight Crores Five Lakhs Eleven Thousand Seven Hundred Forty-Eight only) amount that was withdrawn from the bank account; (d) Pass an order for costs; and (e) Pass such further order(s) and/ or direction(s) as this Hon'ble Adjudicating Authority may deem fit and proper."
+  [P55.S2] The sale was effected despite the order dated 16.10.2023 passed by this Appellate Tribunal vide which permission was specifically declined to sell any property of the Corporate Debtor.
+  [P58.S1] The Appellant has sought to explain the withdrawals by contending that they represented payments towards salaries, statutory liabilities and other business expenses, and that some of the corresponding cheques had been issued prior to the commencement of the CIRP.
+  [P63.S1] The Appellant has also assailed paragraph 12(ii) of the Impugned Order whereby the Adjudicating Authority directed that a copy of the order be forwarded to the Insolvency and Bankruptcy Board of India ("IBBI") and the Ministry of Corporate Affairs ("MCA") for taking appropriate action under Section 74 of the Code.
+verbatim overlap with sealed text: FOUND (inspect)
+  conclusion: 11 shared 8-word runs
+      'adjudicating authority dated 19 12 2024 be set' in: agent_view.reliefs_sought.PETITIONER.0: That the order of the Adjudicating Authority dated 19.12.2024 be set aside.
+      'be dismissed and the order under appeal upheld' in: agent_view.reliefs_sought.RESPONDENT.0: That the appeal be dismissed and the order under appeal upheld.
+      'that the appeal be dismissed and the order' in: agent_view.reliefs_sought.RESPONDENT.0: That the appeal be dismissed and the order under appeal upheld.
+outcome words in agent view: 3
+  ...y": "PETITIONER"}], "reliefs_sought": {"PETITIONER": ["That the order of the Adjudicating Authority dated 19.12.2024 be set aside."], "RESPONDENT": ["That the appeal be dismissed and the or...
+  ..."PETITIONER": ["That the order of the Adjudicating Authority dated 19.12.2024 be set aside."], "RESPONDENT": ["That the appeal be dismissed and the order under appeal upheld."]}, "opening_positions":...
+  ...ing Authority dated 19.12.2024 be set aside."], "RESPONDENT": ["That the appeal be dismissed and the order under appeal upheld."]}, "opening_positions": {"PETITIONER": [{"issue_id": "I1"...
+balance: OK
+record: 19 stipulated, 4 contested, 6 exhibits, 5 amounts; issues 3
+excluded precedents: []
+clerk flags: ['RUNNING_TEXT_REMOVED', 'REASONING_DROPPED', 'EXTRACTION_REPAIRED', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'CLERKED_BY_CLAUDE']
+memorization probe: NOT_IDENTIFIED
+
+
+# Claude triage 2026-10-18: AUTOMATIC SCANS ONLY (owner's instruction: no full split review).
+# names [], registration numbers [], addresses [] on the stored agent view. Not read against the judgment.

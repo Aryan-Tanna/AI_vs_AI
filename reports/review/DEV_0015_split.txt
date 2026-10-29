@@ -1,0 +1,29 @@
+# DEV_0015
+
+routing: {'LOWER_ORDER': 1, 'SUBMISSIONS_P': 2, 'SUBMISSIONS_R': 1, 'ANALYSIS': 6, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 4
+  [P7.S3] Since the information furnished by Respondent No. 1 has not proved useful for recovery of the vehicles, the RP of Respondent No. 1 is directed to nominate an authorised representative to assist in the recovery process.
+  [P8.S1] Accordingly, the authorised representative of Respondent No. 1, Respondent Nos. 2 and 3, and the authorised representative of the Applicant/RP shall meet on 31.07.2026 at 11:00 A.M. at the office of the Applicant/RP and take all necessary steps for identification and recovery of the vehicles from the Faridabad location in terms of this order." 8.
+  [P8.S7] In this regard, the Applicants respectfully submit that whenever Respondent No.2 or the members of her team sought any clarification, information, records or assistance pertaining to the affairs of the Corporate Debtor, the Applicants and their officers responded with promptitude and diligence.
+  [P8.S8] Detailed information concerning vehicles, inventory, recovery status, operational records, location details, contact particulars of various stakeholders and other information relevant to the CIRP, as far as available and accessible to the Applicants, was furnished from time to time by the Applicants and their team.
+verbatim overlap with sealed text: FOUND (inspect)
+  P7: 20 shared 8-word runs
+  P8: 47 shared 8-word runs
+  conclusion: 23 shared 8-word runs
+      '07 2026 insofar as it directs the appellants' in: agent_view.reliefs_sought.PETITIONER.0: That the order dated 21.07.2026, insofar as it directs the Appellants to be present for identification and recovery of the vehicles, be set aside.
+      'be dismissed and the order under appeal upheld' in: agent_view.reliefs_sought.RESPONDENT.0: That the appeal be dismissed and the order under appeal upheld.
+      'it directs the appellants to be present for' in: agent_view.reliefs_sought.PETITIONER.0: That the order dated 21.07.2026, insofar as it directs the Appellants to be present for identification and recovery of the vehicles, be set aside.
+outcome words in agent view: 3
+  ...ated 21.07.2026, insofar as it directs the Appellants to be present for identification and recovery of the vehicles, be set aside."], "RESPONDENT": ["That the appeal be dismissed and the or...
+  ...the Appellants to be present for identification and recovery of the vehicles, be set aside."], "RESPONDENT": ["That the appeal be dismissed and the order under appeal upheld."]}, "opening_positions":...
+  ... and recovery of the vehicles, be set aside."], "RESPONDENT": ["That the appeal be dismissed and the order under appeal upheld."]}, "opening_positions": {"PETITIONER": [{"issue_id": "I1"...
+balance: OK
+record: 9 stipulated, 1 contested, 2 exhibits, 0 amounts; issues 2
+excluded precedents: []
+clerk flags: ['EXTRACTION_REPAIRED', 'CLERKED_BY_CLAUDE']
+memorization probe: NOT_IDENTIFIED
+
+
+# Claude triage 2026-10-18: AUTOMATIC SCANS ONLY (owner's instruction: no full split review).
+# names [], registration numbers [], addresses [] on the stored agent view. Not read against the judgment.

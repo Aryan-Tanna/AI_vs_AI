@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\IPD_AIvsAI\.venv\Scripts\lexarena.exe\__main__.py", line 10, in <module>
+  File "C:\IPD_AIvsAI\lexarena\cli.py", line 158, in main
+    return _dispatch(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli.py", line 177, in _dispatch
+    return cli_clerk.run(args, path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli_clerk.py", line 258, in run
+    return _run(args.file, args.case_id, config_path, handoff=args.handoff, roles=args.handoff_role)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli_clerk.py", line 126, in _run
+    outcome = clerk_judgment(
+              ^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\clerk\pipeline.py", line 100, in clerk_judgment
+    entities = list_entities(llm, prompts, cfg, split.header, split.paragraphs, session_id=sid)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\clerk\steps.py", line 60, in list_entities
+    return llm.complete_json(role=ROLE, user=prompt, schema=EntityList, session_id=session_id).value.entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 86, in complete_json
+    return self._complete_one(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 257, in _complete_one
+    raise last_error
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 173, in _complete_one
+    response = provider.complete(request, api_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\providers\gemini.py", line 57, in complete
+    data = post_json(
+           ^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\providers\base.py", line 69, in post_json
+    raise ProviderUnavailableError(f"HTTP {status}: {message}")
+lexarena.llm.errors.ProviderUnavailableError: HTTP 503: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.

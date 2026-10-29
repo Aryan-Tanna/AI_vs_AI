@@ -1,0 +1,2 @@
+{"kind": "REAL_DRAFT", "turn": 1, "side": "PETITIONER", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "UNMAPPED", "WARN_PRECEDENT_NOT_ADDRESSED"], "seconds": 468.0}
+{"kind": "REAL_DRAFT", "turn": 2, "side": "RESPONDENT", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE"], "seconds": 356.4}

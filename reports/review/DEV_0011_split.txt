@@ -1,0 +1,41 @@
+# DEV_0011
+
+routing: {'HEADER': 1, 'ISSUES': 1, 'LOWER_ORDER': 2, 'FACTS': 6, 'ANALYSIS': 10, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 7
+  [P14.S2] The notice dated 10.10.2023 was a consolidated notice issued by the Joint Registrar of the NCLT in relation to 26 petitions/applications, calling upon all concerned to take notice and to remove the defects therein within a period of seven days, failing which all such cases would be dealt with under Rule 28(3) of the NCLT Rules.
+  [P14.S3] This notice was put up on the NCLT’s website as well as the notice board/cause list of the NCLT.
+  [P14.S4] The respondents-bank’s application under Section 7 of the IBC found mention at Serial No. 6 of the tabulated statement giving the details of 26 defective petitions/applications.
+  [P15.S1] Similarly, the order dated 18.10.2023 passed by the Joint Registrar of the NCLT was in relation to 42 defective petitions/applications.
+  [P15.S2] Stating that sufficient time had been granted to all concerned to rectify/remove the defects, the Joint Registrar exercised power under Rule 28(4) of the NCLT Rules and declined to register the petitions/applications set out in Annexure A, excepting those matters in which compliance by way of removal of defects had been made.
+  [P15.S3] The respondent-bank’s application found mention at Serial No. 6 in Annexure A. This order was also put up on the NCLT’s website and the notice board/cause list of the NCLT.
+  [P16.S1] There was no mention either in the notice dated 10.09.2023 or the order dated 18.10.2023 of the proviso to Section 7(5)(b) of the IBC.
+verbatim overlap with sealed text: FOUND (inspect)
+  P14: 14 shared 8-word runs
+  P15: 5 shared 8-word runs
+  P16: 4 shared 8-word runs
+  P17: 4 shared 8-word runs
+  P18: 1 shared 8-word runs
+  P20: 3 shared 8-word runs
+  finding I1: 14 shared 8-word runs
+      '7 of the ibc supported by an affidavit' in: agent_view.record.contested_facts.0.question: Whether an application under Section 7 of the IBC supported by an affidavit deposed to prior to the date of verification of the application is non est or defective in a manner curable by a subsequent affidavit.
+      'ibc supported by an affidavit deposed to prior' in: agent_view.record.contested_facts.0.question: Whether an application under Section 7 of the IBC supported by an affidavit deposed to prior to the date of verification of the application is non est or defective in a manner curable by a subsequent affidavit.
+      'section 7 of the ibc supported by an' in: agent_view.record.contested_facts.0.question: Whether an application under Section 7 of the IBC supported by an affidavit deposed to prior to the date of verification of the application is non est or defective in a manner curable by a subsequent affidavit.
+  finding I2: 3 shared 8-word runs
+      'and remanded for hearing on the merits without' in: agent_view.opening_positions.PETITIONER.1.ground: The application could not be restored and remanded for hearing on the merits without requiring the defective affidavit to be cured.
+      'be restored and remanded for hearing on the' in: agent_view.opening_positions.PETITIONER.1.ground: The application could not be restored and remanded for hearing on the merits without requiring the defective affidavit to be cured.
+      'restored and remanded for hearing on the merits' in: agent_view.opening_positions.PETITIONER.1.ground: The application could not be restored and remanded for hearing on the merits without requiring the defective affidavit to be cured.
+  conclusion: 10 shared 8-word runs
+      'and uphold the order dated 27 08 2025' in: agent_view.reliefs_sought.RESPONDENT.0: Dismiss the appeal and uphold the order dated 27.08.2025 passed by the NCLAT.
+      'dated 27 08 2025 passed by the nclat' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the order dated 27.08.2025 passed by the NCLAT.
+      'set aside the order dated 27 08 2025' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the order dated 27.08.2025 passed by the NCLAT.
+outcome words in agent view: 3
+  ...ing to register the application on 18.10.2023 [F3, F4, EX-1, EX-2]. On appeal under Rule 63 of the NCLT Rules, the NCLT set aside the Joint Registrar's order on 08.02.2024 and allowed seven...
+  ...ed 08.02.2024.", "source_paras": ["P10"]}, {"fact_id": "F8", "text": "On 27.08.2025, the NCLAT allowed Bank-N's appeal, set aside the NCLT order dated 18.06.2024, restored C.P.(IB)/97(AHM)2...
+  ...e defect to be cured.", "statutes": ["IBC_2016_SEC_7"], "raised_by": "PETITIONER"}], "reliefs_sought": {"PETITIONER": ["Set aside the order dated 27.08.2025 passed by the NCLAT."], "RESPOND...
+balance: OK
+record: 10 stipulated, 1 contested, 2 exhibits, 1 amounts; issues 2
+excluded precedents: []
+clerk flags: ['RUNNING_TEXT_REMOVED', 'REASONING_DROPPED', 'EXTRACTION_REPAIRED']
+memorization probe: NOT_IDENTIFIED
+

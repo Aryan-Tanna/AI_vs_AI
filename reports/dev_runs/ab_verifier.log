@@ -1,0 +1,42 @@
+{"kind": "REAL_DRAFT", "turn": 1, "side": "PETITIONER", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "UNMAPPED"], "seconds": 0.0}
+{"kind": "REAL_DRAFT", "turn": 2, "side": "RESPONDENT", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE"], "seconds": 0.0}
+{"kind": "REAL_DRAFT", "turn": 3, "side": "PETITIONER", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "WARN_PRECEDENT_NOT_ADDRESSED", "WARN_REPETITION"], "seconds": 0.2}
+{"kind": "REAL_DRAFT", "turn": 4, "side": "RESPONDENT", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "WARN_REPETITION"], "seconds": 0.2}
+{"kind": "REAL_DRAFT", "turn": 5, "side": "PETITIONER", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "WARN_REPETITION"], "seconds": 0.3}
+{"kind": "REAL_DRAFT", "turn": 6, "side": "RESPONDENT", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "UNMAPPED", "WARN_PRECEDENT_NOT_ADDRESSED", "WARN_REPETITION"], "seconds": 0.2}
+{"kind": "REAL_DRAFT", "turn": 7, "side": "PETITIONER", "attempt": 1, "recorded_in_session": ["ERR_FACT_NOT_IN_RECORD"], "hard_errors": ["ERR_FACT_NOT_IN_RECORD"], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "UNMAPPED", "WARN_PRECEDENT_NOT_ADDRESSED", "WARN_REPETITION"], "seconds": 0.3}
+{"kind": "REAL_DRAFT", "turn": 7, "side": "PETITIONER", "attempt": 2, "recorded_in_session": [], "hard_errors": [], "warnings": ["WARN_REPETITION"], "seconds": 0.4}
+{"kind": "REAL_DRAFT", "turn": 8, "side": "RESPONDENT", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "UNMAPPED", "WARN_PRECEDENT_NOT_ADDRESSED", "WARN_REPETITION"], "seconds": 0.3}
+{"kind": "REAL_DRAFT", "turn": 9, "side": "PETITIONER", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "WARN_PRECEDENT_NOT_ADDRESSED", "WARN_PREREQUISITE_UNADDRESSED", "WARN_REPETITION"], "seconds": 0.4}
+{"kind": "REAL_DRAFT", "turn": 10, "side": "RESPONDENT", "attempt": 1, "recorded_in_session": [], "hard_errors": [], "warnings": ["THRESHOLD_NOT_VERIFIABLE", "WARN_PREREQUISITE_UNADDRESSED", "WARN_REPETITION"], "seconds": 0.5}
+Traceback (most recent call last):
+  File "C:\IPD_AIvsAI\scripts\ab_verifier.py", line 249, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\IPD_AIvsAI\scripts\ab_verifier.py", line 244, in main
+    run_arm(args.trace, args.effort)
+  File "C:\IPD_AIvsAI\scripts\ab_verifier.py", line 186, in run_arm
+    hard, warn, secs = verify(draft, ctx)
+                       ^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\scripts\ab_verifier.py", line 118, in verify
+    v = checker.check(draft, ctx, session_id=session_id)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\themis_local\verify.py", line 181, in check
+    review_fidelity(
+  File "C:\IPD_AIvsAI\lexarena\themis_local\layer2.py", line 156, in review_fidelity
+    review = llm.complete_json(role=ROLE, user=prompt, schema=Layer2Review, session_id=session_id).value
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 86, in complete_json
+    return self._complete_one(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 257, in _complete_one
+    raise last_error
+  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 173, in _complete_one
+    response = provider.complete(request, api_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\providers\openai_compat.py", line 55, in complete
+    data = post_json(
+           ^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\llm\providers\base.py", line 67, in post_json
+    raise RateLimitedError(message, retry_after_s=retry_after(response))
+lexarena.llm.errors.RateLimitedError: Provider returned error

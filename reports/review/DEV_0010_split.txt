@@ -1,0 +1,36 @@
+# DEV_0010
+
+routing: {'HEADER': 1, 'FACTS': 6, 'LOWER_ORDER': 1, 'ANALYSIS': 9, 'SUBMISSIONS_P': 4, 'SUBMISSIONS_R': 1, 'ISSUES': 1, 'CONCLUSION': 4}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 7
+  [P15.S3] This Court by order dated 11.12.2020 in Civil Appeal No. 3826 of 2020, granted an ad-interim direction to the effect that the finding of the National Company Law Appellate Tribunal that the appellant is a ‘speculative investor’ is confined to the facts of the present case and shall not be treated as a precedent in any other case for the present.
+  [P17.S3] It is however, undisputed that Section 7 IBC application filed by one Amit Joshi was admitted by the NCLT and that the CIRP is presently ongoing against the Corporate Debtor – Gayatri Infra Planner Pvt. Ltd.
+  [P19.S64] The agreement stipulated a buyback whereby Rs. 35 lakhs invested would be returned with an additional Rs.65 lakhs as premium within 12 months.
+  [P20.S5] In the present case, the appellant filed a Section 7 application against the corporate debtor on 18.03.2019.
+  [P20.S6] On 28.12.2019, when the Ordinance was promulgated, the application was still pending before the Adjudicating Authority.
+  [P20.S7] However, arguments had already been heard and the matter reserved for orders on 04.12.2019.
+  [P20.S8] The order came to be passed on 02.01.2020, admitting the application without reference to the Ordinance.
+verbatim overlap with sealed text: FOUND (inspect)
+  P15: 6 shared 8-word runs
+  P20: 1 shared 8-word runs
+  finding I2: 8 shared 8-word runs
+      '04 12 2019 prior to the promulgation of' in: agent_view.record.stipulated_facts.5.text: Arguments on the Section 7 application were heard and orders were reserved by the NCLT on 04.12.2019, prior to the promulgation of the Ordinance on 28.12.2019.
+      '2019 prior to the promulgation of the ordinance' in: agent_view.record.stipulated_facts.5.text: Arguments on the Section 7 application were heard and orders were reserved by the NCLT on 04.12.2019, prior to the promulgation of the Ordinance on 28.12.2019.
+      'prior to the promulgation of the ordinance on' in: agent_view.record.stipulated_facts.5.text: Arguments on the Section 7 application were heard and orders were reserved by the NCLT on 04.12.2019, prior to the promulgation of the Ordinance on 28.12.2019.
+  conclusion: 81 shared 8-word runs
+      '2019 ordinance and hold the section 7 petition' in: agent_view.reliefs_sought.RESPONDENT.1: Set aside the finding of the NCLAT regarding the inapplicability of the 2019 Ordinance and hold the Section 7 petition non-maintainable for lack of statutory threshold
+      'finding of the nclat regarding the inapplicability of' in: agent_view.reliefs_sought.RESPONDENT.1: Set aside the finding of the NCLAT regarding the inapplicability of the 2019 Ordinance and hold the Section 7 petition non-maintainable for lack of statutory threshold
+      'petition non maintainable for lack of statutory threshold' in: agent_view.reliefs_sought.RESPONDENT.1: Set aside the finding of the NCLAT regarding the inapplicability of the 2019 Ordinance and hold the Section 7 petition non-maintainable for lack of statutory threshold
+outcome words in agent view: 6
+  ...he Ordinance on 28.12.2019 [F6]. The NCLT admitted the application on 02.01.2020 [F7]. On appeal by Person-S, the NCLAT set aside the admission order on 17.11.2020, holding Person-M to be a...
+  ..., {"step": 4, "date": "2020-11-17", "forum": "NCLAT, New Delhi", "event": "The NCLAT allowed the appeal by Person-S and set aside the admission order, holding Person-M to be a speculative i...
+  ...ct_id": "F8"}], "lower_forum_order": {"exists": true, "forum": "NCLAT, New Delhi", "result": "ALLOWED", "directions": ["Set aside the order admitting the Section 7 application", "Set aside ...
+  ...m": "NCLAT, New Delhi", "result": "ALLOWED", "directions": ["Set aside the order admitting the Section 7 application", "Set aside the CIRP proceedings initiated against Company-Y", "Directe...
+  ...ulgation of the Ordinance.", "statutes": ["IBC_2016_SEC_7"], "raised_by": "COURT"}], "reliefs_sought": {"PETITIONER": ["Set aside the finding of the NCLAT classifying Person-M as a speculat...
+  ...ESPONDENT": ["Dismiss the appeal and confirm the findings of the NCLAT holding Person-M to be a speculative investor", "Set aside the finding of the NCLAT regarding the inapplicability of t...
+balance: OK
+record: 10 stipulated, 2 contested, 1 exhibits, 3 amounts; issues 2
+excluded precedents: ['2017_NCLAT_DEL_116', '2017_NCLAT_DEL_134_163_166', '2017_NCLAT_DEL_71', '2018_NCLAT_DEL_169', '2019_NCLAT_DEL_134', '2019_NCLAT_DEL_525', '2020_NCLAT_DEL_1011', '2020_NCLAT_DEL_1073', '2020_NCLAT_DEL_114739300', '2020_NCLAT_DEL_146246101', '2020_NCLAT_DEL_28614645', '2020_NCLAT_DEL_306', '2020_NCLAT_DEL_529', '2020_NCLAT_DEL_651', '2020_NCLAT_DEL_683', '2020_NCLAT_DEL_711', '2020_NCLAT_DEL_807', '2020_NCLAT_DEL_83', '2021_NCLAT_302', '2021_NCLAT_CHE_214', '2021_NCLAT_CHE_226', '2021_NCLAT_DEL_03', '2021_NCLAT_DEL_05', '2021_NCLAT_DEL_1026', '2021_NCLAT_DEL_111', '2021_NCLAT_DEL_1186', '2021_NCLAT_DEL_1219', '2021_NCLAT_DEL_192', '2021_NCLAT_DEL_385', '2021_NCLAT_DEL_394', '2021_NCLAT_DEL_495', '2021_NCLAT_DEL_52', '2021_NCLAT_DEL_542', '2021_NCLAT_DEL_814', '2022_NCLAT_DEL_1094', '2022_NCLAT_DEL_1124', '2023_NCLAT_DEL_1184', '2023_NCLAT_DEL_470', '2023_NCLAT_DEL_486', '2023_NCLAT_DEL_517', '2023_NCLAT_DEL_991', '2024_NCLAT_AHM_1204', '2024_NCLAT_CH_224', '2024_NCLAT_DEL_1052', '2024_NCLAT_DEL_1192', '2024_NCLAT_DEL_1304', '2024_NCLAT_DEL_153', '2024_NCLAT_DEL_607', '2024_NCLAT_DEL_701', '2024_NCLAT_DEL_719', '2024_NCLAT_DEL_975', '2025_NCLAT_CH_230', '2025_NCLAT_DEL_1103_1084', '2025_NCLAT_DEL_1450', '2025_NCLAT_DEL_1450_DUP', '2025_NCLAT_DEL_1480', '2025_NCLAT_DEL_179', '2025_NCLAT_DEL_1831', '2025_NCLAT_DEL_1975_AXIS', '2025_NCLAT_DEL_211', '2025_NCLAT_DEL_2261', '2025_NCLAT_DEL_914', '2026_NCLAT_DEL_1801', '2026_NCLAT_DEL_2372', '2026_NCLAT_DEL_351']
+clerk flags: ['RUNNING_TEXT_REMOVED', 'EXTRACTION_REPAIRED', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY']
+memorization probe: NOT_IDENTIFIED
+

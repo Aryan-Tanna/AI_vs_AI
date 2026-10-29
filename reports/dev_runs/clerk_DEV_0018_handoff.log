@@ -1,0 +1,22 @@
+{
+  "case_id": "DEV_0018",
+  "stored": true,
+  "problems": [],
+  "flags": [
+    "RUNNING_TEXT_REMOVED: running header text merged into the body was removed: ['Company Appeal (AT) (Ins.) Nos. 2319 of 2024 & 141 of 2025', 'Consortium led by Syonira Invecast Pvt. Ltd']",
+    "EXTRACTION_REPAIRED: repair round 1 for: ['amount AM21 date 2024-10-09 is not written in the sources of F27', \"real names appear in the agent view: ['Goa', 'GOA']\"]",
+    "ENTAILMENT_PARTLY: F3: Letter date 13.05.2022 not mentioned in sources",
+    "ENTAILMENT_PARTLY: F6: Letter date not in source",
+    "ENTAILMENT_PARTLY: F7: Letter date not in source",
+    "ENTAILMENT_PARTLY: F8: Letter date not in source",
+    "ENTAILMENT_PARTLY: F9: Letter date not mentioned in source",
+    "ENTAILMENT_PARTLY: EX-1: Sources confirm claim and amount, but not that RP's letter stated the amount",
+    "ENTAILMENT_PARTLY: EX-2: Source confirms claim and date, not filer R1",
+    "ENTAILMENT_PARTLY: EX-9: Source lacks reference number detail",
+    "ENTAILMENT_PARTLY: EX-13: Sources attribute paragraph 16 to Authority-R, not Company-J",
+    "CLERKED_BY_CLAUDE: names, routing, record facts, agent view and ground truth answered by Claude Code (D-127, pilot only)"
+  ],
+  "excluded_precedents": [],
+  "memorization_probe": "NOT_IDENTIFIED",
+  "review_file": "reports/review/DEV_0018.md"
+}

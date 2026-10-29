@@ -1,0 +1,23 @@
+# DEV_0013
+
+routing: {'HEADER': 1, 'FACTS': 8, 'ISSUES': 1, 'LOWER_ORDER': 3, 'SUBMISSIONS_P': 2, 'SUBMISSIONS_R': 2, 'ANALYSIS': 9, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 3
+  [P20.S1] Now, we advert to Clause 2.2 of Deed of Undertaking dated 27.07.2011, which reads as under: - “2.2.
+  [P25.S2] The appellant had initiated an action to enforce the mortgage security created by ECL in favour of SREI.
+  [P25.S3] In the aforesaid proceeding, ECL 140 [2026] 1 S.C.R. Supreme Court Reports in its pleadings stated that it has given a guarantee which is limited to the mortgaged property with no personal recourse to ECL.
+verbatim overlap with sealed text: FOUND (inspect)
+  finding I1: 1 shared 8-word runs
+      'not a guarantor for the facilities taken by' in: agent_view.record.stipulated_facts.17.text: By order dated 24.06.2022, the NCLT dismissed the application of Company-K on two grounds: that Company-Q was not a guarantor for the facilities taken by Company-J and so owed no financial debt, and that the conversion o
+  conclusion: 37 shared 8-word runs
+      '01 2024 which affirmed the nclt order dated' in: agent_view.reliefs_sought.PETITIONER.0: That the NCLAT judgment dated 24.01.2024, which affirmed the NCLT order dated 24.06.2022 rejecting the application of Company-K under Section 7 of the Code, be interfered with in this appeal.
+      'company k under section 7 of the code' in: agent_view.procedural_history.3.event: The application of Company-K under Section 7 of the Code is dismissed.
+      'orders of the nclt and nclat be left' in: agent_view.reliefs_sought.RESPONDENT.0: That the appeal be dismissed and the orders of the NCLT and NCLAT be left undisturbed.
+outcome words in agent view: 1
+  ...he application of Company-K under Section 7 of the Code, be interfered with in this appeal."], "RESPONDENT": ["That the appeal be dismissed and the orders of the NCLT and NCLAT be left undisturbed."]...
+balance: OK
+record: 23 stipulated, 2 contested, 10 exhibits, 4 amounts; issues 2
+excluded precedents: ['2024_NCLAT_DEL_975']
+clerk flags: ['RUNNING_TEXT_REMOVED', 'CLERKED_BY_CLAUDE']
+memorization probe: IDENTIFIED
+

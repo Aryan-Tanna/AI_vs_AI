@@ -1,0 +1,39 @@
+{
+  "run_id": "PILOT_E",
+  "status": "COMPLETE",
+  "pause_reason": null,
+  "cases": {
+    "DEV_0016": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    }
+  }
+}
+FileExistsError: [Errno 17] File exists: 'C:\\IPD_AIvsAI\\runs\\PILOT_E\\.lock'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\IPD_AIvsAI\.venv\Scripts\lexarena.exe\__main__.py", line 10, in <module>
+  File "C:\IPD_AIvsAI\lexarena\cli.py", line 158, in main
+    return _dispatch(args)
+           ^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli.py", line 183, in _dispatch
+    return cli_run.run(args, path)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\cli_run.py", line 145, in run
+    ledger = manager.go(max_cases=args.max_cases)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\runner\manager.py", line 136, in go
+    with self._store.locked():
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aryan\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\IPD_AIvsAI\lexarena\runner\ledger.py", line 53, in locked
+    raise RunLockedError(f"{lock} exists: another run manager is active, or one crashed") from exc
+lexarena.runner.ledger.RunLockedError: C:\IPD_AIvsAI\runs\PILOT_E\.lock exists: another run manager is active, or one crashed

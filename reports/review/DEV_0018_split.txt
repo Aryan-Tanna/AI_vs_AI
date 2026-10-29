@@ -1,0 +1,32 @@
+# DEV_0018
+
+routing: {'FACTS': 8, 'LOWER_ORDER': 3, 'SUBMISSIONS_P': 12, 'SUBMISSIONS_R': 17, 'ANALYSIS': 12, 'ISSUES': 1, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 3
+  [P49.S1] It is undisputed that the CIRP of the Corporate Debtor commenced on 04.07.2019, and the moratorium under Section 14 of the Insolvency and Bankruptcy Code, 2016 continued till the approval of the Resolution Plan on 09.11.2021.
+  [P53.S2] In the present case, it is undisputed that the CIRP of the Corporate Debtor commenced on 04.07.2019, and the moratorium under Section 14 of the Code remained in force till 09.11.2021, when the Resolution Plan came to be approved.
+  [P53.S4] Thereafter EPFO issued a notice dated 29.04.2022 and summons dated 18.05.2022, to the Corporate Debtor, claiming fresh dues amounting to Rs. 62,09,154/- were to be paid by the CD.
+verbatim overlap with sealed text: FOUND (inspect)
+  P49: 21 shared 8-word runs
+  P53: 17 shared 8-word runs
+  finding I1: 1 shared 8-word runs
+      '04 07 2019 to 09 11 2021 so' in: agent_view.opening_positions.PETITIONER.0.ground: The order dated 06.04.2021 and the assessment behind it were made during the moratorium that ran from 04.07.2019 to 09.11.2021, so they cannot ground any demand.
+  conclusion: 174 shared 8-word runs
+      '09 10 2024 in so far as it' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the impugned order dated 09.10.2024 in so far as it fails to hold that the damages levied by Respondent No. 1 pursuant to assessment post the approval of the resolution plan need not be paid by the Appellant, a
+      'dismiss the appeal filed by the appellant in' in: (spans fields)
+      'priority and paid by the successful resolution applicant' in: agent_view.reliefs_sought.RESPONDENT.2: In the cross appeal of Authority-R: direct the respondents to consider the claim of Authority-R in priority as per the provisions of the IBC and the EPF & MP Act, 1952, so that its dues, including interest and damages, a
+outcome words in agent view: 5
+  ...ication praying that it be dismissed, that Company-J be directed to remit the provident fund dues, and that the plea be set aside because the establishment has an alternative remedy under t...
+  ...t_id": "F29", "text": "Authority-R has filed a cross appeal against the same order dated 09.10.2024, seeking that it be set aside or modified to include its claim at priority.", "source_par...
+  ...a) and (b) to quash the notice and the summons rejected on the ground that the Tribunal does not have power to quash or set aside them.", "Prayer (d) for refund (described in the order as R...
+  ...Authority-R's claim?", "statutes": ["IBC_2016_SEC_31"], "raised_by": "PETITIONER"}], "reliefs_sought": {"PETITIONER": ["Set aside the impugned order dated 09.10.2024 in so far as it fails t...
+  ...the circumstances."], "RESPONDENT": ["Dismiss the appeal filed by the Appellant.", "In the cross appeal of Authority-R: set aside and/or modify the impugned order dated 09.10.2024 to includ...
+balance: PROBLEM
+  no RESPONDENT ground on I2
+  no PETITIONER ground on I4
+  no PETITIONER ground on I5
+record: 29 stipulated, 2 contested, 13 exhibits, 21 amounts; issues 6
+excluded precedents: []
+clerk flags: ['RUNNING_TEXT_REMOVED', 'EXTRACTION_REPAIRED', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'CLERKED_BY_CLAUDE']
+memorization probe: NOT_IDENTIFIED
+

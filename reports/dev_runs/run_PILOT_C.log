@@ -1,0 +1,61 @@
+{
+  "run_id": "PILOT_C",
+  "status": "FAILED",
+  "pause_reason": "SESSION of DEV_0007 exited 1",
+  "cases": {
+    "DEV_0009": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    },
+    "DEV_0010": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    },
+    "DEV_0011": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    },
+    "DEV_0013": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    },
+    "DEV_0007": {
+      "SESSION": "FAILED",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    },
+    "DEV_0014": {
+      "SESSION": "PENDING",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    },
+    "DEV_0015": {
+      "SESSION": "PENDING",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    },
+    "DEV_0016": {
+      "SESSION": "PENDING",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    },
+    "DEV_0017": {
+      "SESSION": "PENDING",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    }
+  }
+}

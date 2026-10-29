@@ -48,3 +48,14 @@ DEV_0010 FAILED rc=1; see reports\dev_runs\clerk_DEV_0010.log
 16:00 gemini probe ReadTimeout - waiting 1800s
 16:30 gemini probe 503 - waiting 1800s
 17:00 gemini probe 503 - waiting 1800s
+=== driver v2 relaunch 08:30 (3.8 back up) ===
+08:35 DEV_0008 done stored
+08:35 DEV_0008 split report written
+08:43 DEV_0009 done stored
+08:43 DEV_0009 split report written
+08:55 DEV_0010 done stored
+08:55 DEV_0010 split report written
+08:59 DEV_0011 FAILED rc=1; see reports\dev_runs\clerk_DEV_0011.log
+09:08 DEV_0012 FAILED rc=1; see reports\dev_runs\clerk_DEV_0012.log
+09:17 DEV_0013 FAILED rc=1; see reports\dev_runs\clerk_DEV_0013.log
+09:17 gemini probe 429 - waiting 1800s

@@ -1,0 +1,175 @@
+{
+ "session_id": "DEV_0015_PILOT_D_dd1e6d",
+ "before": {
+  "winner": "PETITIONER",
+  "status": "DECIDED",
+  "issues": {
+   "I1": "PETITIONER",
+   "I2": "PETITIONER"
+  }
+ },
+ "after": {
+  "winner": null,
+  "status": "UNSTABLE",
+  "issues": {
+   "I1": null,
+   "I2": null
+  },
+  "votes": {
+   "PETITIONER": 0,
+   "RESPONDENT": 0
+  }
+ },
+ "opinions": [
+  {
+   "judge": "TEXTUALIST",
+   "status": "ABSTAINED",
+   "orders": [
+    {
+     "order": "PETITIONER_FIRST",
+     "valid": true,
+     "revised": true,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "PETITIONER",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_17",
+        "IBC_2016_SEC_19",
+        "IBC_2016_SEC_18",
+        "IBC_2016_SEC_25"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "PETITIONER",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_19",
+        "IBC_2016_SEC_17",
+        "IBC_2016_SEC_18",
+        "IBC_2016_SEC_25",
+        "2021_NCLAT_DEL_922#c4af9ca9518d"
+       ]
+      }
+     ]
+    },
+    {
+     "order": "RESPONDENT_FIRST",
+     "valid": false,
+     "revised": true,
+     "problems": [
+      "PRECEDENT I1, 2023_NCLAT_DEL_1417#0ed368d093a9: its ratio does not address the rule you apply on that issue; cite it only for what its ratio says, or rest the issue on another rule",
+      "PRECEDENT I1, 2024_NCLAT_DEL_7936#10216d222797: its ratio does not address the rule you apply on that issue; cite it only for what its ratio says, or rest the issue on another rule",
+      "PRECEDENT I2, 2023_NCLAT_DEL_1417#0ed368d093a9: its ratio does not address the rule you apply on that issue; cite it only for what its ratio says, or rest the issue on another rule",
+      "PRECEDENT I2, 2024_NCLAT_DEL_7936#10216d222797: its ratio does not address the rule you apply on that issue; cite it only for what its ratio says, or rest the issue on another rule",
+      "PRECEDENT I2, 2021_NCLAT_DEL_922#c4af9ca9518d: its ratio does not address the rule you apply on that issue; cite it only for what its ratio says, or rest the issue on another rule"
+     ],
+     "issues": []
+    }
+   ]
+  },
+  {
+   "judge": "PURPOSIVIST",
+   "status": "ABSTAINED",
+   "orders": [
+    {
+     "order": "PETITIONER_FIRST",
+     "valid": false,
+     "revised": true,
+     "problems": [
+      "PRECEDENT I2, 2021_NCLAT_DEL_922#c4af9ca9518d: its ratio does not address the rule you apply on that issue; cite it only for what its ratio says, or rest the issue on another rule"
+     ],
+     "issues": []
+    },
+    {
+     "order": "RESPONDENT_FIRST",
+     "valid": true,
+     "revised": true,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "judge": "PROCEDURALIST",
+   "status": "ABSTAINED",
+   "orders": [
+    {
+     "order": "PETITIONER_FIRST",
+     "valid": true,
+     "revised": true,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_18",
+        "IBC_2016_SEC_25"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_18",
+        "IBC_2016_SEC_25"
+       ]
+      }
+     ]
+    },
+    {
+     "order": "RESPONDENT_FIRST",
+     "valid": true,
+     "revised": true,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "PETITIONER",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_17",
+        "IBC_2016_SEC_19",
+        "IBC_2016_SEC_18",
+        "IBC_2016_SEC_25"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "PETITIONER",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_17",
+        "IBC_2016_SEC_19",
+        "IBC_2016_SEC_18",
+        "IBC_2016_SEC_25",
+        "2021_NCLAT_DEL_922#c4af9ca9518d"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

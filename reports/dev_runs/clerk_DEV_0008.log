@@ -1,17 +1,10 @@
 {
   "case_id": "DEV_0008",
-  "stored": false,
-  "problems": [
-    "amount AM5 (20000000) is not written in the sources of F16",
-    "a case registration number appears in the agent view: ['No. 977 of 2018']",
-    "the decision date appears in the agent view",
-    "real names appear in the agent view: ['RESPONDENT', 'Information']"
-  ],
+  "stored": true,
+  "problems": [],
   "flags": [
     "RUNNING_TEXT_REMOVED: running header text merged into the body was removed: ['Company Appeal (AT) (Insolvency) No. 470 of 2022']",
-    "EXTRACTION_REPAIRED: repair round 1 for: ['key date ADMISSION 2022-05-18 is not written in the sources of F11', 'amount AM5 (20000000) is not written in the sources of F16', \"a case registration number appears in the agent view: ['No. 977 of 2018', 'No. 977 of 2018', 'No. 977 of 2018']\", 'the decision date appears in the agent view', \"real names appear in the agent view: ['RESPONDENT', 'Information']\", \"F2 is not supported by its sources (Source only reports appellants' claim; does not directly state promise.)\", 'F3 is not supported by its sources (Source reports claim of share transfer, not a factual statement.)']",
-    "STATUTE_NOT_IN_LAW_DB: statute references with no Law DB ID: ['IBBI_CIRP_REG_21']",
-    "STATUTE_NOT_IN_LAW_DB: ground-truth statute references with no Law DB ID: ['IBBI_CIRP_REG_20', 'IBBI_CIRP_REG_21', 'IBBI_CIRP_REG_21_2', 'IBBI_CIRP_REG_21_3']"
+    "EXTRACTION_REPAIRED: repair round 1 for: ['amount AM3 (194081000) is not written in the sources of F2', 'amount AM5 (20000000) is not written in the sources of F8', \"a case registration number appears in the agent view: ['No. 977 of 2018', 'No. 977 of 2018', 'No. 177/NCLT/AHM/2020', 'No. 977 of 2018', 'No. 177/NCLT/AHM/2020']\"]"
   ],
   "excluded_precedents": [],
   "memorization_probe": "NOT_IDENTIFIED",

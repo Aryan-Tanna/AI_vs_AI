@@ -1,0 +1,17 @@
+{
+  "case_id": "DEV_0013",
+  "stored": false,
+  "problems": [
+    "3 run(s) of 12 words copied from the reasoning: ['clause of the deed of undertaking does not constitute a contract of', 'of the deed of undertaking does not constitute a contract of guarantee', 'that clause of the deed of undertaking does not constitute a contract']"
+  ],
+  "flags": [
+    "RUNNING_TEXT_REMOVED: running header text merged into the body was removed: ['UV Asset Reconstruction Company Limited v.']",
+    "EXTRACTION_REPAIRED: repair round 1 for: ['<view>: Value error, a case needs at least one PETITIONER and one RESPONDENT party']",
+    "ENTAILMENT_PARTLY: EX-10: Source mentions memorandum date but not its content about Company‑J."
+  ],
+  "excluded_precedents": [
+    "2024_NCLAT_DEL_975"
+  ],
+  "memorization_probe": "IDENTIFIED",
+  "review_file": "reports/review/DEV_0013.md"
+}

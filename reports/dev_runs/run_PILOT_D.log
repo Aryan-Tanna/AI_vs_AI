@@ -1,0 +1,37 @@
+{
+  "run_id": "PILOT_D",
+  "status": "FAILED",
+  "pause_reason": "BASELINE of DEV_0015 exited 3221225794",
+  "cases": {
+    "DEV_0007": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    },
+    "DEV_0014": {
+      "SESSION": "DONE",
+      "BASELINE": "DONE",
+      "EVALUATE": "DONE",
+      "REFLECT": "DONE"
+    },
+    "DEV_0015": {
+      "SESSION": "DONE",
+      "BASELINE": "FAILED",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    },
+    "DEV_0016": {
+      "SESSION": "PENDING",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    },
+    "DEV_0017": {
+      "SESSION": "PENDING",
+      "BASELINE": "PENDING",
+      "EVALUATE": "PENDING",
+      "REFLECT": "PENDING"
+    }
+  }
+}

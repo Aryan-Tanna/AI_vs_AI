@@ -1,0 +1,46 @@
+# DEV_0017
+
+routing: {'FACTS': 3, 'SUBMISSIONS_P': 19, 'SUBMISSIONS_R': 38, 'ANALYSIS': 47, 'ISSUES': 6, 'CONCLUSION': 4}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 15
+  [P104.S1] The Resolution Professional also placed the revised plan of another applicant before the CoC.
+  [P106.S2] The Resolution Professional has placed on record that the suspended directors did not cooperate with the CIRP and that an application under Section 19(2) of Company Appeal (AT) (Insolvency) No. 1038 & 1032 of 2026 42 of 48 the Code had to be filed for obtaining the necessary books and information.
+  [P106.S3] The Adjudicating Authority had proceeded against the concerned Appellant ex parte at one stage and subsequently directed the erstwhile directors to provide the requisite information.
+  [P106.S4] According to the Resolution Professional, the directions were not complied with.
+  [P107.S1] The present Resolution Plan was considered by the CoC and approved by 100% voting share.
+  [P107.S2] The Resolution Professional thereafter filed the application under Sections 30(6)2 and 3115 for approval.
+  [P58.S1] During his final arguments the resolution professional raises the locus of the Appellant in challenging the resolution plan and claims that the suspended director has no locus to the resolution plan and relies on the judgment of this Appellate Tribunal in Praful Satra vs Vaishali Patrikar and Ors. (CA (AT) (Ins.) No.1627/2024).
+  [P68.S2] The Resolution Professional has also stated that the suspended directors were repeatedly asked to furnish the necessary confidentiality undertaking before the Resolution Plans could be shared with them.
+  [P77.S5] It is also brought to our notice that a new board has been inducted and this has been recorded in the official filing of the directors in form number DIR 12, which has been filed before the Ministry of Corporate Affairs.
+  [P80.S2] It is submitted that the OTS was accepted and an amount of €2.50 crore was deposited.
+  [P85.S2] The prospective resolution applicants were given opportunities to revise and cure their Resolution Plans.
+  [P85.S3] The Resolution Professional also informed the applicants about observations and remarks on their plans and provided opportunities to submit revised plans.
+  [P85.S4] The 10th meeting of the CoC included a hybrid challenge amongst the prospective resolution applicants.
+  [P85.S5] Thereafter, in the 11th meeting, the Resolution Plans were discussed and the plan of M/s Suraj Garg was ultimately approved with 100% voting share.
+  [P87.S1] In the present case, the CoC approved the Resolution Plan with 100% voting share.
+verbatim overlap with sealed text: FOUND (inspect)
+  P84: 1 shared 8-word runs
+  P91: 1 shared 8-word runs
+  P108: 2 shared 8-word runs
+  finding I4: 2 shared 8-word runs
+      'at the 10th coc meeting on 21 11' in: agent_view.factual_background: Company-X filed a Section 9 application against Company-G, which the NCLT admitted by order dated 03-01-2023, starting the CIRP [F1, F2]. Person-N was appointed resolution professional; Bank-E is the sole financial credi
+      'the 10th coc meeting on 21 11 2023' in: agent_view.factual_background: Company-X filed a Section 9 application against Company-G, which the NCLT admitted by order dated 03-01-2023, starting the CIRP [F1, F2]. Person-N was appointed resolution professional; Bank-E is the sole financial credi
+  finding I7: 2 shared 8-word runs
+      'standing to challenge the order approving the resolution' in: agent_view.framed_issues.6.question: Does a suspended director of the corporate debtor have standing to challenge the order approving the resolution plan?
+      'to challenge the order approving the resolution plan' in: agent_view.framed_issues.6.question: Does a suspended director of the corporate debtor have standing to challenge the order approving the resolution plan?
+  conclusion: 6 shared 8-word runs
+      'aside the impugned order dated 23 04 2024' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the Impugned Order dated 23.04.2024 approving the resolution plan
+      'impugned order dated 23 04 2024 approving the' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the Impugned Order dated 23.04.2024 approving the resolution plan
+      'set aside the impugned order dated 23 04' in: agent_view.reliefs_sought.PETITIONER.0: Set aside the Impugned Order dated 23.04.2024 approving the resolution plan
+outcome words in agent view: 1
+  ...?", "statutes": ["IBC_2016_SEC_24", "IBC_2016_SEC_61"], "raised_by": "RESPONDENT"}], "reliefs_sought": {"PETITIONER": ["Set aside the Impugned Order dated 23.04.2024 approving the resolutio...
+balance: PROBLEM
+  no RESPONDENT ground on I5
+record: 31 stipulated, 5 contested, 9 exhibits, 6 amounts; issues 7
+excluded precedents: []
+clerk flags: ['ENCODING_ERROR', 'RUNNING_TEXT_REMOVED', 'EXTRACTION_REPAIRED', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'ENTAILMENT_PARTLY', 'CLERKED_BY_CLAUDE']
+memorization probe: IDENTIFIED
+
+
+# Claude triage 2026-10-18: AUTOMATIC SCANS ONLY (owner's instruction: no full split review).
+# names [], registration numbers [], addresses [] on the stored agent view. Not read against the judgment.

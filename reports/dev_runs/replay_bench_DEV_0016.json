@@ -1,0 +1,232 @@
+{
+ "session_id": "DEV_0016_PILOT_E_cd2239",
+ "before": {
+  "winner": null,
+  "status": "UNSTABLE",
+  "issues": {
+   "I1": null,
+   "I2": null
+  }
+ },
+ "after": {
+  "winner": "RESPONDENT",
+  "status": "DECIDED",
+  "issues": {
+   "I1": "RESPONDENT",
+   "I2": "RESPONDENT"
+  },
+  "votes": {
+   "PETITIONER": 0,
+   "RESPONDENT": 2
+  }
+ },
+ "opinions": [
+  {
+   "judge": "TEXTUALIST",
+   "status": "ABSTAINED",
+   "orders": [
+    {
+     "order": "PETITIONER_FIRST",
+     "valid": true,
+     "revised": false,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "PETITIONER",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_35",
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2020_NCLAT_DEL_659#f3298f18739c",
+        "2020_NCLAT_DEL_277#f62e9818b5f8",
+        "2018_NCLAT_DEL_304#6b0555a8a7e5",
+        "2022_NCLAT_DEL_334#8d899af7135c"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "PETITIONER",
+       "rules": [
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2020_NCLAT_DEL_659#f3298f18739c",
+        "2018_NCLAT_DEL_304#6b0555a8a7e5",
+        "2020_NCLAT_DEL_277#f62e9818b5f8"
+       ]
+      }
+     ]
+    },
+    {
+     "order": "RESPONDENT_FIRST",
+     "valid": true,
+     "revised": false,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_35",
+        "2024_NCLAT_DEL_196179492#356b18b0afbe",
+        "2026_NCLAT_DEL_1730#05548639414a",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2026_NCLAT_DEL_292#b3fd981500ab",
+        "2023_NCLAT_DEL_849#68ded619403f"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2026_NCLAT_DEL_292#b3fd981500ab",
+        "2024_NCLAT_DEL_7936#10216d222797"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "judge": "PURPOSIVIST",
+   "status": "DECIDED",
+   "orders": [
+    {
+     "order": "PETITIONER_FIRST",
+     "valid": true,
+     "revised": false,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_35",
+        "2026_NCLAT_DEL_292#b3fd981500ab",
+        "2026_NCLAT_DEL_227#56d0b7549e99",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2023_NCLAT_DEL_849#68ded619403f"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_35",
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2020_NCLAT_DEL_659#f3298f18739c",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6"
+       ]
+      }
+     ]
+    },
+    {
+     "order": "RESPONDENT_FIRST",
+     "valid": true,
+     "revised": false,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_35",
+        "2026_NCLAT_DEL_1730#05548639414a",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2026_NCLAT_DEL_292#b3fd981500ab",
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2020_NCLAT_DEL_659#f3298f18739c"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "IBC_2016_SEC_35",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2018_NCLAT_DEL_304#6b0555a8a7e5",
+        "2020_NCLAT_DEL_659#f3298f18739c",
+        "2023_NCLAT_DEL_849#68ded619403f"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "judge": "PROCEDURALIST",
+   "status": "DECIDED",
+   "orders": [
+    {
+     "order": "PETITIONER_FIRST",
+     "valid": true,
+     "revised": false,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "2026_NCLAT_DEL_1730#05548639414a",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2026_NCLAT_DEL_292#b3fd981500ab",
+        "2023_NCLAT_DEL_849#68ded619403f"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2020_NCLAT_DEL_659#f3298f18739c",
+        "2022_NCLAT_DEL_334#8d899af7135c"
+       ]
+      }
+     ]
+    },
+    {
+     "order": "RESPONDENT_FIRST",
+     "valid": true,
+     "revised": false,
+     "problems": [],
+     "issues": [
+      {
+       "issue": "I1",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "IBC_2016_SEC_60",
+        "2026_NCLAT_DEL_1730#05548639414a",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2023_NCLAT_DEL_849#68ded619403f"
+       ]
+      },
+      {
+       "issue": "I2",
+       "upholds": "RESPONDENT",
+       "rules": [
+        "2023_NCLAT_DEL_849#68ded619403f",
+        "2024_NCLAT_DEL_7936#10216d222797",
+        "2024_NCLAT_CH_13#e50921f789c6",
+        "2025_NCLAT_DEL_900#272a0585b26c"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

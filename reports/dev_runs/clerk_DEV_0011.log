@@ -1,2 +1,13 @@
-C:\IPD_AIvsAI\.venv\Lib\site-packages\qdrant_client\qdrant_remote.py:292: UserWarning: Failed to obtain server version. Unable to check client-server compatibility. Set check_compatibility=False to skip version check.
-  show_warning(
+{
+  "case_id": "DEV_0011",
+  "stored": true,
+  "problems": [],
+  "flags": [
+    "RUNNING_TEXT_REMOVED: running header text merged into the body was removed: ['Livein Aqua Solutions Private Limited v. HDFC Bank Limited']",
+    "REASONING_DROPPED: P14.S1 was picked as a record fact but reads as reasoning (['admittedly'])",
+    "EXTRACTION_REPAIRED: repair round 1 for: [\"a case registration number appears in the agent view: ['No. 1534 of 2024', 'No. 4 of 2024', 'No. 1534 of 2024', 'No. 1534 of 2024']\", 'F9 is not supported by its sources (Source mentions notice dated 10.09.2023, not 10.10.2023 as item claims.)']"
+  ],
+  "excluded_precedents": [],
+  "memorization_probe": "NOT_IDENTIFIED",
+  "review_file": "reports/review/DEV_0011.md"
+}
