@@ -8,8 +8,8 @@ come from the response cache; only new checks and revisions call a model. Nothin
     .venv/Scripts/python scripts/replay_bench.py SESSION_ID [--out FILE]
 
 Noise check (R-053): `--seed N --personas P [P ...] --max-usd X` re-decides only those personas under another seed
-(so nothing comes from the cache), stopping before any opinion once the replay has spent X. The verdict of a partial
-bench means nothing; read the opinions.
+(so nothing comes from the cache), or `--judge-temperature T` under another judge temperature, stopping before any
+opinion once the replay has spent X. The verdict of a partial bench means nothing; read the opinions.
 """
 
 from __future__ import annotations
@@ -78,12 +78,16 @@ def main() -> int:
     ap.add_argument("--seed", type=int, help="another seed, so every call is fresh (R-053)")
     ap.add_argument("--personas", nargs="+", help="decide only these personas")
     ap.add_argument("--max-usd", type=float, help="stop before an opinion once this replay has spent this much")
+    ap.add_argument("--judge-temperature", type=float, help="the judge role's temperature for this replay (R-053)")
     a = ap.parse_args()
-    if a.seed is not None and a.max_usd is None:
-        ap.error("--seed makes every call fresh; give --max-usd")
+    if (a.seed is not None or a.judge_temperature is not None) and a.max_usd is None:
+        ap.error("--seed and --judge-temperature make every call fresh; give --max-usd")
     cfg = load_config(CONFIG)
     if a.seed is not None:
         cfg = cfg.model_copy(update={"seed": a.seed})
+    if a.judge_temperature is not None:
+        judge = cfg.models.judge.model_copy(update={"temperature": a.judge_temperature})
+        cfg = cfg.model_copy(update={"models": cfg.models.model_copy(update={"judge": judge})})
     if a.personas:
         judges_run.PERSONAS = tuple(p for p in judges_run.PERSONAS if p in a.personas)
     if a.max_usd is not None:
