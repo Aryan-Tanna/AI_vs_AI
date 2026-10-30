@@ -1,0 +1,38 @@
+# DEV_0019
+
+routing: {'FACTS': 5, 'SUBMISSIONS_P': 9, 'ISSUES': 1, 'SUBMISSIONS_R': 5, 'ANALYSIS': 14, 'CONCLUSION': 1}
+source paragraphs: OK
+record-fact sentences from sealed paragraphs (D-058; confirm each is fact, not finding): 1
+  [P19.S2] It has also been pleaded that even the Appellant was present in the court at the time of the pronouncement of the order.
+verbatim overlap with sealed text: FOUND (inspect)
+  P17: 1 shared 8-word runs
+  P23: 2 shared 8-word runs
+  P26: 2 shared 8-word runs
+  P27: 2 shared 8-word runs
+  P34: 1 shared 8-word runs
+  finding I1: 9 shared 8-word runs
+      '61 of the ibc commences from the date' in: agent_view.framed_issues.0.question: Whether limitation for filing an appeal under Section 61 of the IBC commences from the date of pronouncement of the order or from the date of uploading and knowledge of the order.
+      'filing an appeal under section 61 of the' in: agent_view.framed_issues.0.question: Whether limitation for filing an appeal under Section 61 of the IBC commences from the date of pronouncement of the order or from the date of uploading and knowledge of the order.
+      'pronounced in open court on 07 10 2025' in: agent_view.record.contested_facts.0.respondent_version: The impugned order was pronounced in open court on 07.10.2025 in the presence of counsel for both parties, where the tribunal indicated that the appeal deserved to be allowed.
+  finding I2: 9 shared 8-word runs
+      'beyond the statutory outer limit of 45 days' in: agent_view.opening_positions.RESPONDENT.1.ground: The appeals were filed beyond the statutory outer limit of 45 days from pronouncement, leaving the Appellate Tribunal without jurisdiction to condone the delay.
+      'permissible extension period under the proviso to section' in: agent_view.framed_issues.1.question: Whether the filing of the appeals occurred within the permissible extension period under the proviso to Section 61(2) of the IBC.
+      'the proviso to section 61 2 of the' in: agent_view.framed_issues.1.question: Whether the filing of the appeals occurred within the permissible extension period under the proviso to Section 61(2) of the IBC.
+  conclusion: 37 shared 8-word runs
+      '23 days in filing the appeal by person' in: agent_view.reliefs_sought.PETITIONER.1: Condonation of delay of 23 days in filing the appeal by Person-K.
+      'days in filing the appeal by bank a' in: agent_view.reliefs_sought.PETITIONER.2: Condonation of delay of 35 days in filing the appeal by Bank-A.
+      'k condonation of delay of 35 days in' in: (spans fields)
+outcome words in agent view: 0
+balance: OK
+record: 9 stipulated, 2 contested, 2 exhibits, 1 amounts; issues 2
+excluded precedents: ['2025_NCLAT_DEL_1103_1084', '2025_NCLAT_DEL_2373']
+clerk flags: ['EXTRACTION_REPAIRED', 'PARTY_POSITION_STATUS_MISMATCH']
+memorization probe: NOT_IDENTIFIED
+
+
+## Claude triage 2026-10-30 (D-114)
+PASS for the pilot. Overlaps are the court-framed issue wording, pleaded grounds and reliefs sought, not findings;
+P19.S2 is a pleading and sits in C1 as the respondent's version; outcome words 0; balance OK; probe NOT_IDENTIFIED.
+Record carries every date the limitation question needs (pronounced 07.10.2025, uploaded 30.10, certified copy
+applied 31.10 / ready 03.11, filed 29.11 and 11.12). AM1 = Rs 2847.36 cr checked. PARTY_POSITION_STATUS_MISMATCH is
+real (liquidator and a bank appeal separately). For the owner: confirm C1/C2 against paras 17-19 and 23.

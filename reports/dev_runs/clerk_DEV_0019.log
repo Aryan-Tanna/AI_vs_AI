@@ -1,105 +1,15 @@
-Traceback (most recent call last):
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
-    yield
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
-    resp = self._pool.handle_request(req)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
-    raise exc from None
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
-    response = connection.handle_request(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\connection.py", line 103, in handle_request
-    return self._connection.handle_request(request)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 136, in handle_request
-    raise exc
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 106, in handle_request
-    ) = self._receive_response_headers(**kwargs)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 177, in _receive_response_headers
-    event = self._receive_event(timeout=timeout)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_sync\http11.py", line 217, in _receive_event
-    data = self._network_stream.read(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_backends\sync.py", line 126, in read
-    with map_exceptions(exc_map):
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aryan\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py", line 158, in __exit__
-    self.gen.throw(value)
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
-    raise to_exc(exc) from exc
-httpcore.ReadTimeout: The read operation timed out
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\IPD_AIvsAI\lexarena\llm\providers\base.py", line 51, in post_json
-    response = client.post(url, headers=headers, json=payload, timeout=timeout_s)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_client.py", line 1144, in post
-    return self.request(
-           ^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_client.py", line 825, in request
-    return self.send(request, auth=auth, follow_redirects=follow_redirects)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_client.py", line 914, in send
-    response = self._send_handling_auth(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
-    response = self._send_handling_redirects(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
-    response = self._send_single_request(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
-    response = transport.handle_request(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
-    with map_httpcore_exceptions():
-         ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\aryan\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py", line 158, in __exit__
-    self.gen.throw(value)
-  File "C:\IPD_AIvsAI\.venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
-    raise mapped_exc(message) from exc
-httpx.ReadTimeout: The read operation timed out
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "C:\IPD_AIvsAI\.venv\Scripts\lexarena.exe\__main__.py", line 10, in <module>
-  File "C:\IPD_AIvsAI\lexarena\cli.py", line 158, in main
-    return _dispatch(args)
-           ^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\cli.py", line 177, in _dispatch
-    return cli_clerk.run(args, path)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\cli_clerk.py", line 258, in run
-    return _run(args.file, args.case_id, config_path, handoff=args.handoff, roles=args.handoff_role)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\cli_clerk.py", line 126, in _run
-    outcome = clerk_judgment(
-              ^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\clerk\pipeline.py", line 100, in clerk_judgment
-    entities = list_entities(llm, prompts, cfg, split.header, split.paragraphs, session_id=sid)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\clerk\steps.py", line 60, in list_entities
-    return llm.complete_json(role=ROLE, user=prompt, schema=EntityList, session_id=session_id).value.entities
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 86, in complete_json
-    return self._complete_one(
-           ^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 257, in _complete_one
-    raise last_error
-  File "C:\IPD_AIvsAI\lexarena\llm\client.py", line 173, in _complete_one
-    response = provider.complete(request, api_key)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\llm\providers\gemini.py", line 57, in complete
-    data = post_json(
-           ^^^^^^^^^^
-  File "C:\IPD_AIvsAI\lexarena\llm\providers\base.py", line 53, in post_json
-    raise ProviderUnavailableError(f"timeout: {type(exc).__name__}") from exc
-lexarena.llm.errors.ProviderUnavailableError: timeout: ReadTimeout
+{
+  "case_id": "DEV_0019",
+  "stored": true,
+  "problems": [],
+  "flags": [
+    "EXTRACTION_REPAIRED: repair round 1 for: [\"a case registration number appears in the agent view: ['No. 28 of 2025', '(IB)/559(MB)2018', 'No. 2004 of 2025', 'No. 120 of 2026', 'No. 28 of 2025']\"]",
+    "PARTY_POSITION_STATUS_MISMATCH: parties sharing a cause-title position hold different statuses: {'APPELLANT': ['FINANCIAL_CREDITOR', 'LIQUIDATOR']}"
+  ],
+  "excluded_precedents": [
+    "2025_NCLAT_DEL_2373",
+    "2025_NCLAT_DEL_1103_1084"
+  ],
+  "memorization_probe": "NOT_IDENTIFIED",
+  "review_file": "reports/review/DEV_0019.md"
+}
