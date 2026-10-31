@@ -1,0 +1,33 @@
+﻿{
+  "case_id": "DEV_0020",
+  "stored": false,
+  "problems": [
+    "11 run(s) of 12 words copied from the reasoning: ['and security interest of company e clause iii a e provides for', 'company e clause iii a e provides for payment of rs crores', 'd records the debt and security interest of company e clause iii', 'debt and security interest of company e clause iii a e provides', 'e clause iii a e provides for payment of rs crores to']"
+  ],
+  "flags": [
+    "RUNNING_TEXT_REMOVED: running header text merged into the body was removed: ['Assets Care & Reconstruction Enterprise Limited', 'CA (AT) (Ins) Nos. 949, 1117 & 1231 of 2023', 'Dhankalash Distributors Private Limited', 'New Okhla Industrial Development Authority', 'Successful Resolution Applicant']",
+    "EXTRACTION_REPAIRED: repair round 1 for: [\"real names appear in the agent view: ['Gautam', 'New']\", 'F42 is not supported by its sources (Sources lack attribution to Company-F)', 'F43 is not supported by its sources (Sources lack attribution to Company-F)', 'F44 is not supported by its sources (Sources lack attribution to Company-F)', 'F45 is not supported by its sources (Sources lack attribution to Company-E)', 'F46 is not supported by its sources (Sources lack attribution to Company-E)', 'F47 is not supported by its sources (Sources lack attribution to Resolution Professional)']",
+    "ENTAILMENT_PARTLY: F39: Sources note possession but do not attribute statement to Company‑K.",
+    "ENTAILMENT_PARTLY: F40: Sources give chart details; attribution to Company‑E not shown.",
+    "ENTAILMENT_PARTLY: F41: Sources describe budgets; not attributed to homebuyers' association.",
+    "ENTAILMENT_PARTLY: EX-3: Numbers match sources; attribution to Company‑E not explicitly stated",
+    "ENTAILMENT_PARTLY: EX-4: Numbers match but source lacks Company-E attribution and filing details",
+    "ENTAILMENT_PARTLY: EX-5: Source confirms assignment date and parties, but does not mention filing by A1.",
+    "ENTAILMENT_PARTLY: EX-9: Requirement stated, but source does not attribute it to Company-F.",
+    "ENTAILMENT_PARTLY: PETITIONER-G5: Sources support claims but do not name Company-K, so only partly matches.",
+    "CLERKED_BY_CLAUDE: names, routing, record facts, agent view and ground truth answered by Claude Code (D-127, pilot only)"
+  ],
+  "excluded_precedents": [
+    "2021_NCLAT_DEL_151",
+    "2026_NCLAT_DEL_949",
+    "2025_NCLAT_DEL_1659",
+    "2025_NCLAT_DEL_1660",
+    "2025_NCLAT_DEL_255",
+    "2025_NCLAT_DEL_261",
+    "2020_NCLAT_DEL_190",
+    "2021_NCLAT_DEL_19",
+    "2025_NCLAT_DEL_61"
+  ],
+  "memorization_probe": "IDENTIFIED",
+  "review_file": "reports/review/DEV_0020.md"
+}

@@ -300,6 +300,53 @@ def test_one_repair_round_fixes_an_unsupported_item_and_everything_is_checked_ag
     assert bank in groq.requests[0].messages[-1].content  # the verifier gets the party roster
 
 
+def test_a_run_copied_from_the_reasoning_is_repaired_not_only_blocked_at_the_end() -> None:
+    # DEV_0020 (D-157): the copy check ran only after the repair loop, so the extractor never saw it.
+    pages = [PAGES[0] + " The letter relied on by the bank was signed long after the period had run out."]
+    cfg = load_config(CONFIG_V1)
+    from lexarena.clerk.names import assign_pseudonyms
+    from lexarena.schemas.clerk import EntityList
+
+    assigned = assign_pseudonyms(EntityList.model_validate(ENTITIES).entities, case_key="DEV_T", seed=cfg.seed)
+    bank, company = (a.pseudonym for a in assigned)
+    repaired = view_answer(bank, company)
+    first = json.loads(json.dumps(repaired))
+    first["factual_background"] += " The letter relied on by the bank was signed long after the period had run out."
+    gemini = FakeProvider(
+        [text_response(json.dumps(x)) for x in (ENTITIES, ROUTE, RECORD_FACTS, first, repaired, TRUTH)]
+    )
+    groq = FakeProvider([text_response(json.dumps(x)) for x in (ENTAILMENT, ENTAILMENT, PROBE)])
+    names = {m.api_key_env for m in cfg.models.by_role().values()}
+    split, providers = fakes_by_role(
+        cfg, {"clerk_primary": gemini, "clerk_extractor": gemini, "clerk_secondary": groq, "lawyer": groq}
+    )
+    llm = LLMClient(
+        split,
+        SecretStore(env_file=None, environ={n: "k" for n in names}),
+        PromptStore(PROMPTS_ROOT),
+        providers=dict(providers),
+        cache=None,
+        sleep=lambda _: None,
+    )
+    outcome = clerk_judgment(
+        pages,
+        source_file="<f>",
+        source_bytes=b"<b>",
+        case_id="DEV_T",
+        forum="NCLAT",
+        decided=date(2002, 2, 2),
+        split_name="DEV",
+        llm=llm,
+        prompts=PromptStore(PROMPTS_ROOT),
+        cfg=cfg,
+        known_statutes={"TEST_ACT_SEC_7"},
+        aliases=StatuteAliasTable(aliases=[]),
+        precedent_payloads=[],
+    )
+    assert outcome.problems == [], outcome.problems
+    assert "copied from the reasoning" in gemini.requests[4].messages[-1].content
+
+
 def test_a_sub_point_citation_resolves_to_its_paragraph() -> None:
     """SCR reports list submissions as sub-points, 'P14(v)': the sub-point sits inside P14, so it traces to P14
     (DEV_0004). Anything that is not a sub-point marker is left as it was, and must still exist to pass."""

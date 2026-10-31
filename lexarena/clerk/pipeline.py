@@ -162,8 +162,9 @@ def clerk_judgment(
                 decision_date=decided,
                 entities=[a.entity for a in pseudo.assigned],
                 authority_names=[],
-                reasoning=[],
-                visible=[],
+                # The copy check needs only the routed reasoning, so the extractor gets to repair it (D-157).
+                reasoning=[pseudo.apply(p.text) for p in reasoning],
+                visible=list(sources.values()),
                 cfg_markers=c.court_voice_markers,
                 evaluative_words=c.evaluative_words,
                 generic_words=c.generic_name_words,
